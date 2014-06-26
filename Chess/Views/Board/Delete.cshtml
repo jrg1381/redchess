@@ -1,0 +1,34 @@
+﻿@model Chess.Models.BoardDto
+
+@{
+    ViewBag.Title = "Delete";
+    var breakCharacters = new char[1];
+    breakCharacters[0] = ' ';
+    var shortFen = @Model.Fen.Split(breakCharacters)[0];
+}
+
+<link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
+<script src="/Scripts/app/chessboard-0.3.0.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var cfg = { pieceTheme: '/Images/{piece}.png', position: '@shortFen', showNotation: false }
+        board = new ChessBoard('board', cfg);
+    });
+    
+    function GoToGame(id) {
+        document.location.href = "/Board/Details/" + id;
+    }
+</script>
+
+<h3>Are you sure you want to delete this game?</h3>
+
+<div style="width:300px" id="board" onclick="GoToGame(@Model.GameId)"></div>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

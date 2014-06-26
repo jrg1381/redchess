@@ -1,0 +1,52 @@
+﻿@using System.Web.Mvc.Html
+@model IEnumerable<Chess.Models.UserProfile>
+
+@{
+    ViewBag.Title = "New game";
+}
+
+<h2>New game</h2>
+
+@using (Html.BeginForm("Create", "Board", FormMethod.Post, new { id = "createForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+	<table>
+		<tr>
+			<td>Opponent</td>
+			<td>
+				@Html.DropDownList("Opponent", Model.Select(x => new SelectListItem {Text = x.UserName, Value = x.UserId.ToString()}))
+			</td>
+		</tr>
+        <tr><td>Play as black</td><td>@Html.CheckBox("PlayAsBlack")</td></tr>
+	<tr><td>Use clock</td><td>@Html.CheckBox("UseClock")</td></tr>
+<tr style="visibility: hidden" id="TimeLimit"><td>Time limit (minutes)</td><td>@Html.TextBox("TimeLimit","5", new { @class = "number", min = 1, max = 4320, required = true } )</td></tr>
+	</table>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+}
+
+<script>
+    $(document).ready(function() {
+        $("input#UseClock").change(function (data) {
+            if (this.checked) {
+                $("tr#TimeLimit").css("visibility", "");
+            }
+            else {
+                $("tr#TimeLimit").css("visibility", "hidden");
+            }
+        });
+        
+        $("form#createForm").validate();
+    });
+</script>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

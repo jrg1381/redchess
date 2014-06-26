@@ -1,0 +1,82 @@
+[Event "Casual game"]
+[Site "http://lichess.org/6e9nus5x"]
+[Date "2013.11.16"]
+[Round ""]
+[White "Anonymous"]
+[Black "Anonymous"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[ECO "D05"]
+[Result "0-1"]
+
+1.d4 {+0.18/5 0s} Nf6 {+0.06/5 0s} 2.e3 {+0.01/11 0s} d5 {+0.05/11 2s} 
+3.Nf3 {+0.05/10 0s} e6 {+0.14/10 2s} 4.c3 {-0.08/11 1s} Bd6 {-0.07/11 1s} 
+5.Ne5 {-0.19/10 0s} Bxe5 {+0.12/12 1s} 6.dxe5 {+0.12/12 1s} Nfd7 {+0.11/11 0s} 
+7.Qh5 {-0.11/12 0s} O-O {-0.18/11 0s} 8.Bd3 {-0.67/12 0s} (8.f4 {-0.08/11 3s} 
+b6 9.b3 Nc5 10.Ba3 Nbd7 11.Bb5 a6 12.Bc6 Nd3+ 13.Kf1 g6) 8. ... g6 {-0.71/14 6s} 
+9.Qh6 {-0.67/12 2s} Nxe5 {-0.76/12 1s} 10.Bc2 {-1.04/11 0s} Nbd7 {-0.95/10 0s} 
+11.Nd2 {-1.12/11 0s} Nf6 {-0.58/11 0s} (11. ... b6 {-1.17/11 3s} 
+12.O-O Ba6 13.Rd1 Nc5 14.b4 Bd3 15.Bb3 Nxb3 16.axb3 Qf6 17.f3 
+) 12.Nf3 {-0.75/11 0s} Qd6 {-0.59/11 0s} 13.Ng5 {-1.29/10 0s} 
+(13.Nxe5 {-0.57/10 2s} Qxe5 14.h4 Nh5 15.f4 Qf6 16.Qg5 Bd7 17.Bd1 
+) 13. ... Neg4 {-0.36/12 0s} (13. ... Bd7 {-1.27/10 3s} 14.a4 
+a5 15.O-O Neg4 16.Qh4 h6 17.Nf3 c5 18.Bd2) 14.Qh4 {-0.37/12 5s} 
+h6 {-0.34/13 1s} 15.Nf3 {-0.24/12 2s} g5 {+1.30/12 2s} (15. ... Kg7 {-0.28/12 6s} 
+16.e4 dxe4 17.h3 exf3 18.hxg4 Qe5+ 19.Be3 h5 20.gxf3 Rd8 21.O-O 
+) 16.Qg3 {-1.43/13 1s} (16.Nxg5 {+1.12/10 0s} e5 17.f3 d4 18.exd4 
+exd4 19.fxg4 d3 20.O-O Qc5+ 21.Kh1 hxg5 22.Bxg5 dxc2 23.Rxf6 
+) 16. ... Qxg3 {-1.24/12 0s} 17.hxg3 {-1.23/13 2s} Ne4 {-1.16/13 3s} 
+18.O-O {-1.49/12 1s} f5 {-1.34/12 0s} 19.b3 {-1.53/12 0s} b6 {-1.46/12 3s} 
+20.Ba3 {-2.02/13 0s} (20.Bd3 {-1.46/11 2s} e5 21.Nh2 Nxc3 22.Bb2 
+Nxh2 23.Kxh2) 20. ... Rf7 {-1.43/12 0s} (20. ... c5 {-2.04/12 2s} 
+21.Bd3 e5 22.Bxe4 fxe4 23.Nh2 Nxh2 24.Kxh2 Bg4 25.Rae1 Rad8 26.Bb2 
+Rde8) 21.c4 {-1.76/13 2s} Ba6 {-1.64/12 0s} 22.Rfd1 {-3.61/13 0s} 
+(22.Rac1 {-1.64/11 3s} c5 23.Bb2 Rd8 24.Rcd1 Rfd7 25.Ne5 Nxe5 
+26.Bxe5 dxc4 27.Rxd7 Rxd7) 22. ... dxc4 {-3.13/13 1s} (22. ... Nexf2 {-3.61/12 2s} 
+23.cxd5 Nxd1 24.dxe6 Rf6 25.Rxd1 Nxe3 26.e7 Nxd1 27.Bxd1 c5 28.Bb2 
+) 23.bxc4 {-4.08/12 0s} (23.Bxe4 {-3.50/12 3s} fxe4 24.Rd4 Bb7 
+25.Nh2 Nxh2 26.Kxh2 cxb3 27.axb3 Rxf2 28.Rd7 Bd5 29.b4 Rf7 30.Rxf7 
+Kxf7) 23. ... Bxc4 {-2.56/13 1s} (23. ... Nexf2 {-3.93/12 2s} 
+24.Rdc1 c5 25.Bb2 Rd8 26.Rf1 Nd3 27.Rfd1 Bxc4 28.Ne5 Ngxe5 29.Bxe5 
+) 24.Nd4 {-4.39/12 0s} (24.Nd2 {-2.48/12 2s} Bd5 25.Nxe4 fxe4 
+26.Rd2 c5 27.Bd1 Ne5 28.Rc2 Nc4 29.Bc1 Rd8 30.Bh5) 24. ... Ngxf2 {-3.97/13 0s} 
+(24. ... Nexf2 {-4.58/12 4s} 25.Rd2 Ne4 26.Bxe4 fxe4 27.Nc6 Nxe3 
+28.Ne5 Rf5 29.Re1 Rxe5 30.Rxe3 c5) 25.Rdc1 {-4.45/13 1s} (25.Bxe4 {-3.90/12 2s} 
+Nxe4 26.Nc6 Be2 27.Rdc1 Re8 28.Bb2 a6 29.a4 Rd7 30.Be5 Kf7 31.Nd4 
+) 25. ... Nd3 {-3.39/12 0s} (25. ... Bd5 {-4.45/12 3s} 26.Nc6 
+Bxc6 27.Bxe4 Nxe4 28.Rxc6) 26.Rcb1 {-4.72/12 0s} (26.Bxd3 {-3.52/12 3s} 
+Bxd3 27.Nc6 Rd7 28.Rd1 Nxg3 29.Ne5 Rad8 30.Nxd7 Rxd7 31.Bb2 c5 
+32.Be5) 26. ... Nxg3 {-4.68/13 1s} (26. ... c5 {-4.70/12 2s} 
+27.Bxd3 Bxd3 28.Rd1 Bc4 29.Nf3 Rc7 30.Rdc1 Bd5 31.g4 Rd8 32.Ne5 
+Kg7) 27.Nxe6 {-5.13/12 0s} (27.Bxd3 {-4.67/12 2s} Bxd3 28.Rd1 
+Be2 29.Rd2 Bc4 30.Nc6 Bb5 31.Ne5) 27. ... f4 {-3.93/12 1s} (27. ... Ne2+ {-5.34/11 2s} 
+28.Kh2 c5 29.Bxd3 Bxd3 30.Rb2 Re8 31.Rd1 Bc4 32.Rc2 Rxe6 33.Rxc4 
+Rxe3 34.Rd8+ Kh7) 28.exf4 {-6.24/13 2s} (28.Bb3 {-3.96/11 2s} 
+Bxe6 29.Bxe6 fxe3 30.Kh2 Nh5 31.Rf1 Nhf4 32.Bxf7+ Kxf7) 28. ... gxf4 {-3.66/12 0s} 
+(28. ... Ne2+ {-6.27/12 4s} 29.Kh2 Ndxf4 30.Nxf4 Rxf4 31.Rb3 
+Bxb3 32.Bxb3+ Kh7 33.g3 Rf2+ 34.Kh3 c5 35.Re1 Nc3 36.Re7+ Kg6 
+37.Re6+ Kh5) 29.Rd1 {-5.20/12 0s} (29.Bb3 {-3.64/12 3s} Bxb3 
+30.Rxb3 Re8 31.Nxf4 Rxf4 32.Rxd3 Ne2+ 33.Kh2 Rh4+ 34.Rh3 Rxh3+ 
+35.gxh3 c5 36.Bb2 Re3) 29. ... Rd7 {-2.42/13 0s} (29. ... Ne2+ {-5.20/11 1s} 
+30.Kf1 Ne5 31.Bb3 Nc3+ 32.Bxc4 Nxd1 33.Bb3 Ne3+ 34.Kf2 N3c4 35.Bc1 
+Nd3+) 30.Nxf4 {-2.42/12 1s} Rad8 {-2.51/12 2s} 31.Nxd3 {-2.51/12 3s} 
+Bxd3 {-2.49/11 1s} 32.Bxd3 {-2.91/13 0s} (32.Ba4 {-2.31/12 5s} 
+Ne2+ 33.Kf2 Rf7+ 34.Ke3 Nf4 35.Bc6 Rf6 36.Bf3 Re8+ 37.Kd4 c5+ 
+38.Kc3 Be4 39.Re1) 32. ... Rxd3 {-2.98/15 3s} 33.Be7 {-9.80/14 0s} 
+(33.Rxd3 {-2.97/12 1s} Rxd3 34.Bc1 h5 35.Bg5 Kf7 36.Re1 Nf5 37.Kf2 
+c5 38.Re5 Kg6 39.Ke2) 33. ... Rxd1+ {-9.80/14 2s} 34.Rxd1 {-9.83/14 0s} 
+Rxd1+ {-10.09/14 1s} 35.Kh2 {-10.52/14 0s} (35.Kf2 {-9.85/14 2s} 
+Kf7 36.Bh4 Nf5 37.Ke2 Ra1 38.Be1 Rxa2+ 39.Bd2 c5 40.g4 Nd4+ 41.Kd3 
+a5 42.Bc3) 35. ... Nf5 {-10.20/14 0s} (35. ... Ne4 {-11.00/14 4s} 
+36.g4 Rd2+ 37.Kh3 Kf7 38.Bh4 Rxa2 39.Bd8 Ra3+ 40.Kh2 c5 41.Bc7 
+b5 42.Bf4 Nf2 43.g5 hxg5) 36.Bf6 {-10.46/15 2s} Rd3 {-10.46/14 1s} 
+37.Be5 {-11.65/15 0s} (37.Kg1 {-10.40/14 2s} c5 38.a4 Ra3 39.a5 
+Rxa5 40.g4 Kf7 41.Bc3 Ra3 42.Be5 Ne3 43.Bb2 Ra2) 37. ... c5 {-11.42/15 1s} 
+38.Bb8 {-12.96/14 0s} (38.Kg1 {-11.77/15 6s} c4 39.Kf2 c3 40.Bf4 
+c2 41.Bc1 Rd1 42.Bb2) 38. ... c4 {-13.28/15 1s} 39.Bxa7 {-M9/16 3s} 
+(39.Be5 {-13.77/16 6s} c3 40.Bxc3 Rxc3 41.g4 Nh4 42.a4 Ra3 43.g5 
+Rxa4 44.Kg3 a5 45.Kf2 Rf4+ 46.Ke3) 39. ... c3 {-M9/15 3s} 40.Bxb6 {-M6/14 3s} 
+(40.Bb8 {-M8/15 10s} Ne3 41.Kg3 c2 42.Bf4 c1=Q 43.Bxh6 Qe1+ 44.Kf3 
+Nxg2+ 45.Kg4 Rg3+ 46.Kf5 Nh4+ 47.Kf6 Rg6#) 40. ... c2 {-M6/13 3s} 
+41.Bc7 {-M5/13 1s} c1=Q {-M5/11 2s} 0-1
+

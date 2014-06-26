@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="Chess.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-10.2.2">
+  <Role name="Chess">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=redchess;AccountKey=W5fjVFZ36FPo+EDsqPUjRf+llDoIt0uDJFsPJPeob6VGK3YuqMgE5F+iDChlsYidEi5PXJ9PcTFRjCd19n7sYg==" />
+    </ConfigurationSettings>
+  </Role>
+</ServiceConfiguration>

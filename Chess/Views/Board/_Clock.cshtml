@@ -1,0 +1,120 @@
+﻿@model Chess.Models.Clock
+
+<style>
+    .thinborder
+    {
+        border: 1px;
+    }
+
+    table.clock
+    {
+        width: 200px;
+        border-collapse: collapse;
+        font-family: sans-serif;
+        padding: 15px;
+    }
+
+    td.time
+    {
+        border-bottom: solid 1px;
+        border-left: solid 1px;
+        border-right: solid 1px;
+        border-top: dotted 1px;
+        border-color: black;
+        text-align: right;
+        width: 100px;
+    }
+
+    td.white
+    {
+        background-color: white;
+        color: black;
+        border-color: black;
+    }
+
+    td.black
+    {
+        background-color: black;
+        color: white;
+        border-color: white;
+    }
+
+    td.goindicator
+    {
+        border-style: dotted;
+        border: 1px;
+        border-color: black;
+        text-align: center;
+        font-size: 8px;
+        font-variant: small-caps;
+    }
+
+    td.ready
+    {
+        background-color: lightgreen;
+    }
+
+    td.notready
+    {
+        background-color: lightcoral;
+    }
+
+    div.i_am_ready
+    {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding: 5px;
+        background-color: steelblue;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    tr.clockheading
+    {
+        border-bottom: dotted 1px;
+        border-left: solid 1px;
+        border-right: solid 1px;
+        border-top: solid 1px;
+        border-color: black;
+        text-align: center;
+    }
+</style>
+
+@{
+	string readyTextWhite = "NOT READY", readyTextBlack = "NOT READY", readyClassWhite = "notready", readyClassBlack = "notready";
+
+	if ((@Model.PlayersReady & 1) > 0)
+	{
+		readyTextWhite = "READY";
+		readyClassWhite = "ready";
+	}
+
+	if ((@Model.PlayersReady & 2) > 0)
+	{
+		readyTextBlack = "READY";
+		readyClassBlack = "ready";
+	}
+}
+        
+	<table class="clock">
+        <tr class="thinborder clockheading">
+            <td class="white">White</td>
+            <td class="black">Black</td>
+        </tr>
+        <tr class="thinborder">
+            <td class="time white" id="whitetime">00:00:00</td>
+            <td class="time black" id="blacktime">00:00:00</td>
+        </tr>
+        <tr class="thinborder">
+            <td class="goindicator @readyClassWhite" id="whiteready">@readyTextWhite</td>
+            <td class="goindicator @readyClassBlack" id="blackready">@readyTextBlack</td>
+        </tr>
+        <tr>
+            <td colspan="2" id="ready">
+                <div class="i_am_ready" id="readybutton">Start game</div>
+            </td>
+        </tr>
+    </table>
