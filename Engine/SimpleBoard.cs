@@ -50,9 +50,8 @@ namespace Redchess.Engine
 
         internal void AddPiece(IPiece piece)
         {
-            var ownPieces = Pieces(piece.Color);
-
-            if (ownPieces.OccupiedSquares().Contains(piece.Position.Location))
+            var originalOccupant = GetContents(piece.Position.Location);
+            if (originalOccupant != null && originalOccupant.Color == piece.Color)
             {
                 throw new DoubleOccupancyException("Two pieces of the same color cannot occupy " +
                                                    piece.Position.Location);
