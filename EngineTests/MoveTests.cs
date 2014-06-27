@@ -7,7 +7,6 @@ using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine;
 using Redchess.Engine.Exceptions;
-using Redchess.Engine.Interfaces;
 using Redchess.Engine.Pieces;
 using Redchess.Engine.Pieces.Abstract;
 using Redchess.Engine.Pieces.Black;
@@ -15,26 +14,7 @@ using Redchess.Engine.Pieces.White;
 
 namespace EngineTests
 {
-	internal abstract class AbstractChessTest
-	{
-        protected InteractiveBoard m_normalBoard;
-        protected InteractiveBoard m_emptyBoard;
-	    protected IBoardExtended m_betterBoardNormal;
-	    protected IBoardExtended m_betterBoardEmpty;
-
-		[SetUp]
-		public void TestSetup()
-		{
-			// Reset all the pieces between tests
-			m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
-			m_normalBoard = new InteractiveBoard(PieceColor.White, false);
-
-		    m_betterBoardNormal = m_normalBoard;
-		    m_betterBoardEmpty = m_emptyBoard;
-		}
-	}
-
-	[TestFixture]
+    [TestFixture]
 	internal class MoveTests : AbstractChessTest
 	{
 		[Test]
@@ -86,63 +66,49 @@ namespace EngineTests
 		}
 
 		[Test]
-		public void PawnMoves4()
+		public void PawnCanAdvanceOrTake()
 		{
 			var thePawn1 = new WhitePawn(Location.D4);
 			var thePawn2 = new BlackPawn(Location.E5);
 			m_emptyBoard.AddPiece(thePawn1);
 			m_emptyBoard.AddPiece(thePawn2);
-			var whitePieces = m_emptyBoard.Pieces(PieceColor.White);
-			var blackPieces = m_emptyBoard.Pieces(PieceColor.Black);
-			Assert.AreEqual(1, whitePieces.OccupiedSquares().Count(), "Expected one white piece on the board after adding a black and white pawn");
-			Assert.AreEqual(1, blackPieces.OccupiedSquares().Count(), "Expected one black piece on the board after adding a black and white pawn");
-			Assert.That(whitePieces.IsOccupied(Location.D4) && blackPieces.IsOccupied(Location.E5),
-			            "Expected pawns to be on D4 and E5, but they were on " + LocationListAsFriendlyString(m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares()));
-            var reachableSquares = thePawn1.ReachableSquares(m_emptyBoard).ToArray();
-			var expectedReachableSquares = FriendlyStringToLocationList("D5,E5");
-			Assert.That(reachableSquares.SequenceEqual(expectedReachableSquares),
-			            "Expected pawn reachable squares to be " + LocationListAsFriendlyString(expectedReachableSquares) + " but was " + LocationListAsFriendlyString(reachableSquares));
+            CollectionAssert.AreEquivalent(new [] {Location.D5, Location.E5}, thePawn1.ReachableSquares(m_betterBoardEmpty), "Set of reachable squares for pawn was incorrect");
 		}
 
 		[Test]
-		public void PawnMoves5()
+		public void PawnCannotAdvanceBlockedByEnemy()
 		{
 			var thePawn1 = new WhitePawn(Location.D4);
 			var thePawn2 = new BlackPawn(Location.D5);
 			m_emptyBoard.AddPiece(thePawn1);
 			m_emptyBoard.AddPiece(thePawn2);
-			var whitePieces = m_emptyBoard.Pieces(PieceColor.White);
-			var blackPieces = m_emptyBoard.Pieces(PieceColor.Black);
-			Assert.AreEqual(1, whitePieces.OccupiedSquares().Count(), "Expected one white piece on the board after adding a black and white pawn");
-			Assert.AreEqual(1, blackPieces.OccupiedSquares().Count(), "Expected one black piece on the board after adding a black and white pawn");
-			Assert.That(whitePieces.IsOccupied(Location.D4) && blackPieces.IsOccupied(Location.D5),
-			            "Expected pawns to be on D4 and D5, but they were on " + LocationListAsFriendlyString(m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares()) + " " +
-			            LocationListAsFriendlyString(m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares()));
-            var reachableSquares = thePawn1.ReachableSquares(m_emptyBoard).ToArray();
-			Assert.AreEqual(0, reachableSquares.Length, "Expected pawn to have no reachable squares");
+            CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
 		}
+
+        [Test]
+        public void PawnCannotAdvanceBlockedByFriend()
+        {
+            var thePawn1 = new WhitePawn(Location.D4);
+            var thePawn2 = new WhitePawn(Location.D5);
+            m_emptyBoard.AddPiece(thePawn1);
+            m_emptyBoard.AddPiece(thePawn2);
+            CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
+        }
 
         [Test]
         public void AwaitingPromotion()
         {
-            var blackKing = new BlackKing(Location.H7);
-            var whiteKing = new WhiteKing(Location.H2);
-   			var whitePawn = new WhitePawn(Location.A7);
-			var blackPawn = new BlackPawn(Location.B2);
-            m_emptyBoard.AddPiece(whitePawn);
-            m_emptyBoard.AddPiece(blackPawn);
-            m_emptyBoard.AddPiece(blackKing);
-            m_emptyBoard.AddPiece(whiteKing);
+            m_betterBoardEmpty.FromFen("8/P6k/8/8/8/8/1p5K/8 w KQkq -");
 
-            Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Should not be waiting for promotion decision from white");
-            m_emptyBoard.Move(Location.A7, Location.A8);
-            Assert.True(m_emptyBoard.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from white");
-            m_emptyBoard.PromotePiece("Queen");
-            Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
-            m_emptyBoard.Move(Location.B2, Location.B1);
-            Assert.True(m_emptyBoard.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from black");
-            m_emptyBoard.PromotePiece("Queen");
-            Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
+            Assert.False(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Should not be waiting for promotion decision from white");
+            m_betterBoardEmpty.Move(Location.A7, Location.A8);
+            Assert.True(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from white");
+            m_betterBoardEmpty.PromotePiece("Queen");
+            Assert.False(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
+            m_betterBoardEmpty.Move(Location.B2, Location.B1);
+            Assert.True(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from black");
+            m_betterBoardEmpty.PromotePiece("Queen");
+            Assert.False(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
         }
 
 	    [Test]
@@ -169,95 +135,30 @@ namespace EngineTests
 	            "Queen reachable squares not as expected");
 	    }
 
-	    [Test]
-		public void CheckTests1()
+	    [TestCase("7k/6P1/8/8/8/8/8/8 b KQkq -")]
+        [TestCase("3k4/2B5/8/8/8/8/8/8 b KQkq -")]
+        [TestCase("3k4/5N2/8/8/8/8/8/8 b KQkq -")]
+		public void BlackKingShouldBeInCheck(string fen)
 		{
-			var theKing = new BlackKing(Location.H8);
-			var thePawn = new WhitePawn(Location.G7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(thePawn);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			Assert.True(m_emptyBoard.KingInCheck(), "Black king should be in check from the white pawn");
+            m_betterBoardEmpty.FromFen(fen);
+            Assert.True(m_betterBoardEmpty.KingInCheck(), "Black king should be in check");
 		}
 
-		[Test]
-		public void CheckTests2()
-		{
-			m_emptyBoard.AddPiece(new WhiteKing(Location.A1));
-			var theKing = new BlackKing(Location.H8);
-			var thePawn = new WhitePawn(Location.H7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(thePawn);
-			Assert.False(m_emptyBoard.KingInCheck(), "Black king should not be in check from the white pawn");
-		}
+        [TestCase("7k/7P/8/8/8/8/8/K7 b KQkq -")]
+        [TestCase("3k4/2b5/8/8/8/8/8/K7 b KQkq -")]
+        [TestCase("3k3K/2r5/1B6/8/8/8/8/8 b KQkq -")]
+        public void BlackKingShouldNotBeInCheck(string fen)
+        {
+            m_betterBoardEmpty.FromFen(fen);
+            Assert.False(m_betterBoardEmpty.KingInCheck(), "Black king should not be in check");
+        }
 
 		[Test]
-		public void CheckTests3()
+		public void PawnDoesNotAttackSquareInFrontOfIt()
 		{
-			m_emptyBoard.AddPiece(new WhiteKing(Location.A1));
-			var theKing = new BlackKing(Location.D8);
-			var theBishop = new BlackBishop(Location.C7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theBishop);
-			Assert.False(m_emptyBoard.KingInCheck(), "Black king should not be in check from the black bishop");
-		}
-
-		[Test]
-		public void CheckTests4()
-		{
-			var theKing = new BlackKing(Location.D8);
-			var theBishop = new WhiteBishop(Location.C7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theBishop);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			Assert.True(m_emptyBoard.KingInCheck(), "Black king should be in check from the white bishop");
-		}
-
-		[Test]
-		public void CheckTests5()
-		{
-			var theKing2 = new WhiteKing(Location.H8);
-			var theKing = new BlackKing(Location.D8);
-			var theRook = new BlackRook(Location.C7);
-			var theBishop = new WhiteBishop(Location.B6);
-			m_emptyBoard.AddPiece(theKing2);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theBishop);
-			m_emptyBoard.AddPiece(theRook);
-			Assert.False(m_emptyBoard.KingInCheck(), "Black king should not be in check from the white bishop");
-		}
-
-		[Test]
-		public void CheckTest6()
-		{
-			var theKing = new WhiteKing(Location.D8);
-			var theKing2 = new BlackKing(Location.H8);
-			var thePawn = new WhitePawn(Location.G7);
-			m_emptyBoard.AddPiece(theKing2);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(thePawn);
-            Console.WriteLine(LocationListAsFriendlyString(theKing2.ValidMoves(m_emptyBoard)));
-            Assert.True(theKing2.ValidMoves(m_emptyBoard).Contains(Location.G8), "Pawn should not attack square in front of it");
-		}
-
-		[Test]
-		public void CheckTests6()
-		{
-			var theKing = new BlackKing(Location.D8);
-			var thePawn = new WhiteKnight(Location.F7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(thePawn);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			Assert.True(m_emptyBoard.KingInCheck(), "Black king should be in check from the white knight");
-		}
-
-		[Test]
-		public void DoubleOccupancyTest()
-		{
-			var theKing = new BlackKing(Location.D8);
-			var theRook = new BlackRook(Location.D8);
-			m_emptyBoard.AddPiece(theKing);
-			Assert.Throws(expectedExceptionType: typeof (DoubleOccupancyException), code: () => m_emptyBoard.AddPiece(theRook));
+            m_betterBoardEmpty.FromFen("3K3k/6P1/8/8/8/8/8/8 w KQkq -");
+		    var theBlackKing = m_betterBoardEmpty.GetContents(Location.H8);
+            CollectionAssert.Contains(theBlackKing.ValidMoves(m_betterBoardEmpty), Location.G8, "Pawn should not attack square in front of it");
 		}
 
 		[Test]
