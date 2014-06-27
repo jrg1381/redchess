@@ -17,8 +17,8 @@ namespace Redchess.Engine
         {
             m_squareContents = new Dictionary<Location, IPiece>();
 
-            m_whitePieces = new BoardBitmap(PieceType.NullPiece, true);
-            m_blackPieces = new BoardBitmap(PieceType.NullPiece, true);
+            m_whitePieces = new BoardBitmap();
+            m_blackPieces = new BoardBitmap();
 
             if (isEmpty) return;
 
@@ -50,9 +50,8 @@ namespace Redchess.Engine
 
         internal void AddPiece(IPiece piece)
         {
-            var ownPieces = Pieces(piece.Color);
-
-            if (ownPieces.OccupiedSquares().Contains(piece.Position.Location))
+            var originalOccupant = GetContents(piece.Position.Location);
+            if (originalOccupant != null && originalOccupant.Color == piece.Color)
             {
                 throw new DoubleOccupancyException("Two pieces of the same color cannot occupy " +
                                                    piece.Position.Location);

@@ -28,9 +28,6 @@ namespace Redchess.Engine
             SymbolLookup = new Dictionary<PieceType, string>();
             ReverseSymbolLookup = new Dictionary<string, PieceType>();
 
-            SymbolLookup[PieceType.NullPiece] = "X";
-            InitialConfigurations[PieceType.NullPiece] = new Location[0];
-
             InitialConfigurations[PieceType.BlackPawn] = new[]
             {Location.A7, Location.B7, Location.C7, Location.D7, Location.E7, Location.F7, Location.G7, Location.H7};
             SymbolLookup[PieceType.BlackPawn] = "p";
