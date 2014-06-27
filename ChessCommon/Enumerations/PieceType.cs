@@ -30,6 +30,5 @@ namespace RedChess.ChessCommon.Enumerations
         Pawn = 128,
         WhitePawn = Pawn + RealPiece,
         BlackPawn = Pawn + RealPiece + Black,
-        NullPiece = 256
     }
 }
