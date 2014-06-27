@@ -18,12 +18,5 @@ namespace EngineTests
 			var b = new Board();
 			Assert.NotNull(b);
 		}
-
-	    [Test]
-	    public void CannotCreateNullPiece()
-	    {
-	        Assert.Throws(typeof (InvalidOperationException),
-	            () => PieceFactory.CreatePiece(PieceType.NullPiece, Location.A1));
-	    }
 	}
 }
