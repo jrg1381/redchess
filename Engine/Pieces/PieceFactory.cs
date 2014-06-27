@@ -36,8 +36,6 @@ namespace Redchess.Engine.Pieces
                     return new WhitePawn(loc);
                 case PieceType.BlackPawn:
                     return new BlackPawn(loc);
-                case PieceType.NullPiece:
-                    throw new InvalidOperationException("Cannot create a null piece");
                 default:
                     return null;
             }
