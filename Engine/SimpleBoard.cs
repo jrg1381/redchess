@@ -17,8 +17,8 @@ namespace Redchess.Engine
         {
             m_squareContents = new Dictionary<Location, IPiece>();
 
-            m_whitePieces = new BoardBitmap(PieceType.NullPiece, true);
-            m_blackPieces = new BoardBitmap(PieceType.NullPiece, true);
+            m_whitePieces = new BoardBitmap();
+            m_blackPieces = new BoardBitmap();
 
             if (isEmpty) return;
 
