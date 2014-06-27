@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractChessTest.cs" />
     <Compile Include="Datastructures.cs" />
     <Compile Include="FenTests.cs" />
     <Compile Include="InteractiveBoard.cs" />
