@@ -162,121 +162,59 @@ namespace EngineTests
 		}
 
 		[Test]
-		public void MoveTest1()
+		public void PieceMovesFromOneSquareToAnother()
 		{
-			var theKing = new BlackKing(Location.D8);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			m_emptyBoard.MovePiece(theKing,Location.D7);
-			Assert.True(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D7), "Expected a piece on D7");
-			Assert.False(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D8), "Didn't expect a piece on D8");
-			Assert.AreEqual(1, m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares().Count(),"Expected only one black piece on the board");
-			Assert.AreEqual(0, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected no white pieces on the board");
+            m_betterBoardEmpty.FromFen("8/3k4/8/8/8/8/8/8 b KQ -");
+			Assert.True(m_betterBoardEmpty.Pieces(PieceColor.Black).IsOccupied(Location.D7), "Expected a piece on D7");
+            Assert.False(m_betterBoardEmpty.Pieces(PieceColor.Black).IsOccupied(Location.D8), "Didn't expect a piece on D8");
+            Assert.AreEqual(1, m_betterBoardEmpty.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected only one black piece on the board");
+            Assert.AreEqual(0, m_betterBoardEmpty.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected no white pieces on the board");
 		}
 
 		[Test]
-		public void MoveTest2()
+		public void CannotTakeOwnPiece()
 		{
-			var theKing = new BlackKing(Location.D8);
-			var theKnight = new BlackKnight(Location.D7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theKnight);
-		    Assert.IsFalse(m_emptyBoard.Move(Location.D8, Location.D7), "Expected this move to fail - can't take own piece");
+            m_betterBoardEmpty.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq -");
+            Assert.IsFalse(m_betterBoardEmpty.Move(Location.D8, Location.D7), "Expected this move to fail - can't take own piece");
 		}
 
-		[Test]
-		public void MoveTest3()
-		{
-			var theKing = new BlackKing(Location.D8);
-			var theKnight = new WhiteKnight(Location.D7);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theKnight);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			m_emptyBoard.MovePiece(theKing, Location.D7);
-			Assert.AreEqual(0, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected no white pieces on the board");
-		}
+        [Test]
+        public void CannotPlayOutOfTurn()
+        {
+            m_betterBoardEmpty.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq -");
+            Assert.IsFalse(m_betterBoardEmpty.Move(Location.C7, Location.D7), "Cannot play out of turn");
+           
+        }
 
 		[Test]
-		public void MoveTest4()
+		public void TakenPiecesAreRemovedFromTheBoard()
 		{
-			var theKing = new BlackKing(Location.D8);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-            Assert.IsFalse(m_emptyBoard.Move(Location.D8, Location.A1), "Move should not be allowed");
+            m_betterBoardEmpty.FromFen("3N4/3k4/8/8/8/8/8/8 b KQ -");
+            m_betterBoardEmpty.Move(Location.D7, Location.D8);
+            Assert.AreEqual("3k4/8/8/8/8/8/8/8 w KQ -", m_betterBoardEmpty.ToFen(), "Expected knight to be taken");
 		}
 
-		[Test]
-		public void MoveTest5()
-		{
-			var theKing = new BlackKing(Location.H7);
-			var theQueen = new WhiteQueen(Location.A1);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theQueen);
-            Assert.IsFalse(m_emptyBoard.Move(Location.H7, Location.H8), "Move should not be allowed");
-		}
+        [TestCase("7k/8/8/8/8/8/8/8 b - -", Location.H8, Location.B2)]
+        [TestCase("8/7k/8/8/8/8/8/Q7 w KQkq -", Location.H7, Location.H8)]
+        [TestCase("7k/8/8/8/8/8/8/Q7 w KQkq -", Location.H8, Location.G7)]
+        [TestCase("7k/8/8/8/8/8/1n6/Q7 w KQkq -", Location.B2, Location.A4)]
+        [TestCase("7k/8/8/8/n2p4/8/8/Q7 w KQkq -", Location.D4, Location.D5)]
+        [TestCase("8/7k/8/8/8/8/8/8 b KQkq -", Location.H7, Location.H7)]
+        public void IllegalMovesAreDisallowed(string fen, Location from, Location to)
+        {
+            m_betterBoardEmpty.FromFen(fen);
+            Assert.NotNull(m_betterBoardEmpty.GetContents(from), "Expected a piece to be on the 'from' square");
+            Assert.IsFalse(m_betterBoardEmpty.Move(from, to), "Move should not be allowed");
+        }
 
 		[Test]
-		public void MoveTest6()
+		public void CannotMoveUntilOpponentMakesPromotionChoice()
 		{
-			var theKing = new BlackKing(Location.H8);
-			var theQueen = new WhiteQueen(Location.A1);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theQueen);
-            Assert.IsFalse(m_emptyBoard.Move(Location.H8, Location.G7), "Move should not be allowed");
-		}
-
-		[Test]
-		public void MoveTest7()
-		{
-			var theKing = new BlackKing(Location.H8);
-			var theQueen = new WhiteQueen(Location.A1);
-			var theKnight = new BlackKnight(Location.B2);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theQueen);
-			m_emptyBoard.AddPiece(theKnight);
-            Assert.IsFalse(m_emptyBoard.Move(Location.B2, Location.A4), "Move should not be allowed");
-		}
-
-		[Test]
-		public void MoveTest8()
-		{
-			var theKing = new BlackKing(Location.H8);
-			var theQueen = new WhiteQueen(Location.A1);
-			var theKnight = new BlackKnight(Location.B2);
-			var thePawn = new BlackPawn(Location.D4);
-			m_emptyBoard.AddPiece(theKing);
-			m_emptyBoard.AddPiece(theQueen);
-			m_emptyBoard.AddPiece(theKnight);
-			m_emptyBoard.AddPiece(thePawn);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			m_emptyBoard.MovePiece(theKnight, Location.A4);
-            Assert.IsFalse(m_emptyBoard.Move(Location.D4, Location.D5), "Move should not be allowed");
-		}
-
-		[Test]
-		public void MoveTest9()
-		{
-			var theWhiteKing = new WhiteKing(Location.G1);
-			var theBlackKing = new BlackKing(Location.G3);
-			var theQueen = new WhiteQueen(Location.A1);
-			var thePawn = new BlackPawn(Location.D2);
-			m_emptyBoard.AddPiece(theQueen);
-			m_emptyBoard.AddPiece(thePawn);
-			m_emptyBoard.AddPiece(theWhiteKing);
-			m_emptyBoard.AddPiece(theBlackKing);
-			m_emptyBoard.CurrentTurn = PieceColor.Black;
-			m_emptyBoard.MovePiece(thePawn, Location.D1); // but don't promote it
+            m_betterBoardEmpty.FromFen("8/8/8/8/8/6k1/3p4/Q5K1 b KQkq -");
+            m_betterBoardEmpty.Move(Location.D2, Location.D1); // but don't promote it
 			// Try to move the queen, but this is not allowed because the previous player hasn't made a promotion choice yet
-			Assert.Throws(typeof(InvalidMoveException), () => m_emptyBoard.MovePiece(theQueen, Location.A2));
+            Assert.Throws(typeof(InvalidMoveException), () => m_betterBoardEmpty.Move(Location.A1, Location.A2));
 		}
-
-	    [Test]
-	    public void MoveTest10()
-	    {
-            var theKing = new BlackKing(Location.H7);
-            m_emptyBoard.AddPiece(theKing);
-	        bool moveOk = m_emptyBoard.Move(Location.H7, Location.H7);
-            Assert.False(moveOk, "Should not be able to move a piece to the square it's already on");
-	    }
 
 		[Test]
 		public void NoValidMoves1()
@@ -509,17 +447,17 @@ namespace EngineTests
 		public void EnPassant3()
 		{
 			// White takes via EP
-			m_normalBoard.MovePiece(m_normalBoard.GetContents(Location.B2), Location.B4);
+			m_betterBoardNormal.Move(Location.B2, Location.B4);
 			Console.WriteLine(m_normalBoard);
-			m_normalBoard.MovePiece(m_normalBoard.GetContents(Location.E7), Location.E5);
+            m_betterBoardNormal.Move(Location.E7, Location.E5);
 			Console.WriteLine(m_normalBoard);
-			m_normalBoard.MovePiece(m_normalBoard.GetContents(Location.B4), Location.B5);
+            m_betterBoardNormal.Move(Location.B4, Location.B5);
 			Console.WriteLine(m_normalBoard);
-			m_normalBoard.MovePiece(m_normalBoard.GetContents(Location.A7), Location.A5);
+            m_betterBoardNormal.Move(Location.A7, Location.A5);
 			Console.WriteLine(m_normalBoard);
-			m_normalBoard.MovePiece(m_normalBoard.GetContents(Location.B5), Location.A6);
-			Console.WriteLine(m_normalBoard);
-			Assert.AreEqual("rnbqkbnr/1ppp1ppp/P7/4p3/8/8/P1PPPPPP/RNBQKBNR b KQkq -", m_normalBoard.ToFen(), "Board does not look as expected after white EP capture");
+            m_betterBoardNormal.Move(Location.B5, Location.A6);
+            Console.WriteLine(m_betterBoardNormal);
+            Assert.AreEqual("rnbqkbnr/1ppp1ppp/P7/4p3/8/8/P1PPPPPP/RNBQKBNR b KQkq -", m_betterBoardNormal.ToFen(), "Board does not look as expected after white EP capture");
 		}
 
         [Test]
