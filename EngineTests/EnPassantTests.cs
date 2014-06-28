@@ -76,14 +76,14 @@ namespace EngineTests
         public void EnPassantDoesNotBlockTaking()
         {
             // This was a problem which happened when the e.p. bitmaps were included in the calculation of the occupied squares, causing the invisible ep target to block other pieces.
-            m_betterBoardEmpty.FromFen("rnbqkbnr/ppp2ppp/3p4/4P3/8/6PB/PPPPPP1P/RNBQK1NR w KQkq - E6");
-            var theBishop = m_betterBoardEmpty.GetContents(Location.H3);
+            m_emptyBoard.FromFen("rnbqkbnr/ppp2ppp/3p4/4P3/8/6PB/PPPPPP1P/RNBQK1NR w KQkq - E6");
+            var theBishop = m_emptyBoard.GetContents(Location.H3);
             Assert.That(theBishop.Type.IsOfType(PieceType.WhiteBishop), "The white bishop is not a white bishop! " + theBishop.Type);
             var expectedValidMoves = new[]
             {
                 Location.G2, Location.F1, Location.G4, Location.F5, Location.E6, Location.D7, Location.C8
             };
-            CollectionAssert.AreEquivalent(expectedValidMoves, theBishop.ValidMoves(m_betterBoardEmpty), "Expected bishop to be able to take the other bishop on C8");
+            CollectionAssert.AreEquivalent(expectedValidMoves, theBishop.ValidMoves(m_emptyBoard), "Expected bishop to be able to take the other bishop on C8");
         }
 
         [Test]

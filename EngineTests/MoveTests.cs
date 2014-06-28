@@ -21,8 +21,8 @@ namespace EngineTests
         [Test]
 		public void SanityCheck()
 		{
-			Assert.AreEqual(0, m_betterBoardEmpty.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected empty board to have no white pieces on it");
-            Assert.AreEqual(0, m_betterBoardEmpty.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected empty board to have no black pieces on it");
+			Assert.AreEqual(0, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected empty board to have no white pieces on it");
+            Assert.AreEqual(0, m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected empty board to have no black pieces on it");
 
 			Assert.AreEqual(16, m_normalBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected initial board to have 16 white pieces on it");
             Assert.AreEqual(16, m_normalBoard.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected initial board to have 16 black pieces on it");
@@ -60,9 +60,9 @@ namespace EngineTests
         [TestCase("rnbqkbnr/1ppppppp/8/8/P7/8/PPPPPPP1/RNBQKBNR w KQkq -", Location.A2, new [] {Location.A3})]
 		public void PawnMoves(string initialFen, Location pawnLocation, IEnumerable<Location> expectedReachableSquares)
 		{
-            m_betterBoardEmpty.FromFen(initialFen);
-            Assert.AreEqual(initialFen, m_betterBoardEmpty.ToFen(), "Fen roundtrip failure");
-            var reachableSquares = m_betterBoardEmpty.GetContents(pawnLocation).ReachableSquares(m_betterBoardEmpty);
+            m_emptyBoard.FromFen(initialFen);
+            Assert.AreEqual(initialFen, m_emptyBoard.ToFen(), "Fen roundtrip failure");
+            var reachableSquares = m_emptyBoard.GetContents(pawnLocation).ReachableSquares(m_emptyBoard);
             CollectionAssert.AreEquivalent(expectedReachableSquares, reachableSquares, "Set of reachable square for pawn was incorrect");
 		}
 
@@ -73,7 +73,7 @@ namespace EngineTests
 			var thePawn2 = new BlackPawn(Location.E5);
 			m_emptyBoard.AddPiece(thePawn1);
 			m_emptyBoard.AddPiece(thePawn2);
-            CollectionAssert.AreEquivalent(new [] {Location.D5, Location.E5}, thePawn1.ReachableSquares(m_betterBoardEmpty), "Set of reachable squares for pawn was incorrect");
+            CollectionAssert.AreEquivalent(new [] {Location.D5, Location.E5}, thePawn1.ReachableSquares(m_emptyBoard), "Set of reachable squares for pawn was incorrect");
 		}
 
 		[Test]
@@ -99,17 +99,17 @@ namespace EngineTests
         [Test]
         public void AwaitingPromotion()
         {
-            m_betterBoardEmpty.FromFen("8/P6k/8/8/8/8/1p5K/8 w KQkq -");
+            m_emptyBoard.FromFen("8/P6k/8/8/8/8/1p5K/8 w KQkq -");
 
-            Assert.False(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Should not be waiting for promotion decision from white");
-            m_betterBoardEmpty.Move(Location.A7, Location.A8);
-            Assert.True(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from white");
-            m_betterBoardEmpty.PromotePiece("Queen");
-            Assert.False(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
-            m_betterBoardEmpty.Move(Location.B2, Location.B1);
-            Assert.True(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from black");
-            m_betterBoardEmpty.PromotePiece("Queen");
-            Assert.False(m_betterBoardEmpty.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
+            Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Should not be waiting for promotion decision from white");
+            m_emptyBoard.Move(Location.A7, Location.A8);
+            Assert.True(m_emptyBoard.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from white");
+            m_emptyBoard.PromotePiece("Queen");
+            Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
+            m_emptyBoard.Move(Location.B2, Location.B1);
+            Assert.True(m_emptyBoard.IsAwaitingPromotionDecision(), "Should be waiting for promotion decision from black");
+            m_emptyBoard.PromotePiece("Queen");
+            Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Waiting for promotion should be cancelled");
         }
 
 	    [Test]
@@ -141,8 +141,8 @@ namespace EngineTests
         [TestCase("3k4/5N2/8/8/8/8/8/8 b KQkq -")]
 		public void BlackKingShouldBeInCheck(string fen)
 		{
-            m_betterBoardEmpty.FromFen(fen);
-            Assert.True(m_betterBoardEmpty.KingInCheck(), "Black king should be in check");
+            m_emptyBoard.FromFen(fen);
+            Assert.True(m_emptyBoard.KingInCheck(), "Black king should be in check");
 		}
 
         [TestCase("7k/7P/8/8/8/8/8/K7 b KQkq -")]
@@ -150,48 +150,48 @@ namespace EngineTests
         [TestCase("3k3K/2r5/1B6/8/8/8/8/8 b KQkq -")]
         public void BlackKingShouldNotBeInCheck(string fen)
         {
-            m_betterBoardEmpty.FromFen(fen);
-            Assert.False(m_betterBoardEmpty.KingInCheck(), "Black king should not be in check");
+            m_emptyBoard.FromFen(fen);
+            Assert.False(m_emptyBoard.KingInCheck(), "Black king should not be in check");
         }
 
 		[Test]
 		public void PawnDoesNotAttackSquareInFrontOfIt()
 		{
-            m_betterBoardEmpty.FromFen("3K3k/6P1/8/8/8/8/8/8 w KQkq -");
-		    var theBlackKing = m_betterBoardEmpty.GetContents(Location.H8);
-            CollectionAssert.Contains(theBlackKing.ValidMoves(m_betterBoardEmpty), Location.G8, "Pawn should not attack square in front of it");
+            m_emptyBoard.FromFen("3K3k/6P1/8/8/8/8/8/8 w KQkq -");
+		    var theBlackKing = m_emptyBoard.GetContents(Location.H8);
+            CollectionAssert.Contains(theBlackKing.ValidMoves(m_emptyBoard), Location.G8, "Pawn should not attack square in front of it");
 		}
 
 		[Test]
 		public void PieceMovesFromOneSquareToAnother()
 		{
-            m_betterBoardEmpty.FromFen("8/3k4/8/8/8/8/8/8 b KQ -");
-			Assert.True(m_betterBoardEmpty.Pieces(PieceColor.Black).IsOccupied(Location.D7), "Expected a piece on D7");
-            Assert.False(m_betterBoardEmpty.Pieces(PieceColor.Black).IsOccupied(Location.D8), "Didn't expect a piece on D8");
-            Assert.AreEqual(1, m_betterBoardEmpty.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected only one black piece on the board");
-            Assert.AreEqual(0, m_betterBoardEmpty.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected no white pieces on the board");
+            m_emptyBoard.FromFen("8/3k4/8/8/8/8/8/8 b KQ -");
+			Assert.True(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D7), "Expected a piece on D7");
+            Assert.False(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D8), "Didn't expect a piece on D8");
+            Assert.AreEqual(1, m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected only one black piece on the board");
+            Assert.AreEqual(0, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected no white pieces on the board");
 		}
 
 		[Test]
 		public void CannotTakeOwnPiece()
 		{
-            m_betterBoardEmpty.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq -");
-            Assert.IsFalse(m_betterBoardEmpty.Move(Location.D8, Location.D7), "Expected this move to fail - can't take own piece");
+            m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq -");
+            Assert.IsFalse(m_emptyBoard.Move(Location.D8, Location.D7), "Expected this move to fail - can't take own piece");
 		}
 
         [Test]
         public void CannotPlayOutOfTurn()
         {
-            m_betterBoardEmpty.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq -");
-            Assert.IsFalse(m_betterBoardEmpty.Move(Location.C7, Location.D7), "Cannot play out of turn");        
+            m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq -");
+            Assert.IsFalse(m_emptyBoard.Move(Location.C7, Location.D7), "Cannot play out of turn");        
         }
 
 		[Test]
 		public void TakenPiecesAreRemovedFromTheBoard()
 		{
-            m_betterBoardEmpty.FromFen("3N4/3k4/8/8/8/8/8/8 b KQ -");
-            m_betterBoardEmpty.Move(Location.D7, Location.D8);
-            FenAssert.AreEqual("3k4/8/8/8/8/8/8/8 w KQ -", m_betterBoardEmpty.ToFen(), "Expected knight to be taken");
+            m_emptyBoard.FromFen("3N4/3k4/8/8/8/8/8/8 b KQ -");
+            m_emptyBoard.Move(Location.D7, Location.D8);
+            FenAssert.AreEqual("3k4/8/8/8/8/8/8/8 w KQ -", m_emptyBoard.ToFen(), "Expected knight to be taken");
 		}
 
         [TestCase("7k/8/8/8/8/8/8/8 b - -", Location.H8, Location.B2)]
@@ -202,12 +202,12 @@ namespace EngineTests
         [TestCase("8/7k/8/8/8/8/8/8 b KQkq -", Location.H7, Location.H7)]
         public void IllegalMovesAreDisallowed(string fen, Location from, Location to)
         {
-            m_betterBoardEmpty.FromFen(fen);
-            Assert.NotNull(m_betterBoardEmpty.GetContents(from), "Expected a piece to be on the 'from' square");
-            Assert.IsFalse(m_betterBoardEmpty.Move(from, to), "Move should not be allowed");
+            m_emptyBoard.FromFen(fen);
+            Assert.NotNull(m_emptyBoard.GetContents(from), "Expected a piece to be on the 'from' square");
+            Assert.IsFalse(m_emptyBoard.Move(from, to), "Move should not be allowed");
             if (from != to)
             {
-                Assert.AreNotEqual(m_betterBoardEmpty.GetContents(to), m_betterBoardEmpty.GetContents(from),
+                Assert.AreNotEqual(m_emptyBoard.GetContents(to), m_emptyBoard.GetContents(from),
                     "Expected destination not to contain the moved piece");
             }
         }
@@ -215,28 +215,28 @@ namespace EngineTests
 		[Test]
 		public void CannotMoveUntilOpponentMakesPromotionChoice()
 		{
-            m_betterBoardEmpty.FromFen("8/8/8/8/8/6k1/3p4/Q5K1 b KQkq -");
-            m_betterBoardEmpty.Move(Location.D2, Location.D1); // but don't promote it
+            m_emptyBoard.FromFen("8/8/8/8/8/6k1/3p4/Q5K1 b KQkq -");
+            m_emptyBoard.Move(Location.D2, Location.D1); // but don't promote it
 			// Try to move the queen, but this is not allowed because the previous player hasn't made a promotion choice yet
-            Assert.Throws(typeof(InvalidMoveException), () => m_betterBoardEmpty.Move(Location.A1, Location.A2));
+            Assert.Throws(typeof(InvalidMoveException), () => m_emptyBoard.Move(Location.A1, Location.A2));
 		}
 
 		[Test]
 		public void KingHasReachableSquaresButNoneAreValidStalemate()
 		{
-            m_betterBoardEmpty.FromFen("7k/2P2Q2/6R1/8/8/8/8/K7 b KQkq -");
-		    var theKing = m_betterBoardEmpty.GetContents(Location.H8);
-            var kingReachableSquares = theKing.ReachableSquares(m_betterBoardEmpty);
+            m_emptyBoard.FromFen("7k/2P2Q2/6R1/8/8/8/8/K7 b KQkq -");
+		    var theKing = m_emptyBoard.GetContents(Location.H8);
+            var kingReachableSquares = theKing.ReachableSquares(m_emptyBoard);
 		    var expectedReachableSquares = new[] {Location.G7, Location.H7, Location.G8};
             CollectionAssert.AreEquivalent(expectedReachableSquares, kingReachableSquares, "King reachable squares not as expected");
 
-            foreach (var loc in theKing.ReachableSquares(m_betterBoardEmpty))
+            foreach (var loc in theKing.ReachableSquares(m_emptyBoard))
 			{
-                Assert.IsFalse(m_betterBoardEmpty.Move(Location.H8, loc), "All king moves here should be disallowed");
+                Assert.IsFalse(m_emptyBoard.Move(Location.H8, loc), "All king moves here should be disallowed");
 			}
 
-            CollectionAssert.IsEmpty(theKing.ValidMoves(m_betterBoardEmpty), "The king should have no valid moves");
-            Assert.True(m_betterBoardEmpty.IsStalemate(), "Should be stalemate");
+            CollectionAssert.IsEmpty(theKing.ValidMoves(m_emptyBoard), "The king should have no valid moves");
+            Assert.True(m_emptyBoard.IsStalemate(), "Should be stalemate");
 		}
 
         [Test]
@@ -249,8 +249,8 @@ namespace EngineTests
         [Test]
         public void PawnDoubleHopBlocked()
         {
-            m_betterBoardEmpty.FromFen("rnbqkbnr/pppppppp/8/8/8/Q7/PPPPPPPP/RNBQKBNR w KQkq -");
-            var pawnReachableSquares = m_betterBoardEmpty.GetContents(Location.A2).ReachableSquares(m_betterBoardEmpty);
+            m_emptyBoard.FromFen("rnbqkbnr/pppppppp/8/8/8/Q7/PPPPPPPP/RNBQKBNR w KQkq -");
+            var pawnReachableSquares = m_emptyBoard.GetContents(Location.A2).ReachableSquares(m_emptyBoard);
             CollectionAssert.IsEmpty(pawnReachableSquares, "Expected pawn to have no reachable squares");
         }
 
@@ -262,8 +262,8 @@ namespace EngineTests
 			m_emptyBoard.AddPiece(theKing);
 			var pawn = new WhitePawn(Location.H7);
 			m_emptyBoard.AddPiece(pawn);
-			m_emptyBoard.MovePiece(pawn, Location.H8);
-			m_emptyBoard.PromotePiece(PieceType.WhiteQueen);
+			m_emptyBoard.Move(Location.H7, Location.H8);
+			m_emptyBoard.PromotePiece("Queen");
 			Console.WriteLine(m_emptyBoard);
 			Assert.True(m_emptyBoard.KingInCheck(),"King should be in check after promotion of pawn");
 		}
@@ -280,7 +280,7 @@ namespace EngineTests
 			m_emptyBoard.AddPiece(theKing);
 			var pawn = new WhitePawn(Location.H7);
 			m_emptyBoard.AddPiece(pawn);
-			m_emptyBoard.MovePiece(pawn, Location.G8);
+			m_emptyBoard.Move(Location.H7, Location.G8);
             m_emptyBoard.PromotePiece(target);
 			Console.WriteLine(m_emptyBoard);
 			Assert.True(m_emptyBoard.KingInCheck(), "King should be in check after promotion of pawn");
@@ -345,19 +345,19 @@ namespace EngineTests
         [Test]
 		public void IsMateAndOnlyMate()
 		{
-			m_betterBoardEmpty.FromFen("rn5k/7Q/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ -");
+			m_emptyBoard.FromFen("rn5k/7Q/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ -");
             // Both methods calls should return true
-            bool isMate = m_betterBoardEmpty.IsCheckmate(skipCheckTest: false) && m_betterBoardEmpty.IsCheckmate(skipCheckTest: true);
+            bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) && m_emptyBoard.IsCheckmate(skipCheckTest: true);
             Assert.IsTrue(isMate, "Given position should be checkmate");
-            Assert.IsFalse(m_betterBoardEmpty.IsStalemate(), "Should not be stalemate in this position");
+            Assert.IsFalse(m_emptyBoard.IsStalemate(), "Should not be stalemate in this position");
 		}
 
         [Test]
         public void IsNotMate()
         {
-            m_betterBoardEmpty.FromFen("rn5k/8/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ -");
+            m_emptyBoard.FromFen("rn5k/8/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ -");
             // Shouldn't matter whether we test for check first or not, they should both be false
-            bool isMate = m_betterBoardEmpty.IsCheckmate(skipCheckTest: false) || m_betterBoardEmpty.IsCheckmate(skipCheckTest: true);
+            bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) || m_emptyBoard.IsCheckmate(skipCheckTest: true);
             Assert.IsFalse(isMate, "Given position should not be checkmate because the king is not in check");
         }
 
@@ -383,8 +383,8 @@ namespace EngineTests
         [Test]
         public void EarlyExitFromCastlingUpdateFunction()
         {
-            m_betterBoardEmpty.FromFen("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - -");
-            m_betterBoardEmpty.Move(Location.B2, Location.B3);
+            m_emptyBoard.FromFen("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - -");
+            m_emptyBoard.Move(Location.B2, Location.B3);
             // Exercises the early exit from Update in the castling rules class
         }
 
@@ -392,12 +392,12 @@ namespace EngineTests
 		public void EscapableMate()
 		{
 			// Mate isn't just that the King can't do anything, it's that NO pieces can do anything. In this case, the white bishop can take the rook.
-            m_betterBoardEmpty.FromFen("B6k/8/8/8/8/8/7r/4K2r w KQkq -");
+            m_emptyBoard.FromFen("B6k/8/8/8/8/8/7r/4K2r w KQkq -");
 
-            Assert.That(m_betterBoardEmpty.KingInCheck(), "King should be in check");
-            CollectionAssert.IsEmpty(m_betterBoardEmpty.GetContents(Location.E1).ValidMoves(m_emptyBoard), "King should have nowhere to go");
-            CollectionAssert.IsNotEmpty(m_betterBoardEmpty.GetContents(Location.A8).ValidMoves(m_betterBoardEmpty), "Bishop should have many moves");
-            Assert.False(m_betterBoardEmpty.IsCheckmate(false), "White king should not be mated");
+            Assert.That(m_emptyBoard.KingInCheck(), "King should be in check");
+            CollectionAssert.IsEmpty(m_emptyBoard.GetContents(Location.E1).ValidMoves(m_emptyBoard), "King should have nowhere to go");
+            CollectionAssert.IsNotEmpty(m_emptyBoard.GetContents(Location.A8).ValidMoves(m_emptyBoard), "Bishop should have many moves");
+            Assert.False(m_emptyBoard.IsCheckmate(false), "White king should not be mated");
 		}
 
 		[Test]
@@ -429,16 +429,16 @@ namespace EngineTests
         [TestCase("7k/8/8/8/8/6N1/8/K7/ w - -", "king and knight")]
 		public void TestDraw(string fen, string description)
 		{
-            m_betterBoardEmpty.FromFen(fen);
-            Assert.True(m_betterBoardEmpty.IsDraw(), "This position is a draw - " + description);
+            m_emptyBoard.FromFen(fen);
+            Assert.True(m_emptyBoard.IsDraw(), "This position is a draw - " + description);
 		}
 
         [TestCase("6nk/8/8/8/8/6N1/8/K7/ w - -", "king and two knights")]
         [TestCase("7k/8/8/8/8/6bn/8/K7/ w - -", "king, bishop and knight")]
         public void TestNotDraw(string fen, string description)
         {
-            m_betterBoardEmpty.FromFen(fen);
-            Assert.False(m_betterBoardEmpty.IsDraw(), "This position is not a draw - " + description);
+            m_emptyBoard.FromFen(fen);
+            Assert.False(m_emptyBoard.IsDraw(), "This position is not a draw - " + description);
         }
 	}
 }

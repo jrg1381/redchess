@@ -15,7 +15,7 @@ namespace EngineTests
 		public void SetupGame()
 		{
 			m_normalBoard = new InteractiveBoard(PieceColor.White, false);
-			m_betterBoardEmpty = new InteractiveBoard(PieceColor.White, true);
+			m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
 		}
 
 		[Test]
@@ -28,9 +28,9 @@ namespace EngineTests
 		[Test]
 		public void TwoKingsPosition()
 		{
-            m_betterBoardEmpty.FromFen("8/2K5/8/8/8/8/8/k7 w KQkq -");
+            m_emptyBoard.FromFen("8/2K5/8/8/8/8/8/k7 w KQkq -");
 
-            string fen = new Fen(m_betterBoardEmpty, new CastlingRules()).ToFen();
+            string fen = new Fen(m_emptyBoard, new CastlingRules()).ToFen();
 			// Castling settings are invalid here, ignore this
 			FenAssert.AreEqual("8/2K5/8/8/8/8/8/k7 w KQkq -", fen, "Fen representation of position with two kings not as expected");
 		}
