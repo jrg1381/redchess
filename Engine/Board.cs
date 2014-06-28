@@ -76,10 +76,10 @@ namespace Redchess.Engine
             if (piece == null || piece.Color != CurrentTurn || start == end)
                 return false;
 
-            if (!ValidateMoveForCheck(piece, end))
+            if (!piece.ReachableSquares(this).Contains(end))
                 return false;
 
-            if (!piece.ReachableSquares(this).Contains(end))
+            if (!ValidateMoveForCheck(piece, end))
                 return false;
 
             MovePiece(piece, end);
