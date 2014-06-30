@@ -295,7 +295,6 @@
     <Content Include="..\Chess.snk">
       <Link>Chess.snk</Link>
     </Content>
-    <None Include="Properties\PublishProfiles\Local.pubxml" />
     <Content Include="Images\All_Chess_Pieces_Png_by_abener.png" />
     <Content Include="Images\arrow_left.png" />
     <Content Include="Images\arrow_right.png" />
@@ -321,9 +320,6 @@
     <Content Include="Scripts\app\clock.js" />
     <Content Include="Scripts\app\viewer.css" />
     <Content Include="Scripts\jcanvas.min.js" />
-    <None Include="Properties\PublishProfiles\redchess %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\redchess %283%29.pubxml" />
-    <None Include="Properties\PublishProfiles\redchess.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
