@@ -13,127 +13,78 @@ namespace EngineTests
         [Test]
         public void CastlingTest1()
         {
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.H1);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            Assert.True(m_emptyBoard.MayCastle(theKing, Side.KingSide), "Untouched king and rook should be allowed to castle");
+            m_emptyBoard.FromFen("8/8/8/8/8/8/8/4K2R w KQkq -");
+            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "Untouched king and rook should be allowed to castle");
         }
 
         [Test]
         public void CastlingTest2()
         {
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.H1);
-            var theQueen = new BlackQueen(Location.E4);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            m_emptyBoard.AddPiece(theQueen);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.KingSide),"The king is in check right now! No castling allowed.");
+            m_emptyBoard.FromFen("8/8/8/8/4q3/8/8/4K2R w KQkq -");
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide),"The king is in check right now! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest3()
         {
-            // The king would pass through check! No castling allowed.
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.H1);
-            var theQueen = new BlackQueen(Location.F4);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            m_emptyBoard.AddPiece(theQueen);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.KingSide), "The king would pass through check! No castling allowed.");
+            m_emptyBoard.FromFen("8/8/8/8/5q2/8/8/4K2R w KQkq -");
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The king would pass through check! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest4()
         {
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.H1);
-            var theQueen = new BlackQueen(Location.G4);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            m_emptyBoard.AddPiece(theQueen);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.KingSide), "The king would finish in check! No castling allowed.");
+            m_emptyBoard.FromFen("8/8/8/8/6q1/8/8/4K2R w KQkq -");
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The king would finish in check! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest5()
         {
-            m_emptyBoard.CurrentTurn = PieceColor.White;
-            m_emptyBoard.AddPiece(new BlackKing(Location.H8));
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.H1);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
+            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq -");
             m_emptyBoard.Move(Location.E1, Location.E2);
-            // Let white move twice
-            m_emptyBoard.CurrentTurn = PieceColor.White;
-            m_emptyBoard.Move(Location.E1, Location.E1);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.KingSide),"The king has been moved. No castling allowed.");
+            // Doesn't matter what black does
+            m_emptyBoard.Move(Location.A8, Location.B8);
+            // Put the king back again
+            m_emptyBoard.Move(Location.E2, Location.E1);
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide),"The king has been moved. No castling allowed.");
         }
 
         [Test]
         public void CastlingTest6()
         {
-            var theKing = new WhiteKing(Location.E1);
-            var theBishop = new BlackBishop(Location.F1);
-            var theRook = new WhiteRook(Location.H1);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            m_emptyBoard.AddPiece(theBishop);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.KingSide), "The king is blocked by another piece. No castling.");
+            m_emptyBoard.FromFen("8/8/8/8/8/8/8/4Kb1R w KQkq -");
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The king is blocked by another piece. No castling.");
         }
 
         [Test]
         public void CastlingTest7()
         {
-            m_emptyBoard.AddPiece(new BlackKing(Location.B5));
-            var theKing = new WhiteKing(Location.E1);
-            var theBishop = new BlackBishop(Location.A8);
-            var theRook1 = new WhiteRook(Location.H1);
-            var theRook2 = new WhiteRook(Location.A1);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook1);
-            m_emptyBoard.AddPiece(theRook2);
-            m_emptyBoard.AddPiece(theBishop);
-            m_emptyBoard.CurrentTurn = PieceColor.Black;
-            m_emptyBoard.Move(Location.A8, theRook1.Position.Location);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.KingSide), "The rook was taken by the bishop");
-            Assert.True(m_emptyBoard.MayCastle(theKing, Side.QueenSide), "Should still be ok to castle queen side");
+            m_emptyBoard.FromFen("b7/8/8/1k6/8/8/8/R3K2R b KQkq -");
+            m_emptyBoard.Move(Location.A8, Location.H1);
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The rook was taken by the bishop");
+            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.QueenSide), "Should still be ok to castle queen side");
         }
 
         [Test]
         public void CastlingTest8()
         {
-            m_emptyBoard.AddPiece(new BlackKing(Location.H8));
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.H1);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            Console.WriteLine(m_emptyBoard);
-            Assert.True(m_emptyBoard.MayCastle(theKing, Side.KingSide), "Untouched white king and rook should be allowed to castle");
-            m_emptyBoard.MovePiece(theKing,Location.G1);
-            Console.WriteLine(m_emptyBoard);
-        }
-
-        [Test]
-        public void CastlingTest8b()
-        {
-            m_emptyBoard.CurrentTurn = PieceColor.Black;
-            m_emptyBoard.AddPiece(new WhiteKing(Location.H1));
-            var theKing = new BlackKing(Location.E8);
-            var theRook = new BlackRook(Location.H8);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            Console.WriteLine(m_emptyBoard);
-            Assert.True(m_emptyBoard.MayCastle(theKing, Side.KingSide), "Untouched black king and rook should be allowed to castle");
-            m_emptyBoard.Move(Location.E8, Location.G8);
-            Console.WriteLine(m_emptyBoard);
+            m_emptyBoard.FromFen("7k/8/8/8/8/8/8/4K2R w KQkq -");
+            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "Untouched white king and rook should be allowed to castle");
+            m_emptyBoard.Move(Location.E1,Location.G1);
+            FenAssert.AreEqual("7k/8/8/8/8/8/8/5RK1 b kq -", m_emptyBoard.ToFen(), "Unexpected FEN after castling");
         }
 
         [Test]
         public void CastlingTest9()
+        {
+            m_emptyBoard.FromFen("4k2r/8/8/8/8/8/8/7K b KQkq -");
+            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E8), Side.KingSide), "Untouched black king and rook should be allowed to castle");
+            m_emptyBoard.Move(Location.E8, Location.G8);
+        }
+
+        [Test]
+        public void CastlingTest10()
         {
             m_emptyBoard.AddPiece(new BlackKing(Location.H8));
             var theKing = new WhiteKing(Location.E1);
@@ -148,7 +99,7 @@ namespace EngineTests
         }
 
         [Test]
-        public void CastlingTest10()
+        public void CastlingTest11()
         {
             m_emptyBoard.AddPiece(new WhiteKing(Location.A1));
             var theKing = new BlackKing(Location.E8);

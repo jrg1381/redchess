@@ -411,5 +411,10 @@ namespace Redchess.Engine
 
             return copy;
         }
+
+        public void AddPiece(IPiece piece)
+        {
+            SimpleBoard.AddPiece(piece);
+        }
     }
 }

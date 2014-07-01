@@ -20,7 +20,7 @@ namespace Redchess.Engine
         {
         }
 
-        public void AddPiece(IPiece piece)
+        public new void AddPiece(IPiece piece)
         {
             SimpleBoard.AddPiece(piece);
         }
