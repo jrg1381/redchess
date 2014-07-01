@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine;
+using Redchess.Engine.Interfaces;
 using Redchess.Engine.Pieces.Black;
 using Redchess.Engine.Pieces.White;
 
@@ -14,28 +15,28 @@ namespace EngineTests
         public void CastlingTest1()
         {
             m_emptyBoard.FromFen("8/8/8/8/8/8/8/4K2R w KQkq -");
-            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "Untouched king and rook should be allowed to castle");
+            Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched king and rook should be allowed to castle");
         }
 
         [Test]
         public void CastlingTest2()
         {
             m_emptyBoard.FromFen("8/8/8/8/4q3/8/8/4K2R w KQkq -");
-            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide),"The king is in check right now! No castling allowed.");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is in check right now! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest3()
         {
             m_emptyBoard.FromFen("8/8/8/8/5q2/8/8/4K2R w KQkq -");
-            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The king would pass through check! No castling allowed.");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king would pass through check! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest4()
         {
             m_emptyBoard.FromFen("8/8/8/8/6q1/8/8/4K2R w KQkq -");
-            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The king would finish in check! No castling allowed.");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king would finish in check! No castling allowed.");
         }
 
         [Test]
@@ -47,14 +48,14 @@ namespace EngineTests
             m_emptyBoard.Move(Location.A8, Location.B8);
             // Put the king back again
             m_emptyBoard.Move(Location.E2, Location.E1);
-            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide),"The king has been moved. No castling allowed.");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king has been moved. No castling allowed.");
         }
 
         [Test]
         public void CastlingTest6()
         {
             m_emptyBoard.FromFen("8/8/8/8/8/8/8/4Kb1R w KQkq -");
-            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The king is blocked by another piece. No castling.");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is blocked by another piece. No castling.");
         }
 
         [Test]
@@ -62,15 +63,20 @@ namespace EngineTests
         {
             m_emptyBoard.FromFen("b7/8/8/1k6/8/8/8/R3K2R b KQkq -");
             m_emptyBoard.Move(Location.A8, Location.H1);
-            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "The rook was taken by the bishop");
-            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.QueenSide), "Should still be ok to castle queen side");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The rook was taken by the bishop");
+            Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.QueenSide), "Should still be ok to castle queen side");
+        }
+
+        private IPiece WhiteKingLocation()
+        {
+            return m_emptyBoard.GetContents(Location.E1);
         }
 
         [Test]
         public void CastlingTest8()
         {
             m_emptyBoard.FromFen("7k/8/8/8/8/8/8/4K2R w KQkq -");
-            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E1), Side.KingSide), "Untouched white king and rook should be allowed to castle");
+            Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched white king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E1,Location.G1);
             FenAssert.AreEqual("7k/8/8/8/8/8/8/5RK1 b kq -", m_emptyBoard.ToFen(), "Unexpected FEN after castling");
         }
@@ -79,38 +85,32 @@ namespace EngineTests
         public void CastlingTest9()
         {
             m_emptyBoard.FromFen("4k2r/8/8/8/8/8/8/7K b KQkq -");
-            Assert.True(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.E8), Side.KingSide), "Untouched black king and rook should be allowed to castle");
+            Assert.True(m_emptyBoard.MayCastle(BlackKingLocation(), Side.KingSide), "Untouched black king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E8, Location.G8);
+        }
+
+        private IPiece BlackKingLocation()
+        {
+            return m_emptyBoard.GetContents(Location.E8);
         }
 
         [Test]
         public void CastlingTest10()
         {
-            m_emptyBoard.AddPiece(new BlackKing(Location.H8));
-            var theKing = new WhiteKing(Location.E1);
-            var theRook = new WhiteRook(Location.A1);
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            Console.WriteLine(m_emptyBoard);
-            Assert.True(m_emptyBoard.MayCastle(theKing, Side.QueenSide), "Untouched king and rook should be allowed to castle");
+            m_emptyBoard.FromFen("7k/8/8/8/8/8/8/R3K3 w KQkq -");
+            Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.QueenSide), "Untouched king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E1, Location.C1);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.QueenSide), "Castling has occurred already, not allowed again");
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.C1), Side.QueenSide), "Castling has occurred already, not allowed again");
             Console.WriteLine(m_emptyBoard);
         }
 
         [Test]
         public void CastlingTest11()
         {
-            m_emptyBoard.AddPiece(new WhiteKing(Location.A1));
-            var theKing = new BlackKing(Location.E8);
-            var theRook = new BlackRook(Location.A8);
-            m_emptyBoard.CurrentTurn = PieceColor.Black;
-            m_emptyBoard.AddPiece(theKing);
-            m_emptyBoard.AddPiece(theRook);
-            Console.WriteLine(m_emptyBoard);
-            Assert.True(m_emptyBoard.MayCastle(theKing, Side.QueenSide), "Untouched king and rook should be allowed to castle");
+            m_emptyBoard.FromFen("r3k3/8/8/8/8/8/8/K7 b KQkq -");
+            Assert.True(m_emptyBoard.MayCastle(BlackKingLocation(), Side.QueenSide), "Untouched king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E8, Location.C8);
-            Assert.False(m_emptyBoard.MayCastle(theKing, Side.QueenSide), "Castling has occurred already, not allowed again");
+            Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.C8), Side.QueenSide), "Castling has occurred already, not allowed again");
             Console.WriteLine(m_emptyBoard);
         }
 
@@ -129,8 +129,8 @@ namespace EngineTests
         {
             m_emptyBoard.FromFen("r3k2r/Rq5R/8/8/8/8/rQ5r/R3K2R/ w KQkq -");
             Console.WriteLine(m_emptyBoard);
-            var blackKing = m_emptyBoard.GetContents(Location.E8) as BlackKing;
-            var whiteKing = m_emptyBoard.GetContents(Location.E1) as WhiteKing;
+            var blackKing = BlackKingLocation();
+            var whiteKing = WhiteKingLocation();
             // Can castle everywhere
             Assert.True(m_emptyBoard.MayCastle(whiteKing, Side.KingSide));
             Assert.True(m_emptyBoard.MayCastle(whiteKing, Side.QueenSide));
