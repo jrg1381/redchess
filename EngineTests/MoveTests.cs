@@ -252,7 +252,7 @@ namespace EngineTests
             m_emptyBoard.FromFen("k7/7P/8/8/8/8/8/4K3 w KQkq -");
 			m_emptyBoard.Move(Location.H7, Location.H8);
 			m_emptyBoard.PromotePiece("Queen");
-			Console.WriteLine(m_emptyBoard);
+			
 			Assert.True(m_emptyBoard.KingInCheck(),"King should be in check after promotion of pawn");
 		}
 
@@ -265,7 +265,7 @@ namespace EngineTests
             m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w KQkq -");
 			m_emptyBoard.Move(Location.H7, Location.G8);
             m_emptyBoard.PromotePiece(target);
-			Console.WriteLine(m_emptyBoard);
+			
 			Assert.AreEqual(kingShouldBeInCheck, m_emptyBoard.KingInCheck(), "King should be in check after promotion of pawn");
 		}
 
@@ -286,8 +286,7 @@ namespace EngineTests
         [TestCase("7r/2k5/2P5/8/8/5q2/8/6K1/ w - -")]
 		public void StaleMateTest(string fen)
 		{
-			m_emptyBoard.FromFen(fen);
-			Console.WriteLine(m_emptyBoard);
+			m_emptyBoard.FromFen(fen);		
 			var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
 			Assert.That(m_emptyBoard.IsStalemate(),"Should be stalemate - White has no moves");
@@ -297,8 +296,7 @@ namespace EngineTests
         [TestCase("7r/2k5/2P5/8/8/8/8/6K1/ w - -")]
         public void NotStaleMateTest(string fen)
         {
-            m_emptyBoard.FromFen(fen);
-            Console.WriteLine(m_emptyBoard);
+            m_emptyBoard.FromFen(fen);          
             var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
             Assert.That(!m_emptyBoard.IsStalemate() && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
@@ -357,8 +355,6 @@ namespace EngineTests
             m_normalBoard.Move(Location.H8, Location.H7);
             m_normalBoard.Move(Location.H1, Location.H2);
             m_normalBoard.Move(Location.A8, Location.A7);
-
-            Console.WriteLine(m_normalBoard);
 
             FenAssert.AreEqual("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - -", m_normalBoard.ToFen(), "Expected no castling to be allowed after moving all the rooks");
 		}

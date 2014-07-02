@@ -20,6 +20,22 @@ namespace Redchess.Engine
         {
         }
 
+        public override void FromFen(string fen)
+        {
+            Console.WriteLine("Creating board from {0}\r\n", fen);
+            base.FromFen(fen);
+            Console.WriteLine(this);
+        }
+
+        public override bool Move(Location start, Location end)
+        {
+            bool success = base.Move(start, end);
+            Console.WriteLine("Tried to move from {0} to {1} - result = {2}", start, end, success);
+            if(success)
+                Console.WriteLine(this);
+            return success;
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();

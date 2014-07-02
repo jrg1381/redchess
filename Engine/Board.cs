@@ -29,7 +29,7 @@ namespace Redchess.Engine
             return m_fen.ToFen();
         }
 
-        public void FromFen(string fen)
+        public virtual void FromFen(string fen)
         {
             string[] fields = fen.Split(new[] {' '});
             string position = fields[0];
@@ -69,7 +69,7 @@ namespace Redchess.Engine
             }
         }
 
-        public bool Move(Location start, Location end)
+        public virtual bool Move(Location start, Location end)
         {
             var piece = GetContents(start);
 
