@@ -20,11 +20,6 @@ namespace Redchess.Engine
         {
         }
 
-        public void AddPiece(IPiece piece)
-        {
-            SimpleBoard.AddPiece(piece);
-        }
-
         public override string ToString()
         {
             var sb = new StringBuilder();

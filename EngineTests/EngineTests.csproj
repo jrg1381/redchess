@@ -52,7 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractChessTest.cs" />
+    <Compile Include="CastlingTests.cs" />
     <Compile Include="Datastructures.cs" />
+    <Compile Include="EnPassantTests.cs" />
+    <Compile Include="FenAssert.cs" />
     <Compile Include="FenTests.cs" />
     <Compile Include="InteractiveBoard.cs" />
     <Compile Include="MoveTests.cs" />

@@ -91,12 +91,7 @@ namespace Redchess.Engine
         {
         }
 
-#if DEBUG
-        internal
-#else 
-        private
-#endif
-            Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
+        protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
         {
             CurrentTurn = whoseTurn;
             m_castlingRules = new CastlingRules();

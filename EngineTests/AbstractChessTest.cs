@@ -7,20 +7,16 @@ namespace EngineTests
 {
     internal abstract class AbstractChessTest
     {
-        protected InteractiveBoard m_normalBoard;
-        protected InteractiveBoard m_emptyBoard;
-        protected IBoardExtended m_betterBoardNormal;
-        protected IBoardExtended m_betterBoardEmpty;
+        protected IBoardExtended m_normalBoard;
+        protected IBoardExtended m_emptyBoard;
 
         [SetUp]
         public void TestSetup()
         {
             // Reset all the pieces between tests
-            m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
+            //m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
             m_normalBoard = new InteractiveBoard(PieceColor.White, false);
-
-            m_betterBoardNormal = m_normalBoard;
-            m_betterBoardEmpty = m_emptyBoard;
+            m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
         }
     }
 }

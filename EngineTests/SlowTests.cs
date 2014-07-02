@@ -25,7 +25,7 @@ namespace EngineTests
 				{
 					var loc = (Location)i;
 					var piece = m_normalBoard.GetContents(loc);
-					if (piece == null || piece.Color != m_normalBoard.CurrentTurn)
+                    if (piece == null || piece.Color != m_normalBoard.CurrentTurn)
 						continue;
                     var validMoves = piece.ValidMoves(m_normalBoard).ToArray();
 					if (validMoves.Any())
@@ -33,13 +33,13 @@ namespace EngineTests
                         // Take a random valid move
 						Location targetSquare = validMoves.Skip(random.Next(validMoves.Count() - 1)).First();
 						Console.WriteLine("[{0}] Moving {1} from {2} to {3}", i, piece, piece.Position.Location, targetSquare);
-						m_normalBoard.MovePiece(piece, targetSquare);
-						if (m_normalBoard.IsAwaitingPromotionDecision())
-						{
-							PieceType promoteTo = m_normalBoard.CurrentTurn == PieceColor.White ? PieceType.WhiteQueen : PieceType.BlackRook;
-							m_normalBoard.PromotePiece(promoteTo);
+                        m_normalBoard.Move(piece.Position.Location, targetSquare);
+                        if (m_normalBoard.IsAwaitingPromotionDecision())
+                        {
+                            var promoteTo = m_normalBoard.CurrentTurn == PieceColor.White ? "Queen" : "Rook";
+                            m_normalBoard.PromotePiece(promoteTo);
 						}
-						Console.WriteLine(m_normalBoard);
+                        Console.WriteLine(m_normalBoard);
 
                         if (m_normalBoard.IsDraw())
                         {
@@ -50,12 +50,12 @@ namespace EngineTests
 					else
 					{
 						Console.WriteLine("No moves for {0} on {1}", piece, piece.Position.Location);
-						if (m_normalBoard.IsCheckmate())
+                        if (m_normalBoard.IsCheckmate(false))
 						{
 							Console.WriteLine("Checkmate!");
 							goto GAME_OVER;
 						}
-						if (m_normalBoard.IsStalemate())
+                        if (m_normalBoard.IsStalemate())
 						{
 							Console.WriteLine("Stalemate!");
 							goto GAME_OVER;
