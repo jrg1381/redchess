@@ -11,7 +11,5 @@ namespace Redchess.Engine.Interfaces
         bool MayCastle(IPiece king, Side side);
         IBoardBitmap Pieces(PieceColor color);
         Location EnPassantTarget { get; }
-
-        void AddPiece(IPiece piece);
     }
 }

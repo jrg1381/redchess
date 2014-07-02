@@ -69,30 +69,24 @@ namespace EngineTests
 		[Test]
 		public void PawnCanAdvanceOrTake()
 		{
-			var thePawn1 = new WhitePawn(Location.D4);
-			var thePawn2 = new BlackPawn(Location.E5);
-			m_emptyBoard.AddPiece(thePawn1);
-			m_emptyBoard.AddPiece(thePawn2);
+            m_emptyBoard.FromFen("8/8/8/4p3/3P4/8/8/8 w KQkq -");
+            var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.AreEquivalent(new [] {Location.D5, Location.E5}, thePawn1.ReachableSquares(m_emptyBoard), "Set of reachable squares for pawn was incorrect");
 		}
 
 		[Test]
 		public void PawnCannotAdvanceBlockedByEnemy()
 		{
-			var thePawn1 = new WhitePawn(Location.D4);
-			var thePawn2 = new BlackPawn(Location.D5);
-			m_emptyBoard.AddPiece(thePawn1);
-			m_emptyBoard.AddPiece(thePawn2);
+            m_emptyBoard.FromFen("8/8/8/3p4/3P4/8/8/8 w KQkq -");
+            var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
 		}
 
         [Test]
         public void PawnCannotAdvanceBlockedByFriend()
         {
-            var thePawn1 = new WhitePawn(Location.D4);
-            var thePawn2 = new WhitePawn(Location.D5);
-            m_emptyBoard.AddPiece(thePawn1);
-            m_emptyBoard.AddPiece(thePawn2);
+            m_emptyBoard.FromFen("8/8/8/3P4/3P4/8/8/8 w KQkq -");
+            var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
         }
 
@@ -115,11 +109,9 @@ namespace EngineTests
 	    [Test]
 	    public void QueenMoves1()
 	    {
-	        var theQueen = new BlackQueen(Location.D4);
-	        var thePawn = new BlackPawn(Location.D5);
-	        m_emptyBoard.AddPiece(theQueen);
-	        m_emptyBoard.AddPiece(thePawn);
-
+            m_emptyBoard.FromFen("8/8/8/3p4/3q4/8/8/8 w KQkq -");
+	        var theQueen = m_emptyBoard.GetContents(Location.D4);
+	        var thePawn = m_emptyBoard.GetContents(Location.D5);
 	        var blackPieces = m_emptyBoard.Pieces(PieceColor.Black);
 	        Assert.AreEqual(2, blackPieces.OccupiedSquares().Count(), "Expected two black pieces on the board after adding a black queen and black pawn");
 	        Assert.That(blackPieces.IsOccupied(Location.D4) && blackPieces.IsOccupied(Location.D5),
@@ -257,33 +249,24 @@ namespace EngineTests
         [Test]
 		public void PromotionByType()
 		{
-			m_emptyBoard.AddPiece(new BlackKing(Location.A8));
-			var theKing = new WhiteKing(Location.E1);
-			m_emptyBoard.AddPiece(theKing);
-			var pawn = new WhitePawn(Location.H7);
-			m_emptyBoard.AddPiece(pawn);
+            m_emptyBoard.FromFen("k7/7P/8/8/8/8/8/4K3 w KQkq -");
 			m_emptyBoard.Move(Location.H7, Location.H8);
 			m_emptyBoard.PromotePiece("Queen");
 			Console.WriteLine(m_emptyBoard);
 			Assert.True(m_emptyBoard.KingInCheck(),"King should be in check after promotion of pawn");
 		}
 
-        [TestCase("Queen", Location.A8)]
-        [TestCase("Rook", Location.A8)]
-        [TestCase("Bishop", Location.F7)]
-        [TestCase("Knight", Location.E7)]
-		public void PromotionByString(string target, Location kingLocation)
+        [TestCase("Queen", Location.A8, true)]
+        [TestCase("Rook", Location.A8, true)]
+        [TestCase("Bishop", Location.F7, false)]
+        [TestCase("Knight", Location.E7, false)]
+		public void PromotionByString(string target, Location kingLocation, bool kingShouldBeInCheck)
 		{
-            m_emptyBoard.AddPiece(new BlackKing(kingLocation));
-			var theKing = new WhiteKing(Location.E1);
-			m_emptyBoard.AddPiece(new BlackRook(Location.G8)); // The rook gets taken as part of the promotion
-			m_emptyBoard.AddPiece(theKing);
-			var pawn = new WhitePawn(Location.H7);
-			m_emptyBoard.AddPiece(pawn);
+            m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w KQkq -");
 			m_emptyBoard.Move(Location.H7, Location.G8);
             m_emptyBoard.PromotePiece(target);
 			Console.WriteLine(m_emptyBoard);
-			Assert.True(m_emptyBoard.KingInCheck(), "King should be in check after promotion of pawn");
+			Assert.AreEqual(kingShouldBeInCheck, m_emptyBoard.KingInCheck(), "King should be in check after promotion of pawn");
 		}
 
 		[Test]
@@ -296,7 +279,7 @@ namespace EngineTests
         [TestCase("King")]
         public void BogusPromotionToRealPieceType(string pieceType)
         {
-            Assert.Throws(typeof(CannotPromoteException), () => PromotionByString(pieceType, Location.A8));
+            Assert.Throws(typeof(CannotPromoteException), () => PromotionByString(pieceType, Location.A8, false));
         }
 
 		[TestCase("7r/2k5/8/8/8/5q2/8/6K1/ w - -")]
