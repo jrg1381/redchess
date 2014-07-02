@@ -17,7 +17,7 @@ namespace Redchess.Engine
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
-        public PieceColor CurrentTurn { get; set; }
+        public PieceColor CurrentTurn { get; private set; }
         private readonly Fen m_fen;
         private Pawn m_promotedPawn;
         private Location m_enPassantTarget;

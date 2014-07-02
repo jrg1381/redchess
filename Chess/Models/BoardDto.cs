@@ -34,7 +34,6 @@ namespace Chess.Models
         public string Turn
         {
             get { return m_board.CurrentTurn.ToString(); } 
-            set { m_board.CurrentTurn = (PieceColor)Enum.Parse(typeof(PieceColor), value); }
         }
 
         public bool IsUsersTurn(int userId)

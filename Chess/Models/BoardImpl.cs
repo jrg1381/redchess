@@ -19,7 +19,6 @@ namespace Chess.Models
         public PieceColor CurrentTurn
         {
             get { return m_boardImpl.CurrentTurn; }
-            set { m_boardImpl.CurrentTurn = value; }
         }
 
         public bool KingInCheck()

@@ -149,7 +149,6 @@ namespace EngineTests
             Assert.True(m_emptyBoard.MayCastle(blackKing, Side.KingSide));
             Assert.False(m_emptyBoard.MayCastle(blackKing, Side.QueenSide));
 
-            m_emptyBoard.CurrentTurn = PieceColor.Black;
             m_emptyBoard.Move(Location.A2, Location.A1);
             m_emptyBoard.Move(Location.B2, Location.B1);
             m_emptyBoard.Move(Location.A1, Location.A2);

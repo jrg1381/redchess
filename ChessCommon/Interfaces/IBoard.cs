@@ -5,7 +5,7 @@ namespace RedChess.ChessCommon.Interfaces
 {
     public interface IBoard
     {
-        PieceColor CurrentTurn { get; set; }
+        PieceColor CurrentTurn { get; }
         bool KingInCheck();
         bool IsCheckmate(bool skipCheckTest);
         bool IsDraw();
