@@ -7,8 +7,8 @@ namespace EngineTests
 {
     internal abstract class AbstractChessTest
     {
-        protected IBoardExtended m_normalBoard;
-        protected IBoardExtended m_emptyBoard;
+        protected InteractiveBoard m_normalBoard;
+        protected InteractiveBoard m_emptyBoard;
 
         [SetUp]
         public void TestSetup()

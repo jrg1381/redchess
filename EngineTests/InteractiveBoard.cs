@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using Redchess.Engine.Interfaces;
@@ -11,11 +12,6 @@ namespace Redchess.Engine
 {
     internal sealed class InteractiveBoard : Board
     {
-        /*
-		public InteractiveBoard()
-			: base(PieceColor.White, false)
-		{} */
-
         public InteractiveBoard(PieceColor color, bool isEmpty) : base(color, isEmpty)
         {
         }
@@ -30,10 +26,18 @@ namespace Redchess.Engine
         public override bool Move(Location start, Location end)
         {
             bool success = base.Move(start, end);
-            Console.WriteLine("Tried to move from {0} to {1} - result = {2}", start, end, success);
-            if(success)
-                Console.WriteLine(this);
-            return success;
+            Assert.IsTrue(success, "Expected move from {0} to {1} to succeed", start, end);
+            Console.WriteLine("Moved from {0} to {1}", start, end);
+            Console.WriteLine(this);
+            return true;
+        }
+
+        public bool MoveExpectFailure(Location start, Location end)
+        {
+            bool success = base.Move(start, end);
+            Assert.IsFalse(success, "Expected move from {0} to {1} to fail", start, end);
+            Console.WriteLine("Tried to move from {0} to {1} and failed as expected");
+            return false;
         }
 
         public override string ToString()

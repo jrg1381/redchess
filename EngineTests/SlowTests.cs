@@ -39,7 +39,6 @@ namespace EngineTests
                             var promoteTo = m_normalBoard.CurrentTurn == PieceColor.White ? "Queen" : "Rook";
                             m_normalBoard.PromotePiece(promoteTo);
 						}
-                        Console.WriteLine(m_normalBoard);
 
                         if (m_normalBoard.IsDraw())
                         {

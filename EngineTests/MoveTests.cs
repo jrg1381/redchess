@@ -168,14 +168,14 @@ namespace EngineTests
 		public void CannotTakeOwnPiece()
 		{
             m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq -");
-            Assert.IsFalse(m_emptyBoard.Move(Location.D8, Location.D7), "Expected this move to fail - can't take own piece");
+            m_emptyBoard.MoveExpectFailure(Location.D8, Location.D7);
 		}
 
         [Test]
         public void CannotPlayOutOfTurn()
         {
             m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq -");
-            Assert.IsFalse(m_emptyBoard.Move(Location.C7, Location.D7), "Cannot play out of turn");        
+            m_emptyBoard.MoveExpectFailure(Location.C7, Location.D7);
         }
 
 		[Test]
@@ -196,7 +196,7 @@ namespace EngineTests
         {
             m_emptyBoard.FromFen(fen);
             Assert.NotNull(m_emptyBoard.GetContents(from), "Expected a piece to be on the 'from' square");
-            Assert.IsFalse(m_emptyBoard.Move(from, to), "Move should not be allowed");
+            m_emptyBoard.MoveExpectFailure(from, to);
             if (from != to)
             {
                 Assert.AreNotEqual(m_emptyBoard.GetContents(to), m_emptyBoard.GetContents(from),
@@ -223,9 +223,9 @@ namespace EngineTests
             CollectionAssert.AreEquivalent(expectedReachableSquares, kingReachableSquares, "King reachable squares not as expected");
 
             foreach (var loc in theKing.ReachableSquares(m_emptyBoard))
-			{
-                Assert.IsFalse(m_emptyBoard.Move(Location.H8, loc), "All king moves here should be disallowed");
-			}
+            {
+                m_emptyBoard.MoveExpectFailure(Location.H8, loc);
+            }
 
             CollectionAssert.IsEmpty(theKing.ValidMoves(m_emptyBoard), "The king should have no valid moves");
             Assert.True(m_emptyBoard.IsStalemate(), "Should be stalemate");
@@ -385,22 +385,20 @@ namespace EngineTests
 			// Advance the pawn
 			m_normalBoard.Move(Location.A2, Location.A3);
 			// Advance the same pawn
-            bool success = m_normalBoard.Move(Location.A3, Location.A4);
-			Assert.False(success,"Should not be allowed to move twice in succession");
+            m_normalBoard.MoveExpectFailure(Location.A3, Location.A4);
 		}
 
 		[Test]
 		public void MoveNonExistentPiece()
 		{
 			// Advance nothing
-            bool success = m_normalBoard.Move(Location.A3, Location.A4);
-			Assert.False(success, "Should not be allowed to move a non-existent piece");
+            m_normalBoard.MoveExpectFailure(Location.A3, Location.A4);
 		}
 
 		[Test]
-		public void MovePawnBackwards()
+		public void MovePawnBackwardsOntoOwnPieces()
 		{
-            Assert.False(m_normalBoard.Move(Location.A2, Location.A1), "Should not be allowed to move a pawn onto own pieces");
+		    m_normalBoard.MoveExpectFailure(Location.A2, Location.A1);
 		}
 
         [TestCase("7k/8/8/8/8/8/8/K7/ w - -", "two kings")]
