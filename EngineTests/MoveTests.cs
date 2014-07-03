@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
-using Redchess.Engine;
 using Redchess.Engine.Exceptions;
-using Redchess.Engine.Pieces;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Pieces.Black;
 using Redchess.Engine.Pieces.White;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     [TestFixture]
 	internal class MoveTests : AbstractChessTest

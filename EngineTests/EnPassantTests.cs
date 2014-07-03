@@ -1,9 +1,8 @@
-using System;
 using NUnit.Framework;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     [TestFixture]
     internal class EnPassantTests : AbstractChessTest

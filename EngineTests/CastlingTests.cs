@@ -3,10 +3,8 @@ using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine;
 using Redchess.Engine.Interfaces;
-using Redchess.Engine.Pieces.Black;
-using Redchess.Engine.Pieces.White;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     [TestFixture]
     internal class CastlingTests : AbstractChessTest

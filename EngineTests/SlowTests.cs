@@ -2,12 +2,8 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
-using Redchess.Engine;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Pieces.Black;
-using Redchess.Engine.Pieces.White;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
 	[TestFixture]
 	internal class SlowTests : AbstractChessTest

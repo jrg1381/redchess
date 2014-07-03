@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
-using System;
-using System.Collections.Generic;
 using Redchess.Engine.Structures;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     [TestFixture]
     class Datastructures

@@ -7,8 +7,8 @@
     <ProjectGuid>{864D706E-AF87-4F15-B02C-FB562EA622BB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EngineTests</RootNamespace>
-    <AssemblyName>EngineTests</AssemblyName>
+    <RootNamespace>Redchess.EngineTests</RootNamespace>
+    <AssemblyName>Redchess.EngineTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

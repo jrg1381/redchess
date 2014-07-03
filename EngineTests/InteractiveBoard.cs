@@ -3,12 +3,10 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
-using RedChess.ChessCommon.Interfaces;
+using Redchess.Engine;
 using Redchess.Engine.Interfaces;
-using Redchess.Engine.Pieces;
-using Redchess.Engine.Pieces.Abstract;
 
-namespace Redchess.Engine
+namespace Redchess.EngineTests
 {
     internal sealed class InteractiveBoard : Board
     {
