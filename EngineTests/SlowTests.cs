@@ -2,12 +2,8 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
-using Redchess.Engine;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Pieces.Black;
-using Redchess.Engine.Pieces.White;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
 	[TestFixture]
 	internal class SlowTests : AbstractChessTest
@@ -39,7 +35,6 @@ namespace EngineTests
                             var promoteTo = m_normalBoard.CurrentTurn == PieceColor.White ? "Queen" : "Rook";
                             m_normalBoard.PromotePiece(promoteTo);
 						}
-                        Console.WriteLine(m_normalBoard);
 
                         if (m_normalBoard.IsDraw())
                         {

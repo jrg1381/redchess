@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
-using Redchess.Engine;
 using Redchess.Engine.Exceptions;
-using Redchess.Engine.Pieces;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Pieces.Black;
 using Redchess.Engine.Pieces.White;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     [TestFixture]
 	internal class MoveTests : AbstractChessTest
@@ -168,14 +162,14 @@ namespace EngineTests
 		public void CannotTakeOwnPiece()
 		{
             m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq -");
-            Assert.IsFalse(m_emptyBoard.Move(Location.D8, Location.D7), "Expected this move to fail - can't take own piece");
+            m_emptyBoard.MoveExpectFailure(Location.D8, Location.D7);
 		}
 
         [Test]
         public void CannotPlayOutOfTurn()
         {
             m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq -");
-            Assert.IsFalse(m_emptyBoard.Move(Location.C7, Location.D7), "Cannot play out of turn");        
+            m_emptyBoard.MoveExpectFailure(Location.C7, Location.D7);
         }
 
 		[Test]
@@ -196,7 +190,7 @@ namespace EngineTests
         {
             m_emptyBoard.FromFen(fen);
             Assert.NotNull(m_emptyBoard.GetContents(from), "Expected a piece to be on the 'from' square");
-            Assert.IsFalse(m_emptyBoard.Move(from, to), "Move should not be allowed");
+            m_emptyBoard.MoveExpectFailure(from, to);
             if (from != to)
             {
                 Assert.AreNotEqual(m_emptyBoard.GetContents(to), m_emptyBoard.GetContents(from),
@@ -223,9 +217,9 @@ namespace EngineTests
             CollectionAssert.AreEquivalent(expectedReachableSquares, kingReachableSquares, "King reachable squares not as expected");
 
             foreach (var loc in theKing.ReachableSquares(m_emptyBoard))
-			{
-                Assert.IsFalse(m_emptyBoard.Move(Location.H8, loc), "All king moves here should be disallowed");
-			}
+            {
+                m_emptyBoard.MoveExpectFailure(Location.H8, loc);
+            }
 
             CollectionAssert.IsEmpty(theKing.ValidMoves(m_emptyBoard), "The king should have no valid moves");
             Assert.True(m_emptyBoard.IsStalemate(), "Should be stalemate");
@@ -252,7 +246,7 @@ namespace EngineTests
             m_emptyBoard.FromFen("k7/7P/8/8/8/8/8/4K3 w KQkq -");
 			m_emptyBoard.Move(Location.H7, Location.H8);
 			m_emptyBoard.PromotePiece("Queen");
-			Console.WriteLine(m_emptyBoard);
+			
 			Assert.True(m_emptyBoard.KingInCheck(),"King should be in check after promotion of pawn");
 		}
 
@@ -265,7 +259,7 @@ namespace EngineTests
             m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w KQkq -");
 			m_emptyBoard.Move(Location.H7, Location.G8);
             m_emptyBoard.PromotePiece(target);
-			Console.WriteLine(m_emptyBoard);
+			
 			Assert.AreEqual(kingShouldBeInCheck, m_emptyBoard.KingInCheck(), "King should be in check after promotion of pawn");
 		}
 
@@ -286,8 +280,7 @@ namespace EngineTests
         [TestCase("7r/2k5/2P5/8/8/5q2/8/6K1/ w - -")]
 		public void StaleMateTest(string fen)
 		{
-			m_emptyBoard.FromFen(fen);
-			Console.WriteLine(m_emptyBoard);
+			m_emptyBoard.FromFen(fen);		
 			var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
 			Assert.That(m_emptyBoard.IsStalemate(),"Should be stalemate - White has no moves");
@@ -297,8 +290,7 @@ namespace EngineTests
         [TestCase("7r/2k5/2P5/8/8/8/8/6K1/ w - -")]
         public void NotStaleMateTest(string fen)
         {
-            m_emptyBoard.FromFen(fen);
-            Console.WriteLine(m_emptyBoard);
+            m_emptyBoard.FromFen(fen);          
             var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
             Assert.That(!m_emptyBoard.IsStalemate() && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
@@ -358,8 +350,6 @@ namespace EngineTests
             m_normalBoard.Move(Location.H1, Location.H2);
             m_normalBoard.Move(Location.A8, Location.A7);
 
-            Console.WriteLine(m_normalBoard);
-
             FenAssert.AreEqual("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - -", m_normalBoard.ToFen(), "Expected no castling to be allowed after moving all the rooks");
 		}
 
@@ -389,22 +379,20 @@ namespace EngineTests
 			// Advance the pawn
 			m_normalBoard.Move(Location.A2, Location.A3);
 			// Advance the same pawn
-            bool success = m_normalBoard.Move(Location.A3, Location.A4);
-			Assert.False(success,"Should not be allowed to move twice in succession");
+            m_normalBoard.MoveExpectFailure(Location.A3, Location.A4);
 		}
 
 		[Test]
 		public void MoveNonExistentPiece()
 		{
 			// Advance nothing
-            bool success = m_normalBoard.Move(Location.A3, Location.A4);
-			Assert.False(success, "Should not be allowed to move a non-existent piece");
+            m_normalBoard.MoveExpectFailure(Location.A3, Location.A4);
 		}
 
 		[Test]
-		public void MovePawnBackwards()
+		public void MovePawnBackwardsOntoOwnPieces()
 		{
-            Assert.False(m_normalBoard.Move(Location.A2, Location.A1), "Should not be allowed to move a pawn onto own pieces");
+		    m_normalBoard.MoveExpectFailure(Location.A2, Location.A1);
 		}
 
         [TestCase("7k/8/8/8/8/8/8/K7/ w - -", "two kings")]

@@ -1,13 +1,7 @@
-using System;
 using NUnit.Framework;
-using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine;
-using Redchess.Engine.Pieces.Black;
-using Redchess.Engine.Pieces.White;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Pieces;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
 	[TestFixture]
 	public class PieceTests

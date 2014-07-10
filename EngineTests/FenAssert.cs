@@ -3,7 +3,7 @@ using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     static class FenAssert
     {

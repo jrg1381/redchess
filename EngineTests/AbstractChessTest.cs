@@ -1,14 +1,13 @@
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine;
-using Redchess.Engine.Interfaces;
 
-namespace EngineTests
+namespace Redchess.EngineTests
 {
     internal abstract class AbstractChessTest
     {
-        protected IBoardExtended m_normalBoard;
-        protected IBoardExtended m_emptyBoard;
+        protected InteractiveBoard m_normalBoard;
+        protected InteractiveBoard m_emptyBoard;
 
         [SetUp]
         public void TestSetup()

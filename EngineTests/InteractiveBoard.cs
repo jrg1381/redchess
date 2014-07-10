@@ -1,23 +1,41 @@
 using System;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
-using RedChess.ChessCommon.Interfaces;
+using Redchess.Engine;
 using Redchess.Engine.Interfaces;
-using Redchess.Engine.Pieces;
-using Redchess.Engine.Pieces.Abstract;
 
-namespace Redchess.Engine
+namespace Redchess.EngineTests
 {
     internal sealed class InteractiveBoard : Board
     {
-        /*
-		public InteractiveBoard()
-			: base(PieceColor.White, false)
-		{} */
-
         public InteractiveBoard(PieceColor color, bool isEmpty) : base(color, isEmpty)
         {
+        }
+
+        public override void FromFen(string fen)
+        {
+            Console.WriteLine("Creating board from {0}\r\n", fen);
+            base.FromFen(fen);
+            Console.WriteLine(this);
+        }
+
+        public override bool Move(Location start, Location end)
+        {
+            bool success = base.Move(start, end);
+            Assert.IsTrue(success, "Expected move from {0} to {1} to succeed", start, end);
+            Console.WriteLine("Moved from {0} to {1}", start, end);
+            Console.WriteLine(this);
+            return true;
+        }
+
+        public bool MoveExpectFailure(Location start, Location end)
+        {
+            bool success = base.Move(start, end);
+            Assert.IsFalse(success, "Expected move from {0} to {1} to fail", start, end);
+            Console.WriteLine("Tried to move from {0} to {1} and failed as expected");
+            return false;
         }
 
         public override string ToString()
