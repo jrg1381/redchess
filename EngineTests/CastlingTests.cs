@@ -121,7 +121,6 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        [Ignore]
         public void CancelCastlingByTakingRooks()
         {
             m_emptyBoard.FromFen("r3k2r/Rq5R/8/8/8/8/rQ5r/R3K2R/ w KQkq -");
@@ -143,10 +142,10 @@ namespace Redchess.EngineTests
 
             m_emptyBoard.Move(Location.B2, Location.B3);
             m_emptyBoard.Move(Location.A2, Location.A1);
-            m_emptyBoard.Move(Location.B2, Location.B1);
+            m_emptyBoard.Move(Location.B3, Location.B1);
             m_emptyBoard.Move(Location.A1, Location.A2);
             m_emptyBoard.Move(Location.B1, Location.B2);
-            m_emptyBoard.Move(Location.B2, Location.B3);
+            m_emptyBoard.Move(Location.B7, Location.B2);
 
             Assert.True(m_emptyBoard.MayCastle(whiteKing, Side.KingSide));
             Assert.False(m_emptyBoard.MayCastle(whiteKing, Side.QueenSide));
