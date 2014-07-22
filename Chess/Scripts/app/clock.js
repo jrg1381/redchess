@@ -118,9 +118,9 @@
         });
 
         $("div#readybutton").mouseenter(function () {
-            $("div#readybutton").css("background-color", "lightsteelblue");
+            $("div#readybutton").css("background-color", "#8F514F");
         }).mouseleave(function () {
-            $("div#readybutton").css("background-color", "steelblue");
+            $("div#readybutton").css("background-color", "#6E2E2D");
         });
     }
 }

@@ -10,37 +10,6 @@
 <script src="/signalr/hubs"></script>
 <script src="/Scripts/app/chess.js" type="text/javascript"></script>
 
-<style>
-    #submitbutton 
-    {
-        border-top: 1px solid #CCCCCC;
-        border-right: 1px solid #333333;
-        border-bottom: 1px solid #333333;
-        border-left: 1px solid #CCCCCC;
-        background-color: lightsteelblue;
-        color: #000000;
-        padding: 2px 6px 2px 6px;
-        text-decoration: none;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
-    }
-    a.buttonlink
-    {
-        border-top: 1px solid #CCCCCC;
-        border-right: 1px solid #333333;
-        border-bottom: 1px solid #333333;
-        border-left: 1px solid #CCCCCC;
-        background-color: lightsteelblue;
-        color: #000000;
-        padding: 2px 6px 2px 6px;
-        text-decoration: none;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
-    }
-</style>
-
 <script type="text/javascript">
     var isTimedGame = false;
     gameId = @Model.GameId;
@@ -82,9 +51,9 @@
         }
 
         $("#resignbutton").mouseenter(function () {
-            $("#resignbutton").css("background-color", "steelblue");
+            $("#resignbutton").css("background-color", "#B57271");
         }).mouseleave(function () {
-            $("#resignbutton").css("background-color", "lightsteelblue");
+            $("#resignbutton").css("background-color", "#8F514F");
         });
 
     }
