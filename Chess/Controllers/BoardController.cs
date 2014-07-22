@@ -101,7 +101,6 @@ namespace Chess.Controllers
             
             Clock clock = m_dbChessContext.Clocks.FirstOrDefault(c => c.GameId == id);
 
-            m_dbChessContext.Boards.Remove(board);
             if (clock != null)
             {
                 m_dbChessContext.Clocks.Remove(clock);
@@ -110,6 +109,7 @@ namespace Chess.Controllers
             // TODO: Do this via cascading delete in the database itself instead of the application
             Array.ForEach(m_dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).ToArray(), entry => m_dbChessContext.HistoryEntries.Remove(entry));
 
+            m_dbChessContext.Boards.Remove(board);
             m_dbChessContext.SaveChanges();
 
             return RedirectToAction("Index");
