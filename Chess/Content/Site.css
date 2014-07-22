@@ -28,7 +28,7 @@ select {
     background-color: rgb(169, 169, 169);
 }
 
-body, button {
+body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     font-size: 1.2em;
 }
@@ -70,19 +70,13 @@ td.miniboard-white {
     text-align: center;
 }
 
-button, input[type=submit] {
-    border: 1px solid #dedede;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-
 #changePasswordForm input,
 #registerForm input,
 #loginForm input,
 #deleteForm input,
 #createForm input,
-#submitbutton 
+#submitbutton,
+a.asbutton
     {
         border-top: 1px solid ;
         border-right: 1px solid ;
@@ -97,7 +91,8 @@ button, input[type=submit] {
         -webkit-border-radius: 5px;
         border-radius: 5px;
     }
-    a.buttonlink
+
+a.buttonlink
     {
         border-top: 1px solid ;
         border-right: 1px solid ;
@@ -188,12 +183,6 @@ header {
 #loginPanel h2 {
     padding-bottom: .5em;
     margin: 0;
-}
-
-#body a {
-    color: #6e2e2d;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 #registerPanel p,

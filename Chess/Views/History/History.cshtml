@@ -122,9 +122,9 @@
 <br/>
 <br/>
 
-	@if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(System.Web.HttpContext.Current.User.Identity.Name))
+	@if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
  {
     <div>
-        <a href="javascript:playFromHere();">Play from here</a>
+        <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
     </div>
  }
