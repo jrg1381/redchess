@@ -25,7 +25,8 @@
 
 <div style="width:300px" id="board" onclick="GoToGame(@Model.GameId)"></div>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Delete", "Board", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "deleteForm" }))
+{
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Delete" /> |

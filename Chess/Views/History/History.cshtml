@@ -97,20 +97,6 @@
     div#control { width: 512px; padding-top : 10px}
     div#forward { float: right; vertical-align: middle; }
     div#back { float: left; vertical-align: middle; }
-    a.buttonlink
-    {
-        border-top: 1px solid #CCCCCC;
-        border-right: 1px solid #333333;
-        border-bottom: 1px solid #333333;
-        border-left: 1px solid #CCCCCC;
-        background-color: #EEEEEE;
-        color: #333333;
-        padding: 2px 6px 2px 6px;
-        text-decoration: none;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
-    }
 </style>
 
 @Html.ActionLink("Back to list of games", "Index", "Board")
@@ -139,6 +125,6 @@
 	@if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(System.Web.HttpContext.Current.User.Identity.Name))
  {
     <div>
-        <a class="buttonlink" href="javascript:playFromHere();">Play from here</a>
+        <a href="javascript:playFromHere();">Play from here</a>
     </div>
  }

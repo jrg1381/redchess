@@ -108,6 +108,7 @@ namespace Chess.Controllers
 
             // TODO: Do this via cascading delete in the database itself instead of the application
             Array.ForEach(m_dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).ToArray(), entry => m_dbChessContext.HistoryEntries.Remove(entry));
+            // We need to save the changes here before deleting the game row, because of the foreign key constraints that link history and clock entries to games.
             m_dbChessContext.SaveChanges();
 
             m_dbChessContext.Boards.Remove(board);
