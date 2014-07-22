@@ -1,130 +1,150 @@
 ﻿@model IEnumerable<Chess.Models.HistoryEntry>
 
-@{
-    ViewBag.Title = "History";
-    var currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == ViewBag.MoveNumber);
-    var breakCharacters = new char[1];
-    breakCharacters[0] = ' ';
-    var shortFen = currentHistoryEntry.Fen.Split(breakCharacters)[0];
-    var lastMove = currentHistoryEntry.LastMove();
-    var description = currentHistoryEntry.Description();
-}
-
-<script src="/Scripts/app/chessboard-0.3.0.js"></script>
-
-<script>
-    var board;
-    var positions = new Array(@currentHistoryEntry.LastMove());
-    var i = 0;
-    var currentMove = @ViewBag.MoveNumber;
-
-    @foreach(var fenString in @Model.Select(x => x.Fen.Split(new char [] {' '})[0]))
-    {
-        <text>positions[i++] = ('@fenString');</text>
+    @{
+        ViewBag.Title = "History";
+        var currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == ViewBag.MoveNumber);
+        var breakCharacters = new char[1];
+        breakCharacters[0] = ' ';
+        var shortFen = currentHistoryEntry.Fen.Split(breakCharacters)[0];
+        var lastMove = currentHistoryEntry.LastMove();
+        var description = currentHistoryEntry.Description();
     }
 
-    $(document).ready(function () {
-        var cfg = { pieceTheme: '/Images/{piece}.png', position: '@shortFen', showNotation: false }
-        board = new ChessBoard('board', cfg);
+    <script>
+        var board;
+        var lastMove = @Model.Count(); // Total number of moves in the game
+        var currentMove = 0;
 
-        @if(ViewBag.MoveNumber == 1)
+        function clickText() {
+            $("#m" + currentMove).removeClass("highlightText");
+            $(this).addClass("highlightText");
+            currentMove = parseInt(this.id.substr(1));
+            updateBoard(currentMove);
+        }
+
+        $(document).ready(function () {
+            if (lastMove == 0)
+                return;
+
+            var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
+            board = new ChessBoard('board', cfg);
+            renderMoves();
+            board.position(positions[0].fen);
+            updateBoard(0);
+
+            var moveNumber = 1;
+            for (i = 1; i < lastMove; i+=2) {
+                var originalI1 = i;
+                var originalI2 = i + 1;
+
+                var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions[originalI1].move + "</td> ";
+                if(originalI2 < lastMove) {
+                    text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].move + "</td>";
+                }
+                text += "</tr>";
+
+                $("#moves").append(text);
+
+                $("#m" + originalI1).on("click", clickText);
+                $("#m" + originalI2).on("click", clickText);
+            }
+
+            $("span.button").mouseover(function () {
+                $(this).parent().fadeTo(40, 1.0);
+            }).mouseout(function () {
+                $(this).parent().fadeTo(40, 0.7);
+            });
+
+            $("#goForward").on("click", function () {
+                if (currentMove == lastMove - 1) return;
+                updateBoard(currentMove + 1);
+                $("#m" + currentMove).removeClass("highlightText");
+                currentMove++;
+                $("#m" + currentMove).addClass("highlightText");
+            });
+
+            $("#goBack").on("click", function () {
+                if (currentMove == 0) return;
+                updateBoard(currentMove - 1);
+                $("#m" + currentMove).removeClass("highlightText");
+                currentMove--;
+                $("#m" + currentMove).addClass("highlightText");
+            });
+
+            $("#goStart").on("click", function () {
+                updateBoard(0);
+                $("#m" + currentMove).removeClass("highlightText");
+                currentMove = 0;
+                $("#m" + currentMove).addClass("highlightText");
+            });
+
+            $("#goEnd").on("click", function () {
+                updateBoard(lastMove-1);
+                $("#m" + currentMove).removeClass("highlightText");
+                currentMove = lastMove-1;
+                $("#m" + currentMove).addClass("highlightText");
+            });
+        });
+    </script>
+
+    <script>
+        function playFromHere() {
+            window.location = "/History/PlayFromHere?gameId=" + @currentHistoryEntry.GameId + "&MoveNumber=" + currentMove;
+        }
+
+    </script>
+
+    <script>
+        var positions = new Array(@Model.Count());
+        var i = 0;
+
+        function renderMoves() {
+            @foreach (var data in @Model.Select(x => new { Fen = x.Fen.Split(new[] {' '})[0], Move = "*" }))
         {
-            <text>$("div#back").hide();</text>
+            <text>positions[i++] = { "fen" : '@data.Fen', "move" : '@data.Move'} ;</text>
+        }
         }
 
-        @if(ViewBag.MoveNumber == lastMove)
-        {
-            <text>$("div#forward").hide();</text>
+        function updateBoard(newMove) {
+            $("span#goBack").show();
+            $("span#goForward").show();
+
+            if (newMove == 0) {
+                $("span#goBack").hide();
+            }
+
+            if (positions[newMove+1] == null) {
+                $("span#goForward").hide();
+            }
+
+            board.position(positions[newMove].fen);
         }
+    </script>
 
-        if(location.hash.length != 0) {
-            updateBoard(currentMove - parseInt(location.hash.substring(1)));
-        }
-    });
+    <script src="/Scripts/app/chessboard-0.3.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
+    <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css" />
 
-    function boardToStart() {
-        currentMove = 1;
+    @Html.ActionLink("Back to list of games", "Index", "Board")
 
-        $("div#back").hide();
-        @if(lastMove != 1)
-        {
-            <text>$("div#forward").show();</text>
-        }
+    <div class="left">
+        <p class="title">@description</p>
+        <div id="board"></div>
+        <div class="navigation">
+            <div class="wrapper"><span class="button" id="goStart"></span></div>
+            <div class="wrapper"><span class="button" id="goBack"></span></div>
 
-        board.position(positions[0]);
-        location.hash = currentMove;
-    }
-
-    function boardToEnd() {
-        currentMove = @lastMove;
-
-        $("div#forward").hide();
-        @if(lastMove != 1)
-        {
-            <text>$("div#back").show();</text>
-        }
-
-        board.position(positions[@lastMove-1]);
-        location.hash = currentMove;
-    }
-
-    function updateBoard(moveOffset) {
-        currentMove += moveOffset;
-        $("div#back").show();
-        $("div#forward").show();
-
-        if (currentMove == 1) {
-            $("div#back").hide();
-        }
-
-        if (currentMove == '@lastMove') {
-            $("div#forward").hide();
-        }
-
-        board.position(positions[currentMove - 1]);
-        location.hash = currentMove;
-    }
-
-    function playFromHere() {
-        window.location = "/History/PlayFromHere?gameId=" + @currentHistoryEntry.GameId + "&MoveNumber=" + currentMove;
-    }
-
-</script>
-
-<link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
-
-<style>
-    div#control { width: 512px; padding-top : 10px}
-    div#forward { float: right; vertical-align: middle; }
-    div#back { float: left; vertical-align: middle; }
-</style>
-
-@Html.ActionLink("Back to list of games", "Index", "Board")
-
-<h2>@description</h2>
-
-<div id="board" style="width: 512px"></div>
-
-<div id="control">
-	<div id="back">
-            <a class="buttonlink" onclick="boardToStart();">&lt;&lt;</a>
-      		|
-            <a class="buttonlink" onclick="updateBoard(-1);">&lt;</a>   
-	</div>
-	<div id="forward">
-     
-            <a class="buttonlink" onclick="updateBoard(+1);">&gt;</a>
-      		|
-            <a class="buttonlink" onclick="boardToEnd();">&gt;&gt;</a>
-	</div>
-</div>
-
-<br/>
-<br/>
-
-	@if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
- {
-    <div>
-        <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
+            <div class="wrapper"><span class="button" id="goEnd"></span></div>
+            <div class="wrapper"><span class="button" id="goForward"></span></div>
+        </div>
     </div>
- }
+
+    <br />
+    <br />
+
+    @if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
+    {
+        <div>
+            <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
+        </div>
+    }
