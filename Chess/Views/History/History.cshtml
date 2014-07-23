@@ -6,8 +6,6 @@
         var currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == Math.Max(1, Math.Min(maxMoves, ViewBag.MoveNumber)));
         var breakCharacters = new char[1];
         breakCharacters[0] = ' ';
-        var shortFen = currentHistoryEntry.Fen.Split(breakCharacters)[0];
-        var lastMove = currentHistoryEntry.LastMove();
         var description = currentHistoryEntry.Description();
     }
 
@@ -95,7 +93,7 @@
 
     <script>
         function playFromHere() {
-            window.location = "/History/PlayFromHere?gameId=" + @currentHistoryEntry.GameId + "&MoveNumber=" + currentMove;
+            window.location = "/History/PlayFromHere?move=" + currentMove + "&gameId=" + @currentHistoryEntry.GameId;
         }
 
     </script>
@@ -122,6 +120,7 @@
             if (positions[newMove+1] == null) {
                 $("span#goForward").hide();
             }
+
 
             board.position(positions[newMove].fen);
             location.hash = newMove;

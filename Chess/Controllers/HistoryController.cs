@@ -19,44 +19,46 @@ namespace Chess.Controllers
 			return HttpNotFound();
         }
 
-		public ActionResult PlayFromHere(string gameId, string moveNumber)
+        public ActionResult PlayFromHere(string move, string gameId)
 		{
-			int game = Int32.Parse(gameId);
-			int move = Int32.Parse(moveNumber);
-			string opponent = "";
-
-			// Find the history entry for the currently displayed position
-			var entry = m_db.HistoryEntries.FirstOrDefault(h => h.GameId == game && h.MoveNumber == move);
-			// Find the game in the set of games
-			var thisGame = m_db.Boards.FirstOrDefault(b => b.GameId == game);
-			bool playAsBlack = false;
-
-            if (entry == null || thisGame == null)
-            {
-                return View("Error", new HandleErrorInfo(new ArgumentException("Can't find game in database to play from here"), "History", "PlayFromHere"));
-            }
+		    bool playAsBlack = false;
+		    string opponent = "";
+            int moveNumber = Int32.Parse(move);
+            int game = Int32.Parse(gameId);
 
 				// Find the current user in the user database
-				var name = System.Web.HttpContext.Current.User.Identity.Name;
-                var myProfile = m_db.UserProfiles.FirstOrDefault(x => x.UserName == name);
+		    var name = System.Web.HttpContext.Current.User.Identity.Name;
+		    var myProfile = m_db.UserProfiles.FirstOrDefault(x => x.UserName == name);
 
-                if (myProfile == null) // The user is not logged in or doesn't exist in the database for some reason
-                {
-                    return View("Error", new HandleErrorInfo(new ArgumentException("User must be logged in"),"History","PlayFromHere"));
-                }
+		    if (myProfile == null) // The user is not logged in or doesn't exist in the database for some reason
+		    {
+		        return View("Error", new HandleErrorInfo(new ArgumentException("User must be logged in"), "History", "PlayFromHere"));
+		    }
 
-				if(thisGame.UserIdWhite == myProfile.UserId)
-				{
-					opponent = thisGame.UserIdBlack.ToString();
-				}
-				else if (thisGame.UserIdBlack == myProfile.UserId)
-				{
-				    opponent = thisGame.UserIdWhite.ToString();
-				    playAsBlack = true;
-				}
+		    var thisGame = m_db.Boards.FirstOrDefault(x => x.GameId == game);
+		    if (thisGame == null)
+		    {
+                return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in database"), "History", "PlayFromHere"));
+		    }
+
+            if (thisGame.UserIdWhite == myProfile.UserId)
+		    {
+		        opponent = thisGame.UserIdBlack.ToString();
+		    }
+		    else if (thisGame.UserIdBlack == myProfile.UserId)
+		    {
+		        opponent = thisGame.UserIdWhite.ToString();
+		        playAsBlack = true;
+		    }
+
+            var historyEntry = m_db.HistoryEntries.FirstOrDefault(x => x.GameId == game && x.MoveNumber == moveNumber + 1);
+            if (historyEntry == null)
+            {
+                return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in history"), "History", "PlayFromHere"));
+            }
 
 		    var newBoard = new BoardImpl();
-			newBoard.FromFen(entry.Fen);
+			newBoard.FromFen(historyEntry.Fen);
 
 			var bc = new BoardController();
 			return bc.Create(newBoard, opponent, false, String.Empty, playAsBlack);
