@@ -294,6 +294,7 @@
     <Content Include="Images\bR.png" />
     <Content Include="Images\fast-forward.png" />
     <Content Include="Images\fast-rewind.png" />
+    <Content Include="Images\flip.png" />
     <Content Include="Images\wB.png" />
     <Content Include="Images\wK.png" />
     <Content Include="Images\wN.png" />

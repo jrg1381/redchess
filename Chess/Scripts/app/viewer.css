@@ -63,17 +63,22 @@
     float : left;
 }
 
-#goBack {
+.button#goBack {
     background: url("/Images/arrow_left.png");
     float : left;
 }
 
-#goForward {
+.button#goForward {
     background: url("/Images/arrow_right.png");
     float : right;
 }
 
-#goEnd {
+.button#goEnd {
     background:  url("/Images/fast-forward.png");
+    float : right;
+}
+
+.button#goFlip {
+    background:  url("/Images/flip.png");
     float : right;
 }
