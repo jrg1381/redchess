@@ -1,19 +1,16 @@
 ﻿@model Chess.Models.LocalPasswordModel
 @{
-    ViewBag.Title = "Manage Redchess account";
+    ViewBag.Title = "Change password";
 }
 
 <header>
     <h1>@ViewBag.Title</h1>
 </header>
 
-<div id="main-content">
+<div>
     <p class="message-success">@ViewBag.StatusMessage</p>
 
-    <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
-    <p>@Html.ActionLink("Back to main page", "Index", "Home")</p>
-
-    <section>
+  <section>
     @if (ViewBag.HasLocalPassword)
     {
         @Html.Partial("_ChangePasswordPartial")
@@ -24,6 +21,8 @@
     }
     </section>
 </div>
+
+<p>@Html.ActionLink("Back to main page", "Index", "Home")</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
