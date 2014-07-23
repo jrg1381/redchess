@@ -228,7 +228,7 @@ namespace Chess.Controllers
 			}
 
             Location endLocation = Location.InvalidSquare, startLocation = Location.InvalidSquare;
-            bool parseOk = Enum.TryParse<Location>(start, out startLocation) && Enum.TryParse<Location>(end, out endLocation);
+            bool parseOk = Enum.TryParse(start, out startLocation) && Enum.TryParse(end, out endLocation);
 
             if (!parseOk)
             {
