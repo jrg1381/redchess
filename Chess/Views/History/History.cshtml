@@ -125,26 +125,26 @@
     <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
     <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css" />
 
-    @Html.ActionLink("Back to list of games", "Index", "Board")
+   
 
-    <div class="left">
-        <p class="title">@description</p>
-        <div id="board"></div>
-        <div class="navigation">
-            <div class="wrapper"><span class="button" id="goStart"></span></div>
-            <div class="wrapper"><span class="button" id="goBack"></span></div>
+                      <div class="left">
+                          <p class="title">@description</p>
+                          <div id="board"></div>
+                          <div class="navigation">
+                              <div class="wrapper"><span class="button" id="goStart"></span></div>
+                              <div class="wrapper"><span class="button" id="goBack"></span></div>
 
-            <div class="wrapper"><span class="button" id="goEnd"></span></div>
-            <div class="wrapper"><span class="button" id="goForward"></span></div>
-        </div>
-    </div>
+                              <div class="wrapper"><span class="button" id="goEnd"></span></div>
+                              <div class="wrapper"><span class="button" id="goForward"></span></div>
+                          </div>
+                          <br />
+                          <br />
+                          <div>
+                          @if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
+                          {
+                                  <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
+                          } | 
+                          @Html.ActionLink("Back to list of games", "Index", "Board")</div>
 
-    <br />
-    <br />
+                      </div>
 
-    @if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
-    {
-        <div>
-            <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
-        </div>
-    }
