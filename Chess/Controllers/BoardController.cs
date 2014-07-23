@@ -208,6 +208,10 @@ namespace Chess.Controllers
 		public ActionResult PlayMove(int id, string start, string end, string promote)
 		{
 			BoardDto board = m_dbChessContext.Boards.Find(id);
+		    if (board == null)
+		    {
+                return Json(new { fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH" });
+		    }
             // Allowed to be null for an un-timed game
 			var clock = m_dbChessContext.Clocks.FirstOrDefault(c => c.GameId == id);
 
