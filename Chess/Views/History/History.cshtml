@@ -2,7 +2,8 @@
 
     @{
         ViewBag.Title = "History";
-        var currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == ViewBag.MoveNumber);
+        var maxMoves = @Model.Count();
+        var currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == Math.Max(1, Math.Min(maxMoves, ViewBag.MoveNumber)));
         var breakCharacters = new char[1];
         breakCharacters[0] = ' ';
         var shortFen = currentHistoryEntry.Fen.Split(breakCharacters)[0];
@@ -12,7 +13,7 @@
 
     <script>
         var board;
-        var lastMove = @Model.Count(); // Total number of moves in the game
+        var lastMove = @maxMoves; // Total number of moves in the game
         var currentMove = 0;
 
         function clickText() {
@@ -30,7 +31,6 @@
             board = new ChessBoard('board', cfg);
             renderMoves();
             board.position(positions[0].fen);
-            updateBoard(0);
 
             var moveNumber = 1;
             for (i = 1; i < lastMove; i+=2) {
@@ -84,6 +84,12 @@
                 currentMove = lastMove-1;
                 $("#m" + currentMove).addClass("highlightText");
             });
+
+            if(location.hash.length != 0) {
+                updateBoard(parseInt(location.hash.substring(1)));
+            } else {
+                updateBoard(0);
+            }
         });
     </script>
 
@@ -118,6 +124,7 @@
             }
 
             board.position(positions[newMove].fen);
+            location.hash = newMove;
         }
     </script>
 
