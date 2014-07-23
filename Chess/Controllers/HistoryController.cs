@@ -67,7 +67,7 @@ namespace Chess.Controllers
 
 		    using (var db = new ChessContext())
 		    {
-		        var entries = db.HistoryEntries.Where(h => h.GameId == game);
+		        var entries = db.HistoryEntries.Where(h => h.GameId == game).ToArray();
 
 		        if (!entries.Any())
 		        {
