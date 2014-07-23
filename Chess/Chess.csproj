@@ -283,7 +283,6 @@
     <Content Include="..\Chess.snk">
       <Link>Chess.snk</Link>
     </Content>
-    <Content Include="Images\All_Chess_Pieces_Png_by_abener.png" />
     <Content Include="Images\arrow_left.png" />
     <Content Include="Images\arrow_right.png" />
     <Content Include="Images\bB.png" />
