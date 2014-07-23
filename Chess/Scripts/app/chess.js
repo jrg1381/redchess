@@ -49,8 +49,18 @@ function EndGame() {
     $("#resign").hide();
 }
 
+function UpdateUi(fen) {
+    chessBoard.position(fen);
+
+    var turn = fen.split(" ")[1];
+    if ($("#turnindicator").text() != "GAME OVER") {
+        currentTurn = turn;
+        $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
+    }
+}
+
 function ProcessServerResponse(data) {
-    chessBoard.position(data.fen);
+    UpdateUi(data.fen);
     $("#messages").text(data.message);
    
     if (data.status == "AUTH") {

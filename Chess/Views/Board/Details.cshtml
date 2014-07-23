@@ -33,10 +33,15 @@
     currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
 
     function DoMove(source, target, piece) {
+        if (!$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor)
+            return 'snapback';
+
         if ((target[1] == '8' && piece == 'wP') || (target[1] == '1' && piece == 'bP')) {
             $("input#Start").val(source.toUpperCase());
-            $("input#End").val(target.toUpperCase());            $("#submitmove form").show();            $("#Promote").val("Queen");
-            return;
+            $("input#End").val(target.toUpperCase());
+            $("#submitmove form").show();
+            $("#Promote").val("Queen");
+            return '';
         }
 
         PostMove(source.toUpperCase(), target.toUpperCase(), $("#Promote option:selected").text());
@@ -45,12 +50,14 @@
     }
 
     function DocumentReady() {
-        var cfg = { pieceTheme: '/Images/{piece}.png', position: '@Model.Fen', showNotation: false, draggable : true, onDrop : DoMove };
+        var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable : true, onDrop : DoMove };
         chessBoard = new ChessBoard('board', cfg);
 
         if (currentPlayerColor == 'b') {
             chessBoard.flip();
         }
+
+        UpdateUi('@Model.Fen');
 
         //SignalR stuff
         var updater = $.connection.updateServer;
@@ -77,7 +84,8 @@
             $("#submitmove form").hide();
             $("#Promote").val([]);
             return false;
-        });
+        });
+
 
         @if (Model.GameOver)
         {
@@ -158,8 +166,8 @@
         <div id="messages"></div>
         <div id="lastmove"></div>
         <div id="turnindicator"></div>
-        <div id="blacktaken" style="font-size: 36pt"></div>
-        <div id="whitetaken" style="font-size: 36pt"></div>
+        <div id="blacktaken" style="font-size: 36pt; color : whitesmoke"></div>
+        <div id="whitetaken" style="font-size: 36pt; color : whitesmoke"></div>
     </div>
 
 
