@@ -11,6 +11,7 @@ var pieceMapping = {
 function PostMove(start, end, promote) {
     if(start == end)
         return;
+    $("#spinny").show();
     $.post("/Board/PlayMove", {
         "id": gameId,
         "Start": start, 
@@ -57,6 +58,8 @@ function UpdateUi(fen) {
         currentTurn = turn;
         $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
     }
+
+    $("#spinny").hide();
 }
 
 function ProcessServerResponse(data) {

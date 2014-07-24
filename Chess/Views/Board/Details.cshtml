@@ -74,6 +74,19 @@
         $("#submitmove form").hide();
         $("#Promote").val([]);
 
+        // Configure the spinny
+        $("#spinny").hide();
+        var spinner = new Spinner({
+            lines: 12, // The number of lines to draw
+            length: 7, // The length of each line
+            width: 5, // The line thickness
+            radius: 10, // The radius of the inner circle
+            color: '#B57271', // #rbg or #rrggbb
+            speed: 1, // Rounds per second
+            trail: 100, // Afterglow percentage
+            shadow: false // Whether to render a shadow
+        }).spin($("#spinny")[0]);
+
         // Draw any user messages, and update the set of taken pieces
         $("#messages").text('@Model.Status');
         UpdateTakenPieces('@Model.Fen');
@@ -165,6 +178,7 @@
         <div id="messages"></div>
         <div id="lastmove"></div>
         <div id="turnindicator"></div>
+        <div id="spinny"></div>
         <div id="blacktaken" style="font-size: 36pt; color : whitesmoke"></div>
         <div id="whitetaken" style="font-size: 36pt; color : whitesmoke"></div>
     </div>
