@@ -10,11 +10,18 @@ var pieceMapping = {
 
 var spinner;
 
+function ParentOfSpinny()
+{
+    return $('#board').find(".square-d5");
+}
+
 function PostMove(start, end, promote) {
     if(start == end)
         return;
 
     spinner = new Spinner({
+        top: "100%" ,
+        left: "100%" ,
         lines: 12, // The number of lines to draw
         length: 7, // The length of each line
         width: 5, // The line thickness
@@ -23,7 +30,7 @@ function PostMove(start, end, promote) {
         speed: 1, // Rounds per second
         trail: 100, // Afterglow percentage
         shadow: false // Whether to render a shadow
-    }).spin($("#spinny")[0]);
+    }).spin(ParentOfSpinny()[0]);
 
     $.post("/Board/PlayMove", {
         "id": gameId,
@@ -72,7 +79,7 @@ function UpdateUi(fen) {
         $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
     }
 
-    if ($("#spinny")[0].hasChildNodes()) {
+    if (ParentOfSpinny()[0].hasChildNodes()) {
         spinner.stop();
     }
 }
