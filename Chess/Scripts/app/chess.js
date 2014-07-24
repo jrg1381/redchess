@@ -7,11 +7,24 @@ var pieceMapping = {
     "K": "\u2654", "Q": "\u2655", "N": "\u2658", "R": "\u2656", "P": "\u2659", "B": "\u2657",
     "k": "\u265a", "q": "\u265b", "n": "\u265e", "r": "\u265c", "p": "\u265f", "b": "\u265d"
 };
-    
+
+var spinner;
+
 function PostMove(start, end, promote) {
     if(start == end)
         return;
-    $("#spinny").show();
+
+    spinner = new Spinner({
+        lines: 12, // The number of lines to draw
+        length: 7, // The length of each line
+        width: 5, // The line thickness
+        radius: 10, // The radius of the inner circle
+        color: '#B57271', // #rbg or #rrggbb
+        speed: 1, // Rounds per second
+        trail: 100, // Afterglow percentage
+        shadow: false // Whether to render a shadow
+    }).spin($("#spinny")[0]);
+
     $.post("/Board/PlayMove", {
         "id": gameId,
         "Start": start, 
@@ -59,7 +72,9 @@ function UpdateUi(fen) {
         $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
     }
 
-    $("#spinny").hide();
+    if ($("#spinny")[0].hasChildNodes()) {
+        spinner.stop();
+    }
 }
 
 function ProcessServerResponse(data) {
