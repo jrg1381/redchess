@@ -307,7 +307,6 @@
     <Content Include="Scripts\app\chessboard-0.3.0.min.js" />
     <Content Include="Scripts\app\clock.js" />
     <Content Include="Scripts\app\viewer.css" />
-    <Content Include="Scripts\jcanvas.min.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -325,6 +324,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
+    <Content Include="Scripts\spin.js" />
+    <Content Include="Scripts\spin.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
