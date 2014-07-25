@@ -32,9 +32,6 @@
     currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
 
     function DoMove(source, target, piece) {
-        if (!$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor)
-            return 'snapback';
-
         if ((target[1] == '8' && piece == 'wP') || (target[1] == '1' && piece == 'bP')) {
             $("input#Start").val(source.toUpperCase());
             $("input#End").val(target.toUpperCase());
@@ -48,8 +45,16 @@
         $("#Promote").val([]);
     }
 
+    function onDragStart(source, piece, position, orientation) {
+        if ((orientation === 'white' && piece.search(/^w/) === -1) ||
+            (orientation === 'black' && piece.search(/^b/) === -1) || 
+            !$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor) {
+            return false;
+        }   
+    }
+
     function DocumentReady() {
-        var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable : true, onDrop : DoMove };
+        var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable : true, onDrop : DoMove, onDragStart : onDragStart };
         chessBoard = new ChessBoard('board', cfg);
 
         if (currentPlayerColor == 'b') {
