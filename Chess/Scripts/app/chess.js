@@ -1,6 +1,7 @@
 ﻿var currentPlayerColor;
 var gameId;
 var currentTurn;
+var boardLocked = false;
 
 /* Unicode chess piece characters */
 var pieceMapping = {
@@ -8,25 +9,12 @@ var pieceMapping = {
     "k": "\u265a", "q": "\u265b", "n": "\u265e", "r": "\u265c", "p": "\u265f", "b": "\u265d"
 };
 
-var spinner;
+var spinner = CreateSpinner();
 
-function ParentOfSpinny()
-{
-    if (currentTurn == 'b') {
-        return $('#board').find(".square-e4");
-    }
-    else if (currentTurn == 'w') {
-        return $('#board').find(".square-d5");
-    }
-}
-
-function PostMove(start, end, promote) {
-    if(start == end)
-        return;
-
-    spinner = new Spinner({
-        top: "100%" ,
-        left: "100%" ,
+function CreateSpinner() {
+    return new Spinner({
+        top: "100%",
+        left: "100%",
         lines: 12, // The number of lines to draw
         length: 7, // The length of each line
         width: 5, // The line thickness
@@ -35,7 +23,24 @@ function PostMove(start, end, promote) {
         speed: 1, // Rounds per second
         trail: 100, // Afterglow percentage
         shadow: false // Whether to render a shadow
-    }).spin(ParentOfSpinny()[0]);
+    });
+}
+
+function ParentOfSpinny()
+{
+    if (chessBoard.orientation() == "black") {
+        return $('#board').find(".square-e4");
+    }
+    else if (chessBoard.orientation() == "white") {
+        return $('#board').find(".square-d5");
+    }
+}
+
+function PostMove(start, end, promote) {
+    if(start == end)
+        return;
+
+    spinner.spin(ParentOfSpinny()[0]);
 
     $.post("/Board/PlayMove", {
         "id": gameId,
@@ -128,11 +133,13 @@ function ProcessServerResponse(data) {
 }
 
 function LockBoard() {
-    chessBoard.draggable = false;
+    boardLocked = true;
+    spinner.spin(ParentOfSpinny()[0]);
 }
 
 function UnlockBoard() {
-    chessBoard.draggable = true;
+    boardLocked = false;
+    spinner.stop();
 }
    
 function UpdateTakenPieces(fen) {

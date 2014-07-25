@@ -48,7 +48,7 @@
     function onDragStart(source, piece, position, orientation) {
         if ((orientation === 'white' && piece.search(/^w/) === -1) ||
             (orientation === 'black' && piece.search(/^b/) === -1) || 
-            !$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor) {
+            !$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor || boardLocked) {
             return false;
         }   
     }
