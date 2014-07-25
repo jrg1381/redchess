@@ -26,91 +26,24 @@
 </style>
 
 <script type="text/javascript">
-    var chessBoard;
-    var isTimedGame = false;
     gameId = @Model.GameId;
     currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
 
-    function DoMove(source, target, piece) {
-        if ((target[1] == '8' && piece == 'wP') || (target[1] == '1' && piece == 'bP')) {
-            $("input#Start").val(source.toUpperCase());
-            $("input#End").val(target.toUpperCase());
-            $("#submitmove form").show();
-            $("#Promote").val("Queen");
-            return '';
-        }
-
-        PostMove(source.toUpperCase(), target.toUpperCase(), $("#Promote option:selected").text());
-        $("#submitmove form").hide();
-        $("#Promote").val([]);
-    }
-
-    function onDragStart(source, piece, position, orientation) {
-        if ((orientation === 'white' && piece.search(/^w/) === -1) ||
-            (orientation === 'black' && piece.search(/^b/) === -1) || 
-            !$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor || boardLocked) {
-            return false;
-        }   
-    }
-
-    function DocumentReady() {
-        var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable : true, onDrop : DoMove, onDragStart : onDragStart };
-        chessBoard = new ChessBoard('board', cfg);
-
-        if (currentPlayerColor == 'b') {
-            chessBoard.flip();
-        }
-
+    $(document).ready(function() {
+        DocumentReady();
         UpdateUi('@Model.Fen');
-
-        //SignalR stuff
-        var updater = $.connection.updateServer;
-        // Define a client-side message which the server can call
-        updater.client.addMessage = function(message) {
-            ProcessServerResponse(message);
-        };
-
-        // Define a callback for when the connection is established. We join the client group corresponding to our game ID.
-        $.connection.hub.start(function() {
-            $.connection.hub.proxies.updateserver.server.join('@Model.GameId');
-        });
-
-        // Hide the promotion UI and set its selection to nothing
-        $("#submitmove form").hide();
-        $("#Promote").val([]);
-
         // Draw any user messages, and update the set of taken pieces
         $("#messages").text('@Model.Status');
         UpdateTakenPieces('@Model.Fen');
-
-        $("#submitmove form").submit(function() {
-            PostMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());
-            $("#submitmove form").hide();
-            $("#Promote").val([]);
-            return false;
-        });
-
 
         @if (Model.GameOver)
         {
             <text>EndGame();</text>
         }
-
-        $("#resignbutton").mouseenter(function () {
-            $("#resignbutton").css("background-color", "#B57271");
-        }).mouseleave(function () {
-            $("#resignbutton").css("background-color", "#8F514F");
-        });
-
-    }
-
-    $(document).ready(function() {
-        DocumentReady();
+        
         @if (@Model.Clock() != null && @Model.Clock().PlayersReady != 3 && @Model.Clock().TimeElapsedBlackMs <= @Model.Clock().TimeLimitMs && @Model.Clock().TimeElapsedWhiteMs <= @Model.Clock().TimeLimitMs)
         {
-            <text>
-        LockBoard();
-        </text>
+            <text>LockBoard();</text>
         }
     });
 </script>  

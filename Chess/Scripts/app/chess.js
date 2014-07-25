@@ -2,6 +2,8 @@
 var gameId;
 var currentTurn;
 var boardLocked = false;
+var chessBoard;
+var isTimedGame = false;
 
 /* Unicode chess piece characters */
 var pieceMapping = {
@@ -33,6 +35,28 @@ function ParentOfSpinny()
     }
     else if (chessBoard.orientation() == "white") {
         return $('#board').find(".square-d5");
+    }
+}
+
+function DoMove(source, target, piece) {
+    if ((target[1] == '8' && piece == 'wP') || (target[1] == '1' && piece == 'bP')) {
+        $("input#Start").val(source.toUpperCase());
+        $("input#End").val(target.toUpperCase());
+        $("#submitmove form").show();
+        $("#Promote").val("Queen");
+        return '';
+    }
+
+    PostMove(source.toUpperCase(), target.toUpperCase(), $("#Promote option:selected").text());
+    $("#submitmove form").hide();
+    $("#Promote").val([]);
+}
+
+function onDragStart(source, piece, position, orientation) {
+    if ((orientation === 'white' && piece.search(/^w/) === -1) ||
+        (orientation === 'black' && piece.search(/^b/) === -1) ||
+        !$("form").is(":hidden") || piece.search(currentPlayerColor) == -1 || currentTurn != currentPlayerColor || boardLocked) {
+        return false;
     }
 }
 
@@ -119,17 +143,17 @@ function ProcessServerResponse(data) {
     $("#fen").text(data.fen);
     UpdateTakenPieces(data.fen);
     
-    //crappy
-    if(data.message.match(/(draw)|(mate)/i) != null) {
-        EndGame();
-        return;
-    }
-
     var board = $('#board');
 
     board.find('.square-55d63').removeClass('highlight-white');
     board.find('.square-' + data.movefrom.toLowerCase()).addClass('highlight-white');
     board.find('.square-' + data.moveto.toLowerCase()).addClass('highlight-white');
+
+    //crappy
+    if(data.message.match(/(draw)|(mate)/i) != null) {
+        EndGame();
+        return;
+    }
 }
 
 function LockBoard() {
@@ -155,4 +179,42 @@ function UpdateTakenPieces(fen) {
 
     $("#blacktaken").text(blackArmy.split("").map(function(x) { return pieceMapping[x]; }).join(""));
     $("#whitetaken").text(whiteArmy.split("").map(function(x) { return pieceMapping[x]; }).join(""));
+}
+
+function DocumentReady() {
+    var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable: true, onDrop: DoMove, onDragStart: onDragStart };
+    chessBoard = new ChessBoard('board', cfg);
+
+    if (currentPlayerColor == 'b') {
+        chessBoard.flip();
+    }
+
+    //SignalR stuff
+    var updater = $.connection.updateServer;
+    // Define a client-side message which the server can call
+    updater.client.addMessage = function (message) {
+        ProcessServerResponse(message);
+    };
+
+    // Define a callback for when the connection is established. We join the client group corresponding to our game ID.
+    $.connection.hub.start(function () {
+        $.connection.hub.proxies.updateserver.server.join(gameId);
+    });
+
+    // Hide the promotion UI and set its selection to nothing
+    $("#submitmove form").hide();
+    $("#Promote").val([]);
+
+    $("#submitmove form").submit(function () {
+        PostMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());
+        $("#submitmove form").hide();
+        $("#Promote").val([]);
+        return false;
+    });
+
+    $("#resignbutton").mouseenter(function () {
+        $("#resignbutton").css("background-color", "#B57271");
+    }).mouseleave(function () {
+        $("#resignbutton").css("background-color", "#8F514F");
+    });
 }
