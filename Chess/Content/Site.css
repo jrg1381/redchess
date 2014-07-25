@@ -48,26 +48,14 @@ a:link {
     color: #8f514f;
 }
 
-table.miniboard {
-    border-collapse: collapse;
-        border: 2px;
-        border-color : black;
-        border-style : solid;
-        width : 230px;
-        height : 100%;
-        cursor: pointer;
-}
-
-td.miniboard-black {
-    background-color: darkgrey;
-    border: none;
-    text-align: center;
-}
-
-td.miniboard-white {
-    background-color: white;
-    border: none;
-    text-align: center;
+#lockIcon {
+    position:absolute;
+    height:127px;
+    width:127px;
+    background-repeat: no-repeat;
+    background: url("/Images/lock.png");
+    z-index: 1;
+    display: inline-block;
 }
 
 #changePasswordForm input,

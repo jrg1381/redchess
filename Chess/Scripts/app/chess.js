@@ -158,12 +158,12 @@ function ProcessServerResponse(data) {
 
 function LockBoard() {
     boardLocked = true;
-    spinner.spin(ParentOfSpinny()[0]);
+    ParentOfSpinny().append('<div id="lockIcon"></div>');
 }
 
 function UnlockBoard() {
     boardLocked = false;
-    spinner.stop();
+    $("#lockIcon").remove();
 }
    
 function UpdateTakenPieces(fen) {
