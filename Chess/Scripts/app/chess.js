@@ -12,7 +12,12 @@ var spinner;
 
 function ParentOfSpinny()
 {
-    return $('#board').find(".square-d5");
+    if (currentTurn == 'b') {
+        return $('#board').find(".square-e4");
+    }
+    else if (currentTurn == 'w') {
+        return $('#board').find(".square-d5");
+    }
 }
 
 function PostMove(start, end, promote) {
