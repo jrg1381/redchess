@@ -157,13 +157,17 @@ function ProcessServerResponse(data) {
 }
 
 function LockBoard() {
+    if (boardLocked)
+        return;
     boardLocked = true;
-    ParentOfSpinny().append('<div id="lockIcon"></div>');
+    ParentOfSpinny().append('<div class="lockIcon"></div>');
 }
 
 function UnlockBoard() {
+    if (!boardLocked)
+        return;
     boardLocked = false;
-    $("#lockIcon").remove();
+    $(".lockIcon").remove();
 }
    
 function UpdateTakenPieces(fen) {
