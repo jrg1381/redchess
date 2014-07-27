@@ -143,6 +143,10 @@ header {
 
 /*#endregion */
 
+.menuaction {
+    text-decoration: underline;
+}
+
 #loginForm input[type=checkbox]{
     border: none;
 }
