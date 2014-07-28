@@ -95,24 +95,13 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-			BoardDto board = m_dbChessContext.Boards.Find(id);
+			var board = m_dbChessContext.Boards.Find(id);
 
-            if (board == null || !MayManipulateBoard(board)) return RedirectToAction("Index");
-            
-            Clock clock = m_dbChessContext.Clocks.FirstOrDefault(c => c.GameId == id);
-
-            if (clock != null)
+            if (board != null && MayManipulateBoard(board))
             {
-                m_dbChessContext.Clocks.Remove(clock);
+                m_dbChessContext.Boards.Remove(board);
+                m_dbChessContext.SaveChanges();
             }
-
-            // TODO: Do this via cascading delete in the database itself instead of the application
-            Array.ForEach(m_dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).ToArray(), entry => m_dbChessContext.HistoryEntries.Remove(entry));
-            // We need to save the changes here before deleting the game row, because of the foreign key constraints that link history and clock entries to games.
-            m_dbChessContext.SaveChanges();
-
-            m_dbChessContext.Boards.Remove(board);
-            m_dbChessContext.SaveChanges();
 
             return RedirectToAction("Index");
         }
