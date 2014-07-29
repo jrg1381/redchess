@@ -1,15 +1,69 @@
 ﻿#board {
-    width : 500px;
-    height : 500px;
+    width : 512px;
+    height : 512px;
 }
 
 .left {
  float : left;   
 }
 
+span.buttonright {
+   float:right;
+    padding-right:15px 
+}
+
+textarea {
+    width:100%;
+    resize:none;
+    overflow:auto; 
+}
+
+#accordion {
+     margin-top:10px;
+     width: 500px;
+}
+
+#textarea {
+    background : #380706;
+    color: white;
+    border: thin solid #cecece;
+}
+
+#accordion div {
+    background:#380706;
+    height:100px;
+    line-height:100px;
+    display:block;
+    padding-left:10px;
+    padding-right:15px;
+    padding-top: 10px;
+    padding-bottom:10px;
+}
+
+a.pgn-header {
+    display:block;
+    width:483px;
+    background:#6E2E2D;
+    color:whitesmoke;
+    padding-left:15px;
+    height:40px;
+    line-height:40px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.first {
+    border-top:thin solid #cecece;    
+}
+
 .movenumber {
     text-align : right;
     padding-right : 12pt;
+}
+
+textarea.pgn-text {
+    background-color: whitesmoke;
 }
 
 #scrollbox {
@@ -30,10 +84,6 @@
     margin-top : 5px;
 }
 
-.ui-accordion {
-    font-size: 75%;
-}
-
 .right {
     margin : 10px;
     float: right;
@@ -42,7 +92,7 @@
 
 .highlightText {
     font-weight : bold;
-    color: red;
+    color: whitesmoke;
 }
 
 .button {
@@ -52,11 +102,15 @@
     background-repeat: no-repeat;
 }
 
+/* A css trick for making mouseovers have an effect on the buttons' opacity '*/
+
 .wrapper {
     background-color : black;
     opacity : 0.7;
     z-index : 0;
 }
+
+/* The navigation buttons */
 
 .button#goStart {
     background: url("/Images/fast-rewind.png");

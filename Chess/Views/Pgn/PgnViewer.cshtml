@@ -2,7 +2,7 @@
 @model Chess.Models.PgnModel
 
 @{
-    ViewBag.Title = "New game";
+    ViewBag.Title = "PGN parser";
 }
 
 <script src="/Scripts/app/chessboard-0.3.0.js"></script>
@@ -21,16 +21,41 @@
         updateBoard(currentMove);
     }
 
-    $(document).ready(function () {
-        $("#pgnTextArea").accordion({ collapsible: true });
-        $("#pgnTextArea").width("50%");
+    $(document).ready(function() {
+        // display the first div by default.
+        $("#accordion div").first().height($("#textarea").height());
+
+        $( "#createForm" ).submit(function() {
+            return ($("#textarea").val().length > 0);
+        });
+
+        $("#submitbutton").click(function() {
+            $("#createForm").submit();
+        });
+
+        // Get all the links.
+        var link = $("#accordion a");
+
+        // On clicking of the links do something.
+        link.on('click', function(e) {
+            e.preventDefault();
+
+            var a = $(this).attr("href");
+
+            if($(a).is(':hidden')) {
+                $(a).slideDown('fast');
+            }
+            else {
+                $(a).slideUp('fast');
+            }
+
+            $("#accordion div").not(a).slideUp('fast');    
+        });
 
         $("#main").hide();
         if (lastMove == 0)
             return;
         $("#main").show();
-      
-        $("#pgnTextArea").accordion({ active: 1 });
 
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         board = new ChessBoard('board', cfg);
@@ -93,20 +118,16 @@
     });
 </script>
 
-            <div id="pgnTextArea">
-                <h6>Enter moves</h6>
-                <div>
-                            @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new {id = "createForm"}))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary(true)
-                                <textarea name="pgnText" id="pgnText" cols="80" rows="15">@Model.PgnText</textarea>
-                                <p>
-                                    <input type="submit" value="Create" />
-                                </p>
-                            }
-                </div>
-            </div>
+<div id="accordion">
+    <a href="#one" class="pgn-header">Enter PGN<span class="buttonright"><input type="submit" value="Submit" id="submitbutton"/></span></a>
+    <div id="one">
+        @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new {id = "createForm"}))
+        {
+            @Html.AntiForgeryToken()
+            <textarea rows="12" id="textarea" name="pgnText">@Model.PgnText</textarea>
+        }
+    </div>
+</div>
 
         @foreach (var error in @Model.ErrorText)
         {
@@ -158,7 +179,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts {
  @Scripts.Render("~/bundles/jqueryval")
