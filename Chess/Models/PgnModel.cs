@@ -15,7 +15,6 @@ namespace Chess.Models
     {
         public List<string> ErrorText { get; set; }
         public List<FenWithMove> FenPositions { get; set; } 
-        public string PgnText { get; set; }
         public Dictionary<string, string> Tags { get; private set; }
 
         public PgnModel()
@@ -23,9 +22,6 @@ namespace Chess.Models
             ErrorText = new List<string>();
             FenPositions = new List<FenWithMove>();
             Tags = new Dictionary<string, string>();
-
-            Tags["Black"] = "Anonymous";
-            Tags["White"] = "Anonymous";
         }
 
         internal void RecordMove(string fen, string moveText)

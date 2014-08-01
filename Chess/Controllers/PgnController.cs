@@ -8,43 +8,49 @@ namespace Chess.Controllers
 {
     public class PgnController : Controller
     {
-        private readonly PgnModel m_model;
-
-        public PgnController()
-        {
-            m_model = new PgnModel();
-        }
         //
         // GET: /Pgn/
 
         public ActionResult Index()
         {
-            return View("PgnViewer", m_model);
+            return View("PgnViewer");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PgnModel model, string pgnText)
+        public ActionResult Create(string pgnText)
         {
-            m_model.PgnText = pgnText;
+            var model = new PgnModel();
+
             try
             {
                 var parser = ParserFactory.GetParser();
-                parser.Parse(pgnText, (s,m) => m_model.RecordMove(s,m), s => m_model.ErrorText.Add(s), playGame:true);
+                parser.Parse(pgnText, model.RecordMove, s => model.ErrorText.Add(s), playGame: true);
 
-                m_model.Tags.Clear();
+                model.Tags.Clear();
                 foreach (var kvp in parser.Tags)
                 {
-                    m_model.Tags.Add(kvp.Key, kvp.Value);
+                    model.Tags.Add(kvp.Key, kvp.Value);
                 }
             }
             catch (InvalidDataException e)
             {
-                m_model.ErrorText.Add(e.Message);
-                m_model.ErrorText.Add("PGN told engine to perform an illegal move");
+                model.ErrorText.Add(e.Message);
+                model.ErrorText.Add("PGN told engine to perform an illegal move");
+            }
+            finally
+            {
+                SetTagDefault(model.Tags, "White", "Anonymous");
+                SetTagDefault(model.Tags, "Black", "Anonymous");
             }
 
-            return View("PgnViewer", m_model);
+            return Json(model);
+        }
+
+        private static void SetTagDefault(IDictionary<string, string> tags, string key, string defaultValue)
+        {
+            if (!tags.ContainsKey(key) || tags[key] == null)
+                tags[key] = defaultValue;
         }
     }
 }

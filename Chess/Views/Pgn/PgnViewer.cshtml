@@ -1,5 +1,4 @@
 ﻿@using System.Web.Mvc.Html
-@model Chess.Models.PgnModel
 
 @{
     ViewBag.Title = "PGN parser";
@@ -10,8 +9,9 @@
 <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css"/>
     
 <script>
+    var positions;
     var board;
-    var lastMove = @Model.FenPositions.Count() ; // Total number of moves in the game
+    var lastMove = 0; // Total number of moves in the game
     var currentMove = 0;
 
     function clickText() {
@@ -19,6 +19,55 @@
         $(this).addClass("highlightText");
         currentMove = parseInt(this.id.substr(1));
         updateBoard(currentMove);
+    }
+
+    function ProcessServerResponse(data) {
+        positions = data.FenPositions;
+        lastMove = data.FenPositions.length;
+        $("#errors").text(data.ErrorText.join(" "));
+        var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
+        board = new ChessBoard('board', cfg);
+        board.position(positions[0].Fen);
+        updateBoard(0);
+        PopulateMovesBox();
+        $("#main").show();
+        $('#title').text(data.Tags.White + " vs " + data.Tags.Black);
+    }
+
+    function updateBoard(newMove) {
+        $("span#goBack").show();
+        $("span#goForward").show();
+
+        if (newMove == 0) {
+            $("span#goBack").hide();
+        }
+
+        if (positions[newMove + 1] == null) {
+            $("span#goForward").hide();
+        }
+
+        board.position(positions[newMove].Fen);
+    }
+
+    function PopulateMovesBox() {
+        var moveNumber = 1;
+        $('#moves').empty();
+
+        for (i = 1; i < lastMove; i+=2) {
+            var originalI1 = i;
+            var originalI2 = i + 1;
+
+            var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions[originalI1].Move + "</td> ";
+            if(originalI2 < lastMove) {
+                text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].Move + "</td>";
+            }
+            text += "</tr>";
+
+            $("#moves").append(text);
+
+            $("#m" + originalI1).on("click", clickText);
+            $("#m" + originalI2).on("click", clickText);
+        }
     }
 
     $(document).ready(function() {
@@ -30,7 +79,11 @@
         });
 
         $("#submitbutton").click(function() {
-            $("#createForm").submit();
+            $.post("/Pgn/Create", {
+                    "pgnText": $("#textarea").val(),
+                    "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+                }
+            ).done(ProcessServerResponse);
         });
 
         // Get all the links.
@@ -53,32 +106,9 @@
         });
 
         $("#main").hide();
-        if (lastMove == 0)
-            return;
-        $("#main").show();
 
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         board = new ChessBoard('board', cfg);
-        renderMoves();
-        board.position(positions[0].fen);
-        updateBoard(0);
-
-        var moveNumber = 1;
-        for (i = 1; i < lastMove; i+=2) {
-            var originalI1 = i;
-            var originalI2 = i + 1;
-
-            var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions[originalI1].move + "</td> ";
-            if(originalI2 < lastMove) {
-                text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].move + "</td>";
-            }
-            text += "</tr>";
-
-            $("#moves").append(text);
-
-            $("#m" + originalI1).on("click", clickText);
-            $("#m" + originalI2).on("click", clickText);
-        }
 
         $("span.button").mouseover(function () {
             $(this).parent().fadeTo(40, 1.0);
@@ -115,6 +145,10 @@
             currentMove = lastMove-1;
             $("#m" + currentMove).addClass("highlightText");
         });
+
+        $("#goFlip").on("click", function () {
+            board.flip();
+        });
     });
 </script>
 
@@ -124,42 +158,11 @@
         @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new {id = "createForm"}))
         {
             @Html.AntiForgeryToken()
-            <textarea rows="12" id="textarea" name="pgnText">@Model.PgnText</textarea>
+            <textarea rows="12" id="textarea" name="pgnText"></textarea>
         }
     </div>
 </div>
-
-        @foreach (var error in @Model.ErrorText)
-        {
-            <p>@error</p>
-        }
-        
-<script>
-    var positions = new Array(@Model.FenPositions.Count);
-    var i = 0;
-
-    function renderMoves() {
-        @foreach (var data in @Model.FenPositions.Select(x => new { Fen = x.Fen.Split(new char[] {' '})[0], Move = x.Move }))
-        {
-            <text>positions[i++] = { "fen" : '@data.Fen', "move" : '@data.Move'} ;</text>
-        }
-    }
-
-    function updateBoard(newMove) {
-        $("span#goBack").show();
-        $("span#goForward").show();
-
-        if (newMove == 0) {
-            $("span#goBack").hide();
-        }
-
-        if (positions[newMove+1] == null) {
-            $("span#goForward").hide();
-        }
-
-        board.position(positions[newMove].fen);
-    }
-</script>
+<p id="errors"></p>
             
 <div id="main">
     <div class="left">
@@ -168,12 +171,12 @@
     </div>
 
     <div class="left">
-        <p class="title">@Model.Tags["White"] vs @Model.Tags["Black"]</p>
+        <p class="title" id="title"></p>
         <div id="board"></div>
         <div class="navigation">
             <div class="wrapper"><span class="button" id="goStart"></span></div>
             <div class="wrapper"><span class="button" id="goBack"></span></div>
-
+            <div class="wrapper"><span class="button" id="goFlip"></span></div> 
             <div class="wrapper"><span class="button" id="goEnd"></span></div>
             <div class="wrapper"><span class="button" id="goForward"></span></div>
         </div>
