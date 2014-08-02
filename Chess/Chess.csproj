@@ -301,6 +301,7 @@
     <Content Include="Images\wP.png" />
     <Content Include="Images\wQ.png" />
     <Content Include="Images\wR.png" />
+    <Content Include="Scripts\app\boardviewer.js" />
     <Content Include="Scripts\app\chess.js" />
     <Content Include="Scripts\app\chessboard-0.3.0.css" />
     <Content Include="Scripts\app\chessboard-0.3.0.js" />
