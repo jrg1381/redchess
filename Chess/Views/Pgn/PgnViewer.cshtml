@@ -6,28 +6,11 @@
 
 <script src="/Scripts/app/chessboard-0.3.0.js"></script>
 <script src="/Scripts/app/spinner.js" type="text/javascript"></script>
+<script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
 <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css"/>
     
 <script>
-    var positions;
-    var board;
-    var lastMove = 0; // Total number of moves in the game
-    var currentMove = 0;
-
-    var spinner = CreateSpinner();
-
-    function clickText() {
-        $("#m" + currentMove).removeClass("highlightText");
-        $(this).addClass("highlightText");
-        currentMove = parseInt(this.id.substr(1));
-        updateBoard(currentMove);
-    }
-
-    function ParentOfSpinny() {
-        return $('#spinner-location');
-    }
-
     function ProcessServerResponse(data) {
         spinner.stop();
 
@@ -43,51 +26,15 @@
         $('#title').text(data.Tags.White + " vs " + data.Tags.Black);
     }
 
-    function updateBoard(newMove) {
-        $("span#goBack").show();
-        $("span#goForward").show();
-
-        if (newMove == 0) {
-            $("span#goBack").hide();
-        }
-
-        if (positions[newMove + 1] == null) {
-            $("span#goForward").hide();
-        }
-
-        board.position(positions[newMove].Fen);
-    }
-
-    function PopulateMovesBox() {
-        var moveNumber = 1;
-        $('#moves').empty();
-
-        for (i = 1; i < lastMove; i+=2) {
-            var originalI1 = i;
-            var originalI2 = i + 1;
-
-            var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions[originalI1].Move + "</td> ";
-            if(originalI2 < lastMove) {
-                text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].Move + "</td>";
-            }
-            text += "</tr>";
-
-            $("#moves").append(text);
-
-            $("#m" + originalI1).on("click", clickText);
-            $("#m" + originalI2).on("click", clickText);
-        }
-    }
-
     $(document).ready(function() {
         // display the first div by default.
         $("#accordion div").first().height($("#textarea").height());
 
-        $( "#createForm" ).submit(function() {
+        $("#createForm").submit(function() {
             return ($("#textarea").val().length > 0);
         });
 
-        $("#submitbutton").click(function () {
+        $("#submitbutton").click(function() {
             spinner.spin(ParentOfSpinny()[0]);
 
             $.post("/Pgn/Create", {
@@ -106,12 +53,11 @@
 
             var a = $(this).attr("href");
 
-            if($(a).is(':hidden')) {
+            if ($(a).is(':hidden')) {
                 $(a).slideDown('fast');
-            }
-            else {
+            } else {
                 $(a).slideUp('fast');
-            }   
+            }
         });
 
         $("#main").hide();
@@ -119,45 +65,7 @@
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         board = new ChessBoard('board', cfg);
 
-        $("span.button").mouseover(function () {
-            $(this).parent().fadeTo(40, 1.0);
-        }).mouseout(function () {
-            $(this).parent().fadeTo(40, 0.7);
-        });
-
-        $("#goForward").on("click", function () {
-            if (currentMove == lastMove - 1) return;
-            updateBoard(currentMove + 1);
-            $("#m" + currentMove).removeClass("highlightText");
-            currentMove++;
-            $("#m" + currentMove).addClass("highlightText");
-        });
-
-        $("#goBack").on("click", function () {
-            if (currentMove == 0) return;
-            updateBoard(currentMove - 1);
-            $("#m" + currentMove).removeClass("highlightText");
-            currentMove--;
-            $("#m" + currentMove).addClass("highlightText");
-        });
-
-        $("#goStart").on("click", function () {
-            updateBoard(0);
-            $("#m" + currentMove).removeClass("highlightText");
-            currentMove = 0;
-            $("#m" + currentMove).addClass("highlightText");
-        });
-
-        $("#goEnd").on("click", function () {
-            updateBoard(lastMove-1);
-            $("#m" + currentMove).removeClass("highlightText");
-            currentMove = lastMove-1;
-            $("#m" + currentMove).addClass("highlightText");
-        });
-
-        $("#goFlip").on("click", function () {
-            board.flip();
-        });
+        ConfigureActionButtons();
     });
 </script>
 

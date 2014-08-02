@@ -1,6 +1,12 @@
 ﻿@model IEnumerable<Chess.Models.HistoryEntry>
+    
+<script src="/Scripts/app/spinner.js" type="text/javascript"></script>
+<script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css"/>
+<script src="/Scripts/app/chessboard-0.3.0.js"></script>
+<link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
 
-    @{
+@{
         ViewBag.Title = "History";
         var maxMoves = @Model.Count();
         var currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == Math.Max(1, Math.Min(maxMoves, ViewBag.MoveNumber)));
@@ -10,88 +16,19 @@
     }
 
     <script>
-        var board;
-        var lastMove = @maxMoves; // Total number of moves in the game
-        var currentMove = 0;
-
-        function clickText() {
-            $("#m" + currentMove).removeClass("highlightText");
-            $(this).addClass("highlightText");
-            currentMove = parseInt(this.id.substr(1));
-            updateBoard(currentMove);
-        }
-
         $(document).ready(function () {
-            if (lastMove == 0)
-                return;
-
             var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
             board = new ChessBoard('board', cfg);
             renderMoves();
             board.position(positions[0].fen);
-
-            var moveNumber = 1;
-            for (i = 1; i < lastMove; i+=2) {
-                var originalI1 = i;
-                var originalI2 = i + 1;
-
-                var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions[originalI1].move + "</td> ";
-                if(originalI2 < lastMove) {
-                    text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].move + "</td>";
-                }
-                text += "</tr>";
-
-                $("#moves").append(text);
-
-                $("#m" + originalI1).on("click", clickText);
-                $("#m" + originalI2).on("click", clickText);
-            }
-
-            $("span.button").mouseover(function () {
-                $(this).parent().fadeTo(40, 1.0);
-            }).mouseout(function () {
-                $(this).parent().fadeTo(40, 0.7);
-            });
-
-            $("#goForward").on("click", function () {
-                if (currentMove == lastMove - 1) return;
-                updateBoard(currentMove + 1);
-                $("#m" + currentMove).removeClass("highlightText");
-                currentMove++;
-                $("#m" + currentMove).addClass("highlightText");
-            });
-
-            $("#goBack").on("click", function () {
-                if (currentMove == 0) return;
-                updateBoard(currentMove - 1);
-                $("#m" + currentMove).removeClass("highlightText");
-                currentMove--;
-                $("#m" + currentMove).addClass("highlightText");
-            });
-
-            $("#goStart").on("click", function () {
-                updateBoard(0);
-                $("#m" + currentMove).removeClass("highlightText");
-                currentMove = 0;
-                $("#m" + currentMove).addClass("highlightText");
-            });
-
-            $("#goEnd").on("click", function () {
-                updateBoard(lastMove-1);
-                $("#m" + currentMove).removeClass("highlightText");
-                currentMove = lastMove-1;
-                $("#m" + currentMove).addClass("highlightText");
-            });
-
-            $("#goFlip").on("click", function () {
-                board.flip();
-            });
 
             if(location.hash.length != 0) {
                 updateBoard(parseInt(location.hash.substring(1)));
             } else {
                 updateBoard(0);
             }
+
+            ConfigureActionButtons();
         });
     </script>
 
@@ -107,35 +44,12 @@
         var i = 0;
 
         function renderMoves() {
-            @foreach (var data in @Model.Select(x => new { Fen = x.Fen.Split(new[] {' '})[0], Move = "*" }))
-        {
-            <text>positions[i++] = { "fen" : '@data.Fen', "move" : '@data.Move'} ;</text>
-        }
-        }
-
-        function updateBoard(newMove) {
-            $("span#goBack").show();
-            $("span#goForward").show();
-
-            if (newMove == 0) {
-                $("span#goBack").hide();
+            @foreach (var data in @Model.Select(x => new {Fen = x.Fen.Split(new[] {' '})[0], Move = "*"}))
+            {
+                <text>positions[i++] = { "Fen" : '@data.Fen', "Move" : '@data.Move'} ;</text>
             }
-
-            if (positions[newMove+1] == null) {
-                $("span#goForward").hide();
-            }
-
-
-            board.position(positions[newMove].fen);
-            location.hash = newMove;
         }
     </script>
-
-    <script src="/Scripts/app/chessboard-0.3.0.js"></script>
-    <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
-    <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css" />
-
-
 
 <div class="left">
     <p class="title">@description</p>
