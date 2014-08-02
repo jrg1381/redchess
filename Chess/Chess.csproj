@@ -307,6 +307,7 @@
     <Content Include="Scripts\app\chessboard-0.3.0.min.css" />
     <Content Include="Scripts\app\chessboard-0.3.0.min.js" />
     <Content Include="Scripts\app\clock.js" />
+    <Content Include="Scripts\app\spinner.js" />
     <Content Include="Scripts\app\viewer.css" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
