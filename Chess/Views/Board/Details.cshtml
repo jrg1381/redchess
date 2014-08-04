@@ -65,7 +65,15 @@
 
 <div id="boardparent" style="position:absolute;left:100px;top:170px">
     <div style="width:512px" id="board"></div>
-    <div id="resign" style="position : absolute;left:5px;top:550px;"><a class="buttonlink" id="resignbutton" onclick="Resign();">Resign</a></div>
+    <div style="position : absolute;left:5px;top:550px;">
+        <table><tr><td>
+                               <div id="resign"><a class="buttonlink" id="resignbutton" onclick="Resign();">Resign</a></div>
+                   </td>
+                   <td>
+                               <div id="claim-draw" style="float:right"><a class="buttonlink" id="drawbutton" onclick="alert('Claimed a draw');">Claim draw</a></div>
+                   </td>
+               </tr></table>
+    </div>
 </div>
 
     <div id="submitmove" style="position:absolute;left:650px;top:100px">

@@ -92,10 +92,17 @@ function EndGame() {
 function UpdateUi(fen) {
     chessBoard.position(fen);
 
-    var turn = fen.split(" ")[1];
+    var splitFen = fen.split(" ");
+    var turn = splitFen[1];
+
     if ($("#turnindicator").text() != "GAME OVER") {
         currentTurn = turn;
         $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
+    }
+
+    var fiftyMoveRule = splitFen[4];
+    if (fiftyMoveRule >= 50) {
+        $("#claim-draw").show();
     }
 
     if (ParentOfSpinny()[0].hasChildNodes()) {
@@ -194,6 +201,9 @@ function DocumentReady() {
     $("#submitmove form").hide();
     $("#Promote").val([]);
 
+    // Hide the claim the draw button
+    $("#claim-draw").hide();
+
     $("#submitmove form").submit(function () {
         PostMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());
         $("#submitmove form").hide();
@@ -205,5 +215,11 @@ function DocumentReady() {
         $("#resignbutton").css("background-color", "#B57271");
     }).mouseleave(function () {
         $("#resignbutton").css("background-color", "#8F514F");
+    });
+
+    $("#drawbutton").mouseenter(function () {
+        $("#drawbutton").css("background-color", "#B57271");
+    }).mouseleave(function () {
+        $("#drawbutton").css("background-color", "#8F514F");
     });
 }
