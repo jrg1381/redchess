@@ -17,12 +17,28 @@ namespace Redchess.Engine
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
-        public PieceColor CurrentTurn { get; private set; }
-        private readonly Fen m_fen;
-        private Pawn m_promotedPawn;
-        private Location m_enPassantTarget;
         private readonly CastlingRules m_castlingRules;
+        private readonly Fen m_fen;
         protected SimpleBoard SimpleBoard;
+        private Location m_enPassantTarget;
+        private Pawn m_promotedPawn;
+
+        public Board()
+            : this(PieceColor.White, false, true)
+        {
+        }
+
+        protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
+        {
+            CurrentTurn = whoseTurn;
+            m_castlingRules = new CastlingRules();
+            m_enPassantTarget = Location.InvalidSquare;
+            m_fen = new Fen(this, m_castlingRules);
+            if (createNewSimpleBoard)
+                SimpleBoard = new SimpleBoard(isEmpty);
+        }
+
+        public PieceColor CurrentTurn { get; private set; }
 
         public string ToFen()
         {
@@ -86,42 +102,6 @@ namespace Redchess.Engine
             return true;
         }
 
-        public Board()
-            : this(PieceColor.White, false, true)
-        {
-        }
-
-        protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
-        {
-            CurrentTurn = whoseTurn;
-            m_castlingRules = new CastlingRules();
-            m_enPassantTarget = Location.InvalidSquare;
-            m_fen = new Fen(this, m_castlingRules);
-            if (createNewSimpleBoard)
-                SimpleBoard = new SimpleBoard(isEmpty);
-        }
-
-        // True if the move will not put (or leave) the king in check
-        public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
-        {
-            var boardCopy = DeepClone();
-            boardCopy.MovePiece(piece, newLocation);
-
-            // Note that CurrentTurn comes from the current board, not boardCopy, because MovePiece changes the turn...
-            // Note that KingPosition comes from the boardCopy, because the move might have moved the king...
-            return !boardCopy.KingInCheck(CurrentTurn, boardCopy.KingPosition(CurrentTurn));
-        }
-
-        public IPiece GetContents(Location loc)
-        {
-            return SimpleBoard.GetContents(loc);
-        }
-
-        public Location EnPassantTarget
-        {
-            get { return m_enPassantTarget; }
-        }
-
         public bool IsAwaitingPromotionDecision()
         {
             return m_promotedPawn != null;
@@ -146,13 +126,6 @@ namespace Redchess.Engine
             return SimpleBoard.OccupiedSquares().Where(x => GetContents(x).Type == pieceType);
         }
 
-        private bool ValidMovesExist()
-        {
-            var friends = SimpleBoard.Pieces(CurrentTurn).OccupiedSquares().Select(GetContents);
-
-            return friends.AsParallel().Any(x => x.ValidMoves(this).Any());
-        }
-
         public bool IsStalemate()
         {
             return (!KingInCheck() && !ValidMovesExist());
@@ -170,22 +143,15 @@ namespace Redchess.Engine
                 return true;
             }
 
-            if (SimpleBoard.PiecesOfType(PieceType.WhiteKnight) == 1 || SimpleBoard.PiecesOfType(PieceType.BlackKnight) == 1)
+            if (SimpleBoard.PiecesOfType(PieceType.WhiteKnight) == 1 ||
+                SimpleBoard.PiecesOfType(PieceType.BlackKnight) == 1)
                 return true;
 
-            if (SimpleBoard.PiecesOfType(PieceType.WhiteBishop) == 1 || SimpleBoard.PiecesOfType(PieceType.BlackBishop) == 1)
+            if (SimpleBoard.PiecesOfType(PieceType.WhiteBishop) == 1 ||
+                SimpleBoard.PiecesOfType(PieceType.BlackBishop) == 1)
                 return true;
 
             return false;
-        }
-
-        internal void PromotePiece(PieceType promotionTarget)
-        {
-            if (m_promotedPawn == null)
-                throw new CannotPromoteException();
-            SimpleBoard.RemovePiece(m_promotedPawn);
-            SimpleBoard.AddPiece(PieceFactory.CreatePiece(promotionTarget, m_promotedPawn.Position.Location));
-            m_promotedPawn = null;
         }
 
         public void PromotePiece(string promotionTarget)
@@ -223,6 +189,87 @@ namespace Redchess.Engine
                     PromotePiece(PieceType.Knight | flagsForPromotedPiece);
                     break;
             }
+        }
+
+        /// <summary>
+        ///     Returns true if the king of the current player is in check right now
+        /// </summary>
+        /// <returns></returns>
+        public bool KingInCheck()
+        {
+            return KingInCheck(CurrentTurn, KingPosition(CurrentTurn));
+        }
+
+        public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
+        {
+            var boardCopy = DeepClone();
+            boardCopy.MovePiece(piece, newLocation);
+
+            // Note that CurrentTurn comes from the current board, not boardCopy, because MovePiece changes the turn...
+            // Note that KingPosition comes from the boardCopy, because the move might have moved the king...
+            return !boardCopy.KingInCheck(CurrentTurn, boardCopy.KingPosition(CurrentTurn));
+        }
+
+        public IPiece GetContents(Location loc)
+        {
+            return SimpleBoard.GetContents(loc);
+        }
+
+        public Location EnPassantTarget
+        {
+            get { return m_enPassantTarget; }
+        }
+
+        public bool MayCastle(IPiece king, Side side)
+        {
+            return m_castlingRules.MayCastle(king.Color, side, this);
+        }
+
+        /// <summary>
+        ///     Return a board bitmap blocked out with NullPieces representing all the pieces of the given colour
+        /// </summary>
+        /// <returns></returns>
+        public IBoardBitmap Pieces(PieceColor color)
+        {
+            return SimpleBoard.Pieces(color);
+        }
+
+        /// <summary>
+        ///     Returns true if a king of color <paramref name="colorOfKing" /> placed on <paramref name="kingPosition" /> would be
+        ///     in check
+        /// </summary>
+        /// <param name="colorOfKing"></param>
+        /// <param name="kingPosition"></param>
+        /// <returns></returns>
+        public bool KingInCheck(PieceColor colorOfKing, Location kingPosition)
+        {
+            /* This is not an efficient algorithm for determining check, it goes through all the attackers and sees if they attack the king, stopping when one does.
+			 * Way more efficient would be to track outwards from the king's position, looking to see if anything is attacking it. In the common case where the king
+			 * is protected by a shield of its own pieces, this would terminate earlier once the search lines hit friendly pieces in all directions. */
+
+            var fixedAttackers = SimpleBoard.Pieces(~colorOfKing).OccupiedSquares().Select(GetContents);
+
+            return
+                fixedAttackers.ToArray()
+                    .AsParallel()
+                    .WithDegreeOfParallelism(s_parallelism)
+                    .Any(tmpPiece => tmpPiece.AttackedSquares(this).Contains(kingPosition));
+        }
+
+        private bool ValidMovesExist()
+        {
+            var friends = SimpleBoard.Pieces(CurrentTurn).OccupiedSquares().Select(GetContents);
+
+            return friends.AsParallel().Any(x => x.ValidMoves(this).Any());
+        }
+
+        internal void PromotePiece(PieceType promotionTarget)
+        {
+            if (m_promotedPawn == null)
+                throw new CannotPromoteException();
+            SimpleBoard.RemovePiece(m_promotedPawn);
+            SimpleBoard.AddPiece(PieceFactory.CreatePiece(promotionTarget, m_promotedPawn.Position.Location));
+            m_promotedPawn = null;
         }
 
         internal void MovePiece(IPiece piece, Location newLocation)
@@ -276,28 +323,20 @@ namespace Redchess.Engine
                 m_promotedPawn = piece;
             }
 
-            int distanceMoved = newSquare.Y - originalLocation.Y;
-            switch (distanceMoved)
+            var verticalDistanceMoved = newSquare.Y - originalLocation.Y;
+            if(Math.Abs(verticalDistanceMoved) > 1)
             {
-                case 2:
-                    m_enPassantTarget = (new Square(originalLocation.X, originalLocation.Y + 1).Location);
-                    return;
-                case -2:
-                    m_enPassantTarget = (new Square(originalLocation.X, originalLocation.Y - 1).Location);
+                    m_enPassantTarget = (new Square(originalLocation.X, originalLocation.Y + Math.Sign(verticalDistanceMoved)).Location);
                     return;
             }
 
-            int horizontalDistanceMoved = newSquare.X - originalLocation.X;
-
+            var horizontalDistanceMoved = newSquare.X - originalLocation.X;
             if (horizontalDistanceMoved != 0 && m_enPassantTarget != Location.InvalidSquare)
                 // The pawn has taken something but there was nothing on the square where it took, i.e. EP
             {
                 var epSquare = new Square(m_enPassantTarget);
-
-                if (CurrentTurn == PieceColor.White)
-                    SimpleBoard.RemovePiece(GetContents(new Square(epSquare.X, epSquare.Y - 1).Location));
-                else
-                    SimpleBoard.RemovePiece(GetContents(new Square(epSquare.X, epSquare.Y + 1).Location));
+                // Note sign. If our pawn moved forward (white) then the e.p. target is back down the board.
+                SimpleBoard.RemovePiece(GetContents(new Square(epSquare.X, epSquare.Y - verticalDistanceMoved).Location));
             }
 
             m_enPassantTarget = Location.InvalidSquare;
@@ -338,20 +377,6 @@ namespace Redchess.Engine
             }
         }
 
-        public bool MayCastle(IPiece king, Side side)
-        {
-            return m_castlingRules.MayCastle(king.Color, side, this);
-        }
-
-        /// <summary>
-        ///     Return a board bitmap blocked out with NullPieces representing all the pieces of the given colour
-        /// </summary>
-        /// <returns></returns>
-        public IBoardBitmap Pieces(PieceColor color)
-        {
-            return SimpleBoard.Pieces(color);
-        }
-
         private Location KingPosition(PieceColor colorOfKing)
         {
             // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
@@ -362,37 +387,6 @@ namespace Redchess.Engine
                 var x = GetContents(loc);
                 return x.Type.IsOfType(PieceType.King) && x.Color == colorOfKing;
             });
-        }
-
-        /// <summary>
-        ///     Returns true if the king of the current player is in check right now
-        /// </summary>
-        /// <returns></returns>
-        public bool KingInCheck()
-        {
-            return KingInCheck(CurrentTurn, KingPosition(CurrentTurn));
-        }
-
-        /// <summary>
-        ///     Returns true if a king of color <paramref name="colorOfKing" /> placed on <paramref name="kingPosition" /> would be
-        ///     in check
-        /// </summary>
-        /// <param name="colorOfKing"></param>
-        /// <param name="kingPosition"></param>
-        /// <returns></returns>
-        public bool KingInCheck(PieceColor colorOfKing, Location kingPosition)
-        {
-            /* This is not an efficient algorithm for determining check, it goes through all the attackers and sees if they attack the king, stopping when one does.
-			 * Way more efficient would be to track outwards from the king's position, looking to see if anything is attacking it. In the common case where the king
-			 * is protected by a shield of its own pieces, this would terminate earlier once the search lines hit friendly pieces in all directions. */
-
-            var fixedAttackers = SimpleBoard.Pieces(~colorOfKing).OccupiedSquares().Select(GetContents);
-
-            return
-                fixedAttackers.ToArray()
-                    .AsParallel()
-                    .WithDegreeOfParallelism(s_parallelism)
-                    .Any(tmpPiece => tmpPiece.AttackedSquares(this).Contains(kingPosition));
         }
 
         private Board DeepClone()
