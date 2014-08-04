@@ -29,7 +29,7 @@ namespace Redchess.EngineTests
             m_normalBoard.Move(Location.D2, Location.D4);
             m_normalBoard.Move(Location.E4, Location.D3);
             
-            FenAssert.AreEqual("rnbqkbnr/pppp1ppp/8/8/P7/3p4/1PP1PPPP/RNBQKBNR w KQkq -", m_normalBoard.ToFen(), "Board does not look as expected after black EP capture");
+            FenAssert.AreEqual("rnbqkbnr/pppp1ppp/8/8/P7/3p4/1PP1PPPP/RNBQKBNR w KQkq - 0", m_normalBoard.ToFen(), "Board does not look as expected after black EP capture");
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Redchess.EngineTests
             m_normalBoard.Move(Location.A7, Location.A5);
             m_normalBoard.Move(Location.B5, Location.A6);
             
-            FenAssert.AreEqual("rnbqkbnr/1ppp1ppp/P7/4p3/8/8/P1PPPPPP/RNBQKBNR b KQkq -", m_normalBoard.ToFen(), "Board does not look as expected after white EP capture");
+            FenAssert.AreEqual("rnbqkbnr/1ppp1ppp/P7/4p3/8/8/P1PPPPPP/RNBQKBNR b KQkq - 0", m_normalBoard.ToFen(), "Board does not look as expected after white EP capture");
         }
 
         [Test]
@@ -55,14 +55,14 @@ namespace Redchess.EngineTests
             m_normalBoard.Move(Location.E5, Location.E4);
             m_normalBoard.Move(Location.D2, Location.D4);
             
-            FenAssert.AreEqual("rnbqkbnr/pppp1ppp/8/8/P2Pp3/8/1PP1PPPP/RNBQKBNR b KQkq D3", m_normalBoard.ToFen(), "Board does not look as expected with pending EP capture");
+            FenAssert.AreEqual("rnbqkbnr/pppp1ppp/8/8/P2Pp3/8/1PP1PPPP/RNBQKBNR b KQkq D3 0", m_normalBoard.ToFen(), "Board does not look as expected with pending EP capture");
         }
 
         [Test]
         public void EnPassantDoesNotBlockTaking()
         {
             // This was a problem which happened when the e.p. bitmaps were included in the calculation of the occupied squares, causing the invisible ep target to block other pieces.
-            m_emptyBoard.FromFen("rnbqkbnr/ppp2ppp/3p4/4P3/8/6PB/PPPPPP1P/RNBQK1NR w KQkq - E6");
+            m_emptyBoard.FromFen("rnbqkbnr/ppp2ppp/3p4/4P3/8/6PB/PPPPPP1P/RNBQK1NR w KQkq E6 1");
             var theBishop = m_emptyBoard.GetContents(Location.H3);
             Assert.That(theBishop.Type.IsOfType(PieceType.WhiteBishop), "The white bishop is not a white bishop! " + theBishop.Type);
             var expectedValidMoves = new[]
@@ -81,7 +81,7 @@ namespace Redchess.EngineTests
             m_normalBoard.Move(Location.B4, Location.B5);
             m_normalBoard.Move(Location.A7, Location.A5);
             
-            FenAssert.AreEqual("rnbqkbnr/1ppp1ppp/8/pP2p3/8/8/P1PPPPPP/RNBQKBNR w KQkq A6", m_normalBoard.ToFen(), "Board does not look as expected with pending EP capture");
+            FenAssert.AreEqual("rnbqkbnr/1ppp1ppp/8/pP2p3/8/8/P1PPPPPP/RNBQKBNR w KQkq A6 0", m_normalBoard.ToFen(), "Board does not look as expected with pending EP capture");
         }
     }
 }

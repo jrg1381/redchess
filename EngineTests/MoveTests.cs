@@ -47,11 +47,11 @@ namespace Redchess.EngineTests
 			}
 		}
 
-		[TestCase("8/8/8/8/8/8/P7/8 w KQkq -", Location.A2, new [] { Location.A3, Location.A4 })]
-        [TestCase("8/8/8/8/8/P7/8/8 w KQkq -", Location.A3, new[] { Location.A4 })]
-        [TestCase("8/8/8/8/3P4/3P4/8/8 w KQkq -", Location.D3, new Location[0])]
-        [TestCase("rnbqkbnr/1ppppppp/8/8/p7/8/PPPPPPPP/RNBQKBNR w KQkq -", Location.A2, new [] { Location.A3 })]
-        [TestCase("rnbqkbnr/1ppppppp/8/8/P7/8/PPPPPPP1/RNBQKBNR w KQkq -", Location.A2, new [] {Location.A3})]
+		[TestCase("8/8/8/8/8/8/P7/8 w KQkq - 0", Location.A2, new [] { Location.A3, Location.A4 })]
+        [TestCase("8/8/8/8/8/P7/8/8 w KQkq - 0", Location.A3, new[] { Location.A4 })]
+        [TestCase("8/8/8/8/3P4/3P4/8/8 w KQkq - 0", Location.D3, new Location[0])]
+        [TestCase("rnbqkbnr/1ppppppp/8/8/p7/8/PPPPPPPP/RNBQKBNR w KQkq - 0", Location.A2, new [] { Location.A3 })]
+        [TestCase("rnbqkbnr/1ppppppp/8/8/P7/8/PPPPPPP1/RNBQKBNR w KQkq - 0", Location.A2, new [] {Location.A3})]
 		public void PawnMoves(string initialFen, Location pawnLocation, IEnumerable<Location> expectedReachableSquares)
 		{
             m_emptyBoard.FromFen(initialFen);
@@ -177,7 +177,7 @@ namespace Redchess.EngineTests
 		{
             m_emptyBoard.FromFen("3N4/3k4/8/8/8/8/8/8 b KQ -");
             m_emptyBoard.Move(Location.D7, Location.D8);
-            FenAssert.AreEqual("3k4/8/8/8/8/8/8/8 w KQ -", m_emptyBoard.ToFen(), "Expected knight to be taken");
+            FenAssert.AreEqual("3k4/8/8/8/8/8/8/8 w KQ - 0", m_emptyBoard.ToFen(), "Expected knight to be taken");
 		}
 
         [TestCase("7k/8/8/8/8/8/8/8 b - -", Location.H8, Location.B2)]
@@ -350,7 +350,7 @@ namespace Redchess.EngineTests
             m_normalBoard.Move(Location.H1, Location.H2);
             m_normalBoard.Move(Location.A8, Location.A7);
 
-            FenAssert.AreEqual("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - -", m_normalBoard.ToFen(), "Expected no castling to be allowed after moving all the rooks");
+            FenAssert.AreEqual("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - - 4", m_normalBoard.ToFen(), "Expected no castling to be allowed after moving all the rooks");
 		}
 
         [Test]

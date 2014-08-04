@@ -62,9 +62,10 @@ namespace Redchess.Engine
                 }
             }
 
-            sb.AppendFormat(" {0} {1} {2}", m_board.CurrentTurn.ToString().ToLower()[0],
+            sb.AppendFormat(" {0} {1} {2} {3}", m_board.CurrentTurn.ToString().ToLower()[0],
                                             m_castlingRules.FenCastleString(),
-                                            m_board.EnPassantTarget == Location.InvalidSquare ? "-" : m_board.EnPassantTarget.ToString());
+                                            m_board.EnPassantTarget == Location.InvalidSquare ? "-" : m_board.EnPassantTarget.ToString(),
+                                            m_board.FiftyMoveCounter);
 
             return sb.ToString();
         }

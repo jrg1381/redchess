@@ -76,7 +76,7 @@ namespace Redchess.EngineTests
             m_emptyBoard.FromFen("7k/8/8/8/8/8/8/4K2R w KQkq -");
             Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched white king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E1,Location.G1);
-            FenAssert.AreEqual("7k/8/8/8/8/8/8/5RK1 b kq -", m_emptyBoard.ToFen(), "Unexpected FEN after castling");
+            FenAssert.AreEqual("7k/8/8/8/8/8/8/5RK1 b kq - 1", m_emptyBoard.ToFen(), "Unexpected FEN after castling");
         }
 
         [Test]
