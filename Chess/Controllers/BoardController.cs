@@ -189,6 +189,32 @@ namespace Chess.Controllers
             return Json(jsonObject);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ClaimDraw(int id)
+        {
+            BoardDto board = m_dbChessContext.Boards.Find(id);
+
+            if (!MayManipulateBoard(board))
+            {
+                return Json(new { fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH" });
+            }
+
+            if (!board.MayClaimDraw)
+            {
+                return Json(new {fen = board.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
+            }
+
+            board.EndGameWithMessage("Draw claimed");
+
+            var jsonObject = new {fen = board.Fen, message = "Draw claimed", status = "DRAW"};
+
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
+
+            return Json(jsonObject);
+        }
+
 		//
 		// POST: /Board/PlayMove/5
 

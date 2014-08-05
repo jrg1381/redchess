@@ -71,6 +71,17 @@ function Resign() {
     }).done(ProcessServerResponse);
 }
 
+function ClaimDraw() {
+    if(!confirm("Are you sure you want to claim a draw?")) {
+        return;
+    }
+
+    $.post("/Board/ClaimDraw", {
+        "id": gameId,
+        "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+    }).done(ProcessServerResponse);
+}
+
 function TellServerGameIsTimedOut(message) {
     $.post("/Board/TimedOut", {
         "id": gameId,
@@ -87,6 +98,7 @@ function EndGame() {
     }
     $("#turnindicator").text("GAME OVER");
     $("#resign").hide();
+    $("#claim-draw").hide();
 }
 
 function UpdateUi(fen) {
@@ -117,7 +129,7 @@ function ProcessServerResponse(data) {
         return; /* Not allowed to play on this board */
     }
 
-    if (data.status == "RESIGN" || data.status == "TIME") {
+    if (data.status == "RESIGN" || data.status == "TIME" || data.status == "DRAW") {
         EndGame();
         return;
     }
