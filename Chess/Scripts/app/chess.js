@@ -163,7 +163,7 @@ function LockBoard() {
     if (boardLocked)
         return;
     boardLocked = true;
-    ParentOfSpinny().append('<div class="lockIcon"></div>');
+    ParentOfSpinny().prepend('<div class="lockIcon"></div>');
 }
 
 function UnlockBoard() {
