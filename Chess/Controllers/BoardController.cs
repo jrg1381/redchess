@@ -261,15 +261,34 @@ namespace Chess.Controllers
 			}
 
 			board.UpdateMessage();
+            UpdateDrawClaimStatus(board);
 			m_dbChessContext.SaveChanges();
 
             string messageForUser = board.Status;
-			var jsonObject = new {fen = board.Fen, message = messageForUser, movefrom = start, moveto = end, status = "OK"};
+			var jsonObject = new {fen = board.Fen, message = messageForUser, movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw};
 
 			IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
 			hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
-			return Json(jsonObject);			
+			return Json(jsonObject);
 		}
+
+        private void UpdateDrawClaimStatus(BoardDto board)
+        {
+            if (board.MayClaimDraw)
+                return;
+
+            var fiftyMoveRule = Int32.Parse(board.Fen.Split(' ')[4]);
+            if (fiftyMoveRule > 50)
+            {
+                board.MayClaimDraw = true;
+                return;
+            }
+            var hasRepeatedThreeTimes = m_dbChessContext.Database.SqlQuery<int>(String.Format("SELECT dbo.HasRepeatedThreeTimes({0})", board.GameId)).FirstOrDefault();
+            if (hasRepeatedThreeTimes > 0)
+            {
+                board.MayClaimDraw = true;
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

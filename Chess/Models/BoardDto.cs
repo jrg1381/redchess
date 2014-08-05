@@ -114,6 +114,10 @@ namespace Chess.Models
 
         public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
         public string Fen { get { return m_board.ToFen(); } set { m_board.FromFen(value); } }
+
+        [NotMapped]
+        public bool MayClaimDraw { get; set; }
+
         public bool Move(Location start, Location end) { return m_board.Move(start, end); }
         public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
 

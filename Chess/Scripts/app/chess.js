@@ -100,11 +100,6 @@ function UpdateUi(fen) {
         $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
     }
 
-    var fiftyMoveRule = splitFen[4];
-    if (fiftyMoveRule >= 50) {
-        $("#claim-draw").show();
-    }
-
     if (ParentOfSpinny()[0].hasChildNodes()) {
         spinner.stop();
     }
@@ -114,6 +109,10 @@ function ProcessServerResponse(data) {
     UpdateUi(data.fen);
     $("#messages").text(data.message);
    
+    if (data.mayClaimDraw) {
+        $("#claim-draw").show();
+    }
+
     if (data.status == "AUTH") {
         return; /* Not allowed to play on this board */
     }

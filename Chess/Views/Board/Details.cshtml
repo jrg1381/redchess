@@ -37,6 +37,10 @@
         $("#messages").text('@Model.Status');
         UpdateTakenPieces('@Model.Fen');
 
+        @if (Model.MayClaimDraw) {
+            <text>$('#claim-draw').show()</text>
+        }
+
         @if (Model.GameOver)
         {
             <text>EndGame();</text>
