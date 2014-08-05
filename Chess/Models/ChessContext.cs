@@ -15,6 +15,7 @@ namespace Chess.Models
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Chess.Models.ChessContext>());
 
+        private static object m_lock = new object();
 	    private static Dictionary<string, int> s_playerNameToId; 
 
         public ChessContext() : base("name=DefaultConnection")
@@ -33,15 +34,19 @@ namespace Chess.Models
             int answer;
 
             // There is a cached value
-            if (s_playerNameToId.TryGetValue(playerName, out answer))
-                return answer;
+            lock (m_lock)
+            {
+                if (s_playerNameToId.TryGetValue(playerName, out answer))
+                    return answer;
 
-            var query = from user in UserProfiles where user.UserName == playerName select user.UserId;
-            answer = query.SingleOrDefault();
+                var query = from user in UserProfiles where user.UserName == playerName select user.UserId;
+                answer = query.SingleOrDefault();
 
-            if (answer == 0) return -1;
+                if (answer == 0) return -1;
 
-            s_playerNameToId.Add(playerName, answer);
+                s_playerNameToId.Add(playerName, answer);
+            }
+
             return answer;
         }
 	}
