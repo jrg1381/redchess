@@ -206,6 +206,7 @@ namespace Chess.Controllers
             //}
 
             board.EndGameWithMessage("Draw claimed");
+            m_dbChessContext.SaveChanges();
 
             var jsonObject = new {fen = board.Fen, message = "Draw claimed", status = "DRAW"};
 
