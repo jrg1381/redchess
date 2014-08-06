@@ -301,20 +301,8 @@ namespace Chess.Controllers
 
         private void UpdateDrawClaimStatus(BoardDto board)
         {
-            if (board.MayClaimDraw)
-                return;
-
-            var fiftyMoveRule = Int32.Parse(board.Fen.Split(' ')[4]);
-            if (fiftyMoveRule > 50)
-            {
-                board.MayClaimDraw = true;
-                return;
-            }
-            var hasRepeatedThreeTimes = m_dbChessContext.Database.SqlQuery<int>(String.Format("SELECT dbo.HasRepeatedThreeTimes({0})", board.GameId)).FirstOrDefault();
-            if (hasRepeatedThreeTimes > 0)
-            {
-                board.MayClaimDraw = true;
-            }
+            var mayClaimDraw = m_dbChessContext.Database.SqlQuery<int>(String.Format("SELECT dbo.MayClaimDraw({0})", board.GameId)).FirstOrDefault();
+            board.MayClaimDraw = mayClaimDraw == 1 ? true : false;
         }
 
         protected override void Dispose(bool disposing)
