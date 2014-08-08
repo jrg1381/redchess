@@ -301,7 +301,7 @@ namespace Chess.Controllers
 
         private void UpdateDrawClaimStatus(BoardDto board)
         {
-            var mayClaimDraw = m_dbChessContext.Database.SqlQuery<int>(String.Format("SELECT dbo.MayClaimDraw({0})", board.GameId)).FirstOrDefault();
+            var mayClaimDraw = m_dbChessContext.Database.SqlQuery<int>("SELECT dbo.MayClaimDraw(@p0)", board.GameId).FirstOrDefault();
             board.MayClaimDraw = mayClaimDraw == 1 ? true : false;
         }
 
