@@ -302,7 +302,7 @@ namespace Chess.Controllers
         private void UpdateDrawClaimStatus(BoardDto board)
         {
             var mayClaimDraw = m_dbChessContext.Database.SqlQuery<int>("SELECT dbo.MayClaimDraw(@p0)", board.GameId).FirstOrDefault();
-            board.MayClaimDraw = mayClaimDraw == 1 ? true : false;
+            board.MayClaimDraw = (mayClaimDraw == 1);
         }
 
         protected override void Dispose(bool disposing)
