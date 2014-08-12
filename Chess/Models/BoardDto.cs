@@ -3,12 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using RedChess.ChessCommon.Enumerations;
+using RedChess.ChessCommon.Interfaces;
 
 namespace Chess.Models
 {
     public class BoardDto
     {
-        private readonly BoardImpl m_board;
+        private readonly IBoard m_board;
         private bool m_gameOver;
 
         public BoardDto()
@@ -16,7 +17,7 @@ namespace Chess.Models
             m_board = new BoardImpl();
         }
 
-        public BoardDto(BoardImpl board, int owner, int opponent)
+        public BoardDto(IBoard board, int owner, int opponent)
         {
             m_board = board;
             UserIdWhite = owner;
