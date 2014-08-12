@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Antlr.Runtime;
@@ -42,6 +43,12 @@ namespace Chess.Controllers
             m_dbChessContext.SaveChanges();
 
             return new BoardCreationResult {Status = "OK", Message = "Board created", Id = dto.GameId};
+        }
+
+        [HttpGet]
+        public Dictionary<int,string> Users()
+        {
+            return m_dbChessContext.UserProfiles.ToDictionary(user => user.UserId, user => user.UserName);
         }
 
         [HttpGet]
