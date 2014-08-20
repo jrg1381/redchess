@@ -9,7 +9,7 @@ namespace Chess
 		{
 			config.Routes.MapHttpRoute(
 				name: "DefaultApi",
-				routeTemplate: "api/ChessApi/{action}/{id}",
+				routeTemplate: "api/{action}/{id}",
 				defaults: new { controller = "ChessApi", id = RouteParameter.Optional }
 			);
 
