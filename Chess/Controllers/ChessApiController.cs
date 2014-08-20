@@ -69,6 +69,7 @@ namespace Chess.Controllers
             return m_dbChessContext.Boards.Find(id);
         }
 
+        [HttpGet]
         public PlayMoveResult PlayMove(int id, string start, string end)
         {
             var board = m_dbChessContext.Boards.Find(id);
