@@ -52,9 +52,26 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public PlayMoveResult PlayMove(int gameId, string start, string end)
+        public Dictionary<int, BoardDto> Boards()
         {
-            var board = m_dbChessContext.Boards.Find(gameId);
+            return m_dbChessContext.Boards.ToDictionary(b => b.GameId, b => b);
+        }
+
+        [HttpGet]
+        public UserProfile User(int id)
+        {
+            return m_dbChessContext.UserProfiles.Find(id);
+        }
+
+        [HttpGet]
+        public BoardDto Board(int id)
+        {
+            return m_dbChessContext.Boards.Find(id);
+        }
+
+        public PlayMoveResult PlayMove(int id, string start, string end)
+        {
+            var board = m_dbChessContext.Boards.Find(id);
 
             if (board.GameOver)
             {
@@ -66,15 +83,15 @@ namespace Chess.Controllers
                 return new PlayMoveResult { Status = "FAIL", Fen = board.Fen, Message = "Invalid move" };
             }
 
-            int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == gameId).Max(x => x.MoveNumber) + 1;
-            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = gameId, MoveNumber = nextMoveNumber });
+            int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == id).Max(x => x.MoveNumber) + 1;
+            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = id, MoveNumber = nextMoveNumber });
             board.UpdateMessage();
             UpdateDrawClaimStatus(board);
             m_dbChessContext.SaveChanges();
 
             var jsonObject = new { fen = board.Fen, message = board.Status + " [API updated board]", movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw };
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-            hubContext.Clients.Group(gameId.ToString()).addMessage(jsonObject);
+            hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
 
             return new PlayMoveResult { Status = "OK", Fen = board.Fen, Message = board.Status };
         }
