@@ -12,7 +12,7 @@
 		 @Html.ActionLink("New Game", "Create")
 	 </p>
  }
-else
+ else
  {
 	 <p> 
 		 You need to be logged in to create new games.<br />
@@ -45,10 +45,10 @@ else
 		<th></th>
 	</tr>  
 	@if (Request.IsAuthenticated)
-	{
-		<tr><td><h3>My games</h3></td></tr>
-        foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != ""))
-		{
+ {
+		<tr><td><h3>My current games</h3></td></tr>
+     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver))
+     {
 			<tr>
                 <td>
 				<div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
@@ -57,16 +57,30 @@ else
 			</tr>
      <tr>
          <td>@item.Description</td>
-		 <td>@Html.ActionLink("Delete", "Delete", new {id = item.GameId}) | @Html.ActionLink("History","ShowMove","History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
+		 <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
      </tr>
-		}
-	}
+     }
+        		<tr><td><h3>My finished games</h3></td></tr>
+     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
+     {
+			<tr>
+                <td>
+				<div class="miniboard" id="f-@item.GameId" style="width: 150px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
+                </td>
+                <td>@item.Status</td>
+			</tr>
+     <tr>
+         <td>@item.Description</td>
+		 <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
+     </tr>
+     }
+ }
 </table>
 
 <table style="padding-left: 50px">
 		<tr><td><h3>Other games</h3></td></tr>
-		@foreach (var item in @Model.Where(x => x.CurrentPlayerColor(System.Web.HttpContext.Current.User.Identity.Name) == ""))
-		{
+		@foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == ""))
+  {
 			<tr>
                 <td>
 				<div class="miniboard" id="o-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
@@ -75,8 +89,8 @@ else
 			</tr>
            <tr>
 			   <td>@item.Description</td>
-               		 <td>@Html.ActionLink("History","ShowMove","History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
+               		 <td>@Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
      </tr>
-		}
+  }
 </table>
 
