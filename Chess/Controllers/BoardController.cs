@@ -288,7 +288,6 @@ namespace Chess.Controllers
 			}
 
 			board.UpdateMessage();
-            UpdateDrawClaimStatus(board);
 			m_dbChessContext.SaveChanges();
 
             string messageForUser = board.Status;
@@ -298,12 +297,6 @@ namespace Chess.Controllers
 			hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
 			return Json(jsonObject);
 		}
-
-        private void UpdateDrawClaimStatus(BoardDto board)
-        {
-            var mayClaimDraw = m_dbChessContext.Database.SqlQuery<int>("SELECT dbo.MayClaimDraw(@p0)", board.GameId).FirstOrDefault();
-            board.MayClaimDraw = (mayClaimDraw == 1);
-        }
 
         protected override void Dispose(bool disposing)
         {
