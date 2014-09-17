@@ -17,6 +17,7 @@
 
     <script>
         $(document).ready(function () {
+            lastMove = @maxMoves ;
             var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
             board = new ChessBoard('board', cfg);
             renderMoves();
