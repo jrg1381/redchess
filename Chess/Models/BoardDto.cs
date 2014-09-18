@@ -117,6 +117,7 @@ namespace Chess.Models
         public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
         public string Fen { get { return m_board.ToFen(); } set { m_board.FromFen(value); } }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public bool MayClaimDraw { get { return m_canClaimDraw; } set { m_canClaimDraw = value; }}
 
         public bool Move(Location start, Location end) { return m_board.Move(start, end); }
