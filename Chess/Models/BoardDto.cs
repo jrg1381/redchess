@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
@@ -122,6 +123,12 @@ namespace Chess.Models
 
         public bool Move(Location start, Location end) { return m_board.Move(start, end); }
         public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public DateTime CreationDate
+        {
+            get; set;
+        }
 
         public void EndGameWithMessage(string message)
         {
