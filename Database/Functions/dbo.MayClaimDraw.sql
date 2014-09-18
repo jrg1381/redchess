@@ -4,11 +4,12 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 CREATE FUNCTION [dbo].[MayClaimDraw] 
 (@gameId INT)
 RETURNS BIT
 BEGIN
-IF EXISTS(SELECT COUNT(*) AS RepeatCount
+IF EXISTS(SELECT COUNT(GameId) AS RepeatCount
 FROM    dbo.HistoryEntries
 WHERE   GameId = @gameId
 GROUP BY dbo.TrimAtLastSpace(Fen)
