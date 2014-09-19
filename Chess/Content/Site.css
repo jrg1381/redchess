@@ -190,6 +190,10 @@ header {
     text-align: left;
 }
 
+.timeago {
+    font-size: smaller
+}
+
 fieldset {
     border: none;
     margin: 0 auto;

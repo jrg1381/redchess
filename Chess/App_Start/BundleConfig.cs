@@ -30,6 +30,8 @@ namespace Chess
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
 						"~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/timeago").Include("~/Scripts/jquery.timeago.js"));
+
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/Site.css",
 				"~/Content/TodoList.css"));

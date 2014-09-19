@@ -25,6 +25,8 @@
 
 <script>
     $(document).ready(function () {
+        $("time.timeago").timeago();
+
         $("div.miniboard").each(function (index, element) {
             var originalText = element.innerText;
             if (originalText == null) {
@@ -64,10 +66,13 @@
      foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CreationDate))
      {
 			<tr>
-                <td>
-				<div class="miniboard" id="f-@item.GameId" style="width: 150px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
-                </td>
-                <td>@item.Status<br/>@item.CreationDate</td>
+			    <td>
+			        <div class="miniboard" id="f-@item.GameId" style="width: 150px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
+			    </td>
+                @{
+                    var iso8601datetime = item.CreationDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+                }
+			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">@item.CreationDate</time></td>
 			</tr>
      <tr>
          <td>@item.Description</td>
