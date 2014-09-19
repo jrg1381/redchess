@@ -125,7 +125,7 @@ namespace Chess.Models
         public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public DateTime CreationDate
+        public DateTime? CreationDate
         {
             get; set;
         }
