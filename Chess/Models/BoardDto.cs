@@ -25,6 +25,7 @@ namespace Chess.Models
             m_board = board;
             UserIdWhite = owner;
             UserIdBlack = opponent;
+            Status = String.Empty;
         }
 
         [Key]

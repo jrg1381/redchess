@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using Chess.Models;
 using Microsoft.AspNet.SignalR;
@@ -64,8 +65,6 @@ namespace Chess.Controllers
 					m_dbChessContext.Clocks.Add(clock);
 				}
 
-                dto.UpdateMessage();
-	            m_dbChessContext.SaveChanges();
                 m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1 });
                 m_dbChessContext.SaveChanges();
 				return RedirectToAction("Details", "Board", new {id = dto.GameId});
