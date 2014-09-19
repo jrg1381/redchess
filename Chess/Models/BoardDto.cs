@@ -124,7 +124,7 @@ namespace Chess.Models
         public bool Move(Location start, Location end) { return m_board.Move(start, end); }
         public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? CreationDate
         {
             get; set;
