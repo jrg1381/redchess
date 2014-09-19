@@ -265,13 +265,13 @@ namespace Chess.Controllers
 				return Json(new { fen = board.Fen, message = errorMessage, status = "FAIL" });
 			}
 
-            int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).Max(x => x.MoveNumber) + 1;
-            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = board.GameId, MoveNumber = nextMoveNumber} );
-
 			if (!String.IsNullOrEmpty(promote))
 			{
 				board.PromotePiece(promote);
 			}
+
+            int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).Max(x => x.MoveNumber) + 1;
+            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = board.GameId, MoveNumber = nextMoveNumber });
 
 			if (clock != null)
 			{
