@@ -70,9 +70,9 @@
 			        <div class="miniboard" id="f-@item.GameId" style="width: 150px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
 			    </td>
                 @{
-                    var iso8601datetime = item.CreationDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
                 }
-			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">@item.CreationDate</time></td>
+			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">@item.CreationDate UTC</time></td>
 			</tr>
      <tr>
          <td>@item.Description</td>

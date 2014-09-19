@@ -13,6 +13,7 @@ namespace Chess.Models
         private readonly IBoard m_board;
         private bool m_gameOver;
         private bool m_canClaimDraw;
+        private DateTime m_creationDate;
 
         public BoardDto()
         {
@@ -125,9 +126,10 @@ namespace Chess.Models
         public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime? CreationDate
+        public DateTime CreationDate
         {
-            get; set;
+            get { return new DateTime(m_creationDate.Ticks, DateTimeKind.Utc); }
+            set { m_creationDate = value; }
         }
 
         public void EndGameWithMessage(string message)
