@@ -19,11 +19,9 @@ namespace Chess.Controllers
             int moveNumber = Int32.Parse(move);
             int game = Int32.Parse(gameId);
 
-				// Find the current user in the user database
-		    var name = System.Web.HttpContext.Current.User.Identity.Name;
             using (var db = new ChessContext())
             {
-                var myProfile = db.UserProfiles.FirstOrDefault(x => x.UserName == name);
+                var myProfile = BoardController.UserProfileFromName(db);
 
                 if (myProfile == null) // The user is not logged in or doesn't exist in the database for some reason
                 {
