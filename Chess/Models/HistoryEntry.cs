@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Chess.Controllers;
 
 namespace Chess.Models
 {
@@ -33,7 +34,7 @@ namespace Chess.Models
         {
             using (var db = new ChessContext())
             {
-                int userId = db.PlayerId(username);
+                int userId = UserUtilities.UserProfileFromName(db, username).UserId;
                 if (userId == -1)
                     return false;
 

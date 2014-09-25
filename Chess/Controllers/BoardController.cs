@@ -51,7 +51,7 @@ namespace Chess.Controllers
             if (ModelState.IsValid)
             {
 	            int opponentId = Int32.Parse(opponent);
-                var myProfile = UserProfileFromName(m_dbChessContext);
+                var myProfile = UserUtilities.UserProfileFromName(m_dbChessContext);
 				var dto = playAsBlack ? new BoardDto(board, opponentId, myProfile.UserId) : new BoardDto(board, myProfile.UserId, opponentId);
 	            m_dbChessContext.Boards.Add(dto);
 	            m_dbChessContext.SaveChanges();
@@ -106,26 +106,14 @@ namespace Chess.Controllers
 
 		private bool MayManipulateBoard(BoardDto dto)
 		{
-            var profile = UserProfileFromName(m_dbChessContext);
+            var profile = UserUtilities.UserProfileFromName(m_dbChessContext);
 
 			return (profile != null && (profile.UserId == dto.UserIdWhite || profile.UserId == dto.UserIdBlack));
 		}
 
-        public static UserProfile UserProfileFromName(ChessContext context)
-        {
-            if (System.Web.HttpContext.Current.Session["UserProfile"] == null)
-            {
-                var name = System.Web.HttpContext.Current.User.Identity.Name;
-                var userProfile = context.UserProfiles.FirstOrDefault(x => x.UserName == name);
-                System.Web.HttpContext.Current.Session["UserProfile"] = userProfile;
-            }
-
-            return System.Web.HttpContext.Current.Session["UserProfile"] as UserProfile;
-        }
-
         private bool IsCurrentUsersTurn(BoardDto dto)
         {
-            var profile = UserProfileFromName(m_dbChessContext);
+            var profile = UserUtilities.UserProfileFromName(m_dbChessContext);
             if (profile == null)
                 return false;
             return dto.IsUsersTurn(profile.UserId);
@@ -148,7 +136,7 @@ namespace Chess.Controllers
             // To fix this, edit the loser's elapsed time in the database and set it equal to the time limit for the game.
 
             int timeLimit = board.Clock().TimeLimitMs;
-            var profile = UserProfileFromName(m_dbChessContext);
+            var profile = UserUtilities.UserProfileFromName(m_dbChessContext);
 
             if (profile.UserId == board.UserIdWhite)
             {
@@ -181,7 +169,7 @@ namespace Chess.Controllers
                 return Json(new { fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH" });
             }
             
-            var profile = UserProfileFromName(m_dbChessContext);
+            var profile = UserUtilities.UserProfileFromName(m_dbChessContext);
             var resignationMessage = String.Format("{0} resigned", profile.UserName);
 
             board.EndGameWithMessage(resignationMessage);

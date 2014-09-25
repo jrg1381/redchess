@@ -21,7 +21,7 @@ namespace Chess.Controllers
 
             using (var db = new ChessContext())
             {
-                var myProfile = BoardController.UserProfileFromName(db);
+                var myProfile = UserUtilities.UserProfileFromName(db);
 
                 if (myProfile == null) // The user is not logged in or doesn't exist in the database for some reason
                 {

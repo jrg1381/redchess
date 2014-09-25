@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
+using Chess.Controllers;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
@@ -56,7 +57,7 @@ namespace Chess.Models
         {
             using (var dbContext = new ChessContext())
             {
-                int userId = dbContext.PlayerId(userName);
+                int userId = UserUtilities.UserProfileFromName(dbContext, userName).UserId;
 
                 if (userId == UserIdBlack)
                     return "b";
