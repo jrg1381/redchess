@@ -16,11 +16,15 @@ namespace Chess.Models
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Chess.Models.ChessContext>());
 
         private static object m_lock = new object();
-	    private static Dictionary<string, int> s_playerNameToId; 
+	    private static readonly Dictionary<string, int> s_playerNameToId;
+
+	    static ChessContext()
+	    {
+	        s_playerNameToId = new Dictionary<string, int>();
+	    }
 
         public ChessContext() : base("name=DefaultConnection")
         {
-            s_playerNameToId = new Dictionary<string, int>();
         }
 
 		public DbSet<BoardDto> Boards { get; set; }
