@@ -82,8 +82,8 @@ namespace Chess.Models
             {
                 using (var dbContext = new ChessContext())
                 {
-                    var whiteProfile = dbContext.UserProfiles.Find(UserIdWhite);
-                    var blackProfile = dbContext.UserProfiles.Find(UserIdBlack);
+                    var whiteProfile = UserUtilities.UserProfileFromId(dbContext, UserIdWhite);
+                    var blackProfile = UserUtilities.UserProfileFromId(dbContext, UserIdBlack);
                     return String.Format("{0} vs {1}", whiteProfile.UserName, blackProfile.UserName);
                 }
             }
