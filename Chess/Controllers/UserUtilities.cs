@@ -14,6 +14,36 @@ namespace Chess.Controllers
             return UserProfileFromName(context, System.Web.HttpContext.Current.User.Identity.Name);
         }
 
+        public static UserProfile UserProfileFromName(string name)
+        {
+            UserProfile profile;
+
+            if (!s_userProfilesByName.TryGetValue(name, out profile))
+            {
+                using (var context = new ChessContext())
+                {
+                    return UserProfileFromName(context, name);
+                }
+            }
+
+            return profile;
+        }
+
+        public static UserProfile UserProfileFromId(int id)
+        {
+            UserProfile profile;
+
+            if (!s_userProfilesById.TryGetValue(id, out profile))
+            {
+                using (var context = new ChessContext())
+                {
+                    return UserProfileFromId(context, id);
+                }
+            }
+
+            return profile;
+        }
+
         public static UserProfile UserProfileFromName(ChessContext context, string name)
         {
             UserProfile profile;
