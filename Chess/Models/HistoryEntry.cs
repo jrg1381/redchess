@@ -34,11 +34,7 @@ namespace Chess.Models
         {
             using (var db = new ChessContext())
             {
-                int userId = UserUtilities.UserProfileFromName(db, username).UserId;
-                if (userId == -1)
-                    return false;
-
-                return db.Boards.Any(g => g.GameId == GameId && (g.UserIdBlack == userId || g.UserIdWhite == userId));
+                return db.Database.SqlQuery<bool>("SELECT dbo.IsParticipant(@p0,@p1)", GameId, username).FirstOrDefault();
             }
         }
     }
