@@ -55,13 +55,17 @@ namespace Chess.Models
         /// <returns></returns>
         public string CurrentPlayerColor(string userName)
         {
-                int userId = UserUtilities.UserProfileFromName(userName).UserId;
-
-                if (userId == UserIdBlack)
-                    return "b";
-                if (userId == UserIdWhite)
-                    return "w";
+            var profile = UserUtilities.UserProfileFromName(userName);
+            if (profile == null)
                 return "";
+
+            int userId = profile.UserId;
+
+            if (userId == UserIdBlack)
+                return "b";
+            if (userId == UserIdWhite)
+                return "w";
+            return "";
         }
 
         public Clock Clock()
