@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.SqlTypes;
 using System.Linq;
 using Chess.Controllers;
 using RedChess.ChessCommon.Enumerations;
@@ -15,7 +16,7 @@ namespace Chess.Models
         private bool m_gameOver;
         private bool m_canClaimDraw;
         private DateTime m_creationDate;
-        private DateTime m_completionDate;
+        private DateTime? m_completionDate;
 
         public BoardDto()
         {
@@ -129,10 +130,9 @@ namespace Chess.Models
             set { m_creationDate = value; }
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CompletionDate
         {
-            get { return new DateTime(m_completionDate.Ticks, DateTimeKind.Utc); }
+            get { return m_completionDate.HasValue ? new DateTime(m_completionDate.Value.Ticks, DateTimeKind.Utc) : SqlDateTime.MinValue.Value; }
             set { m_completionDate = value; }
         }
 
