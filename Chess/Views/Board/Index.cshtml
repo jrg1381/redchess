@@ -55,7 +55,10 @@
                 <td>
 				<div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
                 </td>
-                <td>@item.Status</td>
+                @{
+                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+                }
+			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time></td>
 			</tr>
      <tr>
          <td>@item.Description</td>
@@ -70,9 +73,9 @@
 			        <div class="miniboard" id="f-@item.GameId" style="width: 150px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
 			    </td>
                 @{
-                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+                    var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
                 }
-			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">@item.CreationDate UTC</time></td>
+			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
 			</tr>
      <tr>
          <td>@item.Description</td>

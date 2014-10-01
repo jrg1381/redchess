@@ -7,7 +7,8 @@ CREATE TABLE [dbo].[BoardDtoes]
 [GameOver] [bit] NOT NULL,
 [Fen] [nvarchar] (max) NULL,
 [MayClaimDraw] AS (case when [GameOver]=(1) then CONVERT([bit],(0),(0)) else [dbo].[MayClaimDraw]([GameId]) end),
-[CreationDate] [datetime] NOT NULL DEFAULT (getutcdate())
+[CreationDate] [datetime] NOT NULL DEFAULT (getutcdate()),
+[CompletionDate] [datetime] NOT NULL DEFAULT (getutcdate())
 )
 GO
 ALTER TABLE [dbo].[BoardDtoes] ADD CONSTRAINT [PK_dbo.BoardDtoes] PRIMARY KEY CLUSTERED  ([GameId])

@@ -15,6 +15,7 @@ namespace Chess.Models
         private bool m_gameOver;
         private bool m_canClaimDraw;
         private DateTime m_creationDate;
+        private DateTime m_completionDate;
 
         public BoardDto()
         {
@@ -92,31 +93,24 @@ namespace Chess.Models
 
         public void UpdateMessage()
         {
-            // TODO: column indicating that a game is over
-            if (Status == "Resigned")
-                return;
-
-            Status = String.Empty;	
+            Status = String.Empty;
 
             if (m_board.KingInCheck())
             {
                 Status = "Check!";
                 if (m_board.IsCheckmate(true))
                 {
-                    GameOver = true;
-                    Status = "Checkmate!";
+                    EndGameWithMessage("Checkmate!");
                 }
             }
             else if (m_board.IsStalemate())
             {
-                GameOver = true;
-                Status = "Stalemate :-(";
+                EndGameWithMessage("Stalemate :-(");
             }
             else if (m_board.IsDraw())
             {
-                GameOver = true;
-                Status = "Insufficient material - draw";
-            }	
+                EndGameWithMessage("Insufficient material - draw");
+            }
         }
 
         public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
@@ -135,9 +129,17 @@ namespace Chess.Models
             set { m_creationDate = value; }
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CompletionDate
+        {
+            get { return new DateTime(m_completionDate.Ticks, DateTimeKind.Utc); }
+            set { m_completionDate = value; }
+        }
+
         public void EndGameWithMessage(string message)
         {
             Status = message;
+            CompletionDate = DateTime.UtcNow;
             GameOver = true;
         }
     }
