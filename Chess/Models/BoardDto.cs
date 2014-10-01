@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
+using Chess.Controllers;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
@@ -54,16 +55,17 @@ namespace Chess.Models
         /// <returns></returns>
         public string CurrentPlayerColor(string userName)
         {
-            using (var dbContext = new ChessContext())
-            {
-                int userId = dbContext.PlayerId(userName);
-
-                if (userId == UserIdBlack)
-                    return "b";
-                if (userId == UserIdWhite)
-                    return "w";
+            var profile = UserUtilities.UserProfileFromName(userName);
+            if (profile == null)
                 return "";
-            }
+
+            int userId = profile.UserId;
+
+            if (userId == UserIdBlack)
+                return "b";
+            if (userId == UserIdWhite)
+                return "w";
+            return "";
         }
 
         public Clock Clock()
@@ -81,8 +83,8 @@ namespace Chess.Models
             {
                 using (var dbContext = new ChessContext())
                 {
-                    var whiteProfile = dbContext.UserProfiles.Find(UserIdWhite);
-                    var blackProfile = dbContext.UserProfiles.Find(UserIdBlack);
+                    var whiteProfile = UserUtilities.UserProfileFromId(dbContext, UserIdWhite);
+                    var blackProfile = UserUtilities.UserProfileFromId(dbContext, UserIdBlack);
                     return String.Format("{0} vs {1}", whiteProfile.UserName, blackProfile.UserName);
                 }
             }

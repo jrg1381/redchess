@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Chess.Controllers;
 
 namespace Chess.Models
 {
@@ -15,39 +16,13 @@ namespace Chess.Models
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Chess.Models.ChessContext>());
 
-        private static object m_lock = new object();
-	    private static Dictionary<string, int> s_playerNameToId; 
-
         public ChessContext() : base("name=DefaultConnection")
         {
-            s_playerNameToId = new Dictionary<string, int>();
         }
 
 		public DbSet<BoardDto> Boards { get; set; }
 		public DbSet<Clock> Clocks { get; set; }
         public DbSet<HistoryEntry> HistoryEntries { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
-
-        public int PlayerId(string playerName)
-        {
-            // Out parameter
-            int answer;
-
-            // There is a cached value
-            lock (m_lock)
-            {
-                if (s_playerNameToId.TryGetValue(playerName, out answer))
-                    return answer;
-
-                var query = from user in UserProfiles where user.UserName == playerName select user.UserId;
-                answer = query.SingleOrDefault();
-
-                if (answer == 0) return -1;
-
-                s_playerNameToId.Add(playerName, answer);
-            }
-
-            return answer;
-        }
 	}
 }
