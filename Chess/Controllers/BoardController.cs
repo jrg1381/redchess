@@ -206,10 +206,10 @@ namespace Chess.Controllers
                 return Json(new { fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH" });
             }
 
-            //if (!board.MayClaimDraw)
-            //{
-            //    return Json(new {fen = board.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
-            //}
+            if (!board.MayClaimDraw)
+            {
+                return Json(new {fen = board.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
+            }
 
             board.EndGameWithMessage("Draw claimed");
             m_dbChessContext.SaveChanges();
