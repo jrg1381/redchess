@@ -9,8 +9,8 @@ CREATE TABLE [dbo].[Clocks]
 [TimeLimitMs] [int] NOT NULL,
 [PlayersReady] [int] NOT NULL
 )
+ALTER TABLE [dbo].[Clocks] ADD
+CONSTRAINT [FK_Cascade_clocks] FOREIGN KEY ([GameId]) REFERENCES [dbo].[Boards] ([GameId]) ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[Clocks] ADD CONSTRAINT [PK_dbo.Clocks] PRIMARY KEY CLUSTERED  ([ClockId])
-GO
-ALTER TABLE [dbo].[Clocks] ADD CONSTRAINT [FK_Cascade_clocks] FOREIGN KEY ([GameId]) REFERENCES [dbo].[BoardDtoes] ([GameId]) ON DELETE CASCADE
 GO
