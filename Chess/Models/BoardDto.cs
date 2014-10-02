@@ -10,6 +10,7 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace Chess.Models
 {
+    [Table("Boards")]
     public class BoardDto
     {
         private readonly IBoard m_board;
