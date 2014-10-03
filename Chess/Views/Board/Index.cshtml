@@ -49,7 +49,7 @@
 	@if (Request.IsAuthenticated)
  {
 		<tr><td><h3>My current games</h3></td></tr>
-     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver))
+     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
      {
 			<tr>
                 <td>
@@ -66,7 +66,7 @@
      </tr>
      }
         		<tr><td><h3>My finished games</h3></td></tr>
-     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CreationDate))
+     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
      {
 			<tr>
 			    <td>
@@ -87,7 +87,7 @@
 
 <table style="padding-left: 50px">
 		<tr><td><h3>Other games</h3></td></tr>
-		@foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == ""))
+		@foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
   {
 			<tr>
                 <td>
