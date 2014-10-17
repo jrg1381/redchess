@@ -5,17 +5,18 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class Fen : IObserver<IBoardExtended>
+    internal sealed class Fen : IObserver<IBoardExtended>, IDisposable
     {
         private readonly IBoardExtended m_board;
         private readonly CastlingRules m_castlingRules;
         private string m_fen;
+        private IDisposable m_unsubscriber;
 
         internal Fen(IBoardExtended board, CastlingRules castlingRules)
         {
             m_board = board;
             m_castlingRules = castlingRules;
-            m_board.Subscribe(this);
+            m_unsubscriber = m_board.Subscribe(this);
             UpdateFen();
         }
 
@@ -92,6 +93,11 @@ namespace Redchess.Engine
         public void OnNext(IBoardExtended value)
         {
             return;
+        }
+
+        public void Dispose()
+        {
+            m_unsubscriber.Dispose();
         }
     }
 }

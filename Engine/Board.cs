@@ -94,7 +94,8 @@ namespace Redchess.Engine
                 index++;
             }
 
-            m_observer.OnCompleted();
+            if(m_observer != null)
+                m_observer.OnCompleted();
         }
 
         public virtual bool Move(Location start, Location end)
@@ -112,7 +113,8 @@ namespace Redchess.Engine
 
             MovePiece(piece, end);
 
-            m_observer.OnCompleted();
+            if(m_observer != null)
+                m_observer.OnCompleted();
             return true;
         }
 
@@ -424,7 +426,22 @@ namespace Redchess.Engine
         public IDisposable Subscribe(IObserver<IBoardExtended> observer)
         {
             m_observer = observer;
-            return null;
+            return new Unsubscriber(this);
+        }
+
+        class Unsubscriber : IDisposable
+        {
+            private readonly Board m_board;
+
+            internal Unsubscriber(Board b)
+            {
+                m_board = b;
+            }
+
+            public void Dispose()
+            {
+                m_board.m_observer = null;
+            }
         }
     }
 }
