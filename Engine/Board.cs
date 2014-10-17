@@ -23,6 +23,7 @@ namespace Redchess.Engine
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
         private int m_fiftyMoveRuleCounter;
+        private IObserver<IBoardExtended> m_observer;
 
         public Board()
             : this(PieceColor.White, false, true)
@@ -35,9 +36,11 @@ namespace Redchess.Engine
             CurrentTurn = whoseTurn;
             m_castlingRules = new CastlingRules();
             m_enPassantTarget = Location.InvalidSquare;
-            m_fen = new Fen(this, m_castlingRules);
             if (createNewSimpleBoard)
+            {
                 SimpleBoard = new SimpleBoard(isEmpty);
+                m_fen = new Fen(this, m_castlingRules);
+            }
         }
 
         public PieceColor CurrentTurn { get; private set; }
@@ -90,6 +93,8 @@ namespace Redchess.Engine
                 SimpleBoard.AddPiece(PieceFactory.CreatePiece(t, (Location) trueIndex));
                 index++;
             }
+
+            m_observer.OnCompleted();
         }
 
         public virtual bool Move(Location start, Location end)
@@ -106,6 +111,8 @@ namespace Redchess.Engine
                 return false;
 
             MovePiece(piece, end);
+
+            m_observer.OnCompleted();
             return true;
         }
 
@@ -278,6 +285,7 @@ namespace Redchess.Engine
                 throw new CannotPromoteException();
             SimpleBoard.RemovePiece(m_promotedPawn);
             SimpleBoard.AddPiece(PieceFactory.CreatePiece(promotionTarget, m_promotedPawn.Position.Location));
+
             m_promotedPawn = null;
         }
 
@@ -411,6 +419,12 @@ namespace Redchess.Engine
             };
 
             return copy;
+        }
+
+        public IDisposable Subscribe(IObserver<IBoardExtended> observer)
+        {
+            m_observer = observer;
+            return null;
         }
     }
 }

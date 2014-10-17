@@ -1,9 +1,10 @@
+using System;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
 namespace Redchess.Engine.Interfaces
 {
-    public interface IBoardExtended : IBoard
+    public interface IBoardExtended : IBoard, IObservable<IBoardExtended>
     {
         bool KingInCheck(PieceColor colorOfKing, Location kingPosition);
         bool ValidateMoveForCheck(IPiece piece, Location newLocation);

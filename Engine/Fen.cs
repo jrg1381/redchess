@@ -1,21 +1,30 @@
+using System;
 using System.Text;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class Fen
+    internal sealed class Fen : IObserver<IBoardExtended>
     {
         private readonly IBoardExtended m_board;
         private readonly CastlingRules m_castlingRules;
+        private string m_fen;
 
         internal Fen(IBoardExtended board, CastlingRules castlingRules)
         {
             m_board = board;
             m_castlingRules = castlingRules;
+            m_board.Subscribe(this);
+            UpdateFen();
         }
 
         internal string ToFen()
+        {
+            return m_fen;
+        }
+
+        private void UpdateFen()
         {
             var counter = 0; // number of consecutive empty squares seen
             var index = 0; // number of squares seen so far (0-63)
@@ -67,7 +76,22 @@ namespace Redchess.Engine
                                             m_board.EnPassantTarget == Location.InvalidSquare ? "-" : m_board.EnPassantTarget.ToString(),
                                             m_board.FiftyMoveCounter);
 
-            return sb.ToString();
+            m_fen = sb.ToString();
+        }
+
+        public void OnCompleted()
+        {
+            UpdateFen();
+        }
+
+        public void OnError(Exception error)
+        {
+            return;
+        }
+
+        public void OnNext(IBoardExtended value)
+        {
+            return;
         }
     }
 }
