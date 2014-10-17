@@ -10,7 +10,7 @@ namespace Redchess.Engine
         private readonly IBoardExtended m_board;
         private readonly CastlingRules m_castlingRules;
         private string m_fen;
-        private IDisposable m_unsubscriber;
+        private readonly IDisposable m_unsubscriber;
 
         internal Fen(IBoardExtended board, CastlingRules castlingRules)
         {
@@ -98,6 +98,11 @@ namespace Redchess.Engine
         public void Dispose()
         {
             m_unsubscriber.Dispose();
+        }
+
+        internal void ForceFen(string fen)
+        {
+            m_fen = fen;
         }
     }
 }

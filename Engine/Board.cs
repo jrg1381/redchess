@@ -94,8 +94,7 @@ namespace Redchess.Engine
                 index++;
             }
 
-            if(m_observer != null)
-                m_observer.OnCompleted();
+            m_fen.ForceFen(fen);
         }
 
         public virtual bool Move(Location start, Location end)
