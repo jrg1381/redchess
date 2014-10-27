@@ -10,5 +10,6 @@ namespace Redchess.Engine.Interfaces
         void Remove(Location loc);
         bool IsOccupied(Location loc);
         IBoardBitmap DeepClone();
+        int PieceCount { get; }
     }
 }

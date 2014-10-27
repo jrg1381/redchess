@@ -117,5 +117,10 @@ namespace Redchess.Engine
             piece = PieceFactory.CreatePiece(piece.Type, newLocation);
             AddPiece(piece);
         }
+
+        public int PieceCount
+        {
+            get { return m_whitePieces.PieceCount + m_blackPieces.PieceCount; }
+        }
     }
 }

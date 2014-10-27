@@ -148,7 +148,7 @@ namespace Redchess.Engine
 
         public bool IsDraw()
         {
-            int totalPieceCount = SimpleBoard.OccupiedSquares().Count();
+            int totalPieceCount = SimpleBoard.PieceCount;
 
             if (totalPieceCount > 3) return false; // There are enough pieces for it not to be an obvious draw
 
