@@ -12,11 +12,11 @@ namespace Redchess.Engine
     {
         private IBoardBitmap m_blackPieces;
         private IBoardBitmap m_whitePieces;
-        private Dictionary<Location, IPiece> m_squareContents;
+        private IPiece [] m_squareContents;
 
         internal SimpleBoard(bool isEmpty)
         {
-            m_squareContents = new Dictionary<Location, IPiece>();
+            m_squareContents = new IPiece[64];
 
             m_whitePieces = new BoardBitmap();
             m_blackPieces = new BoardBitmap();
@@ -28,7 +28,7 @@ namespace Redchess.Engine
                 foreach (var loc in PieceData.InitialPieceConfiguration(pieceType))
                 {
                     m_whitePieces.Add(loc);
-                    m_squareContents[loc] = PieceFactory.CreatePiece(pieceType, loc);
+                    m_squareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);
                 }
             }
 
@@ -37,16 +37,14 @@ namespace Redchess.Engine
                 foreach (var loc in PieceData.InitialPieceConfiguration(pieceType))
                 {
                     m_blackPieces.Add(loc);
-                    m_squareContents[loc] = PieceFactory.CreatePiece(pieceType, loc);                   
+                    m_squareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);                   
                 }
             }
         }
 
         internal IPiece GetContents(Location loc)
         {
-            IPiece piece;
-            bool success = m_squareContents.TryGetValue(loc, out piece);
-            return success ? piece : null;
+            return m_squareContents[(int)loc];
         }
 
         internal void AddPiece(IPiece piece)
@@ -63,7 +61,7 @@ namespace Redchess.Engine
             else
                 m_blackPieces.Add(piece.Position.Location);
 
-            m_squareContents[piece.Position.Location] = PieceFactory.CreatePiece(piece.Type, piece.Position.Location);
+            m_squareContents[(int)piece.Position.Location] = PieceFactory.CreatePiece(piece.Type, piece.Position.Location);
         }
 
         internal void RemovePiece(IPiece piece)
@@ -76,7 +74,7 @@ namespace Redchess.Engine
             else
                 m_blackPieces.Remove(piece.Position.Location);
 
-            m_squareContents.Remove(piece.Position.Location);
+            m_squareContents[(int)piece.Position.Location] = null;
         }
 
         internal IEnumerable<Location> OccupiedSquares()
@@ -95,7 +93,7 @@ namespace Redchess.Engine
             {
                 m_whitePieces = m_whitePieces.DeepClone(),
                 m_blackPieces = m_blackPieces.DeepClone(),
-                m_squareContents = new Dictionary<Location, IPiece>(m_squareContents)
+                m_squareContents = (IPiece[])m_squareContents.Clone()
             };
 
             return copy;
