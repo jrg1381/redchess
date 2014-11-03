@@ -37,7 +37,7 @@ namespace Redchess.Engine
                 foreach (var loc in PieceData.InitialPieceConfiguration(pieceType))
                 {
                     m_blackPieces.Add(loc);
-                    m_squareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);                   
+                    m_squareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace Redchess.Engine
             return m_squareContents[(int)loc];
         }
 
-        internal void AddPiece(IPiece piece)
+        private void AddPiece(IPiece piece)
         {
             var originalOccupant = GetContents(piece.Position.Location);
             if (originalOccupant != null && originalOccupant.Color == piece.Color)
@@ -61,7 +61,7 @@ namespace Redchess.Engine
             else
                 m_blackPieces.Add(piece.Position.Location);
 
-            m_squareContents[(int)piece.Position.Location] = PieceFactory.CreatePiece(piece.Type, piece.Position.Location);
+            m_squareContents[(int)piece.Position.Location] = piece;
         }
 
         internal void RemovePiece(IPiece piece)
@@ -119,6 +119,11 @@ namespace Redchess.Engine
         public int PieceCount
         {
             get { return m_whitePieces.PieceCount + m_blackPieces.PieceCount; }
+        }
+
+        public void AddPiece(PieceType pieceType, Location location)
+        {
+            AddPiece(PieceFactory.CreatePiece(pieceType, location));
         }
     }
 }

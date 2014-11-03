@@ -90,7 +90,7 @@ namespace Redchess.Engine
                 }
 
                 var t = PieceData.TypeFromSymbol(c);
-                SimpleBoard.AddPiece(PieceFactory.CreatePiece(t, (Location) trueIndex));
+                SimpleBoard.AddPiece(t, (Location) trueIndex);
                 index++;
             }
 
@@ -285,7 +285,7 @@ namespace Redchess.Engine
             if (m_promotedPawn == null)
                 throw new CannotPromoteException();
             SimpleBoard.RemovePiece(m_promotedPawn);
-            SimpleBoard.AddPiece(PieceFactory.CreatePiece(promotionTarget, m_promotedPawn.Position.Location));
+            SimpleBoard.AddPiece(promotionTarget, m_promotedPawn.Position.Location);
 
             m_promotedPawn = null;
         }
