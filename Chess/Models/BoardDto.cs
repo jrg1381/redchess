@@ -11,7 +11,7 @@ using RedChess.ChessCommon.Interfaces;
 namespace Chess.Models
 {
     [Table("Boards")]
-    public class BoardDto
+    public class Game
     {
         private readonly IBoard m_board;
         private bool m_gameOver;
@@ -19,12 +19,12 @@ namespace Chess.Models
         private DateTime m_creationDate;
         private DateTime? m_completionDate;
 
-        public BoardDto()
+        public Game()
         {
             m_board = new BoardImpl();
         }
 
-        public BoardDto(IBoard board, int owner, int opponent)
+        public Game(IBoard board, int owner, int opponent)
         {
             m_board = board;
             UserIdWhite = owner;

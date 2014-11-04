@@ -25,7 +25,7 @@ namespace Chess.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            BoardDto board = m_dbChessContext.Boards.Find(id);
+            Game board = m_dbChessContext.Boards.Find(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
@@ -52,7 +52,7 @@ namespace Chess.Controllers
             {
 	            int opponentId = Int32.Parse(opponent);
                 var myProfile = UserUtilities.UserProfileFromName(m_dbChessContext);
-				var dto = playAsBlack ? new BoardDto(board, opponentId, myProfile.UserId) : new BoardDto(board, myProfile.UserId, opponentId);
+				var dto = playAsBlack ? new Game(board, opponentId, myProfile.UserId) : new Game(board, myProfile.UserId, opponentId);
 	            m_dbChessContext.Boards.Add(dto);
 	            m_dbChessContext.SaveChanges();
 
@@ -77,7 +77,7 @@ namespace Chess.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-			BoardDto board = m_dbChessContext.Boards.Find(id);
+			Game board = m_dbChessContext.Boards.Find(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
@@ -104,14 +104,14 @@ namespace Chess.Controllers
             return RedirectToAction("Index");
         }
 
-		private bool MayManipulateBoard(BoardDto dto)
+		private bool MayManipulateBoard(Game dto)
 		{
             var profile = UserUtilities.UserProfileFromName(m_dbChessContext);
 
 			return (profile != null && (profile.UserId == dto.UserIdWhite || profile.UserId == dto.UserIdBlack));
 		}
 
-        private bool IsCurrentUsersTurn(BoardDto dto)
+        private bool IsCurrentUsersTurn(Game dto)
         {
             var profile = UserUtilities.UserProfileFromName(m_dbChessContext);
             if (profile == null)
@@ -123,7 +123,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult TimedOut(int id, string message)
         {
-            BoardDto board = m_dbChessContext.Boards.Find(id);
+            Game board = m_dbChessContext.Boards.Find(id);
 
             if (!MayManipulateBoard(board))
             {
@@ -162,7 +162,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Resign(int id)
         {
-            BoardDto board = m_dbChessContext.Boards.Find(id);
+            Game board = m_dbChessContext.Boards.Find(id);
 
             if (!MayManipulateBoard(board))
             {
@@ -187,7 +187,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ClaimDraw(int id)
         {
-            BoardDto board = m_dbChessContext.Boards.Find(id);
+            Game board = m_dbChessContext.Boards.Find(id);
 
             if (!MayManipulateBoard(board))
             {
@@ -217,7 +217,7 @@ namespace Chess.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult PlayMove(int id, string start, string end, string promote)
 		{
-			BoardDto board = m_dbChessContext.Boards.Find(id);
+			Game board = m_dbChessContext.Boards.Find(id);
 		    if (board == null)
 		    {
                 return Json(new { fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH" });

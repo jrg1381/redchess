@@ -35,7 +35,7 @@ namespace Chess.Controllers
             if (!VerifyUser(opponentId)) return new BoardCreationResult { Status = "FAIL", Message = "opponentId invalid" };
 
             var board = BoardFactory.CreateInstance();
-            var dto = new BoardDto(board, playerId, opponentId);
+            var dto = new Game(board, playerId, opponentId);
             m_dbChessContext.Boards.Add(dto);
             dto.UpdateMessage();
             m_dbChessContext.SaveChanges();
@@ -52,7 +52,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public Dictionary<int, BoardDto> Boards()
+        public Dictionary<int, Game> Boards()
         {
             return m_dbChessContext.Boards.ToDictionary(b => b.GameId, b => b);
         }
@@ -64,7 +64,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public BoardDto Board(int id)
+        public Game Board(int id)
         {
             return m_dbChessContext.Boards.Find(id);
         }
@@ -97,7 +97,7 @@ namespace Chess.Controllers
             return new PlayMoveResult { Status = "OK", Fen = board.Fen, Message = board.Status };
         }
 
-        private void UpdateDrawClaimStatus(BoardDto board)
+        private void UpdateDrawClaimStatus(Game board)
         {
             board.MayClaimDraw = m_dbChessContext.Database.SqlQuery<bool>("SELECT dbo.MayClaimDraw(@p0)", board.GameId).FirstOrDefault();
         }
