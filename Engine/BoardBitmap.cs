@@ -20,7 +20,7 @@ namespace Redchess.Engine
         private BoardBitmap(BoardBitmap source)
         {
             m_data = source.m_data;
-            m_setBits = m_data.SetBits.Count();
+            m_setBits = m_data.CountSetBits();
         }
 
         /// <summary>

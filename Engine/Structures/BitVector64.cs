@@ -78,6 +78,20 @@ namespace Redchess.Engine.Structures
             }
         }
 
+        public int CountSetBits()
+        {
+            UInt64 dataCopy = m_data;
+            int ret = 0;
+
+            while (dataCopy != 0)
+            {
+                dataCopy &= (dataCopy - 1);
+                ret++;
+            }
+
+            return ret;
+        }
+
         public bool this[int bit]
         {
             get { return ((m_data >> bit) & 1) == 1; }
