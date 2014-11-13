@@ -264,20 +264,25 @@ namespace Redchess.Engine
 			 * Way more efficient would be to track outwards from the king's position, looking to see if anything is attacking it. In the common case where the king
 			 * is protected by a shield of its own pieces, this would terminate earlier once the search lines hit friendly pieces in all directions. */
 
-            var fixedAttackers = SimpleBoard.Pieces(~colorOfKing).OccupiedSquares().Select(GetContents);
+            var fixedAttackers = SimpleBoard.Pieces(~colorOfKing).OccupiedSquares().Select(GetContents).ToArray();
 
             return
-                fixedAttackers.ToArray()
+                fixedAttackers
                     .AsParallel()
                     .WithDegreeOfParallelism(s_parallelism)
-                    .Any(tmpPiece => tmpPiece.AttackedSquares(this).Contains(kingPosition));
+                    .SelectMany(p => p.AttackedSquares(this))
+                    .Any(s => s == kingPosition);
         }
 
         private bool ValidMovesExist()
         {
-            var friends = SimpleBoard.Pieces(CurrentTurn).OccupiedSquares().Select(GetContents);
+            var friends = SimpleBoard.Pieces(CurrentTurn).OccupiedSquares().Select(GetContents).ToArray();
 
-            return friends.AsParallel().Any(x => x.ValidMoves(this).Any());
+            return friends
+                .AsParallel()
+                .WithDegreeOfParallelism(s_parallelism)
+                .SelectMany(x => x.ValidMoves(this))
+                .Any();
         }
 
         internal void PromotePiece(PieceType promotionTarget)
