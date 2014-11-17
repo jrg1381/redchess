@@ -10,6 +10,17 @@ namespace Redchess.EngineTests
     [TestFixture]
     class Datastructures
     {
+        [TestCase(Location.A2, Location.A2, true)]
+        [TestCase(Location.A2, Location.H4, false)]
+        [TestCase(Location.InvalidSquare, Location.InvalidSquare, true)]
+        [TestCase(Location.C4, Location.InvalidSquare, false)]
+        public void SquaresCompareCorrectly(Location firstLocation, Location secondLocation, bool expected)
+        {
+            var firstSquare = new Square(firstLocation);
+            var secondSquare = new Square(secondLocation);
+            Assert.That((firstSquare.Equals(secondSquare)) == expected, "Expected squares to compare correctly");
+        }
+
         [Test]
         public void SquaresNotEqualToNonSquares()
         {
