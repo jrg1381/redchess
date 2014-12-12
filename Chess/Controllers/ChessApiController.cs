@@ -46,7 +46,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public Dictionary<int,string> Users()
+        public Dictionary<int,string> Accounts()
         {
             return m_dbChessContext.UserProfiles.ToDictionary(user => user.UserId, user => user.UserName);
         }
@@ -58,7 +58,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public UserProfile User(int id)
+        public UserProfile Account(int id)
         {
             return m_dbChessContext.UserProfiles.Find(id);
         }
