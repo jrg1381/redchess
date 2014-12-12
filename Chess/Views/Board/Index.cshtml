@@ -70,7 +70,8 @@
 		 <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
      </tr>
      }
-        		<tr><td><h3>My finished games</h3></td></tr>
+     
+     <tr><td><h3>My finished games</h3></td></tr>
      foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
      {
 			<tr>
@@ -85,7 +86,11 @@
 			    <td>@Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
 			</tr>
      }
-     <tr><td></td><td></td><td><a class="asbutton" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+     
+     if(@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
+      {
+          <tr><td></td><td></td><td><a class="asbutton" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+      }
 
  }
 </table>
