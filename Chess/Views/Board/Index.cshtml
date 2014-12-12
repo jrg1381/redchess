@@ -38,6 +38,11 @@
         });
     });
 
+    function DeleteMultiple() {
+        var ids = $(".deleteCheckbox:checked").toArray().map(function(x) { return x.name; }).join();
+        $.post("/Board/DeleteMultiple", { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() }, function () { location.reload(); });
+    }
+
     function GoToGame(id) {
         document.location.href = "/Board/Details/" + id;
     }
@@ -70,18 +75,18 @@
      {
 			<tr>
 			    <td>
-			        <div class="miniboard" id="f-@item.GameId" style="width: 150px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
+			        <div id="f-@item.GameId" onclick="GoToGame(@item.GameId)">@Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</div>
 			    </td>
                 @{
                     var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
                 }
 			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
+                <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId })</td>
+			    <td>@Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
 			</tr>
-     <tr>
-         <td>@item.Description</td>
-		 <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
-     </tr>
      }
+     <tr><td></td><td></td><td><a class="asbutton" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+
  }
 </table>
 

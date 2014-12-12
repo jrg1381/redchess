@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Results;
 using System.Web.Mvc;
@@ -86,6 +87,27 @@ namespace Chess.Controllers
 			return View(board);
         }
 
+        [HttpPost, ActionName("DeleteMultiple")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMultiple(string ids)
+        {
+            foreach(var id in ids.Split(',').Select(Int32.Parse))
+                DestroyBoard(id);
+
+            m_dbChessContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        private void DestroyBoard(int id)
+        {
+            var board = m_dbChessContext.Boards.Find(id);
+
+            if (board != null && MayManipulateBoard(board))
+            {
+                m_dbChessContext.Boards.Remove(board);
+            }
+        }
+
         //
         // POST: /Board/Delete/5
 
@@ -93,14 +115,9 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-			var board = m_dbChessContext.Boards.Find(id);
+			DestroyBoard(id);
 
-            if (board != null && MayManipulateBoard(board))
-            {
-                m_dbChessContext.Boards.Remove(board);
-                m_dbChessContext.SaveChanges();
-            }
-
+            m_dbChessContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
