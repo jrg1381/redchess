@@ -7,14 +7,17 @@ namespace Redchess.Engine.Pieces.Abstract
 {
     internal abstract class King : Piece
     {
-        private static readonly Tuple<int, int>[] s_moveSet = {new Tuple<int, int>(0, 1), 
-                                                               new Tuple<int, int>(0, -1), 
-                                                               new Tuple<int, int>(1, 1), 
-                                                               new Tuple<int, int>(1, -1),
-                                                               new Tuple<int, int>(1, 0),
-                                                               new Tuple<int, int>(-1, 0),
-                                                               new Tuple<int, int>(-1, 1),
-                                                               new Tuple<int, int>(-1, -1)};
+        private static readonly Vector2[] s_moveSet =
+        {
+            new Vector2(0, 1),
+            new Vector2(0, -1),
+            new Vector2(1, 1),
+            new Vector2(1, -1),
+            new Vector2(1, 0),
+            new Vector2(-1, 0),
+            new Vector2(-1, 1),
+            new Vector2(-1, -1)
+        };
 
         protected King(Location loc, PieceType pieceType)
             : base(loc, pieceType)

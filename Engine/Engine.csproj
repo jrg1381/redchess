@@ -69,6 +69,7 @@
     <Compile Include="Pieces\Abstract\Knight.cs" />
     <Compile Include="Pieces\Abstract\Pawn.cs" />
     <Compile Include="Pieces\Abstract\Piece.cs" />
+    <Compile Include="Pieces\Abstract\Vector2.cs" />
     <Compile Include="Pieces\PieceFactory.cs" />
     <Compile Include="Pieces\Abstract\Queen.cs" />
     <Compile Include="Pieces\Abstract\Rook.cs" />
