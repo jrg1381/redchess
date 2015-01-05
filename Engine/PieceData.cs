@@ -72,11 +72,6 @@ namespace Redchess.Engine
             get { return BlackPieceTypesSource.AsEnumerable(); }
         }
 
-        internal static IEnumerable<PieceType> AllPieceTypes
-        {
-            get { return WhitePieceTypes.Concat(BlackPieceTypes); }
-        }
-
         internal static IEnumerable<Location> InitialPieceConfiguration(PieceType t)
         {
             IEnumerable<Location> retval;
