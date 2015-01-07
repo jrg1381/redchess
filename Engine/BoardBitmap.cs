@@ -6,7 +6,7 @@ using Redchess.Engine.Structures;
 
 namespace Redchess.Engine
 {
-    internal sealed class BoardBitmap : IBoardBitmap
+    sealed class BoardBitmap : IBoardBitmap
     {
         private BitVector64 m_data;
         private int m_setBits;
