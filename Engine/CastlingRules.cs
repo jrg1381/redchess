@@ -46,8 +46,9 @@ namespace Redchess.Engine
         ///     Returns true if all the supplied squares are empty
         /// </summary>
         /// <param name="squares">Set of squares to check</param>
+        /// <param name="game"></param>
         /// <returns></returns>
-        private bool SquaresEmpty(IEnumerable<Location> squares, IBoardExtended game)
+        private static bool SquaresEmpty(IEnumerable<Location> squares, IBoardExtended game)
         {
             return squares.All(s => game.GetContents(s) == null);
         }
@@ -57,8 +58,9 @@ namespace Redchess.Engine
         /// </summary>
         /// <param name="color">The friendly side</param>
         /// <param name="squares">Set of squares to check</param>
+        /// <param name="game"></param>
         /// <returns></returns>
-        private bool SquaresNotAttacked(PieceColor color, IEnumerable<Location> squares, IBoardExtended game)
+        private static bool SquaresNotAttacked(PieceColor color, IEnumerable<Location> squares, IBoardExtended game)
         {
             return squares.All(s => !game.KingInCheck(color, s));
         }
