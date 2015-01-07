@@ -285,7 +285,7 @@ namespace Redchess.Engine
                 .Any();
         }
 
-        internal void PromotePiece(PieceType promotionTarget)
+        void PromotePiece(PieceType promotionTarget)
         {
             if (m_promotedPawn == null)
                 throw new CannotPromoteException();
@@ -295,7 +295,7 @@ namespace Redchess.Engine
             m_promotedPawn = null;
         }
 
-        internal void MovePiece(IPiece piece, Location newLocation)
+        void MovePiece(IPiece piece, Location newLocation)
         {
             if (m_promotedPawn != null)
                 throw new InvalidMoveException("The previous player has not decided what to promote their pawn to");

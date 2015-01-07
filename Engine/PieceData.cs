@@ -93,7 +93,7 @@ namespace Redchess.Engine
             return TypeFromSymbol(symbol.ToString(CultureInfo.InvariantCulture));
         }
 
-        internal static PieceType TypeFromSymbol(string symbol)
+        static PieceType TypeFromSymbol(string symbol)
         {
             PieceType typeOfSymbol;
             bool knownSymbol = ReverseSymbolLookup.TryGetValue(symbol, out typeOfSymbol);
