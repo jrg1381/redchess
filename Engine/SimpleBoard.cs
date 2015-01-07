@@ -8,7 +8,7 @@ using Redchess.Engine.Pieces;
 
 namespace Redchess.Engine
 {
-    public class SimpleBoard
+    public sealed class SimpleBoard
     {
         private IBoardBitmap m_blackPieces;
         private IBoardBitmap m_whitePieces;
