@@ -13,7 +13,7 @@ using Redchess.Engine.Structures;
 
 namespace Redchess.Engine
 {
-    public class Board : IBoard, IBoardExtended
+    public class Board : IBoard, IBoardExtended, IDisposable
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
@@ -446,6 +446,12 @@ namespace Redchess.Engine
             {
                 m_board.m_observer = null;
             }
+        }
+
+        public void Dispose()
+        {
+            if(m_fen != null)
+                m_fen.Dispose();
         }
     }
 }
