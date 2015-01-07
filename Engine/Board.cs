@@ -433,7 +433,7 @@ namespace Redchess.Engine
             return new Unsubscriber(this);
         }
 
-        class Unsubscriber : IDisposable
+        sealed class Unsubscriber : IDisposable
         {
             private readonly Board m_board;
 
