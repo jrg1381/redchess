@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace Chess
 {
@@ -22,6 +23,8 @@ namespace Chess
 #if !DEBUG
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
 #endif
+
+            FormsAuthentication.Initialize();
         }
 	}
 }
