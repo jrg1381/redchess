@@ -18,6 +18,10 @@ namespace Chess
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			AuthConfig.RegisterAuth();
-		}
+
+#if !DEBUG
+            GlobalFilters.Filters.Add(new RequireHttpsAttribute());
+#endif
+        }
 	}
 }
