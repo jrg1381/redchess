@@ -46,5 +46,23 @@ namespace Redchess.EngineTests
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E4), Location.D5);
             Assert.AreEqual("Qxd5", move, "Queen takes bishop on D5");
         }
+
+        [Test]
+        public void CastleKingSide()
+        {
+            m_emptyBoard.FromFen("8/8/8/8/8/8/8/4K2R w KQkq -");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E1), Location.G1);
+            Assert.AreEqual("O-O", move, "White king castles kingside");
+        }
+
+        [Test]
+        public void CastleQueenSide()
+        {
+            m_emptyBoard.FromFen("8/8/8/8/8/8/8/R3K2R w KQkq -");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E1), Location.C1);
+            Assert.AreEqual("O-O-O", move, "White king castles queenside");
+        }
     }
 }

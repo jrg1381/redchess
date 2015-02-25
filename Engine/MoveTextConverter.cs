@@ -5,6 +5,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Redchess.Engine.Interfaces;
+using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 
@@ -25,6 +26,10 @@ namespace Redchess.Engine
             {
                 return PawnMove(piece, newLocation);
             }
+            else if (piece.Type.IsOfType(PieceType.King))
+            {
+                return KingMove(piece, newLocation);
+            }
             else
             {
                 return PieceMove(piece, newLocation);
@@ -33,11 +38,26 @@ namespace Redchess.Engine
             return "";
         }
 
+        private string KingMove(IPiece piece, Location newLocation)
+        {
+            int dX = new Square(newLocation).X - piece.Position.X;
+
+            switch (dX)
+            {
+                case 2:
+                    return "O-O";
+                case -2:
+                    return "O-O-O";
+                default:
+                    return PieceMove(piece, newLocation);
+            }
+        }
+
         private string PawnMove(IPiece piece, Location newLocation)
         {
             if (m_board.GetContents(newLocation) != null)
             {
-                return String.Format("{0}x{1}", "abcdefgh"[piece.Position.X], LocationToLower(newLocation));
+                return String.Format("{0}x{1}", PieceColumn(piece), LocationToLower(newLocation));
             }
 
             return LocationToLower(newLocation);
@@ -56,6 +76,11 @@ namespace Redchess.Engine
         private string LocationToLower(Location location)
         {
             return location.ToString().ToLower();
+        }
+
+        private string PieceColumn(IPiece piece)
+        {
+            return "abcdefgh"[piece.Position.X].ToString();
         }
 
         private string PieceSymbol(IPiece piece)
