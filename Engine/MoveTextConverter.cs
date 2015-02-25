@@ -31,6 +31,11 @@ namespace Redchess.Engine
 
         private string PawnMove(IPiece piece, Location newLocation)
         {
+            if (m_board.GetContents(newLocation) != null)
+            {
+                return String.Format("{0}x{1}", "abcdefgh"[piece.Position.X], newLocation.ToString().ToLower());
+            }
+
             return newLocation.ToString().ToLower();
         }
     }
