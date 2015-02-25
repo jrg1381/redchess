@@ -58,6 +58,7 @@
     <Compile Include="FenAssert.cs" />
     <Compile Include="FenTests.cs" />
     <Compile Include="InteractiveBoard.cs" />
+    <Compile Include="MoveConverterTests.cs" />
     <Compile Include="MoveTests.cs" />
     <Compile Include="PieceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
