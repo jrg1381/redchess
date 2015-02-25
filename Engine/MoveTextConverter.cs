@@ -25,6 +25,10 @@ namespace Redchess.Engine
             {
                 return PawnMove(piece, newLocation);
             }
+            else
+            {
+                return PieceMove(piece, newLocation);
+            }
 
             return "";
         }
@@ -37,6 +41,16 @@ namespace Redchess.Engine
             }
 
             return newLocation.ToString().ToLower();
+        }
+
+        private string PieceMove(IPiece piece, Location newLocation)
+        {
+            if (m_board.GetContents(newLocation) != null)
+            {
+                return String.Format("{0}x{1}", PieceData.Symbol(piece.Type), newLocation.ToString().ToLower());
+            }
+
+            return String.Format("{0}{1}", PieceData.Symbol(piece.Type), newLocation.ToString().ToLower());
         }
     }
 }
