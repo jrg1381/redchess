@@ -37,20 +37,30 @@ namespace Redchess.Engine
         {
             if (m_board.GetContents(newLocation) != null)
             {
-                return String.Format("{0}x{1}", "abcdefgh"[piece.Position.X], newLocation.ToString().ToLower());
+                return String.Format("{0}x{1}", "abcdefgh"[piece.Position.X], LocationToLower(newLocation));
             }
 
-            return newLocation.ToString().ToLower();
+            return LocationToLower(newLocation);
         }
 
         private string PieceMove(IPiece piece, Location newLocation)
         {
             if (m_board.GetContents(newLocation) != null)
             {
-                return String.Format("{0}x{1}", PieceData.Symbol(piece.Type), newLocation.ToString().ToLower());
+                return String.Format("{0}x{1}", PieceSymbol(piece), LocationToLower(newLocation));
             }
 
-            return String.Format("{0}{1}", PieceData.Symbol(piece.Type), newLocation.ToString().ToLower());
+            return String.Format("{0}{1}", PieceSymbol(piece), LocationToLower(newLocation));
+        }
+
+        private string LocationToLower(Location location)
+        {
+            return location.ToString().ToLower();
+        }
+
+        private string PieceSymbol(IPiece piece)
+        {
+            return PieceData.Symbol(piece.Type).ToUpper();
         }
     }
 }
