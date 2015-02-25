@@ -30,12 +30,21 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void PieceMoves()
+        public void PieceMovesWithCheck()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
             var converter = new MoveTextConverter(m_emptyBoard);
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E4), Location.A4);
-            Assert.AreEqual("Qa4", move, "Queen moves to A4");
+            Assert.AreEqual("Qa4+", move, "Queen moves to A4");
+        }
+
+        [Test]
+        public void PieceMoves()
+        {
+            m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E4), Location.B4);
+            Assert.AreEqual("Qb4", move, "Queen moves to B4");
         }
 
         [Test]

@@ -49,7 +49,7 @@ namespace Redchess.Engine
                 case -2:
                     return "O-O-O";
                 default:
-                    return PieceMove(piece, newLocation);
+                    return PieceMove(piece, newLocation) + Annotation(piece, newLocation);
             }
         }
 
@@ -57,20 +57,26 @@ namespace Redchess.Engine
         {
             if (m_board.GetContents(newLocation) != null)
             {
-                return String.Format("{0}x{1}", PieceColumn(piece), LocationToLower(newLocation));
+                return String.Format("{0}x{1}{2}", PieceColumn(piece), LocationToLower(newLocation), Annotation(piece, newLocation));
             }
 
-            return LocationToLower(newLocation);
+            return LocationToLower(newLocation) + Annotation(piece, newLocation);
         }
 
         private string PieceMove(IPiece piece, Location newLocation)
         {
             if (m_board.GetContents(newLocation) != null)
             {
-                return String.Format("{0}x{1}", PieceSymbol(piece), LocationToLower(newLocation));
+                return String.Format("{0}x{1}{2}", 
+                    PieceSymbol(piece), 
+                    LocationToLower(newLocation), 
+                    Annotation(piece, newLocation));
             }
 
-            return String.Format("{0}{1}", PieceSymbol(piece), LocationToLower(newLocation));
+            return String.Format("{0}{1}{2}",
+                PieceSymbol(piece), 
+                LocationToLower(newLocation), 
+                Annotation(piece, newLocation));
         }
 
         private string LocationToLower(Location location)
@@ -86,6 +92,21 @@ namespace Redchess.Engine
         private string PieceSymbol(IPiece piece)
         {
             return PieceData.Symbol(piece.Type).ToUpper();
+        }
+
+        private string Annotation(IPiece piece, Location newLocation)
+        {
+            var boardCopy = new Board();
+            boardCopy.FromFen(m_board.ToFen());
+            boardCopy.Move(piece.Position.Location, newLocation);
+
+            var isCheck = boardCopy.KingInCheck();
+            var isMate = isCheck && boardCopy.IsCheckmate(skipCheckTest: true);
+
+            if (isMate) return "#";
+            if (isCheck) return "+";
+
+            return String.Empty;
         }
     }
 }
