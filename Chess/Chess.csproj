@@ -209,7 +209,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\BoardDto.cs" />
+    <Compile Include="Models\Game.cs" />
     <Compile Include="Models\BoardImpl.cs" />
     <Compile Include="Models\ChessContext.cs" />
     <Compile Include="Models\Clock.cs" />
