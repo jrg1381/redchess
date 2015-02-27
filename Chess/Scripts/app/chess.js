@@ -142,7 +142,7 @@ function ProcessServerResponse(data) {
         myClock.SyncClockWithServer(myClock);
     }
 
-    $("#lastmove").text(data.movefrom +" -> " + data.moveto);
+    $("#lastmove").text(data.lastmove);
     $("#fen").text(data.fen);
     UpdateTakenPieces(data.fen);
     

@@ -21,6 +21,11 @@ namespace Chess.Models
             get { return m_boardImpl.CurrentTurn; }
         }
 
+        public string LastMove()
+        {
+            return m_boardImpl.LastMove();
+        }
+
         public bool KingInCheck()
         {
             return m_boardImpl.KingInCheck();

@@ -302,7 +302,9 @@ namespace Chess.Controllers
 			m_dbChessContext.SaveChanges();
 
             string messageForUser = board.Status;
-			var jsonObject = new {fen = board.Fen, message = messageForUser, movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw};
+            string lastMove = board.LastMove;
+
+			var jsonObject = new {fen = board.Fen, message = messageForUser, lastmove = lastMove, movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw};
 
 			IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
 			hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);

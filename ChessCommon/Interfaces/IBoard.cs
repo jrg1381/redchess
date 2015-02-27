@@ -16,5 +16,6 @@ namespace RedChess.ChessCommon.Interfaces
         void PromotePiece(string pieceName);
         IEnumerable<Location> FindPieces(PieceType pieceType);
         bool IsAwaitingPromotionDecision();
+        string LastMove();
     }
 }

@@ -23,7 +23,10 @@ namespace Redchess.Engine
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
         private int m_fiftyMoveRuleCounter;
+        private IPiece m_lastMovedPiece;
+        private Location m_lastMovedTarget;
         private IObserver<IBoardExtended> m_observer;
+        private Board m_previousBoard;
 
         public Board()
             : this(PieceColor.White, false, true)
@@ -41,6 +44,12 @@ namespace Redchess.Engine
                 SimpleBoard = new SimpleBoard(isEmpty);
                 m_fen = new Fen(this, m_castlingRules);
             }
+        }
+
+        public string LastMove()
+        {
+            var converter = new MoveTextConverter(m_previousBoard);
+            return converter.MoveAsText(m_lastMovedPiece, m_lastMovedTarget);
         }
 
         public PieceColor CurrentTurn { get; private set; }
@@ -110,10 +119,16 @@ namespace Redchess.Engine
             if (!ValidateMoveForCheck(piece, end))
                 return false;
 
+            m_previousBoard = new Board();
+            m_previousBoard.FromFen(ToFen());
+            m_lastMovedPiece = piece;
+            m_lastMovedTarget = end;
+
             MovePiece(piece, end);
 
             if(m_observer != null)
                 m_observer.OnCompleted();
+
             return true;
         }
 

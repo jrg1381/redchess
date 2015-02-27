@@ -137,6 +137,11 @@ namespace Chess.Models
             set { m_completionDate = value; }
         }
 
+        public string LastMove
+        {
+            get { return m_board.LastMove(); }
+        }
+
         public void EndGameWithMessage(string message)
         {
             Status = message;
