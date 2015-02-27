@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,11 @@ namespace Redchess.Engine
 
         public string MoveAsText(IPiece piece, Location newLocation)
         {
+            if (MoveIsAmbiguous(piece, newLocation))
+            {
+                throw new ArgumentException("Move is ambiguous");
+            }
+
             if (piece.Type.IsOfType(PieceType.Pawn))
             {
                 return PawnMove(piece, newLocation);
@@ -77,6 +83,13 @@ namespace Redchess.Engine
                 PieceSymbol(piece), 
                 LocationToLower(newLocation), 
                 Annotation(piece, newLocation));
+        }
+
+        private bool MoveIsAmbiguous(IPiece piece, Location newLocation)
+        {
+            var otherPieces = m_board.FindPieces(piece.Type).Where(p => p != piece.Position.Location);
+            var movesOfOtherPieces = otherPieces.SelectMany(p => m_board.GetContents(p).ValidMoves(m_board));
+            return movesOfOtherPieces.Contains(newLocation);
         }
 
         private string LocationToLower(Location location)

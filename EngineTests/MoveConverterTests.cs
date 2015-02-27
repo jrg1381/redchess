@@ -73,5 +73,32 @@ namespace Redchess.EngineTests
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E1), Location.C1);
             Assert.AreEqual("O-O-O", move, "White king castles queenside");
         }
+
+        [Test]
+        public void AmbiguousMoveByRow()
+        {
+            m_emptyBoard.FromFen("1k4K1/8/8/8/8/8/8/R6R w - -");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A1), Location.C1);
+            Assert.AreEqual("Rac1", move, "Rook on A1 moves to C1"); 
+        }
+
+        [Test]
+        public void AmbiguousMoveByColumn()
+        {
+            m_emptyBoard.FromFen("R7/8/8/7k/8/7K/8/R7 w - -");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A1), Location.A3);
+            Assert.AreEqual("R1a3", move, "Rook on A1 moves to a3");
+        }
+
+        [Test]
+        public void AmbiguousMoveBoth()
+        {
+            m_emptyBoard.FromFen("1R6/R5R1/8/7k/8/7K/8/1R6 w - -");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.B1), Location.B7);
+            Assert.AreEqual("Rb1b7", move, "Rook on B1 moves to B7");
+        }
     }
 }
