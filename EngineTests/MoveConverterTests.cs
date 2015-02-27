@@ -39,6 +39,15 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void PawnTakesEnPassant()
+        {
+            m_emptyBoard.FromFen("rnbqkbnr/pppp1ppp/8/8/P2Pp3/8/1PP1PPPP/RNBQKBNR b KQkq D3 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E4), Location.D3);
+            Assert.AreEqual("exd3", move, "Pawn move was not correctly converted to text");
+        }
+
+        [Test]
         public void PieceMovesWithCheck()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");

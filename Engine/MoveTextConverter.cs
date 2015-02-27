@@ -56,9 +56,12 @@ namespace Redchess.Engine
 
         private string PawnMove(IPiece piece, Location newLocation)
         {
-            if (m_board.GetContents(newLocation) != null)
+            if (m_board.GetContents(newLocation) != null || m_board.EnPassantTarget == newLocation)
             {
-                return String.Format("{0}x{1}{2}", PieceColumn(piece), LocationToLower(newLocation), Annotation(piece, newLocation));
+                return String.Format("{0}{1}x{2}{3}", PieceColumn(piece), 
+                    Disambiguator(piece, newLocation),
+                    LocationToLower(newLocation),
+                    Annotation(piece, newLocation));
             }
 
             return LocationToLower(newLocation) + Annotation(piece, newLocation);
@@ -66,17 +69,7 @@ namespace Redchess.Engine
 
         private string PieceMove(IPiece piece, Location newLocation)
         {
-            string disambiguator = String.Empty;
-
-            var sameRow = PiecesOnSameRow(piece, newLocation);
-            var sameColumn = PiecesOnSameColumn(piece, newLocation);
-
-            if (sameRow && sameColumn)
-                disambiguator = LocationToLower(piece.Position.Location);
-            else if (sameRow)
-                disambiguator = PieceColumn(piece);
-            else if (sameColumn)
-                disambiguator = (piece.Position.Y + 1).ToString();
+            var disambiguator = Disambiguator(piece, newLocation);
 
             if (m_board.GetContents(newLocation) != null)
             {
@@ -92,6 +85,31 @@ namespace Redchess.Engine
                 disambiguator,
                 LocationToLower(newLocation), 
                 Annotation(piece, newLocation));
+        }
+
+        private string Disambiguator(IPiece piece, Location newLocation)
+        {
+            string disambiguator = String.Empty;
+
+            var anyAmbiguity = MoveIsAmbiguous(piece, newLocation);
+            var sameRow = PiecesOnSameRow(piece, newLocation);
+            var sameColumn = PiecesOnSameColumn(piece, newLocation);
+
+            if (sameRow && sameColumn)
+                disambiguator = LocationToLower(piece.Position.Location);
+            else if (sameRow)
+                disambiguator = PieceColumn(piece);
+            else if (sameColumn)
+                disambiguator = (piece.Position.Y + 1).ToString();
+            else if (anyAmbiguity)
+                disambiguator = PieceColumn(piece); // bishops and pawns
+            return disambiguator;
+        }
+
+        private bool MoveIsAmbiguous(IPiece piece, Location newLocation)
+        {
+            return m_board.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
+                Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
         }
 
         private bool PiecesOnSameColumn(IPiece piece, Location newLocation)
