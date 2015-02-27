@@ -21,6 +21,33 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void PawnPromotes()
+        {
+            m_emptyBoard.FromFen("8/P7/8/8/8/8/8/k6K w - - 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A7), Location.A8, "Q");
+            Assert.AreEqual("a8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen"); 
+        }
+
+        [Test]
+        public void AmbiguousPawnPromotes()
+        {
+            m_emptyBoard.FromFen("1q6/P1P5/8/8/8/8/8/k6K w - - 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A7), Location.B8, "Q");
+            Assert.AreEqual("axb8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen");
+        }
+
+        [Test]
+        public void AmbiguousPawnPromotesAndChecks()
+        {
+            m_emptyBoard.FromFen("1q5k/P1P5/8/8/8/8/8/7K w - - 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A7), Location.B8, "Q");
+            Assert.AreEqual("axb8(=Q)+", move, "Pawn on a7 moves to a8 and promotes to queen");
+        }
+
+        [Test]
         public void NormalMoveOfKing()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/8/8/8/PPPP1PPP/RNB1KBNR w KQkq - 0");

@@ -25,6 +25,7 @@ namespace Redchess.Engine
         private int m_fiftyMoveRuleCounter;
         private IPiece m_lastMovedPiece;
         private Location m_lastMovedTarget;
+        private string m_lastPromotion;
         private IObserver<IBoardExtended> m_observer;
         private Board m_previousBoard;
 
@@ -49,7 +50,10 @@ namespace Redchess.Engine
         public string LastMove()
         {
             var converter = new MoveTextConverter(m_previousBoard);
-            return converter.MoveAsText(m_lastMovedPiece, m_lastMovedTarget);
+            var square = new Square(m_lastMovedTarget);
+            var isPromotion = (square.Y == 0 || square.Y == 7) && m_lastMovedPiece.Type.IsOfType(PieceType.Pawn);
+
+            return converter.MoveAsText(m_lastMovedPiece, m_lastMovedTarget, isPromotion ? m_lastPromotion : null);
         }
 
         public PieceColor CurrentTurn { get; private set; }
@@ -186,6 +190,8 @@ namespace Redchess.Engine
 
         public void PromotePiece(string promotionTarget)
         {
+            m_lastPromotion = promotionTarget;
+
             // Crappy, but we want to allow K (for Knight, when the UI asks for it) but not King.
             // We also want to work on the intial letters only, for when the parser reads a PGN file.
             if (promotionTarget.ToLower() == "king")

@@ -21,10 +21,13 @@ namespace Redchess.Engine
             m_board = game;
         }
 
-        public string MoveAsText(IPiece piece, Location newLocation)
+        public string MoveAsText(IPiece piece, Location newLocation, string promotedTo = null)
         {
             if (piece.Type.IsOfType(PieceType.Pawn))
             {
+                if (promotedTo != null)
+                    return Promotion(piece, newLocation, promotedTo);
+
                 return PawnMove(piece, newLocation);
             }
             else if (piece.Type.IsOfType(PieceType.King))
@@ -37,6 +40,13 @@ namespace Redchess.Engine
             }
 
             return "";
+        }
+
+        private string Promotion(IPiece piece, Location newLocation, string promotedTo)
+        {
+            return String.Format("{0}(={1})",
+                PawnMove(piece, newLocation),
+                promotedTo);
         }
 
         private string KingMove(IPiece piece, Location newLocation)
@@ -58,8 +68,7 @@ namespace Redchess.Engine
         {
             if (m_board.GetContents(newLocation) != null || m_board.EnPassantTarget == newLocation)
             {
-                return String.Format("{0}{1}x{2}{3}", PieceColumn(piece), 
-                    Disambiguator(piece, newLocation),
+                return String.Format("{0}x{1}{2}", PieceColumn(piece), 
                     LocationToLower(newLocation),
                     Annotation(piece, newLocation));
             }
