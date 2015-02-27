@@ -21,6 +21,15 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void NormalMoveOfKing()
+        {
+            m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/8/8/8/PPPP1PPP/RNB1KBNR w KQkq - 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E1), Location.D1);
+            Assert.AreEqual("Kd1", move, "King moves to D1"); 
+        }
+
+        [Test]
         public void PawnTakesPiece()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
