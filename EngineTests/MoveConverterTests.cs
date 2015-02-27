@@ -39,6 +39,15 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void PieceMovesWithMate()
+        {
+            m_emptyBoard.FromFen("k7/7R/6R1/8/8/8/8/K7 w - - 0");
+            var converter = new MoveTextConverter(m_emptyBoard);
+            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.G6), Location.G8);
+            Assert.AreEqual("Rg8#", move, "Rook moves to g8 and mate");
+        }
+
+        [Test]
         public void PieceMoves()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
