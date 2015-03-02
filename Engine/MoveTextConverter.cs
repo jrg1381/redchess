@@ -44,9 +44,10 @@ namespace Redchess.Engine
 
         private string Promotion(IPiece piece, Location newLocation, string promotedTo)
         {
-            return String.Format("{0}(={1})",
+            return String.Format("{0}(={1}){2}",
                 PawnMove(piece, newLocation),
-                promotedTo);
+                promotedTo,
+                Annotation(piece, newLocation, promotedTo));
         }
 
         private string KingMove(IPiece piece, Location newLocation)
@@ -123,18 +124,19 @@ namespace Redchess.Engine
 
         private bool PiecesOnSameColumn(IPiece piece, Location newLocation)
         {
-            var target = new Square(newLocation);
-
-            return m_board.FindPieces(piece.Type).Where(p =>
-            {
-                var otherPiece = new Square(p);
-                if (p == piece.Position.Location)
-                    return false;
-                return otherPiece.X == target.X && otherPiece.Y != target.Y;
-            }).Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
+            return AreThereAlignedPieces(piece, 
+                newLocation, 
+                (otherPiece, target) => otherPiece.X == target.X && otherPiece.Y != target.Y);
         }
 
         private bool PiecesOnSameRow(IPiece piece, Location newLocation)
+        {
+            return AreThereAlignedPieces(piece,
+                newLocation,
+                (otherPiece, target) => otherPiece.Y == target.Y && otherPiece.X != target.X);
+        }
+
+        private bool AreThereAlignedPieces(IPiece piece, Location newLocation, Func<Square, Square, bool> f)
         {
             var target = new Square(newLocation);
 
@@ -143,7 +145,7 @@ namespace Redchess.Engine
                 var otherPiece = new Square(p);
                 if (p == piece.Position.Location)
                     return false;
-                return otherPiece.Y == target.Y && otherPiece.X != target.X;
+                return f(otherPiece, target);
             }).Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
         }
 
@@ -162,11 +164,13 @@ namespace Redchess.Engine
             return PieceData.Symbol(piece.Type).ToUpper();
         }
 
-        private string Annotation(IPiece piece, Location newLocation)
+        private string Annotation(IPiece piece, Location newLocation, string promotedTo = null)
         {
             var boardCopy = new Board();
             boardCopy.FromFen(m_board.ToFen());
             boardCopy.Move(piece.Position.Location, newLocation);
+            if(promotedTo != null)
+                boardCopy.PromotePiece(promotedTo);
 
             var isCheck = boardCopy.KingInCheck();
             var isMate = isCheck && boardCopy.IsCheckmate(skipCheckTest: true);

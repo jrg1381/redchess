@@ -23,7 +23,7 @@ namespace Redchess.EngineTests
         [Test]
         public void PawnPromotes()
         {
-            m_emptyBoard.FromFen("8/P7/8/8/8/8/8/k6K w - - 0");
+            m_emptyBoard.FromFen("8/P7/8/8/8/8/8/1k5K w - - 0");
             var converter = new MoveTextConverter(m_emptyBoard);
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A7), Location.A8, "Q");
             Assert.AreEqual("a8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen"); 
