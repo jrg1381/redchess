@@ -40,6 +40,7 @@
         UpdateUi('@Model.Fen');
         // Draw any user messages, and update the set of taken pieces
         $("#messages").text('@Model.Status');
+        $("#lastmove").text('@Model.LastMove');
         UpdateTakenPieces('@Model.Fen');
 
         @if (Model.MayClaimDraw) {

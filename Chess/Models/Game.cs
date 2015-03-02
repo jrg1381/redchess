@@ -18,6 +18,7 @@ namespace Chess.Models
         private bool m_canClaimDraw;
         private DateTime m_creationDate;
         private DateTime? m_completionDate;
+        private string m_lastMove;
 
         public Game()
         {
@@ -139,7 +140,12 @@ namespace Chess.Models
 
         public string LastMove
         {
-            get { return m_board.LastMove(); }
+            get
+            {
+                m_lastMove = m_board.LastMove();
+                return m_lastMove;
+            }
+            set { m_lastMove = value; }
         }
 
         public void EndGameWithMessage(string message)
