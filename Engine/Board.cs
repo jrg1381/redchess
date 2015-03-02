@@ -49,6 +49,9 @@ namespace Redchess.Engine
 
         public string LastMove()
         {
+            if (m_lastMovedPiece == null)
+                return String.Empty;
+
             var converter = new MoveTextConverter(m_previousBoard);
             var square = new Square(m_lastMovedTarget);
             var isPromotion = (square.Y == 0 || square.Y == 7) && m_lastMovedPiece.Type.IsOfType(PieceType.Pawn);
