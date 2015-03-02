@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 16:54:12
+// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 17:21:42
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -134,7 +134,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:99:16: document
 			{
 			DebugLocation(99, 16);
-			PushFollow(Follow._document_in_parse658);
+			PushFollow(Follow._document_in_parse660);
 			document();
 			PopFollow();
 
@@ -212,7 +212,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:100:19: compulsoryTag
 				{
 				DebugLocation(100, 19);
-				PushFollow(Follow._compulsoryTag_in_parseTag668);
+				PushFollow(Follow._compulsoryTag_in_parseTag670);
 				compulsoryTag();
 				PopFollow();
 
@@ -224,7 +224,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:100:35: optionalTag
 				{
 				DebugLocation(100, 35);
-				PushFollow(Follow._optionalTag_in_parseTag672);
+				PushFollow(Follow._optionalTag_in_parseTag674);
 				optionalTag();
 				PopFollow();
 
@@ -271,12 +271,12 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:102:12: gameList EOF
 			{
 			DebugLocation(102, 12);
-			PushFollow(Follow._gameList_in_document681);
+			PushFollow(Follow._gameList_in_document683);
 			gameList();
 			PopFollow();
 
 			DebugLocation(102, 21);
-			Match(input,EOF,Follow._EOF_in_document683); 
+			Match(input,EOF,Follow._EOF_in_document685); 
 
 			}
 
@@ -341,7 +341,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:104:12: game
 					{
 					DebugLocation(104, 12);
-					PushFollow(Follow._game_in_gameList692);
+					PushFollow(Follow._game_in_gameList694);
 					game();
 					PopFollow();
 
@@ -444,7 +444,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:19: optionalTag
 				{
 				DebugLocation(107, 19);
-				PushFollow(Follow._optionalTag_in_generalTagList704);
+				PushFollow(Follow._optionalTag_in_generalTagList706);
 				optionalTag();
 				PopFollow();
 
@@ -456,7 +456,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:31: compulsoryTag
 				{
 				DebugLocation(107, 31);
-				PushFollow(Follow._compulsoryTag_in_generalTagList706);
+				PushFollow(Follow._compulsoryTag_in_generalTagList708);
 				compulsoryTag();
 				PopFollow();
 
@@ -513,7 +513,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 							// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:47: WS
 							{
 							DebugLocation(107, 47);
-							Match(input,WS,Follow._WS_in_generalTagList710); 
+							Match(input,WS,Follow._WS_in_generalTagList712); 
 
 							}
 							break;
@@ -568,7 +568,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:52: optionalTag
 						{
 						DebugLocation(107, 52);
-						PushFollow(Follow._optionalTag_in_generalTagList714);
+						PushFollow(Follow._optionalTag_in_generalTagList716);
 						optionalTag();
 						PopFollow();
 
@@ -580,7 +580,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:64: compulsoryTag
 						{
 						DebugLocation(107, 64);
-						PushFollow(Follow._compulsoryTag_in_generalTagList716);
+						PushFollow(Follow._compulsoryTag_in_generalTagList718);
 						compulsoryTag();
 						PopFollow();
 
@@ -646,7 +646,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:8: generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )*
 			{
 			DebugLocation(109, 8);
-			PushFollow(Follow._generalTagList_in_game728);
+			PushFollow(Follow._generalTagList_in_game730);
 			generalTagList();
 			PopFollow();
 
@@ -674,7 +674,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:23: WS
 					{
 					DebugLocation(109, 23);
-					Match(input,WS,Follow._WS_in_game730); 
+					Match(input,WS,Follow._WS_in_game732); 
 
 					}
 					break;
@@ -713,7 +713,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:28: moveList
 				{
 				DebugLocation(109, 28);
-				PushFollow(Follow._moveList_in_game734);
+				PushFollow(Follow._moveList_in_game736);
 				moveList();
 				PopFollow();
 
@@ -747,7 +747,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:39: WS
 					{
 					DebugLocation(109, 39);
-					Match(input,WS,Follow._WS_in_game738); 
+					Match(input,WS,Follow._WS_in_game740); 
 
 					}
 					break;
@@ -781,7 +781,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:43: GAME_RESULT_END_OF_MOVETEXT
 				{
 				DebugLocation(109, 43);
-				Match(input,GAME_RESULT_END_OF_MOVETEXT,Follow._GAME_RESULT_END_OF_MOVETEXT_in_game741); 
+				Match(input,GAME_RESULT_END_OF_MOVETEXT,Follow._GAME_RESULT_END_OF_MOVETEXT_in_game743); 
 
 				}
 				break;
@@ -812,7 +812,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:72: WS
 					{
 					DebugLocation(109, 72);
-					Match(input,WS,Follow._WS_in_game744); 
+					Match(input,WS,Follow._WS_in_game746); 
 
 					}
 					break;
@@ -904,7 +904,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:15: blockComment
 				{
 				DebugLocation(118, 15);
-				PushFollow(Follow._blockComment_in_annotation756);
+				PushFollow(Follow._blockComment_in_annotation758);
 				blockComment();
 				PopFollow();
 
@@ -916,7 +916,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:30: variantLine
 				{
 				DebugLocation(118, 30);
-				PushFollow(Follow._variantLine_in_annotation760);
+				PushFollow(Follow._variantLine_in_annotation762);
 				variantLine();
 				PopFollow();
 
@@ -968,7 +968,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:18: annotation ( ( WS )+ annotation )*
 			{
 			DebugLocation(119, 18);
-			PushFollow(Follow._annotation_in_annotationList769);
+			PushFollow(Follow._annotation_in_annotationList771);
 			annotation();
 			PopFollow();
 
@@ -1019,7 +1019,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 							// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:30: WS
 							{
 							DebugLocation(119, 30);
-							Match(input,WS,Follow._WS_in_annotationList772); 
+							Match(input,WS,Follow._WS_in_annotationList774); 
 
 							}
 							break;
@@ -1040,7 +1040,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					} finally { DebugExitSubRule(13); }
 
 					DebugLocation(119, 34);
-					PushFollow(Follow._annotation_in_annotationList775);
+					PushFollow(Follow._annotation_in_annotationList777);
 					annotation();
 					PopFollow();
 
@@ -1083,7 +1083,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_individualMove();
 	partial void LeaveRule_individualMove();
 	// $ANTLR start "individualMove"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:1: individualMove : foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? ( MOVE_ANALYSIS )? (checkormate= CHECK |checkormate= MATE )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? ;
+	// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:1: individualMove : foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? ;
 	[GrammarRule("individualMove")]
 	private void individualMove()
 	{
@@ -1099,9 +1099,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(120, 2);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:16: (foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? ( MOVE_ANALYSIS )? (checkormate= CHECK |checkormate= MATE )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:16: (foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:18: foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? ( MOVE_ANALYSIS )? (checkormate= CHECK |checkormate= MATE )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )?
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:18: foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )?
 			{
 			DebugLocation(120, 21);
 
@@ -1137,7 +1137,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:85: promote= PROMOTES_TO_PIECE
 				{
 				DebugLocation(120, 92);
-				promote=(IToken)Match(input,PROMOTES_TO_PIECE,Follow._PROMOTES_TO_PIECE_in_individualMove803); 
+				promote=(IToken)Match(input,PROMOTES_TO_PIECE,Follow._PROMOTES_TO_PIECE_in_individualMove805); 
 
 				}
 				break;
@@ -1146,25 +1146,38 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(15); }
 
 			DebugLocation(120, 113);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:113: ( MOVE_ANALYSIS )?
-			int alt16=2;
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:113: (checkormate= CHECK |checkormate= MATE )?
+			int alt16=3;
 			try { DebugEnterSubRule(16);
 			try { DebugEnterDecision(16, false);
 			int LA16_1 = input.LA(1);
 
-			if ((LA16_1==MOVE_ANALYSIS))
+			if ((LA16_1==CHECK))
 			{
 				alt16 = 1;
+			}
+			else if ((LA16_1==MATE))
+			{
+				alt16 = 2;
 			}
 			} finally { DebugExitDecision(16); }
 			switch (alt16)
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:113: MOVE_ANALYSIS
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:114: checkormate= CHECK
 				{
-				DebugLocation(120, 113);
-				Match(input,MOVE_ANALYSIS,Follow._MOVE_ANALYSIS_in_individualMove807); 
+				DebugLocation(120, 125);
+				checkormate=(IToken)Match(input,CHECK,Follow._CHECK_in_individualMove812); 
+
+				}
+				break;
+			case 2:
+				DebugEnterAlt(2);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:132: checkormate= MATE
+				{
+				DebugLocation(120, 143);
+				checkormate=(IToken)Match(input,MATE,Follow._MATE_in_individualMove816); 
 
 				}
 				break;
@@ -1172,39 +1185,26 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			}
 			} finally { DebugExitSubRule(16); }
 
-			DebugLocation(120, 128);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:128: (checkormate= CHECK |checkormate= MATE )?
-			int alt17=3;
+			DebugLocation(120, 151);
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:151: ( MOVE_ANALYSIS )?
+			int alt17=2;
 			try { DebugEnterSubRule(17);
 			try { DebugEnterDecision(17, false);
 			int LA17_1 = input.LA(1);
 
-			if ((LA17_1==CHECK))
+			if ((LA17_1==MOVE_ANALYSIS))
 			{
 				alt17 = 1;
-			}
-			else if ((LA17_1==MATE))
-			{
-				alt17 = 2;
 			}
 			} finally { DebugExitDecision(17); }
 			switch (alt17)
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:129: checkormate= CHECK
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:151: MOVE_ANALYSIS
 				{
-				DebugLocation(120, 140);
-				checkormate=(IToken)Match(input,CHECK,Follow._CHECK_in_individualMove813); 
-
-				}
-				break;
-			case 2:
-				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:147: checkormate= MATE
-				{
-				DebugLocation(120, 158);
-				checkormate=(IToken)Match(input,MATE,Follow._MATE_in_individualMove817); 
+				DebugLocation(120, 151);
+				Match(input,MOVE_ANALYSIS,Follow._MOVE_ANALYSIS_in_individualMove820); 
 
 				}
 				break;
@@ -1257,7 +1257,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:167: WS
 						{
 						DebugLocation(120, 167);
-						Match(input,WS,Follow._WS_in_individualMove822); 
+						Match(input,WS,Follow._WS_in_individualMove824); 
 
 						}
 						break;
@@ -1278,7 +1278,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				} finally { DebugExitSubRule(18); }
 
 				DebugLocation(120, 187);
-				annotation_glyph=(IToken)Match(input,NUMERIC_ANNOTATION_GLYPH,Follow._NUMERIC_ANNOTATION_GLYPH_in_individualMove827); 
+				annotation_glyph=(IToken)Match(input,NUMERIC_ANNOTATION_GLYPH,Follow._NUMERIC_ANNOTATION_GLYPH_in_individualMove829); 
 
 				}
 				break;
@@ -1331,7 +1331,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:216: WS
 						{
 						DebugLocation(120, 216);
-						Match(input,WS,Follow._WS_in_individualMove832); 
+						Match(input,WS,Follow._WS_in_individualMove834); 
 
 						}
 						break;
@@ -1352,7 +1352,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				} finally { DebugExitSubRule(20); }
 
 				DebugLocation(120, 220);
-				PushFollow(Follow._annotationList_in_individualMove835);
+				PushFollow(Follow._annotationList_in_individualMove837);
 				annotationList();
 				PopFollow();
 
@@ -1409,7 +1409,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:12: move ( ( WS )+ move )*
 			{
 			DebugLocation(127, 12);
-			PushFollow(Follow._move_in_moveList849);
+			PushFollow(Follow._move_in_moveList851);
 			move();
 			PopFollow();
 
@@ -1460,7 +1460,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 							// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:18: WS
 							{
 							DebugLocation(127, 18);
-							Match(input,WS,Follow._WS_in_moveList852); 
+							Match(input,WS,Follow._WS_in_moveList854); 
 
 							}
 							break;
@@ -1481,7 +1481,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					} finally { DebugExitSubRule(22); }
 
 					DebugLocation(127, 22);
-					PushFollow(Follow._move_in_moveList855);
+					PushFollow(Follow._move_in_moveList857);
 					move();
 					PopFollow();
 
@@ -1540,7 +1540,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:8: MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )?
 			{
 			DebugLocation(129, 8);
-			Match(input,MOVE_LABEL,Follow._MOVE_LABEL_in_move866); 
+			Match(input,MOVE_LABEL,Follow._MOVE_LABEL_in_move868); 
 			DebugLocation(129, 19);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:19: ( WS )*
 			try { DebugEnterSubRule(24);
@@ -1564,7 +1564,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:19: WS
 					{
 					DebugLocation(129, 19);
-					Match(input,WS,Follow._WS_in_move868); 
+					Match(input,WS,Follow._WS_in_move870); 
 
 					}
 					break;
@@ -1598,7 +1598,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:24: NO_MOVE ( WS )*
 				{
 				DebugLocation(129, 24);
-				Match(input,NO_MOVE,Follow._NO_MOVE_in_move872); 
+				Match(input,NO_MOVE,Follow._NO_MOVE_in_move874); 
 				DebugLocation(129, 32);
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:32: ( WS )*
 				try { DebugEnterSubRule(25);
@@ -1622,7 +1622,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:32: WS
 						{
 						DebugLocation(129, 32);
-						Match(input,WS,Follow._WS_in_move874); 
+						Match(input,WS,Follow._WS_in_move876); 
 
 						}
 						break;
@@ -1645,7 +1645,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(26); }
 
 			DebugLocation(129, 38);
-			PushFollow(Follow._individualMove_in_move879);
+			PushFollow(Follow._individualMove_in_move881);
 			individualMove();
 			PopFollow();
 
@@ -1694,7 +1694,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:54: WS
 						{
 						DebugLocation(129, 54);
-						Match(input,WS,Follow._WS_in_move882); 
+						Match(input,WS,Follow._WS_in_move884); 
 
 						}
 						break;
@@ -1751,7 +1751,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:59: MOVE_LABEL
 						{
 						DebugLocation(129, 59);
-						Match(input,MOVE_LABEL,Follow._MOVE_LABEL_in_move886); 
+						Match(input,MOVE_LABEL,Follow._MOVE_LABEL_in_move888); 
 
 						}
 						break;
@@ -1782,7 +1782,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 							// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:71: WS
 							{
 							DebugLocation(129, 71);
-							Match(input,WS,Follow._WS_in_move889); 
+							Match(input,WS,Follow._WS_in_move891); 
 
 							}
 							break;
@@ -1798,7 +1798,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					} finally { DebugExitSubRule(29); }
 
 					DebugLocation(129, 75);
-					Match(input,NO_MOVE,Follow._NO_MOVE_in_move892); 
+					Match(input,NO_MOVE,Follow._NO_MOVE_in_move894); 
 					DebugLocation(129, 83);
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:83: ( WS )*
 					try { DebugEnterSubRule(30);
@@ -1822,7 +1822,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 							// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:83: WS
 							{
 							DebugLocation(129, 83);
-							Match(input,WS,Follow._WS_in_move894); 
+							Match(input,WS,Follow._WS_in_move896); 
 
 							}
 							break;
@@ -1845,7 +1845,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				} finally { DebugExitSubRule(31); }
 
 				DebugLocation(129, 89);
-				PushFollow(Follow._individualMove_in_move899);
+				PushFollow(Follow._individualMove_in_move901);
 				individualMove();
 				PopFollow();
 
@@ -1965,7 +1965,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:18: eventTag
 				{
 				DebugLocation(130, 18);
-				PushFollow(Follow._eventTag_in_compulsoryTag910);
+				PushFollow(Follow._eventTag_in_compulsoryTag912);
 				eventTag();
 				PopFollow();
 
@@ -1977,7 +1977,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:29: siteTag
 				{
 				DebugLocation(130, 29);
-				PushFollow(Follow._siteTag_in_compulsoryTag914);
+				PushFollow(Follow._siteTag_in_compulsoryTag916);
 				siteTag();
 				PopFollow();
 
@@ -1989,7 +1989,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:39: dateTag
 				{
 				DebugLocation(130, 39);
-				PushFollow(Follow._dateTag_in_compulsoryTag918);
+				PushFollow(Follow._dateTag_in_compulsoryTag920);
 				dateTag();
 				PopFollow();
 
@@ -2001,7 +2001,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:49: roundTag
 				{
 				DebugLocation(130, 49);
-				PushFollow(Follow._roundTag_in_compulsoryTag922);
+				PushFollow(Follow._roundTag_in_compulsoryTag924);
 				roundTag();
 				PopFollow();
 
@@ -2013,7 +2013,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:60: blackTag
 				{
 				DebugLocation(130, 60);
-				PushFollow(Follow._blackTag_in_compulsoryTag926);
+				PushFollow(Follow._blackTag_in_compulsoryTag928);
 				blackTag();
 				PopFollow();
 
@@ -2025,7 +2025,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:71: whiteTag
 				{
 				DebugLocation(130, 71);
-				PushFollow(Follow._whiteTag_in_compulsoryTag930);
+				PushFollow(Follow._whiteTag_in_compulsoryTag932);
 				whiteTag();
 				PopFollow();
 
@@ -2037,7 +2037,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:82: resultTag
 				{
 				DebugLocation(130, 82);
-				PushFollow(Follow._resultTag_in_compulsoryTag934);
+				PushFollow(Follow._resultTag_in_compulsoryTag936);
 				resultTag();
 				PopFollow();
 
@@ -2091,7 +2091,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:132:16: comment= BLOCK_COMMENT
 			{
 			DebugLocation(132, 23);
-			comment=(IToken)Match(input,BLOCK_COMMENT,Follow._BLOCK_COMMENT_in_blockComment946); 
+			comment=(IToken)Match(input,BLOCK_COMMENT,Follow._BLOCK_COMMENT_in_blockComment948); 
 			DebugLocation(133, 1);
 
 				// Console.WriteLine(comment.Text);
@@ -2137,7 +2137,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:137:16: LEFT_BRACKET
 			{
 			DebugLocation(137, 16);
-			Match(input,LEFT_BRACKET,Follow._LEFT_BRACKET_in_enterVariant956); 
+			Match(input,LEFT_BRACKET,Follow._LEFT_BRACKET_in_enterVariant958); 
 			DebugLocation(138, 1);
 
 				m_variantDepth++;
@@ -2183,7 +2183,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:142:16: RIGHT_BRACKET
 			{
 			DebugLocation(142, 16);
-			Match(input,RIGHT_BRACKET,Follow._RIGHT_BRACKET_in_leaveVariant966); 
+			Match(input,RIGHT_BRACKET,Follow._RIGHT_BRACKET_in_leaveVariant968); 
 			DebugLocation(143, 1);
 
 				m_variantDepth--;
@@ -2229,7 +2229,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:15: enterVariant ( moveList | variantLine )* ( WS )* leaveVariant
 			{
 			DebugLocation(147, 15);
-			PushFollow(Follow._enterVariant_in_variantLine976);
+			PushFollow(Follow._enterVariant_in_variantLine978);
 			enterVariant();
 			PopFollow();
 
@@ -2260,7 +2260,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:29: moveList
 					{
 					DebugLocation(147, 29);
-					PushFollow(Follow._moveList_in_variantLine979);
+					PushFollow(Follow._moveList_in_variantLine981);
 					moveList();
 					PopFollow();
 
@@ -2272,7 +2272,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:40: variantLine
 					{
 					DebugLocation(147, 40);
-					PushFollow(Follow._variantLine_in_variantLine983);
+					PushFollow(Follow._variantLine_in_variantLine985);
 					variantLine();
 					PopFollow();
 
@@ -2313,7 +2313,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:54: WS
 					{
 					DebugLocation(147, 54);
-					Match(input,WS,Follow._WS_in_variantLine987); 
+					Match(input,WS,Follow._WS_in_variantLine989); 
 
 					}
 					break;
@@ -2329,7 +2329,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(35); }
 
 			DebugLocation(147, 58);
-			PushFollow(Follow._leaveVariant_in_variantLine990);
+			PushFollow(Follow._leaveVariant_in_variantLine992);
 			leaveVariant();
 			PopFollow();
 
@@ -2380,9 +2380,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:12: LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(152, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_eventTag1000); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_eventTag1002); 
 			DebugLocation(152, 21);
-			Match(input,EVENT,Follow._EVENT_in_eventTag1002); 
+			Match(input,EVENT,Follow._EVENT_in_eventTag1004); 
 			DebugLocation(152, 27);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:27: ( WS )+
 			int cnt36=0;
@@ -2407,7 +2407,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:27: WS
 					{
 					DebugLocation(152, 27);
-					Match(input,WS,Follow._WS_in_eventTag1004); 
+					Match(input,WS,Follow._WS_in_eventTag1006); 
 
 					}
 					break;
@@ -2428,9 +2428,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(36); }
 
 			DebugLocation(152, 34);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_eventTag1009); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_eventTag1011); 
 			DebugLocation(152, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_eventTag1011); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_eventTag1013); 
 			DebugLocation(153, 1);
 			 
 				Event = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2478,9 +2478,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:11: LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(157, 11);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_siteTag1022); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_siteTag1024); 
 			DebugLocation(157, 20);
-			Match(input,SITE,Follow._SITE_in_siteTag1024); 
+			Match(input,SITE,Follow._SITE_in_siteTag1026); 
 			DebugLocation(157, 25);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:25: ( WS )+
 			int cnt37=0;
@@ -2505,7 +2505,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:25: WS
 					{
 					DebugLocation(157, 25);
-					Match(input,WS,Follow._WS_in_siteTag1026); 
+					Match(input,WS,Follow._WS_in_siteTag1028); 
 
 					}
 					break;
@@ -2526,9 +2526,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(37); }
 
 			DebugLocation(157, 32);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_siteTag1031); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_siteTag1033); 
 			DebugLocation(157, 47);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_siteTag1033); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_siteTag1035); 
 			DebugLocation(158, 1);
 			 
 				Site = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2576,9 +2576,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:11: LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(162, 11);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_dateTag1044); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_dateTag1046); 
 			DebugLocation(162, 20);
-			Match(input,DATE,Follow._DATE_in_dateTag1046); 
+			Match(input,DATE,Follow._DATE_in_dateTag1048); 
 			DebugLocation(162, 25);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:25: ( WS )+
 			int cnt38=0;
@@ -2603,7 +2603,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:25: WS
 					{
 					DebugLocation(162, 25);
-					Match(input,WS,Follow._WS_in_dateTag1048); 
+					Match(input,WS,Follow._WS_in_dateTag1050); 
 
 					}
 					break;
@@ -2624,9 +2624,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(38); }
 
 			DebugLocation(162, 32);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_dateTag1053); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_dateTag1055); 
 			DebugLocation(162, 47);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_dateTag1055); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_dateTag1057); 
 			DebugLocation(163, 1);
 			 
 				Date = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2674,9 +2674,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:12: LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(167, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_roundTag1066); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_roundTag1068); 
 			DebugLocation(167, 21);
-			Match(input,ROUND,Follow._ROUND_in_roundTag1068); 
+			Match(input,ROUND,Follow._ROUND_in_roundTag1070); 
 			DebugLocation(167, 27);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:27: ( WS )+
 			int cnt39=0;
@@ -2701,7 +2701,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:27: WS
 					{
 					DebugLocation(167, 27);
-					Match(input,WS,Follow._WS_in_roundTag1070); 
+					Match(input,WS,Follow._WS_in_roundTag1072); 
 
 					}
 					break;
@@ -2722,9 +2722,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(39); }
 
 			DebugLocation(167, 34);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_roundTag1075); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_roundTag1077); 
 			DebugLocation(167, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_roundTag1077); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_roundTag1079); 
 			DebugLocation(168, 1);
 			 
 				Round = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2772,9 +2772,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:12: LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(172, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_blackTag1088); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_blackTag1090); 
 			DebugLocation(172, 22);
-			Match(input,BLACK,Follow._BLACK_in_blackTag1091); 
+			Match(input,BLACK,Follow._BLACK_in_blackTag1093); 
 			DebugLocation(172, 28);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:28: ( WS )+
 			int cnt40=0;
@@ -2799,7 +2799,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:28: WS
 					{
 					DebugLocation(172, 28);
-					Match(input,WS,Follow._WS_in_blackTag1093); 
+					Match(input,WS,Follow._WS_in_blackTag1095); 
 
 					}
 					break;
@@ -2820,9 +2820,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(40); }
 
 			DebugLocation(172, 35);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_blackTag1098); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_blackTag1100); 
 			DebugLocation(172, 50);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_blackTag1100); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_blackTag1102); 
 			DebugLocation(173, 1);
 			 
 				Black = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2870,9 +2870,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:12: LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(177, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_whiteTag1111); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_whiteTag1113); 
 			DebugLocation(177, 21);
-			Match(input,WHITE,Follow._WHITE_in_whiteTag1113); 
+			Match(input,WHITE,Follow._WHITE_in_whiteTag1115); 
 			DebugLocation(177, 27);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:27: ( WS )+
 			int cnt41=0;
@@ -2897,7 +2897,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:27: WS
 					{
 					DebugLocation(177, 27);
-					Match(input,WS,Follow._WS_in_whiteTag1115); 
+					Match(input,WS,Follow._WS_in_whiteTag1117); 
 
 					}
 					break;
@@ -2918,9 +2918,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(41); }
 
 			DebugLocation(177, 34);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_whiteTag1120); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_whiteTag1122); 
 			DebugLocation(177, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_whiteTag1122); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_whiteTag1124); 
 			DebugLocation(178, 1);
 			 
 				White = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2968,9 +2968,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:13: LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG
 			{
 			DebugLocation(182, 13);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_resultTag1133); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_resultTag1135); 
 			DebugLocation(182, 22);
-			Match(input,RESULT,Follow._RESULT_in_resultTag1135); 
+			Match(input,RESULT,Follow._RESULT_in_resultTag1137); 
 			DebugLocation(182, 29);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:29: ( WS )+
 			int cnt42=0;
@@ -2995,7 +2995,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:29: WS
 					{
 					DebugLocation(182, 29);
-					Match(input,WS,Follow._WS_in_resultTag1137); 
+					Match(input,WS,Follow._WS_in_resultTag1139); 
 
 					}
 					break;
@@ -3016,9 +3016,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(42); }
 
 			DebugLocation(182, 36);
-			bar=(IToken)Match(input,GAME_RESULT,Follow._GAME_RESULT_in_resultTag1142); 
+			bar=(IToken)Match(input,GAME_RESULT,Follow._GAME_RESULT_in_resultTag1144); 
 			DebugLocation(182, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_resultTag1144); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_resultTag1146); 
 			DebugLocation(183, 1);
 
 				Result = bar.Text.Trim(c_doubleQuote);
@@ -3067,7 +3067,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:15: LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(187, 15);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_optionalTag1154); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_optionalTag1156); 
 			DebugLocation(187, 27);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:27: (foo= TAG_NAME )+
 			int cnt43=0;
@@ -3092,7 +3092,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:27: foo= TAG_NAME
 					{
 					DebugLocation(187, 27);
-					foo=(IToken)Match(input,TAG_NAME,Follow._TAG_NAME_in_optionalTag1158); 
+					foo=(IToken)Match(input,TAG_NAME,Follow._TAG_NAME_in_optionalTag1160); 
 
 					}
 					break;
@@ -3136,7 +3136,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:38: WS
 					{
 					DebugLocation(187, 38);
-					Match(input,WS,Follow._WS_in_optionalTag1161); 
+					Match(input,WS,Follow._WS_in_optionalTag1163); 
 
 					}
 					break;
@@ -3157,9 +3157,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(44); }
 
 			DebugLocation(187, 45);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_optionalTag1166); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_optionalTag1168); 
 			DebugLocation(187, 60);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_optionalTag1168); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_optionalTag1170); 
 			DebugLocation(188, 1);
 
 				string trimmedText = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\"");
@@ -3643,106 +3643,106 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	#region Follow sets
 	private static class Follow
 	{
-		public static readonly BitSet _document_in_parse658 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _compulsoryTag_in_parseTag668 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _optionalTag_in_parseTag672 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _gameList_in_document681 = new BitSet(new ulong[]{0x0UL});
-		public static readonly BitSet _EOF_in_document683 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _game_in_gameList692 = new BitSet(new ulong[]{0x40002UL});
-		public static readonly BitSet _optionalTag_in_generalTagList704 = new BitSet(new ulong[]{0x200000040002UL});
-		public static readonly BitSet _compulsoryTag_in_generalTagList706 = new BitSet(new ulong[]{0x200000040002UL});
-		public static readonly BitSet _WS_in_generalTagList710 = new BitSet(new ulong[]{0x200000040000UL});
-		public static readonly BitSet _optionalTag_in_generalTagList714 = new BitSet(new ulong[]{0x200000040002UL});
-		public static readonly BitSet _compulsoryTag_in_generalTagList716 = new BitSet(new ulong[]{0x200000040002UL});
-		public static readonly BitSet _generalTagList_in_game728 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_game730 = new BitSet(new ulong[]{0x200000404002UL});
-		public static readonly BitSet _moveList_in_game734 = new BitSet(new ulong[]{0x200000004002UL});
-		public static readonly BitSet _WS_in_game738 = new BitSet(new ulong[]{0x200000004002UL});
-		public static readonly BitSet _GAME_RESULT_END_OF_MOVETEXT_in_game741 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _WS_in_game744 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _blockComment_in_annotation756 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _variantLine_in_annotation760 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _annotation_in_annotationList769 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _WS_in_annotationList772 = new BitSet(new ulong[]{0x200000010020UL});
-		public static readonly BitSet _annotation_in_annotationList775 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _set_in_individualMove787 = new BitSet(new ulong[]{0x200010300202UL});
-		public static readonly BitSet _PROMOTES_TO_PIECE_in_individualMove803 = new BitSet(new ulong[]{0x200000300202UL});
-		public static readonly BitSet _MOVE_ANALYSIS_in_individualMove807 = new BitSet(new ulong[]{0x200000100202UL});
-		public static readonly BitSet _CHECK_in_individualMove813 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _MATE_in_individualMove817 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _WS_in_individualMove822 = new BitSet(new ulong[]{0x200001000000UL});
-		public static readonly BitSet _NUMERIC_ANNOTATION_GLYPH_in_individualMove827 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _WS_in_individualMove832 = new BitSet(new ulong[]{0x200000010020UL});
-		public static readonly BitSet _annotationList_in_individualMove835 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _move_in_moveList849 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _WS_in_moveList852 = new BitSet(new ulong[]{0x200000400000UL});
-		public static readonly BitSet _move_in_moveList855 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _MOVE_LABEL_in_move866 = new BitSet(new ulong[]{0x2000048001C0UL});
-		public static readonly BitSet _WS_in_move868 = new BitSet(new ulong[]{0x2000048001C0UL});
-		public static readonly BitSet _NO_MOVE_in_move872 = new BitSet(new ulong[]{0x2000040001C0UL});
-		public static readonly BitSet _WS_in_move874 = new BitSet(new ulong[]{0x2000040001C0UL});
-		public static readonly BitSet _individualMove_in_move879 = new BitSet(new ulong[]{0x200000000002UL});
-		public static readonly BitSet _WS_in_move882 = new BitSet(new ulong[]{0x200004C001C0UL});
-		public static readonly BitSet _MOVE_LABEL_in_move886 = new BitSet(new ulong[]{0x200000800000UL});
-		public static readonly BitSet _WS_in_move889 = new BitSet(new ulong[]{0x200000800000UL});
-		public static readonly BitSet _NO_MOVE_in_move892 = new BitSet(new ulong[]{0x2000040001C0UL});
-		public static readonly BitSet _WS_in_move894 = new BitSet(new ulong[]{0x2000040001C0UL});
-		public static readonly BitSet _individualMove_in_move899 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _eventTag_in_compulsoryTag910 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _siteTag_in_compulsoryTag914 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _dateTag_in_compulsoryTag918 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _roundTag_in_compulsoryTag922 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _blackTag_in_compulsoryTag926 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _whiteTag_in_compulsoryTag930 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _resultTag_in_compulsoryTag934 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _BLOCK_COMMENT_in_blockComment946 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_BRACKET_in_enterVariant956 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _RIGHT_BRACKET_in_leaveVariant966 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _enterVariant_in_variantLine976 = new BitSet(new ulong[]{0x200100410000UL});
-		public static readonly BitSet _moveList_in_variantLine979 = new BitSet(new ulong[]{0x200100410000UL});
-		public static readonly BitSet _variantLine_in_variantLine983 = new BitSet(new ulong[]{0x200100410000UL});
-		public static readonly BitSet _WS_in_variantLine987 = new BitSet(new ulong[]{0x200100000000UL});
-		public static readonly BitSet _leaveVariant_in_variantLine990 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_eventTag1000 = new BitSet(new ulong[]{0x1000UL});
-		public static readonly BitSet _EVENT_in_eventTag1002 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_eventTag1004 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_eventTag1009 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_eventTag1011 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_siteTag1022 = new BitSet(new ulong[]{0x2000000000UL});
-		public static readonly BitSet _SITE_in_siteTag1024 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_siteTag1026 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_siteTag1031 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_siteTag1033 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_dateTag1044 = new BitSet(new ulong[]{0x800UL});
-		public static readonly BitSet _DATE_in_dateTag1046 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_dateTag1048 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_dateTag1053 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_dateTag1055 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_roundTag1066 = new BitSet(new ulong[]{0x800000000UL});
-		public static readonly BitSet _ROUND_in_roundTag1068 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_roundTag1070 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_roundTag1075 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_roundTag1077 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_blackTag1088 = new BitSet(new ulong[]{0x10UL});
-		public static readonly BitSet _BLACK_in_blackTag1091 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_blackTag1093 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_blackTag1098 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_blackTag1100 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_whiteTag1111 = new BitSet(new ulong[]{0x100000000000UL});
-		public static readonly BitSet _WHITE_in_whiteTag1113 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_whiteTag1115 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_whiteTag1120 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_whiteTag1122 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_resultTag1133 = new BitSet(new ulong[]{0x80000000UL});
-		public static readonly BitSet _RESULT_in_resultTag1135 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_resultTag1137 = new BitSet(new ulong[]{0x200000002000UL});
-		public static readonly BitSet _GAME_RESULT_in_resultTag1142 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_resultTag1144 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_optionalTag1154 = new BitSet(new ulong[]{0x8000000000UL});
-		public static readonly BitSet _TAG_NAME_in_optionalTag1158 = new BitSet(new ulong[]{0x208000000000UL});
-		public static readonly BitSet _WS_in_optionalTag1161 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_optionalTag1166 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_optionalTag1168 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _document_in_parse660 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _compulsoryTag_in_parseTag670 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _optionalTag_in_parseTag674 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _gameList_in_document683 = new BitSet(new ulong[]{0x0UL});
+		public static readonly BitSet _EOF_in_document685 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _game_in_gameList694 = new BitSet(new ulong[]{0x40002UL});
+		public static readonly BitSet _optionalTag_in_generalTagList706 = new BitSet(new ulong[]{0x200000040002UL});
+		public static readonly BitSet _compulsoryTag_in_generalTagList708 = new BitSet(new ulong[]{0x200000040002UL});
+		public static readonly BitSet _WS_in_generalTagList712 = new BitSet(new ulong[]{0x200000040000UL});
+		public static readonly BitSet _optionalTag_in_generalTagList716 = new BitSet(new ulong[]{0x200000040002UL});
+		public static readonly BitSet _compulsoryTag_in_generalTagList718 = new BitSet(new ulong[]{0x200000040002UL});
+		public static readonly BitSet _generalTagList_in_game730 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_game732 = new BitSet(new ulong[]{0x200000404002UL});
+		public static readonly BitSet _moveList_in_game736 = new BitSet(new ulong[]{0x200000004002UL});
+		public static readonly BitSet _WS_in_game740 = new BitSet(new ulong[]{0x200000004002UL});
+		public static readonly BitSet _GAME_RESULT_END_OF_MOVETEXT_in_game743 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _WS_in_game746 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _blockComment_in_annotation758 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _variantLine_in_annotation762 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _annotation_in_annotationList771 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _WS_in_annotationList774 = new BitSet(new ulong[]{0x200000010020UL});
+		public static readonly BitSet _annotation_in_annotationList777 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _set_in_individualMove789 = new BitSet(new ulong[]{0x200010300202UL});
+		public static readonly BitSet _PROMOTES_TO_PIECE_in_individualMove805 = new BitSet(new ulong[]{0x200000300202UL});
+		public static readonly BitSet _CHECK_in_individualMove812 = new BitSet(new ulong[]{0x200000200002UL});
+		public static readonly BitSet _MATE_in_individualMove816 = new BitSet(new ulong[]{0x200000200002UL});
+		public static readonly BitSet _MOVE_ANALYSIS_in_individualMove820 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _WS_in_individualMove824 = new BitSet(new ulong[]{0x200001000000UL});
+		public static readonly BitSet _NUMERIC_ANNOTATION_GLYPH_in_individualMove829 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _WS_in_individualMove834 = new BitSet(new ulong[]{0x200000010020UL});
+		public static readonly BitSet _annotationList_in_individualMove837 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _move_in_moveList851 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _WS_in_moveList854 = new BitSet(new ulong[]{0x200000400000UL});
+		public static readonly BitSet _move_in_moveList857 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _MOVE_LABEL_in_move868 = new BitSet(new ulong[]{0x2000048001C0UL});
+		public static readonly BitSet _WS_in_move870 = new BitSet(new ulong[]{0x2000048001C0UL});
+		public static readonly BitSet _NO_MOVE_in_move874 = new BitSet(new ulong[]{0x2000040001C0UL});
+		public static readonly BitSet _WS_in_move876 = new BitSet(new ulong[]{0x2000040001C0UL});
+		public static readonly BitSet _individualMove_in_move881 = new BitSet(new ulong[]{0x200000000002UL});
+		public static readonly BitSet _WS_in_move884 = new BitSet(new ulong[]{0x200004C001C0UL});
+		public static readonly BitSet _MOVE_LABEL_in_move888 = new BitSet(new ulong[]{0x200000800000UL});
+		public static readonly BitSet _WS_in_move891 = new BitSet(new ulong[]{0x200000800000UL});
+		public static readonly BitSet _NO_MOVE_in_move894 = new BitSet(new ulong[]{0x2000040001C0UL});
+		public static readonly BitSet _WS_in_move896 = new BitSet(new ulong[]{0x2000040001C0UL});
+		public static readonly BitSet _individualMove_in_move901 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _eventTag_in_compulsoryTag912 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _siteTag_in_compulsoryTag916 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _dateTag_in_compulsoryTag920 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _roundTag_in_compulsoryTag924 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _blackTag_in_compulsoryTag928 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _whiteTag_in_compulsoryTag932 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _resultTag_in_compulsoryTag936 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _BLOCK_COMMENT_in_blockComment948 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_BRACKET_in_enterVariant958 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _RIGHT_BRACKET_in_leaveVariant968 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _enterVariant_in_variantLine978 = new BitSet(new ulong[]{0x200100410000UL});
+		public static readonly BitSet _moveList_in_variantLine981 = new BitSet(new ulong[]{0x200100410000UL});
+		public static readonly BitSet _variantLine_in_variantLine985 = new BitSet(new ulong[]{0x200100410000UL});
+		public static readonly BitSet _WS_in_variantLine989 = new BitSet(new ulong[]{0x200100000000UL});
+		public static readonly BitSet _leaveVariant_in_variantLine992 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_eventTag1002 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _EVENT_in_eventTag1004 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_eventTag1006 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_eventTag1011 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_eventTag1013 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_siteTag1024 = new BitSet(new ulong[]{0x2000000000UL});
+		public static readonly BitSet _SITE_in_siteTag1026 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_siteTag1028 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_siteTag1033 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_siteTag1035 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_dateTag1046 = new BitSet(new ulong[]{0x800UL});
+		public static readonly BitSet _DATE_in_dateTag1048 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_dateTag1050 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_dateTag1055 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_dateTag1057 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_roundTag1068 = new BitSet(new ulong[]{0x800000000UL});
+		public static readonly BitSet _ROUND_in_roundTag1070 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_roundTag1072 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_roundTag1077 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_roundTag1079 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_blackTag1090 = new BitSet(new ulong[]{0x10UL});
+		public static readonly BitSet _BLACK_in_blackTag1093 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_blackTag1095 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_blackTag1100 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_blackTag1102 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_whiteTag1113 = new BitSet(new ulong[]{0x100000000000UL});
+		public static readonly BitSet _WHITE_in_whiteTag1115 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_whiteTag1117 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_whiteTag1122 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_whiteTag1124 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_resultTag1135 = new BitSet(new ulong[]{0x80000000UL});
+		public static readonly BitSet _RESULT_in_resultTag1137 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_resultTag1139 = new BitSet(new ulong[]{0x200000002000UL});
+		public static readonly BitSet _GAME_RESULT_in_resultTag1144 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_resultTag1146 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_optionalTag1156 = new BitSet(new ulong[]{0x8000000000UL});
+		public static readonly BitSet _TAG_NAME_in_optionalTag1160 = new BitSet(new ulong[]{0x208000000000UL});
+		public static readonly BitSet _WS_in_optionalTag1163 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_optionalTag1168 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_optionalTag1170 = new BitSet(new ulong[]{0x2UL});
 	}
 	#endregion Follow sets
 }

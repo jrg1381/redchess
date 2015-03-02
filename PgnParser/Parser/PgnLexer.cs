@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 16:54:12
+// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 17:21:42
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -2181,16 +2181,66 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = NO_MOVE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:9: ( '...' )
-			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:11: '...'
-			{
-			DebugLocation(91, 11);
-			Match("..."); 
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:9: ( '...' | '..' )
+			int alt11=2;
+			try { DebugEnterDecision(11, false);
+			int LA11_1 = input.LA(1);
 
+			if ((LA11_1=='.'))
+			{
+				int LA11_2 = input.LA(2);
+
+				if ((LA11_2=='.'))
+				{
+					int LA11_3 = input.LA(3);
+
+					if ((LA11_3=='.'))
+					{
+						alt11 = 1;
+					}
+					else
+					{
+						alt11 = 2;
+					}
+				}
+				else
+				{
+					NoViableAltException nvae = new NoViableAltException("", 11, 1, input, 2);
+					DebugRecognitionException(nvae);
+					throw nvae;
+				}
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 11, 0, input, 1);
+				DebugRecognitionException(nvae);
+				throw nvae;
+			}
+			} finally { DebugExitDecision(11); }
+			switch (alt11)
+			{
+			case 1:
+				DebugEnterAlt(1);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:11: '...'
+				{
+				DebugLocation(91, 11);
+				Match("..."); 
+
+
+				}
+				break;
+			case 2:
+				DebugEnterAlt(2);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:17: '..'
+				{
+				DebugLocation(91, 17);
+				Match(".."); 
+
+
+				}
+				break;
 
 			}
-
 			state.type = _type;
 			state.channel = _channel;
 		}
@@ -2223,22 +2273,22 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			DebugLocation(93, 12);
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
-			int cnt11=0;
-			try { DebugEnterSubRule(11);
+			int cnt12=0;
+			try { DebugEnterSubRule(12);
 			while (true)
 			{
-				int alt11=2;
-				try { DebugEnterDecision(11, false);
-				int LA11_1 = input.LA(1);
+				int alt12=2;
+				try { DebugEnterDecision(12, false);
+				int LA12_1 = input.LA(1);
 
-				if (((LA11_1>='0' && LA11_1<='9')||(LA11_1>='A' && LA11_1<='Z')||LA11_1=='_'||(LA11_1>='a' && LA11_1<='z')))
+				if (((LA12_1>='0' && LA12_1<='9')||(LA12_1>='A' && LA12_1<='Z')||LA12_1=='_'||(LA12_1>='a' && LA12_1<='z')))
 				{
-					alt11 = 1;
+					alt12 = 1;
 				}
 
 
-				} finally { DebugExitDecision(11); }
-				switch (alt11)
+				} finally { DebugExitDecision(12); }
+				switch (alt12)
 				{
 				case 1:
 					DebugEnterAlt(1);
@@ -2252,19 +2302,19 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 
 				default:
-					if (cnt11 >= 1)
-						goto loop11;
+					if (cnt12 >= 1)
+						goto loop12;
 
-					EarlyExitException eee11 = new EarlyExitException( 11, input );
-					DebugRecognitionException(eee11);
-					throw eee11;
+					EarlyExitException eee12 = new EarlyExitException( 12, input );
+					DebugRecognitionException(eee12);
+					throw eee12;
 				}
-				cnt11++;
+				cnt12++;
 			}
-			loop11:
+			loop12:
 				;
 
-			} finally { DebugExitSubRule(11); }
+			} finally { DebugExitSubRule(12); }
 
 
 			}
@@ -2333,47 +2383,47 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			int _type = MOVE_ANALYSIS;
 			int _channel = DefaultTokenChannel;
 			// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:15: ( '?' | '!' | '?!' | '!?' | '!!' | '??' )
-			int alt12=6;
-			try { DebugEnterDecision(12, false);
-			int LA12_1 = input.LA(1);
+			int alt13=6;
+			try { DebugEnterDecision(13, false);
+			int LA13_1 = input.LA(1);
 
-			if ((LA12_1=='?'))
+			if ((LA13_1=='?'))
 			{
 				switch (input.LA(2))
 				{
 				case '!':
 					{
-					alt12 = 3;
+					alt13 = 3;
 					}
 					break;
 				case '?':
 					{
-					alt12 = 6;
+					alt13 = 6;
 					}
 					break;
 				default:
-					alt12=1;
+					alt13=1;
 					break;
 
 				}
 
 			}
-			else if ((LA12_1=='!'))
+			else if ((LA13_1=='!'))
 			{
 				switch (input.LA(2))
 				{
 				case '?':
 					{
-					alt12 = 4;
+					alt13 = 4;
 					}
 					break;
 				case '!':
 					{
-					alt12 = 5;
+					alt13 = 5;
 					}
 					break;
 				default:
-					alt12=2;
+					alt13=2;
 					break;
 
 				}
@@ -2381,12 +2431,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			}
 			else
 			{
-				NoViableAltException nvae = new NoViableAltException("", 12, 0, input, 1);
+				NoViableAltException nvae = new NoViableAltException("", 13, 0, input, 1);
 				DebugRecognitionException(nvae);
 				throw nvae;
 			}
-			} finally { DebugExitDecision(12); }
-			switch (alt12)
+			} finally { DebugExitDecision(13); }
+			switch (alt13)
 			{
 			case 1:
 				DebugEnterAlt(1);
@@ -2463,19 +2513,19 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 	public override void mTokens()
 	{
 		// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:8: ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH | MOVE_ANALYSIS )
-		int alt13=35;
-		try { DebugEnterDecision(13, false);
+		int alt14=35;
+		try { DebugEnterDecision(14, false);
 		try
 		{
-			alt13 = dfa13.Predict(input);
+			alt14 = dfa14.Predict(input);
 		}
 		catch (NoViableAltException nvae)
 		{
 			DebugRecognitionException(nvae);
 			throw;
 		}
-		} finally { DebugExitDecision(13); }
-		switch (alt13)
+		} finally { DebugExitDecision(14); }
+		switch (alt14)
 		{
 		case 1:
 			DebugEnterAlt(1);
@@ -2799,17 +2849,17 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 
 
 	#region DFA
-	DFA13 dfa13;
+	DFA14 dfa14;
 
 	protected override void InitDFAs()
 	{
 		base.InitDFAs();
-		dfa13 = new DFA13(this, SpecialStateTransition13);
+		dfa14 = new DFA14(this, SpecialStateTransition14);
 	}
 
-	private class DFA13 : DFA
+	private class DFA14 : DFA
 	{
-		private const string DFA13_eotS =
+		private const string DFA14_eotS =
 			"\x1\xFFFF\x2\x1C\x1\xFFFF\x2\x1C\x1\xFFFF\x1\x26\x2\xFFFF\x1\x28\x1\x2D"+
 			"\x1\x1C\x3\xFFFF\x1\x1C\x1\x32\x1\x1C\x2\xFFFF\x1\x1C\x1\x35\x1\xFFFF"+
 			"\x2\x1C\x1\x35\x4\xFFFF\x4\x1C\x1\xFFFF\x2\x1C\x9\xFFFF\x3\x1C\x1\xFFFF"+
@@ -2817,9 +2867,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			"\xFFFF\x1\x52\x4\x1C\x1\xFFFF\x1\x1C\x1\x47\x1\x58\x2\xFFFF\x1\x59\x1"+
 			"\x1C\x4\xFFFF\x2\x1C\x1\x60\x1\x1C\x1\x62\x2\xFFFF\x1\x63\x2\x52\x1\xFFFF"+
 			"\x1\x1C\x1\x66\x1\xFFFF\x1\x67\x3\xFFFF\x1\x69\x5\xFFFF\x1\x52";
-		private const string DFA13_eofS =
+		private const string DFA14_eofS =
 			"\x6C\xFFFF";
-		private const string DFA13_minS =
+		private const string DFA14_minS =
 			"\x1\x9\x1\x31\x1\x2D\x1\xFFFF\x1\x61\x1\x76\x1\xFFFF\x1\x0\x2\xFFFF\x1"+
 			"\x42\x1\x0\x1\x31\x3\xFFFF\x1\x69\x1\x30\x1\x68\x2\xFFFF\x2\x2D\x1\xFFFF"+
 			"\x2\x31\x1\x2E\x4\xFFFF\x1\x61\x1\x31\x2\x61\x1\x4F\x1\x74\x1\x65\x4"+
@@ -2829,7 +2879,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			"\x74\x3\x0\x1\xFFFF\x1\x6C\x1\x64\x1\x30\x1\x65\x1\x30\x2\xFFFF\x1\x30"+
 			"\x2\x22\x1\x0\x1\x74\x1\x30\x1\xFFFF\x1\x30\x2\xFFFF\x1\x0\x1\x30\x2"+
 			"\xFFFF\x1\x0\x1\xFFFF\x1\x0\x1\x22";
-		private const string DFA13_maxS =
+		private const string DFA14_maxS =
 			"\x1\x7D\x1\x78\x1\x2D\x1\xFFFF\x1\x61\x1\x76\x1\xFFFF\x1\xFFFF\x2\xFFFF"+
 			"\x1\x52\x1\xFFFF\x1\x78\x3\xFFFF\x1\x69\x1\x7A\x1\x68\x2\xFFFF\x1\x2D"+
 			"\x1\x7A\x1\xFFFF\x2\x78\x1\x7A\x4\xFFFF\x1\x61\x2\x78\x1\x68\x1\x4F\x1"+
@@ -2839,18 +2889,18 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			"\x2\xFFFF\x1\x7A\x1\x74\x3\xFFFF\x1\xFFFF\x1\x6C\x1\x64\x1\x7A\x1\x65"+
 			"\x1\x7A\x2\xFFFF\x1\x7A\x2\x22\x1\xFFFF\x1\x74\x1\x7A\x1\xFFFF\x1\x7A"+
 			"\x2\xFFFF\x1\xFFFF\x1\x7A\x2\xFFFF\x1\xFFFF\x1\xFFFF\x1\xFFFF\x1\x22";
-		private const string DFA13_acceptS =
+		private const string DFA14_acceptS =
 			"\x3\xFFFF\x1\x4\x2\xFFFF\x1\x7\x1\xFFFF\x1\x9\x1\xA\x3\xFFFF\x1\xE\x1"+
 			"\xF\x1\x10\x3\xFFFF\x1\x15\x1\x16\x2\xFFFF\x1\x18\x3\xFFFF\x1\x20\x1"+
 			"\x21\x1\x22\x1\x23\x7\xFFFF\x1\x8\x1\x1F\x1\xB\x1\x1C\x3\xFFFF\x1\xC"+
 			"\x1\x19\x3\xFFFF\x1\x13\x2\xFFFF\x1\x1D\x1\x1E\x10\xFFFF\x1\x1A\x3\xFFFF"+
 			"\x1\x3\x1\x2\x5\xFFFF\x1\x17\x5\xFFFF\x1\x1B\x1\x5\x6\xFFFF\x1\x12\x1"+
 			"\xFFFF\x1\x1\x1\x6\x2\xFFFF\x1\x11\x1\x14\x1\xFFFF\x1\xD\x2\xFFFF";
-		private const string DFA13_specialS =
+		private const string DFA14_specialS =
 			"\x7\xFFFF\x1\xE\x3\xFFFF\x1\xD\x1E\xFFFF\x1\x0\x1\xC\x1\xB\x12\xFFFF"+
 			"\x1\x1\x1\x3\x1\x5\xD\xFFFF\x1\x2\x1\x4\x1\x6\xB\xFFFF\x1\x7\x6\xFFFF"+
 			"\x1\x8\x3\xFFFF\x1\x9\x1\xFFFF\x1\xA\x1\xFFFF}>";
-		private static readonly string[] DFA13_transitionS =
+		private static readonly string[] DFA14_transitionS =
 			{
 				"\x2\x13\x2\xFFFF\x1\x13\x12\xFFFF\x1\x13\x1\x1E\x1\xB\x1\x9\x1\x1D\x3"+
 				"\xFFFF\x1\x6\x1\xD\x1\x17\x1\x3\x2\xFFFF\x1\x1B\x1\xFFFF\x1\x15\x1\x16"+
@@ -2972,36 +3022,36 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				"\x1\x2E"
 			};
 
-		private static readonly short[] DFA13_eot = DFA.UnpackEncodedString(DFA13_eotS);
-		private static readonly short[] DFA13_eof = DFA.UnpackEncodedString(DFA13_eofS);
-		private static readonly char[] DFA13_min = DFA.UnpackEncodedStringToUnsignedChars(DFA13_minS);
-		private static readonly char[] DFA13_max = DFA.UnpackEncodedStringToUnsignedChars(DFA13_maxS);
-		private static readonly short[] DFA13_accept = DFA.UnpackEncodedString(DFA13_acceptS);
-		private static readonly short[] DFA13_special = DFA.UnpackEncodedString(DFA13_specialS);
-		private static readonly short[][] DFA13_transition;
+		private static readonly short[] DFA14_eot = DFA.UnpackEncodedString(DFA14_eotS);
+		private static readonly short[] DFA14_eof = DFA.UnpackEncodedString(DFA14_eofS);
+		private static readonly char[] DFA14_min = DFA.UnpackEncodedStringToUnsignedChars(DFA14_minS);
+		private static readonly char[] DFA14_max = DFA.UnpackEncodedStringToUnsignedChars(DFA14_maxS);
+		private static readonly short[] DFA14_accept = DFA.UnpackEncodedString(DFA14_acceptS);
+		private static readonly short[] DFA14_special = DFA.UnpackEncodedString(DFA14_specialS);
+		private static readonly short[][] DFA14_transition;
 
-		static DFA13()
+		static DFA14()
 		{
-			int numStates = DFA13_transitionS.Length;
-			DFA13_transition = new short[numStates][];
+			int numStates = DFA14_transitionS.Length;
+			DFA14_transition = new short[numStates][];
 			for ( int i=0; i < numStates; i++ )
 			{
-				DFA13_transition[i] = DFA.UnpackEncodedString(DFA13_transitionS[i]);
+				DFA14_transition[i] = DFA.UnpackEncodedString(DFA14_transitionS[i]);
 			}
 		}
 
-		public DFA13( BaseRecognizer recognizer, SpecialStateTransitionHandler specialStateTransition )
+		public DFA14( BaseRecognizer recognizer, SpecialStateTransitionHandler specialStateTransition )
 			: base(specialStateTransition)
 		{
 			this.recognizer = recognizer;
-			this.decisionNumber = 13;
-			this.eot = DFA13_eot;
-			this.eof = DFA13_eof;
-			this.min = DFA13_min;
-			this.max = DFA13_max;
-			this.accept = DFA13_accept;
-			this.special = DFA13_special;
-			this.transition = DFA13_transition;
+			this.decisionNumber = 14;
+			this.eot = DFA14_eot;
+			this.eof = DFA14_eof;
+			this.min = DFA14_min;
+			this.max = DFA14_max;
+			this.accept = DFA14_accept;
+			this.special = DFA14_special;
+			this.transition = DFA14_transition;
 		}
 
 		public override string Description { get { return "1:1: Tokens : ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH | MOVE_ANALYSIS );"; } }
@@ -3012,130 +3062,130 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		}
 	}
 
-	private int SpecialStateTransition13(DFA dfa, int s, IIntStream _input)
+	private int SpecialStateTransition14(DFA dfa, int s, IIntStream _input)
 	{
 		IIntStream input = _input;
 		int _s = s;
 		s = -1;
-		int LA13_1 = input.LA(1);
-		int index13_1 = input.Index;
+		int LA14_1 = input.LA(1);
+		int index14_1 = input.Index;
 		switch (_s)
 		{
 		case 0:
 			{
-				if ((LA13_1=='-')) {s = 63;}
+				if ((LA14_1=='-')) {s = 63;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<=',')||(LA13_1>='.' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<=',')||(LA14_1>='.' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 1:
 			{
-				if ((LA13_1=='1')) {s = 79;}
+				if ((LA14_1=='1')) {s = 79;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='0')||(LA13_1>='2' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='0')||(LA14_1>='2' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 2:
 			{
-				if ((LA13_1=='\"')) {s = 91;}
+				if ((LA14_1=='\"')) {s = 91;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='!')||(LA14_1>='#' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 3:
 			{
-				if ((LA13_1=='0')) {s = 80;}
+				if ((LA14_1=='0')) {s = 80;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='/')||(LA13_1>='1' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='/')||(LA14_1>='1' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 4:
 			{
-				if ((LA13_1=='\"')) {s = 92;}
+				if ((LA14_1=='\"')) {s = 92;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='!')||(LA14_1>='#' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 5:
 			{
-				if ((LA13_1=='2')) {s = 81;}
+				if ((LA14_1=='2')) {s = 81;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='1')||(LA13_1>='3' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='1')||(LA14_1>='3' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 6:
 			{
-				if ((LA13_1=='-')) {s = 93;}
+				if ((LA14_1=='-')) {s = 93;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<=',')||(LA13_1>='.' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<=',')||(LA14_1>='.' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 7:
 			{
-				if ((LA13_1=='1')) {s = 100;}
+				if ((LA14_1=='1')) {s = 100;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='0')||(LA13_1>='2' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='0')||(LA14_1>='2' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 8:
 			{
-				if ((LA13_1=='/')) {s = 104;}
+				if ((LA14_1=='/')) {s = 104;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='.')||(LA13_1>='0' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='.')||(LA14_1>='0' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 9:
 			{
-				if ((LA13_1=='2')) {s = 106;}
+				if ((LA14_1=='2')) {s = 106;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='1')||(LA13_1>='3' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='1')||(LA14_1>='3' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 10:
 			{
-				if ((LA13_1=='\"')) {s = 107;}
+				if ((LA14_1=='\"')) {s = 107;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='!')||(LA14_1>='#' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 11:
 			{
-				if ((LA13_1=='\"')) {s = 66;}
+				if ((LA14_1=='\"')) {s = 66;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<='!')||(LA14_1>='#' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 12:
 			{
-				if ((LA13_1=='-')) {s = 64;}
+				if ((LA14_1=='-')) {s = 64;}
 
-				else if ((LA13_1=='/')) {s = 65;}
+				else if ((LA14_1=='/')) {s = 65;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<=',')||LA13_1=='.'||(LA13_1>='0' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<=',')||LA14_1=='.'||(LA14_1>='0' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 13:
 			{
-				if ((LA13_1=='0')) {s = 42;}
+				if ((LA14_1=='0')) {s = 42;}
 
-				else if ((LA13_1=='1')) {s = 43;}
+				else if ((LA14_1=='1')) {s = 43;}
 
-				else if ((LA13_1=='*')) {s = 44;}
+				else if ((LA14_1=='*')) {s = 44;}
 
-				else if (((LA13_1>='\u0000' && LA13_1<=')')||(LA13_1>='+' && LA13_1<='/')||(LA13_1>='2' && LA13_1<='\uFFFF'))) {s = 46;}
+				else if (((LA14_1>='\u0000' && LA14_1<=')')||(LA14_1>='+' && LA14_1<='/')||(LA14_1>='2' && LA14_1<='\uFFFF'))) {s = 46;}
 
 				else s = 45;
 
@@ -3143,7 +3193,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			}
 		case 14:
 			{
-				if (((LA13_1>='\u0000' && LA13_1<='\uFFFF'))) {s = 39;}
+				if (((LA14_1>='\u0000' && LA14_1<='\uFFFF'))) {s = 39;}
 
 				else s = 38;
 
@@ -3157,7 +3207,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		if (s >= 0)
 			return s;
 
-		NoViableAltException nvae = new NoViableAltException(dfa.Description, 13, _s, input);
+		NoViableAltException nvae = new NoViableAltException(dfa.Description, 14, _s, input);
 		dfa.Error(nvae);
 		throw nvae;
 	}

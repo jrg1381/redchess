@@ -88,7 +88,7 @@ MOVE_LABEL : INTEGER '.' ;
 // Keep block comments because they relate to a particular move
 BLOCK_COMMENT : LEFT_CURLY_BRACKET (~RIGHT_CURLY_BRACKET)* RIGHT_CURLY_BRACKET ;
 // placeholder move
-NO_MOVE : '...' ;
+NO_MOVE : '...'|'..' ;
 // User defined tags must look like this
 TAG_NAME : ('A'..'Z' | 'a'..'z' | '0'..'9' | '_')+ ;
 // Numeric annotation glyph
@@ -117,7 +117,7 @@ game : generalTagList WS+ (moveList)? WS* GAME_RESULT_END_OF_MOVETEXT? WS*
 
 annotation : (blockComment | variantLine) ;
 annotationList : annotation (WS+ annotation)* ;
-individualMove : foo=(PIECE_TO_SQUARE|CAPTURE|CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote=PROMOTES_TO_PIECE)? MOVE_ANALYSIS? (checkormate=CHECK|checkormate=MATE)? (WS+ annotation_glyph=NUMERIC_ANNOTATION_GLYPH)? (WS+ annotationList)?
+individualMove : foo=(PIECE_TO_SQUARE|CAPTURE|CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote=PROMOTES_TO_PIECE)? (checkormate=CHECK|checkormate=MATE)? MOVE_ANALYSIS? (WS+ annotation_glyph=NUMERIC_ANNOTATION_GLYPH)? (WS+ annotationList)?
 {
 	if(PlayGame && m_variantDepth == 0)
 		m_processor.ProcessMove(foo, promote == null ? "" : promote.Text, checkormate == null ? "" : checkormate.Text, annotation_glyph == null ? "" : annotation_glyph.Text);

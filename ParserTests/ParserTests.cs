@@ -127,6 +127,14 @@ Nf2 42. g4 Bd3 43. Re6")]
             var parser = ParseText(z);
         }
 
+        [Test]
+        public void LichessPgnOutput2()
+        {
+            var text = @"1. c4 c5 2. Nf3 Nc6 3. e3 e6 4. Nc3 Nf6 5. d4 a6?! (5... d5 6. cxd5) 6. Bd3?!";
+            string z = c_standardTags + " " + text + " 1-0";
+            var parser = ParseText(z);
+        }
+
         [TestCase(
             "[Event \"helloworld\"]\r\n[Site \"helloworld\"]\r\n[Date \"helloworld\"]\r\n[Round \"helloworld\"]\r\n[White \"helloworld\"]\r\n[Black \"helloworld\"]\r\n[Result \"1-0\"]\r\n1. e4 e5 1-0",
             "1-0")]
