@@ -93,6 +93,8 @@ NO_MOVE : '...' ;
 TAG_NAME : ('A'..'Z' | 'a'..'z' | '0'..'9' | '_')+ ;
 // Numeric annotation glyph
 NUMERIC_ANNOTATION_GLYPH : '$' INTEGER ;
+// Move rating annotation
+MOVE_ANALYSIS : '?' | '!' | '?!' | '!?' | '!!' | '??' ; // "There are exactly six such annotations"
 
 public parse : document ;
 public parseTag : compulsoryTag | optionalTag ;
@@ -115,7 +117,7 @@ game : generalTagList WS+ (moveList)? WS* GAME_RESULT_END_OF_MOVETEXT? WS*
 
 annotation : (blockComment | variantLine) ;
 annotationList : annotation (WS+ annotation)* ;
-individualMove : foo=(PIECE_TO_SQUARE|CAPTURE|CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote=PROMOTES_TO_PIECE)? (checkormate=CHECK|checkormate=MATE)? (WS+ annotation_glyph=NUMERIC_ANNOTATION_GLYPH)? (WS+ annotationList)?
+individualMove : foo=(PIECE_TO_SQUARE|CAPTURE|CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote=PROMOTES_TO_PIECE)? MOVE_ANALYSIS? (checkormate=CHECK|checkormate=MATE)? (WS+ annotation_glyph=NUMERIC_ANNOTATION_GLYPH)? (WS+ annotationList)?
 {
 	if(PlayGame && m_variantDepth == 0)
 		m_processor.ProcessMove(foo, promote == null ? "" : promote.Text, checkormate == null ? "" : checkormate.Text, annotation_glyph == null ? "" : annotation_glyph.Text);

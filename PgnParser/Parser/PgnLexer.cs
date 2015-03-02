@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// $ANTLR 3.5.1 C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g 2014-06-27 20:43:14
+// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 16:54:12
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -48,30 +48,31 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 	public const int LEFT_TAG=18;
 	public const int LINE_COMMENT=19;
 	public const int MATE=20;
-	public const int MOVE_LABEL=21;
-	public const int NO_MOVE=22;
-	public const int NUMERIC_ANNOTATION_GLYPH=23;
-	public const int PIECE_SYMBOL=24;
-	public const int PIECE_TO_SQUARE=25;
-	public const int PROMOTES_TO=26;
-	public const int PROMOTES_TO_PIECE=27;
-	public const int QUOTE=28;
-	public const int QUOTED_STRING=29;
-	public const int RESULT=30;
-	public const int RIGHT_BRACKET=31;
-	public const int RIGHT_CURLY_BRACKET=32;
-	public const int RIGHT_TAG=33;
-	public const int ROUND=34;
-	public const int ROW=35;
-	public const int SITE=36;
-	public const int SQUARE=37;
-	public const int TAG_NAME=38;
-	public const int TAKES=39;
-	public const int UNAMBIGUOUS_PIECE_WITH_COLUMN=40;
-	public const int UNAMBIGUOUS_PIECE_WITH_ROW=41;
-	public const int UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN=42;
-	public const int WHITE=43;
-	public const int WS=44;
+	public const int MOVE_ANALYSIS=21;
+	public const int MOVE_LABEL=22;
+	public const int NO_MOVE=23;
+	public const int NUMERIC_ANNOTATION_GLYPH=24;
+	public const int PIECE_SYMBOL=25;
+	public const int PIECE_TO_SQUARE=26;
+	public const int PROMOTES_TO=27;
+	public const int PROMOTES_TO_PIECE=28;
+	public const int QUOTE=29;
+	public const int QUOTED_STRING=30;
+	public const int RESULT=31;
+	public const int RIGHT_BRACKET=32;
+	public const int RIGHT_CURLY_BRACKET=33;
+	public const int RIGHT_TAG=34;
+	public const int ROUND=35;
+	public const int ROW=36;
+	public const int SITE=37;
+	public const int SQUARE=38;
+	public const int TAG_NAME=39;
+	public const int TAKES=40;
+	public const int UNAMBIGUOUS_PIECE_WITH_COLUMN=41;
+	public const int UNAMBIGUOUS_PIECE_WITH_ROW=42;
+	public const int UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN=43;
+	public const int WHITE=44;
+	public const int WS=45;
 
 	// delegates
 	// delegators
@@ -92,7 +93,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 
 		OnCreated();
 	}
-	public override string GrammarFileName { get { return "C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g"; } }
+	public override string GrammarFileName { get { return "H:\\Work\\redchess\\PgnParser\\Pgn.g"; } }
 
 
 	partial void OnCreated();
@@ -113,9 +114,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = BLACK;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:9:7: ( 'Black' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:9:7: ( 'Black' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:9:9: 'Black'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:9:9: 'Black'
 			{
 			DebugLocation(9, 9);
 			Match("Black"); 
@@ -149,9 +150,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CASTLE_KINGSIDE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:10:17: ( 'O-O' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:10:17: ( 'O-O' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:10:19: 'O-O'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:10:19: 'O-O'
 			{
 			DebugLocation(10, 19);
 			Match("O-O"); 
@@ -185,9 +186,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CASTLE_QUEENSIDE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:11:18: ( 'O-O-O' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:11:18: ( 'O-O-O' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:11:20: 'O-O-O'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:11:20: 'O-O-O'
 			{
 			DebugLocation(11, 20);
 			Match("O-O-O"); 
@@ -221,9 +222,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CHECK;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:12:7: ( '+' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:12:7: ( '+' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:12:9: '+'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:12:9: '+'
 			{
 			DebugLocation(12, 9);
 			Match('+'); 
@@ -256,9 +257,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = DATE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:13:6: ( 'Date' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:13:6: ( 'Date' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:13:8: 'Date'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:13:8: 'Date'
 			{
 			DebugLocation(13, 8);
 			Match("Date"); 
@@ -292,9 +293,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = EVENT;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:14:7: ( 'Event' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:14:7: ( 'Event' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:14:9: 'Event'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:14:9: 'Event'
 			{
 			DebugLocation(14, 9);
 			Match("Event"); 
@@ -328,9 +329,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LEFT_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:15:14: ( '(' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:15:14: ( '(' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:15:16: '('
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:15:16: '('
 			{
 			DebugLocation(15, 16);
 			Match('('); 
@@ -363,9 +364,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LEFT_CURLY_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:16:20: ( '{' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:16:20: ( '{' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:16:22: '{'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:16:22: '{'
 			{
 			DebugLocation(16, 22);
 			Match('{'); 
@@ -398,9 +399,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LEFT_TAG;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:17:10: ( '[' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:17:10: ( '[' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:17:12: '['
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:17:12: '['
 			{
 			DebugLocation(17, 12);
 			Match('['); 
@@ -433,9 +434,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = MATE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:18:6: ( '#' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:18:6: ( '#' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:18:8: '#'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:18:8: '#'
 			{
 			DebugLocation(18, 8);
 			Match('#'); 
@@ -468,9 +469,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = PROMOTES_TO;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:19:13: ( '=' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:19:13: ( '=' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:19:15: '='
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:19:15: '='
 			{
 			DebugLocation(19, 15);
 			Match('='); 
@@ -503,9 +504,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = QUOTE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:20:7: ( '\"' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:20:7: ( '\"' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:20:9: '\"'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:20:9: '\"'
 			{
 			DebugLocation(20, 9);
 			Match('\"'); 
@@ -538,9 +539,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RESULT;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:21:8: ( 'Result' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:21:8: ( 'Result' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:21:10: 'Result'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:21:10: 'Result'
 			{
 			DebugLocation(21, 10);
 			Match("Result"); 
@@ -574,9 +575,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RIGHT_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:22:15: ( ')' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:22:15: ( ')' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:22:17: ')'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:22:17: ')'
 			{
 			DebugLocation(22, 17);
 			Match(')'); 
@@ -609,9 +610,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RIGHT_CURLY_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:23:21: ( '}' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:23:21: ( '}' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:23:23: '}'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:23:23: '}'
 			{
 			DebugLocation(23, 23);
 			Match('}'); 
@@ -644,9 +645,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RIGHT_TAG;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:24:11: ( ']' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:24:11: ( ']' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:24:13: ']'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:24:13: ']'
 			{
 			DebugLocation(24, 13);
 			Match(']'); 
@@ -679,9 +680,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = ROUND;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:25:7: ( 'Round' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:25:7: ( 'Round' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:25:9: 'Round'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:25:9: 'Round'
 			{
 			DebugLocation(25, 9);
 			Match("Round"); 
@@ -715,9 +716,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = SITE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:26:6: ( 'Site' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:26:6: ( 'Site' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:26:8: 'Site'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:26:8: 'Site'
 			{
 			DebugLocation(26, 8);
 			Match("Site"); 
@@ -751,9 +752,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = TAKES;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:27:7: ( 'x' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:27:7: ( 'x' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:27:9: 'x'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:27:9: 'x'
 			{
 			DebugLocation(27, 9);
 			Match('x'); 
@@ -786,9 +787,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = WHITE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:28:7: ( 'White' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:28:7: ( 'White' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:28:9: 'White'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:28:9: 'White'
 			{
 			DebugLocation(28, 9);
 			Match("White"); 
@@ -820,9 +821,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("COLUMN", 21);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:58:17: ( 'a' .. 'h' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:58:17: ( 'a' .. 'h' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:
 			{
 			DebugLocation(58, 17);
 			if ((input.LA(1)>='a' && input.LA(1)<='h'))
@@ -862,9 +863,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("ROW", 22);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:59:14: ( '1' .. '8' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:59:14: ( '1' .. '8' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:
 			{
 			DebugLocation(59, 14);
 			if ((input.LA(1)>='1' && input.LA(1)<='8'))
@@ -904,9 +905,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("SQUARE", 23);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:60:17: ( COLUMN ROW )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:60:17: ( COLUMN ROW )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:60:19: COLUMN ROW
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:60:19: COLUMN ROW
 			{
 			DebugLocation(60, 19);
 			mCOLUMN(); 
@@ -937,9 +938,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("PIECE_SYMBOL", 24);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:61:23: ( 'K' | 'Q' | 'N' | 'P' | 'R' | 'B' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:61:23: ( 'K' | 'Q' | 'N' | 'P' | 'R' | 'B' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:
 			{
 			DebugLocation(61, 23);
 			if (input.LA(1)=='B'||input.LA(1)=='K'||input.LA(1)=='N'||(input.LA(1)>='P' && input.LA(1)<='R'))
@@ -979,9 +980,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("UNAMBIGUOUS_PIECE_WITH_COLUMN", 25);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:62:40: ( PIECE_SYMBOL COLUMN )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:62:40: ( PIECE_SYMBOL COLUMN )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:62:42: PIECE_SYMBOL COLUMN
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:62:42: PIECE_SYMBOL COLUMN
 			{
 			DebugLocation(62, 42);
 			mPIECE_SYMBOL(); 
@@ -1012,9 +1013,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("UNAMBIGUOUS_PIECE_WITH_ROW", 26);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:63:37: ( PIECE_SYMBOL ROW )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:63:37: ( PIECE_SYMBOL ROW )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:63:39: PIECE_SYMBOL ROW
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:63:39: PIECE_SYMBOL ROW
 			{
 			DebugLocation(63, 39);
 			mPIECE_SYMBOL(); 
@@ -1045,9 +1046,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN", 27);
 		try
 		{
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:64:48: ( PIECE_SYMBOL SQUARE )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:64:48: ( PIECE_SYMBOL SQUARE )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:64:50: PIECE_SYMBOL SQUARE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:64:50: PIECE_SYMBOL SQUARE
 			{
 			DebugLocation(64, 50);
 			mPIECE_SYMBOL(); 
@@ -1080,12 +1081,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = WS;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:4: ( ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' ) )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:4: ( ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' ) )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
 			{
 			DebugLocation(67, 6);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
 			int alt2=3;
 			try { DebugEnterSubRule(2);
 			try { DebugEnterDecision(2, false);
@@ -1120,7 +1121,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:8: ' '
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:8: ' '
 				{
 				DebugLocation(67, 8);
 				Match(' '); 
@@ -1129,10 +1130,10 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
 				{
 				DebugLocation(67, 14);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
 				int alt1=2;
 				try { DebugEnterSubRule(1);
 				try { DebugEnterDecision(1, false);
@@ -1157,7 +1158,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:16: '\\r\\n'
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:16: '\\r\\n'
 					{
 					DebugLocation(67, 16);
 					Match("\r\n"); 
@@ -1167,7 +1168,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:25: '\\n'
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:25: '\\n'
 					{
 					DebugLocation(67, 25);
 					Match('\n'); 
@@ -1183,7 +1184,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:67:34: '\\t'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:34: '\\t'
 				{
 				DebugLocation(67, 34);
 				Match('\t'); 
@@ -1223,14 +1224,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LINE_COMMENT;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:70:14: ( ( ';' . '\\r\\n' ) )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:14: ( ( ';' . '\\r\\n' ) )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
 			{
 			DebugLocation(70, 16);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:70:17: ';' . '\\r\\n'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:17: ';' . '\\r\\n'
 			{
 			DebugLocation(70, 17);
 			Match(';'); 
@@ -1273,7 +1274,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = GAME_RESULT;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:73:13: ( '\"0-1\"' | '\"1-0\"' | '\"1/2-1/2\"' | '\"*\"' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:13: ( '\"0-1\"' | '\"1-0\"' | '\"1/2-1/2\"' | '\"*\"' )
 			int alt3=4;
 			try { DebugEnterDecision(3, false);
 			int LA3_1 = input.LA(1);
@@ -1332,7 +1333,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:73:15: '\"0-1\"'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:15: '\"0-1\"'
 				{
 				DebugLocation(73, 15);
 				Match("\"0-1\""); 
@@ -1342,7 +1343,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:73:25: '\"1-0\"'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:25: '\"1-0\"'
 				{
 				DebugLocation(73, 25);
 				Match("\"1-0\""); 
@@ -1352,7 +1353,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:73:35: '\"1/2-1/2\"'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:35: '\"1/2-1/2\"'
 				{
 				DebugLocation(73, 35);
 				Match("\"1/2-1/2\""); 
@@ -1362,7 +1363,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:73:49: '\"*\"'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:49: '\"*\"'
 				{
 				DebugLocation(73, 49);
 				Match("\"*\""); 
@@ -1398,7 +1399,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = GAME_RESULT_END_OF_MOVETEXT;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:75:29: ( '0-1' | '1-0' | '1/2-1/2' | '*' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:29: ( '0-1' | '1-0' | '1/2-1/2' | '*' )
 			int alt4=4;
 			try { DebugEnterDecision(4, false);
 			switch (input.LA(1))
@@ -1446,7 +1447,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:75:31: '0-1'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:31: '0-1'
 				{
 				DebugLocation(75, 31);
 				Match("0-1"); 
@@ -1456,7 +1457,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:75:39: '1-0'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:39: '1-0'
 				{
 				DebugLocation(75, 39);
 				Match("1-0"); 
@@ -1466,7 +1467,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:75:47: '1/2-1/2'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:47: '1/2-1/2'
 				{
 				DebugLocation(75, 47);
 				Match("1/2-1/2"); 
@@ -1476,7 +1477,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:75:59: '*'
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:59: '*'
 				{
 				DebugLocation(75, 59);
 				Match('*'); 
@@ -1511,14 +1512,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = QUOTED_STRING;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:77:15: ( QUOTE ( '\"\"' |~ QUOTE )* QUOTE )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:15: ( QUOTE ( '\"\"' |~ QUOTE )* QUOTE )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:77:17: QUOTE ( '\"\"' |~ QUOTE )* QUOTE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:17: QUOTE ( '\"\"' |~ QUOTE )* QUOTE
 			{
 			DebugLocation(77, 17);
 			mQUOTE(); 
 			DebugLocation(77, 23);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:77:23: ( '\"\"' |~ QUOTE )*
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:23: ( '\"\"' |~ QUOTE )*
 			try { DebugEnterSubRule(5);
 			while (true)
 			{
@@ -1548,7 +1549,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:77:24: '\"\"'
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:24: '\"\"'
 					{
 					DebugLocation(77, 24);
 					Match("\"\""); 
@@ -1558,7 +1559,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:77:31: ~ QUOTE
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:31: ~ QUOTE
 					{
 					DebugLocation(77, 31);
 					input.Consume();
@@ -1608,7 +1609,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = PIECE_TO_SQUARE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:17: ( SQUARE | ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE ) )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:17: ( SQUARE | ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE ) )
 			int alt7=2;
 			try { DebugEnterDecision(7, false);
 			int LA7_1 = input.LA(1);
@@ -1632,7 +1633,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:19: SQUARE
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:19: SQUARE
 				{
 				DebugLocation(79, 19);
 				mSQUARE(); 
@@ -1641,15 +1642,15 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
 				{
 				DebugLocation(79, 28);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
 				DebugEnterAlt(1);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE
 				{
 				DebugLocation(79, 29);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
 				int alt6=4;
 				try { DebugEnterSubRule(6);
 				try { DebugEnterDecision(6, false);
@@ -1709,7 +1710,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:30: PIECE_SYMBOL
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:30: PIECE_SYMBOL
 					{
 					DebugLocation(79, 30);
 					mPIECE_SYMBOL(); 
@@ -1718,7 +1719,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:45: UNAMBIGUOUS_PIECE_WITH_COLUMN
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:45: UNAMBIGUOUS_PIECE_WITH_COLUMN
 					{
 					DebugLocation(79, 45);
 					mUNAMBIGUOUS_PIECE_WITH_COLUMN(); 
@@ -1727,7 +1728,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 3:
 					DebugEnterAlt(3);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:77: UNAMBIGUOUS_PIECE_WITH_ROW
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:77: UNAMBIGUOUS_PIECE_WITH_ROW
 					{
 					DebugLocation(79, 77);
 					mUNAMBIGUOUS_PIECE_WITH_ROW(); 
@@ -1736,7 +1737,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 4:
 					DebugEnterAlt(4);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:79:106: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:106: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
 					{
 					DebugLocation(79, 106);
 					mUNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN(); 
@@ -1783,12 +1784,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CAPTURE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:9: ( ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:9: ( ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE
 			{
 			DebugLocation(81, 11);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
 			int alt8=5;
 			try { DebugEnterSubRule(8);
 			try { DebugEnterDecision(8, false);
@@ -1866,7 +1867,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:12: COLUMN
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:12: COLUMN
 				{
 				DebugLocation(81, 12);
 				mCOLUMN(); 
@@ -1875,7 +1876,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:21: PIECE_SYMBOL
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:21: PIECE_SYMBOL
 				{
 				DebugLocation(81, 21);
 				mPIECE_SYMBOL(); 
@@ -1884,7 +1885,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:36: UNAMBIGUOUS_PIECE_WITH_COLUMN
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:36: UNAMBIGUOUS_PIECE_WITH_COLUMN
 				{
 				DebugLocation(81, 36);
 				mUNAMBIGUOUS_PIECE_WITH_COLUMN(); 
@@ -1893,7 +1894,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:68: UNAMBIGUOUS_PIECE_WITH_ROW
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:68: UNAMBIGUOUS_PIECE_WITH_ROW
 				{
 				DebugLocation(81, 68);
 				mUNAMBIGUOUS_PIECE_WITH_ROW(); 
@@ -1902,7 +1903,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 5:
 				DebugEnterAlt(5);
-				// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:81:97: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:97: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
 				{
 				DebugLocation(81, 97);
 				mUNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN(); 
@@ -1948,9 +1949,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			int _channel = DefaultTokenChannel;
 			CommonToken symbol = default(CommonToken);
 
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:83:19: ( PROMOTES_TO symbol= PIECE_SYMBOL )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:83:19: ( PROMOTES_TO symbol= PIECE_SYMBOL )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:83:21: PROMOTES_TO symbol= PIECE_SYMBOL
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:83:21: PROMOTES_TO symbol= PIECE_SYMBOL
 			{
 			DebugLocation(83, 21);
 			mPROMOTES_TO(); 
@@ -1993,14 +1994,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = INTEGER;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:85:9: ( '1' .. '9' ( '0' .. '9' )* )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:85:9: ( '1' .. '9' ( '0' .. '9' )* )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:85:11: '1' .. '9' ( '0' .. '9' )*
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:85:11: '1' .. '9' ( '0' .. '9' )*
 			{
 			DebugLocation(85, 11);
 			MatchRange('1','9'); 
 			DebugLocation(85, 20);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:85:20: ( '0' .. '9' )*
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:85:20: ( '0' .. '9' )*
 			try { DebugEnterSubRule(9);
 			while (true)
 			{
@@ -2019,7 +2020,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:
 					{
 					DebugLocation(85, 20);
 					input.Consume();
@@ -2067,9 +2068,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = MOVE_LABEL;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:87:12: ( INTEGER '.' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:87:12: ( INTEGER '.' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:87:14: INTEGER '.'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:87:14: INTEGER '.'
 			{
 			DebugLocation(87, 14);
 			mINTEGER(); 
@@ -2104,14 +2105,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = BLOCK_COMMENT;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:89:15: ( LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:89:15: ( LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:89:17: LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:89:17: LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET
 			{
 			DebugLocation(89, 17);
 			mLEFT_CURLY_BRACKET(); 
 			DebugLocation(89, 36);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:89:36: (~ RIGHT_CURLY_BRACKET )*
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:89:36: (~ RIGHT_CURLY_BRACKET )*
 			try { DebugEnterSubRule(10);
 			while (true)
 			{
@@ -2130,7 +2131,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:
 					{
 					DebugLocation(89, 36);
 					input.Consume();
@@ -2180,9 +2181,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = NO_MOVE;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:91:9: ( '...' )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:9: ( '...' )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:91:11: '...'
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:11: '...'
 			{
 			DebugLocation(91, 11);
 			Match("..."); 
@@ -2216,12 +2217,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = TAG_NAME;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:93:10: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+ )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:10: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+ )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
 			{
 			DebugLocation(93, 12);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
 			int cnt11=0;
 			try { DebugEnterSubRule(11);
 			while (true)
@@ -2241,7 +2242,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:
+					// H:\\Work\\redchess\\PgnParser\\Pgn.g:
 					{
 					DebugLocation(93, 12);
 					input.Consume();
@@ -2294,9 +2295,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = NUMERIC_ANNOTATION_GLYPH;
 			int _channel = DefaultTokenChannel;
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:95:26: ( '$' INTEGER )
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:95:26: ( '$' INTEGER )
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:95:28: '$' INTEGER
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:95:28: '$' INTEGER
 			{
 			DebugLocation(95, 28);
 			Match('$'); 
@@ -2317,26 +2318,168 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 	}
 	// $ANTLR end "NUMERIC_ANNOTATION_GLYPH"
 
-	public override void mTokens()
+	partial void EnterRule_MOVE_ANALYSIS();
+	partial void LeaveRule_MOVE_ANALYSIS();
+
+	// $ANTLR start "MOVE_ANALYSIS"
+	[GrammarRule("MOVE_ANALYSIS")]
+	private void mMOVE_ANALYSIS()
 	{
-		// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:8: ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH )
-		int alt12=34;
-		try { DebugEnterDecision(12, false);
+		EnterRule_MOVE_ANALYSIS();
+		EnterRule("MOVE_ANALYSIS", 42);
+		TraceIn("MOVE_ANALYSIS", 42);
 		try
 		{
-			alt12 = dfa12.Predict(input);
+			int _type = MOVE_ANALYSIS;
+			int _channel = DefaultTokenChannel;
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:15: ( '?' | '!' | '?!' | '!?' | '!!' | '??' )
+			int alt12=6;
+			try { DebugEnterDecision(12, false);
+			int LA12_1 = input.LA(1);
+
+			if ((LA12_1=='?'))
+			{
+				switch (input.LA(2))
+				{
+				case '!':
+					{
+					alt12 = 3;
+					}
+					break;
+				case '?':
+					{
+					alt12 = 6;
+					}
+					break;
+				default:
+					alt12=1;
+					break;
+
+				}
+
+			}
+			else if ((LA12_1=='!'))
+			{
+				switch (input.LA(2))
+				{
+				case '?':
+					{
+					alt12 = 4;
+					}
+					break;
+				case '!':
+					{
+					alt12 = 5;
+					}
+					break;
+				default:
+					alt12=2;
+					break;
+
+				}
+
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 12, 0, input, 1);
+				DebugRecognitionException(nvae);
+				throw nvae;
+			}
+			} finally { DebugExitDecision(12); }
+			switch (alt12)
+			{
+			case 1:
+				DebugEnterAlt(1);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:17: '?'
+				{
+				DebugLocation(97, 17);
+				Match('?'); 
+
+				}
+				break;
+			case 2:
+				DebugEnterAlt(2);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:23: '!'
+				{
+				DebugLocation(97, 23);
+				Match('!'); 
+
+				}
+				break;
+			case 3:
+				DebugEnterAlt(3);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:29: '?!'
+				{
+				DebugLocation(97, 29);
+				Match("?!"); 
+
+
+				}
+				break;
+			case 4:
+				DebugEnterAlt(4);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:36: '!?'
+				{
+				DebugLocation(97, 36);
+				Match("!?"); 
+
+
+				}
+				break;
+			case 5:
+				DebugEnterAlt(5);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:43: '!!'
+				{
+				DebugLocation(97, 43);
+				Match("!!"); 
+
+
+				}
+				break;
+			case 6:
+				DebugEnterAlt(6);
+				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:50: '??'
+				{
+				DebugLocation(97, 50);
+				Match("??"); 
+
+
+				}
+				break;
+
+			}
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally
+		{
+			TraceOut("MOVE_ANALYSIS", 42);
+			LeaveRule("MOVE_ANALYSIS", 42);
+			LeaveRule_MOVE_ANALYSIS();
+		}
+	}
+	// $ANTLR end "MOVE_ANALYSIS"
+
+	public override void mTokens()
+	{
+		// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:8: ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH | MOVE_ANALYSIS )
+		int alt13=35;
+		try { DebugEnterDecision(13, false);
+		try
+		{
+			alt13 = dfa13.Predict(input);
 		}
 		catch (NoViableAltException nvae)
 		{
 			DebugRecognitionException(nvae);
 			throw;
 		}
-		} finally { DebugExitDecision(12); }
-		switch (alt12)
+		} finally { DebugExitDecision(13); }
+		switch (alt13)
 		{
 		case 1:
 			DebugEnterAlt(1);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:10: BLACK
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:10: BLACK
 			{
 			DebugLocation(1, 10);
 			mBLACK(); 
@@ -2345,7 +2488,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 2:
 			DebugEnterAlt(2);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:16: CASTLE_KINGSIDE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:16: CASTLE_KINGSIDE
 			{
 			DebugLocation(1, 16);
 			mCASTLE_KINGSIDE(); 
@@ -2354,7 +2497,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 3:
 			DebugEnterAlt(3);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:32: CASTLE_QUEENSIDE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:32: CASTLE_QUEENSIDE
 			{
 			DebugLocation(1, 32);
 			mCASTLE_QUEENSIDE(); 
@@ -2363,7 +2506,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 4:
 			DebugEnterAlt(4);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:49: CHECK
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:49: CHECK
 			{
 			DebugLocation(1, 49);
 			mCHECK(); 
@@ -2372,7 +2515,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 5:
 			DebugEnterAlt(5);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:55: DATE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:55: DATE
 			{
 			DebugLocation(1, 55);
 			mDATE(); 
@@ -2381,7 +2524,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 6:
 			DebugEnterAlt(6);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:60: EVENT
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:60: EVENT
 			{
 			DebugLocation(1, 60);
 			mEVENT(); 
@@ -2390,7 +2533,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 7:
 			DebugEnterAlt(7);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:66: LEFT_BRACKET
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:66: LEFT_BRACKET
 			{
 			DebugLocation(1, 66);
 			mLEFT_BRACKET(); 
@@ -2399,7 +2542,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 8:
 			DebugEnterAlt(8);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:79: LEFT_CURLY_BRACKET
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:79: LEFT_CURLY_BRACKET
 			{
 			DebugLocation(1, 79);
 			mLEFT_CURLY_BRACKET(); 
@@ -2408,7 +2551,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 9:
 			DebugEnterAlt(9);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:98: LEFT_TAG
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:98: LEFT_TAG
 			{
 			DebugLocation(1, 98);
 			mLEFT_TAG(); 
@@ -2417,7 +2560,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 10:
 			DebugEnterAlt(10);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:107: MATE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:107: MATE
 			{
 			DebugLocation(1, 107);
 			mMATE(); 
@@ -2426,7 +2569,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 11:
 			DebugEnterAlt(11);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:112: PROMOTES_TO
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:112: PROMOTES_TO
 			{
 			DebugLocation(1, 112);
 			mPROMOTES_TO(); 
@@ -2435,7 +2578,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 12:
 			DebugEnterAlt(12);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:124: QUOTE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:124: QUOTE
 			{
 			DebugLocation(1, 124);
 			mQUOTE(); 
@@ -2444,7 +2587,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 13:
 			DebugEnterAlt(13);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:130: RESULT
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:130: RESULT
 			{
 			DebugLocation(1, 130);
 			mRESULT(); 
@@ -2453,7 +2596,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 14:
 			DebugEnterAlt(14);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:137: RIGHT_BRACKET
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:137: RIGHT_BRACKET
 			{
 			DebugLocation(1, 137);
 			mRIGHT_BRACKET(); 
@@ -2462,7 +2605,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 15:
 			DebugEnterAlt(15);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:151: RIGHT_CURLY_BRACKET
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:151: RIGHT_CURLY_BRACKET
 			{
 			DebugLocation(1, 151);
 			mRIGHT_CURLY_BRACKET(); 
@@ -2471,7 +2614,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 16:
 			DebugEnterAlt(16);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:171: RIGHT_TAG
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:171: RIGHT_TAG
 			{
 			DebugLocation(1, 171);
 			mRIGHT_TAG(); 
@@ -2480,7 +2623,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 17:
 			DebugEnterAlt(17);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:181: ROUND
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:181: ROUND
 			{
 			DebugLocation(1, 181);
 			mROUND(); 
@@ -2489,7 +2632,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 18:
 			DebugEnterAlt(18);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:187: SITE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:187: SITE
 			{
 			DebugLocation(1, 187);
 			mSITE(); 
@@ -2498,7 +2641,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 19:
 			DebugEnterAlt(19);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:192: TAKES
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:192: TAKES
 			{
 			DebugLocation(1, 192);
 			mTAKES(); 
@@ -2507,7 +2650,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 20:
 			DebugEnterAlt(20);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:198: WHITE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:198: WHITE
 			{
 			DebugLocation(1, 198);
 			mWHITE(); 
@@ -2516,7 +2659,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 21:
 			DebugEnterAlt(21);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:204: WS
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:204: WS
 			{
 			DebugLocation(1, 204);
 			mWS(); 
@@ -2525,7 +2668,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 22:
 			DebugEnterAlt(22);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:207: LINE_COMMENT
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:207: LINE_COMMENT
 			{
 			DebugLocation(1, 207);
 			mLINE_COMMENT(); 
@@ -2534,7 +2677,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 23:
 			DebugEnterAlt(23);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:220: GAME_RESULT
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:220: GAME_RESULT
 			{
 			DebugLocation(1, 220);
 			mGAME_RESULT(); 
@@ -2543,7 +2686,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 24:
 			DebugEnterAlt(24);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:232: GAME_RESULT_END_OF_MOVETEXT
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:232: GAME_RESULT_END_OF_MOVETEXT
 			{
 			DebugLocation(1, 232);
 			mGAME_RESULT_END_OF_MOVETEXT(); 
@@ -2552,7 +2695,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 25:
 			DebugEnterAlt(25);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:260: QUOTED_STRING
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:260: QUOTED_STRING
 			{
 			DebugLocation(1, 260);
 			mQUOTED_STRING(); 
@@ -2561,7 +2704,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 26:
 			DebugEnterAlt(26);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:274: PIECE_TO_SQUARE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:274: PIECE_TO_SQUARE
 			{
 			DebugLocation(1, 274);
 			mPIECE_TO_SQUARE(); 
@@ -2570,7 +2713,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 27:
 			DebugEnterAlt(27);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:290: CAPTURE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:290: CAPTURE
 			{
 			DebugLocation(1, 290);
 			mCAPTURE(); 
@@ -2579,7 +2722,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 28:
 			DebugEnterAlt(28);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:298: PROMOTES_TO_PIECE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:298: PROMOTES_TO_PIECE
 			{
 			DebugLocation(1, 298);
 			mPROMOTES_TO_PIECE(); 
@@ -2588,7 +2731,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 29:
 			DebugEnterAlt(29);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:316: INTEGER
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:316: INTEGER
 			{
 			DebugLocation(1, 316);
 			mINTEGER(); 
@@ -2597,7 +2740,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 30:
 			DebugEnterAlt(30);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:324: MOVE_LABEL
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:324: MOVE_LABEL
 			{
 			DebugLocation(1, 324);
 			mMOVE_LABEL(); 
@@ -2606,7 +2749,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 31:
 			DebugEnterAlt(31);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:335: BLOCK_COMMENT
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:335: BLOCK_COMMENT
 			{
 			DebugLocation(1, 335);
 			mBLOCK_COMMENT(); 
@@ -2615,7 +2758,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 32:
 			DebugEnterAlt(32);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:349: NO_MOVE
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:349: NO_MOVE
 			{
 			DebugLocation(1, 349);
 			mNO_MOVE(); 
@@ -2624,7 +2767,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 33:
 			DebugEnterAlt(33);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:357: TAG_NAME
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:357: TAG_NAME
 			{
 			DebugLocation(1, 357);
 			mTAG_NAME(); 
@@ -2633,10 +2776,19 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 34:
 			DebugEnterAlt(34);
-			// C:\\Users\\james.gilmore\\Chess\\redchess\\PgnParser\\Pgn.g:1:366: NUMERIC_ANNOTATION_GLYPH
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:366: NUMERIC_ANNOTATION_GLYPH
 			{
 			DebugLocation(1, 366);
 			mNUMERIC_ANNOTATION_GLYPH(); 
+
+			}
+			break;
+		case 35:
+			DebugEnterAlt(35);
+			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:391: MOVE_ANALYSIS
+			{
+			DebugLocation(1, 391);
+			mMOVE_ANALYSIS(); 
 
 			}
 			break;
@@ -2647,211 +2799,212 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 
 
 	#region DFA
-	DFA12 dfa12;
+	DFA13 dfa13;
 
 	protected override void InitDFAs()
 	{
 		base.InitDFAs();
-		dfa12 = new DFA12(this, SpecialStateTransition12);
+		dfa13 = new DFA13(this, SpecialStateTransition13);
 	}
 
-	private class DFA12 : DFA
+	private class DFA13 : DFA
 	{
-		private const string DFA12_eotS =
-			"\x1\xFFFF\x2\x1C\x1\xFFFF\x2\x1C\x1\xFFFF\x1\x25\x2\xFFFF\x1\x27\x1\x2C"+
-			"\x1\x1C\x3\xFFFF\x1\x1C\x1\x31\x1\x1C\x2\xFFFF\x1\x1C\x1\x34\x1\xFFFF"+
-			"\x2\x1C\x1\x34\x3\xFFFF\x4\x1C\x1\xFFFF\x2\x1C\x9\xFFFF\x3\x1C\x1\xFFFF"+
-			"\x1\x1C\x1\x34\x2\xFFFF\x1\x46\x1\x1C\x1\x46\x2\x1C\x1\x4B\x2\x1C\x3"+
-			"\xFFFF\x1\x51\x4\x1C\x1\xFFFF\x1\x1C\x1\x46\x1\x57\x2\xFFFF\x1\x58\x1"+
-			"\x1C\x4\xFFFF\x2\x1C\x1\x5F\x1\x1C\x1\x61\x2\xFFFF\x1\x62\x2\x51\x1\xFFFF"+
-			"\x1\x1C\x1\x65\x1\xFFFF\x1\x66\x3\xFFFF\x1\x68\x5\xFFFF\x1\x51";
-		private const string DFA12_eofS =
-			"\x6B\xFFFF";
-		private const string DFA12_minS =
+		private const string DFA13_eotS =
+			"\x1\xFFFF\x2\x1C\x1\xFFFF\x2\x1C\x1\xFFFF\x1\x26\x2\xFFFF\x1\x28\x1\x2D"+
+			"\x1\x1C\x3\xFFFF\x1\x1C\x1\x32\x1\x1C\x2\xFFFF\x1\x1C\x1\x35\x1\xFFFF"+
+			"\x2\x1C\x1\x35\x4\xFFFF\x4\x1C\x1\xFFFF\x2\x1C\x9\xFFFF\x3\x1C\x1\xFFFF"+
+			"\x1\x1C\x1\x35\x2\xFFFF\x1\x47\x1\x1C\x1\x47\x2\x1C\x1\x4C\x2\x1C\x3"+
+			"\xFFFF\x1\x52\x4\x1C\x1\xFFFF\x1\x1C\x1\x47\x1\x58\x2\xFFFF\x1\x59\x1"+
+			"\x1C\x4\xFFFF\x2\x1C\x1\x60\x1\x1C\x1\x62\x2\xFFFF\x1\x63\x2\x52\x1\xFFFF"+
+			"\x1\x1C\x1\x66\x1\xFFFF\x1\x67\x3\xFFFF\x1\x69\x5\xFFFF\x1\x52";
+		private const string DFA13_eofS =
+			"\x6C\xFFFF";
+		private const string DFA13_minS =
 			"\x1\x9\x1\x31\x1\x2D\x1\xFFFF\x1\x61\x1\x76\x1\xFFFF\x1\x0\x2\xFFFF\x1"+
 			"\x42\x1\x0\x1\x31\x3\xFFFF\x1\x69\x1\x30\x1\x68\x2\xFFFF\x2\x2D\x1\xFFFF"+
-			"\x2\x31\x1\x2E\x3\xFFFF\x1\x61\x1\x31\x2\x61\x1\x4F\x1\x74\x1\x65\x4"+
+			"\x2\x31\x1\x2E\x4\xFFFF\x1\x61\x1\x31\x2\x61\x1\x4F\x1\x74\x1\x65\x4"+
 			"\xFFFF\x3\x0\x2\xFFFF\x1\x31\x1\x75\x1\x74\x1\xFFFF\x1\x69\x1\x2E\x2"+
 			"\xFFFF\x1\x30\x1\x63\x1\x30\x2\x31\x1\x2D\x1\x65\x1\x6E\x3\x0\x1\x22"+
 			"\x1\x75\x1\x6E\x1\x65\x1\x74\x1\xFFFF\x1\x6B\x2\x30\x2\xFFFF\x1\x30\x1"+
 			"\x74\x3\x0\x1\xFFFF\x1\x6C\x1\x64\x1\x30\x1\x65\x1\x30\x2\xFFFF\x1\x30"+
 			"\x2\x22\x1\x0\x1\x74\x1\x30\x1\xFFFF\x1\x30\x2\xFFFF\x1\x0\x1\x30\x2"+
 			"\xFFFF\x1\x0\x1\xFFFF\x1\x0\x1\x22";
-		private const string DFA12_maxS =
+		private const string DFA13_maxS =
 			"\x1\x7D\x1\x78\x1\x2D\x1\xFFFF\x1\x61\x1\x76\x1\xFFFF\x1\xFFFF\x2\xFFFF"+
 			"\x1\x52\x1\xFFFF\x1\x78\x3\xFFFF\x1\x69\x1\x7A\x1\x68\x2\xFFFF\x1\x2D"+
-			"\x1\x7A\x1\xFFFF\x2\x78\x1\x7A\x3\xFFFF\x1\x61\x2\x78\x1\x68\x1\x4F\x1"+
+			"\x1\x7A\x1\xFFFF\x2\x78\x1\x7A\x4\xFFFF\x1\x61\x2\x78\x1\x68\x1\x4F\x1"+
 			"\x74\x1\x65\x4\xFFFF\x3\xFFFF\x2\xFFFF\x1\x78\x1\x75\x1\x74\x1\xFFFF"+
 			"\x1\x69\x1\x7A\x2\xFFFF\x1\x7A\x1\x63\x1\x7A\x2\x38\x1\x2D\x1\x65\x1"+
 			"\x6E\x3\xFFFF\x1\x22\x1\x75\x1\x6E\x1\x65\x1\x74\x1\xFFFF\x1\x6B\x2\x7A"+
 			"\x2\xFFFF\x1\x7A\x1\x74\x3\xFFFF\x1\xFFFF\x1\x6C\x1\x64\x1\x7A\x1\x65"+
 			"\x1\x7A\x2\xFFFF\x1\x7A\x2\x22\x1\xFFFF\x1\x74\x1\x7A\x1\xFFFF\x1\x7A"+
 			"\x2\xFFFF\x1\xFFFF\x1\x7A\x2\xFFFF\x1\xFFFF\x1\xFFFF\x1\xFFFF\x1\x22";
-		private const string DFA12_acceptS =
+		private const string DFA13_acceptS =
 			"\x3\xFFFF\x1\x4\x2\xFFFF\x1\x7\x1\xFFFF\x1\x9\x1\xA\x3\xFFFF\x1\xE\x1"+
 			"\xF\x1\x10\x3\xFFFF\x1\x15\x1\x16\x2\xFFFF\x1\x18\x3\xFFFF\x1\x20\x1"+
-			"\x21\x1\x22\x7\xFFFF\x1\x8\x1\x1F\x1\xB\x1\x1C\x3\xFFFF\x1\xC\x1\x19"+
-			"\x3\xFFFF\x1\x13\x2\xFFFF\x1\x1D\x1\x1E\x10\xFFFF\x1\x1A\x3\xFFFF\x1"+
-			"\x3\x1\x2\x5\xFFFF\x1\x17\x5\xFFFF\x1\x1B\x1\x5\x6\xFFFF\x1\x12\x1\xFFFF"+
-			"\x1\x1\x1\x6\x2\xFFFF\x1\x11\x1\x14\x1\xFFFF\x1\xD\x2\xFFFF";
-		private const string DFA12_specialS =
-			"\x7\xFFFF\x1\x0\x3\xFFFF\x1\x1\x1D\xFFFF\x1\x4\x1\x6\x1\xE\x12\xFFFF"+
-			"\x1\x3\x1\x7\x1\x5\xD\xFFFF\x1\x2\x1\x8\x1\xB\xB\xFFFF\x1\xC\x6\xFFFF"+
-			"\x1\x9\x3\xFFFF\x1\xA\x1\xFFFF\x1\xD\x1\xFFFF}>";
-		private static readonly string[] DFA12_transitionS =
+			"\x21\x1\x22\x1\x23\x7\xFFFF\x1\x8\x1\x1F\x1\xB\x1\x1C\x3\xFFFF\x1\xC"+
+			"\x1\x19\x3\xFFFF\x1\x13\x2\xFFFF\x1\x1D\x1\x1E\x10\xFFFF\x1\x1A\x3\xFFFF"+
+			"\x1\x3\x1\x2\x5\xFFFF\x1\x17\x5\xFFFF\x1\x1B\x1\x5\x6\xFFFF\x1\x12\x1"+
+			"\xFFFF\x1\x1\x1\x6\x2\xFFFF\x1\x11\x1\x14\x1\xFFFF\x1\xD\x2\xFFFF";
+		private const string DFA13_specialS =
+			"\x7\xFFFF\x1\xE\x3\xFFFF\x1\xD\x1E\xFFFF\x1\x0\x1\xC\x1\xB\x12\xFFFF"+
+			"\x1\x1\x1\x3\x1\x5\xD\xFFFF\x1\x2\x1\x4\x1\x6\xB\xFFFF\x1\x7\x6\xFFFF"+
+			"\x1\x8\x3\xFFFF\x1\x9\x1\xFFFF\x1\xA\x1\xFFFF}>";
+		private static readonly string[] DFA13_transitionS =
 			{
-				"\x2\x13\x2\xFFFF\x1\x13\x12\xFFFF\x1\x13\x1\xFFFF\x1\xB\x1\x9\x1\x1D"+
-				"\x3\xFFFF\x1\x6\x1\xD\x1\x17\x1\x3\x2\xFFFF\x1\x1B\x1\xFFFF\x1\x15\x1"+
-				"\x16\x8\x1A\x1\xFFFF\x1\x14\x1\xFFFF\x1\xA\x3\xFFFF\x1\x1C\x1\x1\x1"+
-				"\x1C\x1\x4\x1\x5\x5\x1C\x1\x19\x2\x1C\x1\x19\x1\x2\x2\x19\x1\xC\x1\x10"+
-				"\x3\x1C\x1\x12\x3\x1C\x1\x8\x1\xFFFF\x1\xF\x1\xFFFF\x1\x1C\x1\xFFFF"+
-				"\x8\x18\xF\x1C\x1\x11\x2\x1C\x1\x7\x1\xFFFF\x1\xE",
-				"\x8\x20\x28\xFFFF\x8\x1F\x3\xFFFF\x1\x1E\xB\xFFFF\x1\x21",
-				"\x1\x22",
-				"",
+				"\x2\x13\x2\xFFFF\x1\x13\x12\xFFFF\x1\x13\x1\x1E\x1\xB\x1\x9\x1\x1D\x3"+
+				"\xFFFF\x1\x6\x1\xD\x1\x17\x1\x3\x2\xFFFF\x1\x1B\x1\xFFFF\x1\x15\x1\x16"+
+				"\x8\x1A\x1\xFFFF\x1\x14\x1\xFFFF\x1\xA\x1\xFFFF\x1\x1E\x1\xFFFF\x1\x1C"+
+				"\x1\x1\x1\x1C\x1\x4\x1\x5\x5\x1C\x1\x19\x2\x1C\x1\x19\x1\x2\x2\x19\x1"+
+				"\xC\x1\x10\x3\x1C\x1\x12\x3\x1C\x1\x8\x1\xFFFF\x1\xF\x1\xFFFF\x1\x1C"+
+				"\x1\xFFFF\x8\x18\xF\x1C\x1\x11\x2\x1C\x1\x7\x1\xFFFF\x1\xE",
+				"\x8\x21\x28\xFFFF\x8\x20\x3\xFFFF\x1\x1F\xB\xFFFF\x1\x22",
 				"\x1\x23",
+				"",
 				"\x1\x24",
+				"\x1\x25",
 				"",
-				"\x0\x26",
-				"",
-				"",
-				"\x1\x28\x8\xFFFF\x1\x28\x2\xFFFF\x1\x28\x1\xFFFF\x3\x28",
-				"\x2A\x2D\x1\x2B\x5\x2D\x1\x29\x1\x2A\xFFCE\x2D",
-				"\x8\x20\x28\xFFFF\x4\x1F\x1\x2E\x3\x1F\x6\xFFFF\x1\x2F\x8\xFFFF\x1"+
-				"\x21",
+				"\x0\x27",
 				"",
 				"",
+				"\x1\x29\x8\xFFFF\x1\x29\x2\xFFFF\x1\x29\x1\xFFFF\x3\x29",
+				"\x2A\x2E\x1\x2C\x5\x2E\x1\x2A\x1\x2B\xFFCE\x2E",
+				"\x8\x21\x28\xFFFF\x4\x20\x1\x2F\x3\x20\x6\xFFFF\x1\x30\x8\xFFFF\x1"+
+				"\x22",
 				"",
-				"\x1\x30",
+				"",
+				"",
+				"\x1\x31",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"\x1\x32",
+				"\x1\x33",
 				"",
 				"",
 				"\x1\x17",
-				"\x1\x17\x1\x35\x1\x17\xA\x33\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF"+
+				"\x1\x17\x1\x36\x1\x17\xA\x34\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF"+
 				"\x1A\x1C",
 				"",
-				"\x8\x36\x3F\xFFFF\x1\x21",
-				"\x8\x20\x28\xFFFF\x8\x1F\xF\xFFFF\x1\x21",
-				"\x1\x35\x1\xFFFF\xA\x33\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A"+
+				"\x8\x37\x3F\xFFFF\x1\x22",
+				"\x8\x21\x28\xFFFF\x8\x20\xF\xFFFF\x1\x22",
+				"\x1\x36\x1\xFFFF\xA\x34\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A"+
 				"\x1C",
 				"",
 				"",
 				"",
-				"\x1\x37",
-				"\x8\x38\x28\xFFFF\x8\x39\xF\xFFFF\x1\x21",
-				"\x8\x39\xF\xFFFF\x1\x21",
-				"\x8\x3A",
-				"\x1\x3B",
+				"",
+				"\x1\x38",
+				"\x8\x39\x28\xFFFF\x8\x3A\xF\xFFFF\x1\x22",
+				"\x8\x3A\xF\xFFFF\x1\x22",
+				"\x8\x3B",
 				"\x1\x3C",
 				"\x1\x3D",
+				"\x1\x3E",
 				"",
 				"",
 				"",
 				"",
-				"\x2D\x2D\x1\x3E\xFFD2\x2D",
-				"\x2D\x2D\x1\x3F\x1\x2D\x1\x40\xFFD0\x2D",
-				"\x22\x2D\x1\x41\xFFDD\x2D",
+				"\x2D\x2E\x1\x3F\xFFD2\x2E",
+				"\x2D\x2E\x1\x40\x1\x2E\x1\x41\xFFD0\x2E",
+				"\x22\x2E\x1\x42\xFFDD\x2E",
 				"",
 				"",
-				"\x8\x38\x28\xFFFF\x8\x39\xA\xFFFF\x1\x42\x4\xFFFF\x1\x21",
-				"\x1\x43",
+				"\x8\x39\x28\xFFFF\x8\x3A\xA\xFFFF\x1\x43\x4\xFFFF\x1\x22",
 				"\x1\x44",
-				"",
 				"\x1\x45",
-				"\x1\x35\x1\xFFFF\xA\x33\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A"+
+				"",
+				"\x1\x46",
+				"\x1\x36\x1\xFFFF\xA\x34\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A"+
 				"\x1C",
 				"",
 				"",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"\x1\x47",
-				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x8\x39\xF\x1C\x1"+
-				"\x21\x2\x1C",
-				"\x8\x48",
+				"\x1\x48",
+				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x8\x3A\xF\x1C\x1"+
+				"\x22\x2\x1C",
 				"\x8\x49",
-				"\x1\x4A",
-				"\x1\x4C",
+				"\x8\x4A",
+				"\x1\x4B",
 				"\x1\x4D",
-				"\x31\x2D\x1\x4E\xFFCE\x2D",
-				"\x30\x2D\x1\x4F\xFFCF\x2D",
-				"\x32\x2D\x1\x50\xFFCD\x2D",
-				"\x1\x2D",
-				"\x1\x52",
+				"\x1\x4E",
+				"\x31\x2E\x1\x4F\xFFCE\x2E",
+				"\x30\x2E\x1\x50\xFFCF\x2E",
+				"\x32\x2E\x1\x51\xFFCD\x2E",
+				"\x1\x2E",
 				"\x1\x53",
 				"\x1\x54",
 				"\x1\x55",
-				"",
 				"\x1\x56",
+				"",
+				"\x1\x57",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
 				"",
 				"",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"\x1\x59",
-				"\x22\x2D\x1\x5A\xFFDD\x2D",
-				"\x22\x2D\x1\x5B\xFFDD\x2D",
-				"\x2D\x2D\x1\x5C\xFFD2\x2D",
+				"\x1\x5A",
+				"\x22\x2E\x1\x5B\xFFDD\x2E",
+				"\x22\x2E\x1\x5C\xFFDD\x2E",
+				"\x2D\x2E\x1\x5D\xFFD2\x2E",
 				"",
-				"\x1\x5D",
 				"\x1\x5E",
+				"\x1\x5F",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"\x1\x60",
-				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"",
-				"",
-				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"\x1\x2D",
-				"\x1\x2D",
-				"\x31\x2D\x1\x63\xFFCE\x2D",
-				"\x1\x64",
-				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
-				"",
+				"\x1\x61",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
 				"",
 				"",
-				"\x2F\x2D\x1\x67\xFFD0\x2D",
+				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
+				"\x1\x2E",
+				"\x1\x2E",
+				"\x31\x2E\x1\x64\xFFCE\x2E",
+				"\x1\x65",
+				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
+				"",
 				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
 				"",
 				"",
-				"\x32\x2D\x1\x69\xFFCD\x2D",
+				"\x2F\x2E\x1\x68\xFFD0\x2E",
+				"\xA\x1C\x7\xFFFF\x1A\x1C\x4\xFFFF\x1\x1C\x1\xFFFF\x1A\x1C",
 				"",
-				"\x22\x2D\x1\x6A\xFFDD\x2D",
-				"\x1\x2D"
+				"",
+				"\x32\x2E\x1\x6A\xFFCD\x2E",
+				"",
+				"\x22\x2E\x1\x6B\xFFDD\x2E",
+				"\x1\x2E"
 			};
 
-		private static readonly short[] DFA12_eot = DFA.UnpackEncodedString(DFA12_eotS);
-		private static readonly short[] DFA12_eof = DFA.UnpackEncodedString(DFA12_eofS);
-		private static readonly char[] DFA12_min = DFA.UnpackEncodedStringToUnsignedChars(DFA12_minS);
-		private static readonly char[] DFA12_max = DFA.UnpackEncodedStringToUnsignedChars(DFA12_maxS);
-		private static readonly short[] DFA12_accept = DFA.UnpackEncodedString(DFA12_acceptS);
-		private static readonly short[] DFA12_special = DFA.UnpackEncodedString(DFA12_specialS);
-		private static readonly short[][] DFA12_transition;
+		private static readonly short[] DFA13_eot = DFA.UnpackEncodedString(DFA13_eotS);
+		private static readonly short[] DFA13_eof = DFA.UnpackEncodedString(DFA13_eofS);
+		private static readonly char[] DFA13_min = DFA.UnpackEncodedStringToUnsignedChars(DFA13_minS);
+		private static readonly char[] DFA13_max = DFA.UnpackEncodedStringToUnsignedChars(DFA13_maxS);
+		private static readonly short[] DFA13_accept = DFA.UnpackEncodedString(DFA13_acceptS);
+		private static readonly short[] DFA13_special = DFA.UnpackEncodedString(DFA13_specialS);
+		private static readonly short[][] DFA13_transition;
 
-		static DFA12()
+		static DFA13()
 		{
-			int numStates = DFA12_transitionS.Length;
-			DFA12_transition = new short[numStates][];
+			int numStates = DFA13_transitionS.Length;
+			DFA13_transition = new short[numStates][];
 			for ( int i=0; i < numStates; i++ )
 			{
-				DFA12_transition[i] = DFA.UnpackEncodedString(DFA12_transitionS[i]);
+				DFA13_transition[i] = DFA.UnpackEncodedString(DFA13_transitionS[i]);
 			}
 		}
 
-		public DFA12( BaseRecognizer recognizer, SpecialStateTransitionHandler specialStateTransition )
+		public DFA13( BaseRecognizer recognizer, SpecialStateTransitionHandler specialStateTransition )
 			: base(specialStateTransition)
 		{
 			this.recognizer = recognizer;
-			this.decisionNumber = 12;
-			this.eot = DFA12_eot;
-			this.eof = DFA12_eof;
-			this.min = DFA12_min;
-			this.max = DFA12_max;
-			this.accept = DFA12_accept;
-			this.special = DFA12_special;
-			this.transition = DFA12_transition;
+			this.decisionNumber = 13;
+			this.eot = DFA13_eot;
+			this.eof = DFA13_eof;
+			this.min = DFA13_min;
+			this.max = DFA13_max;
+			this.accept = DFA13_accept;
+			this.special = DFA13_special;
+			this.transition = DFA13_transition;
 		}
 
-		public override string Description { get { return "1:1: Tokens : ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH );"; } }
+		public override string Description { get { return "1:1: Tokens : ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH | MOVE_ANALYSIS );"; } }
 
 		public override void Error(NoViableAltException nvae)
 		{
@@ -2859,140 +3012,140 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		}
 	}
 
-	private int SpecialStateTransition12(DFA dfa, int s, IIntStream _input)
+	private int SpecialStateTransition13(DFA dfa, int s, IIntStream _input)
 	{
 		IIntStream input = _input;
 		int _s = s;
 		s = -1;
-		int LA12_1 = input.LA(1);
-		int index12_1 = input.Index;
+		int LA13_1 = input.LA(1);
+		int index13_1 = input.Index;
 		switch (_s)
 		{
 		case 0:
 			{
-				if (((LA12_1>='\u0000' && LA12_1<='\uFFFF'))) {s = 38;}
+				if ((LA13_1=='-')) {s = 63;}
 
-				else s = 37;
+				else if (((LA13_1>='\u0000' && LA13_1<=',')||(LA13_1>='.' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 1:
 			{
-				if ((LA12_1=='0')) {s = 41;}
+				if ((LA13_1=='1')) {s = 79;}
 
-				else if ((LA12_1=='1')) {s = 42;}
-
-				else if ((LA12_1=='*')) {s = 43;}
-
-				else if (((LA12_1>='\u0000' && LA12_1<=')')||(LA12_1>='+' && LA12_1<='/')||(LA12_1>='2' && LA12_1<='\uFFFF'))) {s = 45;}
-
-				else s = 44;
+				else if (((LA13_1>='\u0000' && LA13_1<='0')||(LA13_1>='2' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 2:
 			{
-				if ((LA12_1=='\"')) {s = 90;}
+				if ((LA13_1=='\"')) {s = 91;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='!')||(LA12_1>='#' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 3:
 			{
-				if ((LA12_1=='1')) {s = 78;}
+				if ((LA13_1=='0')) {s = 80;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='0')||(LA12_1>='2' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='/')||(LA13_1>='1' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 4:
 			{
-				if ((LA12_1=='-')) {s = 62;}
+				if ((LA13_1=='\"')) {s = 92;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<=',')||(LA12_1>='.' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 5:
 			{
-				if ((LA12_1=='2')) {s = 80;}
+				if ((LA13_1=='2')) {s = 81;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='1')||(LA12_1>='3' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='1')||(LA13_1>='3' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 6:
 			{
-				if ((LA12_1=='-')) {s = 63;}
+				if ((LA13_1=='-')) {s = 93;}
 
-				else if ((LA12_1=='/')) {s = 64;}
-
-				else if (((LA12_1>='\u0000' && LA12_1<=',')||LA12_1=='.'||(LA12_1>='0' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<=',')||(LA13_1>='.' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 7:
 			{
-				if ((LA12_1=='0')) {s = 79;}
+				if ((LA13_1=='1')) {s = 100;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='/')||(LA12_1>='1' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='0')||(LA13_1>='2' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 8:
 			{
-				if ((LA12_1=='\"')) {s = 91;}
+				if ((LA13_1=='/')) {s = 104;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='!')||(LA12_1>='#' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='.')||(LA13_1>='0' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 9:
 			{
-				if ((LA12_1=='/')) {s = 103;}
+				if ((LA13_1=='2')) {s = 106;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='.')||(LA12_1>='0' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='1')||(LA13_1>='3' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 10:
 			{
-				if ((LA12_1=='2')) {s = 105;}
+				if ((LA13_1=='\"')) {s = 107;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='1')||(LA12_1>='3' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 11:
 			{
-				if ((LA12_1=='-')) {s = 92;}
+				if ((LA13_1=='\"')) {s = 66;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<=',')||(LA12_1>='.' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if (((LA13_1>='\u0000' && LA13_1<='!')||(LA13_1>='#' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 12:
 			{
-				if ((LA12_1=='1')) {s = 99;}
+				if ((LA13_1=='-')) {s = 64;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='0')||(LA12_1>='2' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if ((LA13_1=='/')) {s = 65;}
+
+				else if (((LA13_1>='\u0000' && LA13_1<=',')||LA13_1=='.'||(LA13_1>='0' && LA13_1<='\uFFFF'))) {s = 46;}
 
 				break;
 			}
 		case 13:
 			{
-				if ((LA12_1=='\"')) {s = 106;}
+				if ((LA13_1=='0')) {s = 42;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='!')||(LA12_1>='#' && LA12_1<='\uFFFF'))) {s = 45;}
+				else if ((LA13_1=='1')) {s = 43;}
+
+				else if ((LA13_1=='*')) {s = 44;}
+
+				else if (((LA13_1>='\u0000' && LA13_1<=')')||(LA13_1>='+' && LA13_1<='/')||(LA13_1>='2' && LA13_1<='\uFFFF'))) {s = 46;}
+
+				else s = 45;
 
 				break;
 			}
 		case 14:
 			{
-				if ((LA12_1=='\"')) {s = 65;}
+				if (((LA13_1>='\u0000' && LA13_1<='\uFFFF'))) {s = 39;}
 
-				else if (((LA12_1>='\u0000' && LA12_1<='!')||(LA12_1>='#' && LA12_1<='\uFFFF'))) {s = 45;}
+				else s = 38;
 
 				break;
 			}
@@ -3004,7 +3157,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		if (s >= 0)
 			return s;
 
-		NoViableAltException nvae = new NoViableAltException(dfa.Description, 12, _s, input);
+		NoViableAltException nvae = new NoViableAltException(dfa.Description, 13, _s, input);
 		dfa.Error(nvae);
 		throw nvae;
 	}

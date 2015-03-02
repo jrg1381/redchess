@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Antlr.Runtime;
 
 namespace Redchess.Pgn
@@ -43,7 +44,10 @@ namespace Redchess.Pgn
         public override void ReportError(RecognitionException e)
         {
             base.ReportError(e);
-            m_onErrorAction("Error in lexer at line " + e.Line + ":" + e.CharPositionInLine);
+            m_onErrorAction(String.Format("Error in lexer at line {0} : {1} : '{2}'",
+                e.Line,
+                e.CharPositionInLine,
+                (char) e.Character));
         }
     }
 }
