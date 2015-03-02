@@ -128,7 +128,12 @@ namespace Chess.Models
                 LastMove = m_board.LastMove();
             return success;
         }
-        public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
+
+        public void PromotePiece(string typeToPromoteTo)
+        {
+            m_board.PromotePiece(typeToPromoteTo);
+            LastMove = m_board.LastMove();
+        }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationDate
