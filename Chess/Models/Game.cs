@@ -18,7 +18,6 @@ namespace Chess.Models
         private bool m_canClaimDraw;
         private DateTime m_creationDate;
         private DateTime? m_completionDate;
-        private string m_lastMove;
 
         public Game()
         {
@@ -122,7 +121,13 @@ namespace Chess.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public bool MayClaimDraw { get { return m_canClaimDraw; } set { m_canClaimDraw = value; }}
 
-        public bool Move(Location start, Location end) { return m_board.Move(start, end); }
+        public bool Move(Location start, Location end)
+        {
+            var success = m_board.Move(start, end);
+            if (success)
+                LastMove = m_board.LastMove();
+            return success;
+        }
         public void PromotePiece(string typeToPromoteTo) { m_board.PromotePiece(typeToPromoteTo); }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -138,15 +143,7 @@ namespace Chess.Models
             set { m_completionDate = value; }
         }
 
-        public string LastMove
-        {
-            get
-            {
-                m_lastMove = m_board.LastMove();
-                return m_lastMove;
-            }
-            set { m_lastMove = value; }
-        }
+        public string LastMove { get; set; }
 
         public void EndGameWithMessage(string message)
         {
