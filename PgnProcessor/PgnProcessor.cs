@@ -188,7 +188,6 @@ namespace RedChess.PgnProcessor
                 }
             }
 
-            tokenText += checkOrMate;
             string debugMessage = String.Format("Line {0} Position {1} : {2}", token.Line, token.CharPositionInLine, tokenText);
 
             var moveMade = MakePieceMove(movingPiece, targetLocation, disambiguationToken, debugMessage);
@@ -196,7 +195,10 @@ namespace RedChess.PgnProcessor
             if (m_board.IsAwaitingPromotionDecision())
             {
                 m_board.PromotePiece(promotedPiece);
+                tokenText += "(=" + promotedPiece + ")";
             }
+
+            tokenText += checkOrMate;
 
             if (m_onMoveAction == null)
                 return;

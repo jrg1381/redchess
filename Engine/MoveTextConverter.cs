@@ -45,7 +45,7 @@ namespace Redchess.Engine
         private string Promotion(IPiece piece, Location newLocation, string promotedTo)
         {
             return String.Format("{0}(={1}){2}",
-                PawnMove(piece, newLocation),
+                PawnMove(piece, newLocation).TrimEnd('+', '#'),
                 promotedTo,
                 Annotation(piece, newLocation, promotedTo));
         }
@@ -57,9 +57,9 @@ namespace Redchess.Engine
             switch (dX)
             {
                 case 2:
-                    return "O-O";
+                    return "O-O" + Annotation(piece, newLocation);
                 case -2:
-                    return "O-O-O";
+                    return "O-O-O" + Annotation(piece, newLocation);
                 default:
                     return PieceMove(piece, newLocation);
             }
