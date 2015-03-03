@@ -61,7 +61,7 @@ namespace Redchess.Engine
                 case -2:
                     return "O-O-O";
                 default:
-                    return PieceMove(piece, newLocation) + Annotation(piece, newLocation);
+                    return PieceMove(piece, newLocation);
             }
         }
 
