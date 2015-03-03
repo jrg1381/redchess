@@ -31,8 +31,8 @@ namespace CombinedTests
 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 dxc6 5. d3 Bg4 6. O-O Bxf3 7. Qxf3 f6
 8. Nc3 Bb4 9. Bd2 Ne7 10. a3 Bxc3 11. Bxc3 O-O 12. Rad1 b5 13. d4 exd4 14. Bxd4
 Qe8 15. Bc5 Rd8 16. Qf4 Rd7 17. Rd3 Ng6 18. Qf5 Rff7 19. Rfd1 Rxd3 20. Rxd3
-Qe5 21. Rd8 Nf8 22. Qc8 Qxc5 23. h3 Qxc2 24. b4 Qxe4 25. f3 Qe3 26. Kh2 h6 27. Qxa6
-Qf4 28. Kg1 Re7 29. Rd1 Ng6 30. Qa8 Kh7 31. Qxc6 Qe3 32. Kh2 Qf4 33. Kh1 Re1 1-0";
+Qe5 21. Rd8+ Nf8 22. Qc8 Qxc5 23. h3 Qxc2 24. b4 Qxe4 25. f3 Qe3+ 26. Kh2 h6 27. Qxa6
+Qf4+ 28. Kg1 Re7 29. Rd1 Ng6 30. Qa8+ Kh7 31. Qxc6 Qe3+ 32. Kh2 Qf4+ 33. Kh1 Re1+ 1-0";
             #endregion
 
             var board = BoardFactory.CreateInstance();
