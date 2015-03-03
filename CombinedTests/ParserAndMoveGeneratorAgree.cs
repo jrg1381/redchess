@@ -47,8 +47,12 @@ namespace CombinedTests
                     return;
                 }
 
-                bool moveOk  = m_board.Move(x.Item1, x.Item2);
+                bool moveOk  = m_board.Move(x.Start, x.End);
                 Assert.IsTrue(moveOk, "Expected move to succeed " + m + " " + s + " " + m_board.ToFen());
+
+                if (m_board.IsAwaitingPromotionDecision())
+                    m_board.PromotePiece(x.Promotion);
+
                 Assert.AreEqual(m, m_board.LastMove(), "Expected parser and move generator to agree");
             }, s =>
             {

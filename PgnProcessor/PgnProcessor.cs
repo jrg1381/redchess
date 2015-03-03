@@ -16,7 +16,7 @@ namespace RedChess.PgnProcessor
         private int m_moveCount;
         private static readonly Dictionary<char, PieceType> s_lookup;
         private IBoard m_board;
-        private readonly Action<string, string, Tuple<Location,Location>> m_onMoveAction;
+        private readonly Action<string, string, ChessMove> m_onMoveAction;
         private readonly Action m_onGameOverAction;
 
         static PgnProcessor()
@@ -30,7 +30,7 @@ namespace RedChess.PgnProcessor
             s_lookup['P'] = PieceType.Pawn;
         }
 
-        internal PgnProcessor(Action<string, string, Tuple<Location,Location>> onMoveAction, Action onGameOverAction)
+        internal PgnProcessor(Action<string, string, ChessMove> onMoveAction, Action onGameOverAction)
         {
             m_onMoveAction = onMoveAction;
             m_onGameOverAction = onGameOverAction;
@@ -201,7 +201,7 @@ namespace RedChess.PgnProcessor
             if (m_onMoveAction == null)
                 return;
 
-            m_onMoveAction(m_board.ToFen(), tokenText, moveMade);
+            m_onMoveAction(m_board.ToFen(), tokenText, new ChessMove() { Start = moveMade.Item1, End = moveMade.Item2, Promotion = promotedPiece });
         }
     }
 }

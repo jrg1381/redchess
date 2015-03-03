@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChessMove.cs" />
     <Compile Include="Enumerations\Location.cs" />
     <Compile Include="Enumerations\PieceColor.cs" />
     <Compile Include="Enumerations\PieceType.cs" />
