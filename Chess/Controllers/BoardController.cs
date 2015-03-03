@@ -65,7 +65,7 @@ namespace Chess.Controllers
 					m_dbChessContext.Clocks.Add(clock);
 				}
 
-                m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1 });
+                m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1, Move = "" });
                 m_dbChessContext.SaveChanges();
 				return RedirectToAction("Details", "Board", new {id = dto.GameId});
             }
@@ -282,7 +282,7 @@ namespace Chess.Controllers
 			}
 
             int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).Max(x => x.MoveNumber) + 1;
-            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = board.GameId, MoveNumber = nextMoveNumber });
+            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = board.GameId, MoveNumber = nextMoveNumber, Move = board.LastMove });
 
 			if (clock != null)
 			{

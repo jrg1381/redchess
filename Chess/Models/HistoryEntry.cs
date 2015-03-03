@@ -13,8 +13,9 @@ namespace Chess.Models
         public int GameId { get; set; }
         public int MoveNumber { get; set; }
         public string Fen { get; set; }
+        public string Move { get; set; }
 
-        public int LastMove()
+        public int LastMoveNumber()
         {
             using(var db = new ChessContext())
             {
