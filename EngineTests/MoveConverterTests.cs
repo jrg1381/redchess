@@ -145,14 +145,5 @@ namespace Redchess.EngineTests
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.A1), Location.A3);
             Assert.AreEqual("R1a3", move, "Rook on A1 moves to a3");
         }
-
-        [Test]
-        public void AmbiguousMoveBoth()
-        {
-            m_emptyBoard.FromFen("1R6/R5R1/8/7k/8/7K/8/1R6 w - -");
-            var converter = new MoveTextConverter(m_emptyBoard);
-            string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.B1), Location.B7);
-            Assert.AreEqual("Rb1b7", move, "Rook on B1 moves to B7");
-        }
     }
 }

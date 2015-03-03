@@ -99,20 +99,27 @@ namespace Redchess.Engine
 
         private string Disambiguator(IPiece piece, Location newLocation)
         {
-            string disambiguator = String.Empty;
+            var disambiguator = String.Empty;
 
-            var anyAmbiguity = MoveIsAmbiguous(piece, newLocation);
-            var sameRow = PiecesOnSameRow(piece, newLocation);
-            var sameColumn = PiecesOnSameColumn(piece, newLocation);
+            if (MoveIsAmbiguous(piece, newLocation))
+            {
+                if (MoveIsAmbiguousWithColumn(piece, newLocation))
+                {
+                    if (MoveIsAmbiguousWithRow(piece, newLocation))
+                    {
+                        disambiguator = LocationToLower(piece.Position.Location);
+                    }
+                    else
+                    {
+                        disambiguator = (piece.Position.Y + 1).ToString();
+                    }
+                }
+                else
+                {
+                    disambiguator = PieceColumn(piece);
+                }
+            }
 
-            if (sameRow && sameColumn)
-                disambiguator = LocationToLower(piece.Position.Location);
-            else if (sameRow)
-                disambiguator = PieceColumn(piece);
-            else if (sameColumn)
-                disambiguator = (piece.Position.Y + 1).ToString();
-            else if (anyAmbiguity)
-                disambiguator = PieceColumn(piece); // bishops and pawns
             return disambiguator;
         }
 
@@ -122,31 +129,16 @@ namespace Redchess.Engine
                 Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
         }
 
-        private bool PiecesOnSameColumn(IPiece piece, Location newLocation)
+        private bool MoveIsAmbiguousWithColumn(IPiece piece, Location newLocation)
         {
-            return AreThereAlignedPieces(piece, 
-                newLocation, 
-                (otherPiece, target) => otherPiece.X == target.X && otherPiece.Y != target.Y);
+            return m_board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).X == piece.Position.X).
+                Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
         }
 
-        private bool PiecesOnSameRow(IPiece piece, Location newLocation)
+        private bool MoveIsAmbiguousWithRow(IPiece piece, Location newLocation)
         {
-            return AreThereAlignedPieces(piece,
-                newLocation,
-                (otherPiece, target) => otherPiece.Y == target.Y && otherPiece.X != target.X);
-        }
-
-        private bool AreThereAlignedPieces(IPiece piece, Location newLocation, Func<Square, Square, bool> f)
-        {
-            var target = new Square(newLocation);
-
-            return m_board.FindPieces(piece.Type).Where(p =>
-            {
-                var otherPiece = new Square(p);
-                if (p == piece.Position.Location)
-                    return false;
-                return f(otherPiece, target);
-            }).Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
+            return m_board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).Y == piece.Position.Y).
+                Any(p => m_board.GetContents(p).ValidMoves(m_board).Contains(newLocation));
         }
 
         private string LocationToLower(Location location)
