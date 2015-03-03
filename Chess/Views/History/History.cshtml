@@ -30,6 +30,12 @@
             }
 
             ConfigureActionButtons();
+
+            @{
+                var allMoves = String.Join(" ", @Model.Select(m => m.Move));
+            }
+            
+            $('#moves').append("<tr><td>" + '@allMoves' +  "</td></tr>");
         });
     </script>
 
@@ -54,14 +60,22 @@
 
 <div class="left">
     <p class="title">@description</p>
-    <div style="width:500px" id="board"></div>
 
-    <div class="navigation">
-        <div class="wrapper"><span class="button" id="goStart"></span></div>
-        <div class="wrapper"><span class="button" id="goBack"></span></div>
-        <div class="wrapper"><span class="button" id="goFlip"></span></div> 
-        <div class="wrapper"><span class="button" id="goEnd"></span></div>
-        <div class="wrapper"><span class="button" id="goForward"></span></div>
+    <div class="left">
+        <p class="title">&nbsp;</p>
+        <div id="scrollbox"><table id="moves"></table></div>
+    </div>
+
+    <div class="left">
+        <p class="title" id="title"></p>
+        <div style="width:500px" id="board"></div>
+        <div class="navigation">
+            <div class="wrapper"><span class="button" id="goStart"></span></div>
+            <div class="wrapper"><span class="button" id="goBack"></span></div>
+            <div class="wrapper"><span class="button" id="goFlip"></span></div>
+            <div class="wrapper"><span class="button" id="goEnd"></span></div>
+            <div class="wrapper"><span class="button" id="goForward"></span></div>
+        </div>
     </div>
     <br />
     <br />
