@@ -16,7 +16,7 @@ namespace RedChess.PgnProcessor
         private int m_moveCount;
         private static readonly Dictionary<char, PieceType> s_lookup;
         private IBoard m_board;
-        private readonly Action<string, string> m_onMoveAction;
+        private readonly Action<string, string, Tuple<Location,Location>> m_onMoveAction;
 
         static PgnProcessor()
         {
@@ -29,7 +29,7 @@ namespace RedChess.PgnProcessor
             s_lookup['P'] = PieceType.Pawn;
         }
 
-        internal PgnProcessor(Action<string, string> onMoveAction)
+        internal PgnProcessor(Action<string, string, Tuple<Location,Location>> onMoveAction)
         {
             m_onMoveAction = onMoveAction;
             m_board = BoardFactory.CreateInstance();
@@ -38,7 +38,7 @@ namespace RedChess.PgnProcessor
             if (m_onMoveAction == null)
                 return;
 
-            m_onMoveAction(m_board.ToFen(), String.Empty);
+            m_onMoveAction(m_board.ToFen(), String.Empty, null);
         }
 
         public void DoFen(string fen)
@@ -64,7 +64,7 @@ namespace RedChess.PgnProcessor
                 answer = PieceType.Pawn;
         }
 
-        private void MakePieceMove(PieceType pieceType, Location targetLocation, string disambiguation, string debug)
+        private Tuple<Location,Location> MakePieceMove(PieceType pieceType, Location targetLocation, string disambiguation, string debug)
         {
             m_moveCount++;
 
@@ -94,7 +94,7 @@ namespace RedChess.PgnProcessor
                 }
 
                 if (m_board.Move(location, targetLocation))
-                    return;
+                    return new Tuple<Location,Location>(location, targetLocation);
             }
 
             throw new InvalidDataException(debug);
@@ -187,7 +187,7 @@ namespace RedChess.PgnProcessor
             tokenText += checkOrMate;
             string debugMessage = String.Format("Line {0} Position {1} : {2}", token.Line, token.CharPositionInLine, tokenText);
 
-            MakePieceMove(movingPiece, targetLocation, disambiguationToken, debugMessage);
+            var moveMade = MakePieceMove(movingPiece, targetLocation, disambiguationToken, debugMessage);
 
             if (m_board.IsAwaitingPromotionDecision())
             {
@@ -197,7 +197,7 @@ namespace RedChess.PgnProcessor
             if (m_onMoveAction == null)
                 return;
 
-            m_onMoveAction(m_board.ToFen(), tokenText);
+            m_onMoveAction(m_board.ToFen(), tokenText, moveMade);
         }
     }
 }

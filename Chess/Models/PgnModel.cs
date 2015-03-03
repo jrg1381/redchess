@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using RedChess.ChessCommon.Enumerations;
 
 namespace Chess.Models
 {
@@ -24,7 +25,7 @@ namespace Chess.Models
             Tags = new Dictionary<string, string>();
         }
 
-        internal void RecordMove(string fen, string moveText)
+        internal void RecordMove(string fen, string moveText, Tuple<Location,Location> moveMade)
         {
             var fenWithMove = new FenWithMove {Fen = fen, Move = moveText};
             FenPositions.Add(fenWithMove);

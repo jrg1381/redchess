@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Antlr.Runtime;
 using RedChess.ChessCommon.Interfaces;
 using Redchess.Pgn;
+using RedChess.ChessCommon.Enumerations;
 
 namespace RedChess.PgnProcessor
 {
@@ -10,7 +11,7 @@ namespace RedChess.PgnProcessor
     {
         private Dictionary<string, string> m_tags;
 
-        public void Parse(string text, Action<string, string> onMoveAction, Action<string> onErrorAction, bool playGame = true)
+        public void Parse(string text, Action<string, string, Tuple<Location, Location>> onMoveAction, Action<string> onErrorAction, bool playGame = true)
         {
             m_tags = new Dictionary<string, string>();
             var processor = new PgnProcessor(onMoveAction);

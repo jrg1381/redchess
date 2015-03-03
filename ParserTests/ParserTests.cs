@@ -157,7 +157,7 @@ Nf2 42. g4 Bd3 43. Re6")]
         public void RealTestData(string filename)
         {
             string inputData = File.ReadAllText(filename);
-            ParserFactory.GetParser().Parse(inputData, (s,m) => { }, s =>
+            ParserFactory.GetParser().Parse(inputData, (s,m,x) => { }, s =>
             {
                 Console.WriteLine(s);
                 Assert.Fail("Error in parsing");
@@ -187,7 +187,7 @@ Rb6 46. Rc8 a5 47. c4+ bxc3+ 48. Kxc3 1/2-1/2";
 
             string finalFen = "";
 
-            ParserFactory.GetParser().Parse(text, (s,m) => { finalFen = s; }, s =>
+            ParserFactory.GetParser().Parse(text, (s,m,x) => { finalFen = s; }, s =>
             {
                 Console.WriteLine(s);
                 Assert.Fail("Error in parsing");
@@ -219,7 +219,7 @@ Qf4 28. Kg1 Re7 29. Rd1 Ng6 30. Qa8 Kh7 31. Qxc6 Qe3 32. Kh2 Qf4 33. Kh1 Re1 1-0
 
             string finalFen = "";
 
-            ParserFactory.GetParser().Parse(text, (s,m) => { finalFen = s; }, s =>
+            ParserFactory.GetParser().Parse(text, (s,m,x) => { finalFen = s; }, s =>
             {
                 Console.WriteLine(s);
                 Assert.Fail("Error in parsing");

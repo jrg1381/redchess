@@ -1,0 +1,53 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using RedChess.ParserFactory;
+using RedChess.EngineFactory;
+
+namespace CombinedTests
+{
+    [TestFixture]
+    public class ParserAndMoveGeneratorAgree
+    {
+        [Test]
+        public void RuyLopez()
+        {
+            #region game
+            const string text = @"[Event ""20:42""]
+[Site ""Shredder for iPad""]
+[Date ""2013.06.29""]
+[Round ""?""]
+[White ""James""]
+[Black ""James""]
+[WhiteElo ""1245""]
+[BlackElo ""1245""]
+[ECO ""C68""]
+[Opening ""Ruy Lopez/Exchange Variation""]
+[Result ""*""]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 dxc6 5. d3 Bg4 6. O-O Bxf3 7. Qxf3 f6
+8. Nc3 Bb4 9. Bd2 Ne7 10. a3 Bxc3 11. Bxc3 O-O 12. Rad1 b5 13. d4 exd4 14. Bxd4
+Qe8 15. Bc5 Rd8 16. Qf4 Rd7 17. Rd3 Ng6 18. Qf5 Rff7 19. Rfd1 Rxd3 20. Rxd3
+Qe5 21. Rd8 Nf8 22. Qc8 Qxc5 23. h3 Qxc2 24. b4 Qxe4 25. f3 Qe3 26. Kh2 h6 27. Qxa6
+Qf4 28. Kg1 Re7 29. Rd1 Ng6 30. Qa8 Kh7 31. Qxc6 Qe3 32. Kh2 Qf4 33. Kh1 Re1 1-0";
+            #endregion
+
+            var board = BoardFactory.CreateInstance();
+
+            ParserFactory.GetParser().Parse(text, (s, m, x) =>
+            {
+                if (x == null)
+                    return;
+                board.Move(x.Item1, x.Item2);
+                Assert.AreEqual(m, board.LastMove(), "Expected parser and move generator to agree");
+            }, s =>
+            {
+                Console.WriteLine(s);
+                Assert.Fail("Error in parsing");
+            });
+        }
+    }
+}
