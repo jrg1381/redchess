@@ -17,6 +17,7 @@ namespace RedChess.PgnProcessor
         private static readonly Dictionary<char, PieceType> s_lookup;
         private IBoard m_board;
         private readonly Action<string, string, Tuple<Location,Location>> m_onMoveAction;
+        private readonly Action m_onGameOverAction;
 
         static PgnProcessor()
         {
@@ -29,9 +30,10 @@ namespace RedChess.PgnProcessor
             s_lookup['P'] = PieceType.Pawn;
         }
 
-        internal PgnProcessor(Action<string, string, Tuple<Location,Location>> onMoveAction)
+        internal PgnProcessor(Action<string, string, Tuple<Location,Location>> onMoveAction, Action onGameOverAction)
         {
             m_onMoveAction = onMoveAction;
+            m_onGameOverAction = onGameOverAction;
             m_board = BoardFactory.CreateInstance();
             m_start = DateTime.UtcNow;
             m_moveCount = 0;
@@ -55,6 +57,8 @@ namespace RedChess.PgnProcessor
         public void ResetGame()
         {
             m_board = BoardFactory.CreateInstance();
+            if(m_onGameOverAction != null)
+                m_onGameOverAction();
         }
 
         private static void SymbolToBasicPieceType(char symbol, out PieceType answer)

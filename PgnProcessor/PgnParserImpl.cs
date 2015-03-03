@@ -11,10 +11,10 @@ namespace RedChess.PgnProcessor
     {
         private Dictionary<string, string> m_tags;
 
-        public void Parse(string text, Action<string, string, Tuple<Location, Location>> onMoveAction, Action<string> onErrorAction, bool playGame = true)
+        public void Parse(string text, Action<string, string, Tuple<Location, Location>> onMoveAction, Action<string> onErrorAction, Action onGameOverAction, bool playGame = true)
         {
             m_tags = new Dictionary<string, string>();
-            var processor = new PgnProcessor(onMoveAction);
+            var processor = new PgnProcessor(onMoveAction, onGameOverAction);
             var lexer = new PgnLexer(new ANTLRStringStream(text), onErrorAction);
             var tokenStream = new CommonTokenStream(lexer);
             var parser = new PgnParser(tokenStream, processor, onErrorAction) {PlayGame = playGame};

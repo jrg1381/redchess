@@ -1,4 +1,4 @@
-SET JAVA="c:\Program Files (x86)\Java\jre7\bin\java.exe"
+SET JAVA="C:\Program Files (x86)\Java\jre1.8.0_31\bin\java.exe"
 SET PROJECT=%~1
 SET SOLUTION=%~2
 

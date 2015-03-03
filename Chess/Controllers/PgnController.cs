@@ -25,7 +25,7 @@ namespace Chess.Controllers
             try
             {
                 var parser = ParserFactory.GetParser();
-                parser.Parse(pgnText, model.RecordMove, s => model.ErrorText.Add(s), playGame: true);
+                parser.Parse(pgnText, model.RecordMove, s => model.ErrorText.Add(s), null, playGame: true);
 
                 model.Tags.Clear();
                 foreach (var kvp in parser.Tags)

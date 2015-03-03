@@ -13,7 +13,7 @@ namespace ParserPerfTest
             string filename = args[0];
             string inputData = File.ReadAllText(filename);
             Console.WriteLine("Parsing games in {0}", filename);
-            ParserFactory.GetParser().Parse(inputData, null, null, playGame:true);
+            ParserFactory.GetParser().Parse(inputData, null, null, null, playGame:true);
             Console.ReadLine();
         }
     }

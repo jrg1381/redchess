@@ -18,7 +18,7 @@ namespace Redchess.ParserTests
         private IParse ParseText(string text)
         {
             var parser = ParserFactory.GetParser();
-            parser.Parse(text, null, Assert.Fail, playGame:false);
+            parser.Parse(text, null, Assert.Fail, null, playGame:false);
             return parser;
         }
 
@@ -161,7 +161,7 @@ Nf2 42. g4 Bd3 43. Re6")]
             {
                 Console.WriteLine(s);
                 Assert.Fail("Error in parsing");
-            });
+            }, null);
         }
 
         [Test]
@@ -191,7 +191,7 @@ Rb6 46. Rc8 a5 47. c4+ bxc3+ 48. Kxc3 1/2-1/2";
             {
                 Console.WriteLine(s);
                 Assert.Fail("Error in parsing");
-            });
+            }, null);
 
             Assert.AreEqual("2R5/8/1r6/pkp5/8/1PK5/8/8 b - - 0", finalFen, "Expected FEN after playing through game was wrong");
         }
@@ -223,7 +223,7 @@ Qf4 28. Kg1 Re7 29. Rd1 Ng6 30. Qa8 Kh7 31. Qxc6 Qe3 32. Kh2 Qf4 33. Kh1 Re1 1-0
             {
                 Console.WriteLine(s);
                 Assert.Fail("Error in parsing");
-            });
+            }, null);
 
             Assert.AreEqual("8/2p3pk/2Q2pnp/1p6/1P3q2/P4P1P/6P1/3Rr2K w - - 5", finalFen, "Expected FEN after playing through game was wrong");
 
