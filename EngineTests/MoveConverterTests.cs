@@ -113,7 +113,7 @@ namespace Redchess.EngineTests
         [Test]
         public void CastleKingSide()
         {
-            m_emptyBoard.FromFen("8/8/8/8/8/8/8/4K2R w KQkq -");
+            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq -");
             var converter = new MoveTextConverter(m_emptyBoard);
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E1), Location.G1);
             Assert.AreEqual("O-O", move, "White king castles kingside");
@@ -122,10 +122,10 @@ namespace Redchess.EngineTests
         [Test]
         public void CastleQueenSide()
         {
-            m_emptyBoard.FromFen("8/8/8/8/8/8/8/R3K2R w KQkq -");
+            m_emptyBoard.FromFen("3k4/8/8/8/8/8/8/R3K2R w KQ -");
             var converter = new MoveTextConverter(m_emptyBoard);
             string move = converter.MoveAsText(m_emptyBoard.GetContents(Location.E1), Location.C1);
-            Assert.AreEqual("O-O-O", move, "White king castles queenside");
+            Assert.AreEqual("O-O-O+", move, "White king castles queenside");
         }
 
         [Test]

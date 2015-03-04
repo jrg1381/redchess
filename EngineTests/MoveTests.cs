@@ -175,9 +175,9 @@ namespace Redchess.EngineTests
 		[Test]
 		public void TakenPiecesAreRemovedFromTheBoard()
 		{
-            m_emptyBoard.FromFen("3N4/3k4/8/8/8/8/8/8 b KQ -");
+            m_emptyBoard.FromFen("3N4/3k4/8/8/8/8/8/7K b KQ -");
             m_emptyBoard.Move(Location.D7, Location.D8);
-            FenAssert.AreEqual("3k4/8/8/8/8/8/8/8 w KQ - 0", m_emptyBoard.ToFen(), "Expected knight to be taken");
+            FenAssert.AreEqual("3k4/8/8/8/8/8/8/7K w KQ - 0", m_emptyBoard.ToFen(), "Expected knight to be taken");
 		}
 
         [TestCase("7k/8/8/8/8/8/8/8 b - -", Location.H8, Location.B2)]
