@@ -19,6 +19,7 @@ namespace Redchess.Engine
 
         private readonly CastlingRules m_castlingRules;
         private readonly Fen m_fen;
+        private readonly MoveTranscriber m_transcriber;
         protected SimpleBoard SimpleBoard;
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
@@ -26,7 +27,7 @@ namespace Redchess.Engine
         private IPiece m_lastMovedPiece;
         private Location m_lastMovedTarget;
         private string m_lastPromotion;
-        private IObserver<IBoardExtended> m_observer;
+        private List<IObserver<IBoardExtended>> m_observers;
         private Board m_previousBoard;
 
         public Board()
@@ -40,10 +41,12 @@ namespace Redchess.Engine
             CurrentTurn = whoseTurn;
             m_castlingRules = new CastlingRules();
             m_enPassantTarget = Location.InvalidSquare;
+            m_observers = new List<IObserver<IBoardExtended>>();
             if (createNewSimpleBoard)
             {
                 SimpleBoard = new SimpleBoard(isEmpty);
                 m_fen = new Fen(this, m_castlingRules);
+                m_transcriber = new MoveTranscriber(this, m_castlingRules);
             }
         }
 
@@ -133,8 +136,11 @@ namespace Redchess.Engine
 
             MovePiece(piece, end);
 
-            if(m_observer != null)
-                m_observer.OnCompleted();
+            if (m_observers != null)
+            {
+                foreach (var o in m_observers)
+                    o.OnCompleted();
+            }
 
             return true;
         }
@@ -453,7 +459,7 @@ namespace Redchess.Engine
 
         public IDisposable Subscribe(IObserver<IBoardExtended> observer)
         {
-            m_observer = observer;
+            m_observers.Add(observer);
             return new Unsubscriber(this);
         }
 
@@ -468,7 +474,7 @@ namespace Redchess.Engine
 
             public void Dispose()
             {
-                m_board.m_observer = null;
+                m_board.m_observers = null;
             }
         }
 
