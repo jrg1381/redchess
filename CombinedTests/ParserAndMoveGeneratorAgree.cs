@@ -64,8 +64,6 @@ namespace CombinedTests
                     m_board = BoardFactory.CreateInstance();
                 },
             true);
-
-            parser.Tags.Clear();
         }
     }
 }
