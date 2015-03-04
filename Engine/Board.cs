@@ -24,16 +24,14 @@ namespace Redchess.Engine
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
         private int m_fiftyMoveRuleCounter;
-        private IPiece m_lastMovedPiece;
-        private Location m_lastMovedTarget;
-        private string m_lastPromotion;
         private List<IObserver<IBoardExtended>> m_observers;
-        private Board m_previousBoard;
 
         public Board()
             : this(PieceColor.White, false, true)
         {
         }
+
+        public BoardWithNextMove PreviousState { get; private set; }
 
         protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
         {
@@ -46,20 +44,13 @@ namespace Redchess.Engine
             {
                 SimpleBoard = new SimpleBoard(isEmpty);
                 m_fen = new Fen(this, m_castlingRules);
-                m_transcriber = new MoveTranscriber(this, m_castlingRules);
+                m_transcriber = new MoveTranscriber(this);
             }
         }
 
         public string LastMove()
         {
-            if (m_lastMovedPiece == null)
-                return String.Empty;
-
-            var converter = new MoveTextConverter(m_previousBoard);
-            var square = new Square(m_lastMovedTarget);
-            var isPromotion = (square.Y == 0 || square.Y == 7) && m_lastMovedPiece.Type.IsOfType(PieceType.Pawn);
-
-            return converter.MoveAsText(m_lastMovedPiece, m_lastMovedTarget, isPromotion ? m_lastPromotion : null);
+            return m_transcriber.LastMove();
         }
 
         public PieceColor CurrentTurn { get; private set; }
@@ -129,10 +120,15 @@ namespace Redchess.Engine
             if (!ValidateMoveForCheck(piece, end))
                 return false;
 
-            m_previousBoard = new Board();
-            m_previousBoard.FromFen(ToFen());
-            m_lastMovedPiece = piece;
-            m_lastMovedTarget = end;
+            var tmpBoard = new Board(PieceColor.White, isEmpty: true);
+            tmpBoard.FromFen(ToFen());
+
+            PreviousState = new BoardWithNextMove()
+            {
+                Board = tmpBoard,
+                MovedPiece = piece,
+                Target = end
+            };
 
             MovePiece(piece, end);
 
@@ -199,7 +195,7 @@ namespace Redchess.Engine
 
         public void PromotePiece(string promotionTarget)
         {
-            m_lastPromotion = promotionTarget;
+            PreviousState.Promotion = promotionTarget;
 
             // Crappy, but we want to allow K (for Knight, when the UI asks for it) but not King.
             // We also want to work on the intial letters only, for when the parser reads a PGN file.

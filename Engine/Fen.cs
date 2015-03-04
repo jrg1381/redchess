@@ -5,46 +5,6 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class MoveTranscriber : IObserver<IBoardExtended>, IDisposable
-    {
-        private readonly IBoardExtended m_board;
-        private readonly CastlingRules m_castlingRules;
-        private string m_fen;
-        private readonly IDisposable m_unsubscriber;
-
-        internal MoveTranscriber(IBoardExtended board, CastlingRules castlingRules)
-        {
-            m_board = board;
-            m_castlingRules = castlingRules;
-            m_unsubscriber = m_board.Subscribe(this);
-        }
-
-        private void UpdateMove()
-        {
-            
-        }
-
-        public void OnCompleted()
-        {
-            UpdateMove();
-        }
-
-        public void OnError(Exception error)
-        {
-            return;
-        }
-
-        public void OnNext(IBoardExtended value)
-        {
-            return;
-        }
-
-        public void Dispose()
-        {
-            m_unsubscriber.Dispose();
-        }
-    }
-
     internal sealed class Fen : IObserver<IBoardExtended>, IDisposable
     {
         private readonly IBoardExtended m_board;

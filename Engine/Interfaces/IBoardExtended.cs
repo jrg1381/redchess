@@ -13,5 +13,6 @@ namespace Redchess.Engine.Interfaces
         IBoardBitmap Pieces(PieceColor color);
         Location EnPassantTarget { get; }
         int FiftyMoveCounter { get; }
+        BoardWithNextMove PreviousState { get; }
     }
 }

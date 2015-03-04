@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="BoardBitmap.cs" />
+    <Compile Include="BoardWithNextMove.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
     <Compile Include="CastlingRules.cs" />
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Interfaces\IBoardExtended.cs" />
     <Compile Include="Interfaces\IPiece.cs" />
     <Compile Include="MoveTextConverter.cs" />
+    <Compile Include="MoveTranscriber.cs" />
     <Compile Include="PieceData.cs" />
     <Compile Include="Pieces\Abstract\Bishop.cs" />
     <Compile Include="Pieces\Abstract\ExtensionMethods.cs" />
