@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.ParserFactory;
 using RedChess.EngineFactory;
@@ -53,7 +54,10 @@ namespace CombinedTests
                 if (m_board.IsAwaitingPromotionDecision())
                     m_board.PromotePiece(x.Promotion);
 
-                Assert.AreEqual(m, m_board.LastMove(), "Expected parser and move generator to agree");
+                var lastMove = m_board.LastMove();
+                var areEqual = MovesIdenticalWithoutDisambiguator(m, lastMove, x);
+
+                Assert.IsTrue(areEqual, String.Format("Expected parser and move generator to agree: {0} {1}", m, lastMove));
             }, s =>
             {
                 Console.WriteLine(s);
@@ -64,6 +68,17 @@ namespace CombinedTests
                     m_board = BoardFactory.CreateInstance();
                 },
             true);
+        }
+
+        private static bool MovesIdenticalWithoutDisambiguator(string move, string lastMove, ChessMove cm)
+        {
+            /* My test data disambiguates when it doesn't have to, for example when of the two pieces, one
+             * is pinned and cannot move. The move generator follows the spec more closely, and only 
+             * disambiguates when it has to */
+
+            return (move == lastMove) || 
+                (move[0] + move.Substring(2) == lastMove && 
+                (move[1] == cm.Start.ToString().ToLower()[0] || move[1] == cm.Start.ToString().ToLower()[1]));
         }
     }
 }
