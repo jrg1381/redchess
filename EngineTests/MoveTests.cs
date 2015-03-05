@@ -266,6 +266,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void BogusPromotionWhenNoPromotablePawn()
 		{
+		    m_normalBoard.Move(Location.E2, Location.E4);
 			Assert.Throws(typeof(CannotPromoteException), () => m_normalBoard.PromotePiece("Rook"));
 		}
 
