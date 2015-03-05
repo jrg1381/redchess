@@ -19,6 +19,12 @@ namespace Redchess.Engine
 
         internal string MoveAsText()
         {
+            return MoveAsTextAsync().Result;
+        }
+
+        private async Task<string> MoveAsTextAsync()
+        {
+            string annotation = await Task.Run(() => Annotation());
             string answer;
 
             if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
@@ -34,7 +40,7 @@ namespace Redchess.Engine
                 answer = PieceMove();
             }
 
-            return answer + Annotation();
+            return answer + annotation;
         }
 
         private string Promotion()
