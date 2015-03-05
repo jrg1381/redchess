@@ -31,7 +31,6 @@ namespace Redchess.Engine
         private async Task<string> MoveAsTextAsync()
         {
             var annotationTask = Task.Run(() => Annotation());
-
             string answer;
 
             if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
