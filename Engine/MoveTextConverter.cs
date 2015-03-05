@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
@@ -18,29 +19,29 @@ namespace Redchess.Engine
 
         internal string MoveAsText()
         {
+            string answer;
+
             if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
             {
-                if (m_moveToPlay.Promotion != null)
-                    return Promotion();
-
-                return PawnMove();
+                answer = m_moveToPlay.Promotion != null ? Promotion() : PawnMove();
             }
             else if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.King))
             {
-                return KingMove();
+                answer = KingMove();
             }
             else
             {
-                return PieceMove();
+                answer = PieceMove();
             }
+
+            return answer + Annotation();
         }
 
         private string Promotion()
         {
-            return String.Format("{0}(={1}){2}",
+            return String.Format("{0}(={1})",
                 PawnMove().TrimEnd('+', '#'),
-                m_moveToPlay.Promotion,
-                Annotation());
+                m_moveToPlay.Promotion);
         }
 
         private string KingMove()
@@ -50,9 +51,9 @@ namespace Redchess.Engine
             switch (dX)
             {
                 case 2:
-                    return "O-O" + Annotation();
+                    return "O-O";
                 case -2:
-                    return "O-O-O" + Annotation();
+                    return "O-O-O";
                 default:
                     return PieceMove();
             }
@@ -65,12 +66,11 @@ namespace Redchess.Engine
 
             if (m_moveToPlay.Board.GetContents(newLocation) != null || m_moveToPlay.Board.EnPassantTarget == newLocation)
             {
-                return String.Format("{0}x{1}{2}", PieceColumn(piece), 
-                    LocationToLower(newLocation),
-                    Annotation());
+                return String.Format("{0}x{1}", PieceColumn(piece), 
+                    LocationToLower(newLocation));
             }
 
-            return LocationToLower(newLocation) + Annotation();
+            return LocationToLower(newLocation);
         }
 
         private string PieceMove()
@@ -81,18 +81,16 @@ namespace Redchess.Engine
 
             if (m_moveToPlay.Board.GetContents(newLocation) != null)
             {
-                return String.Format("{0}{1}x{2}{3}", 
+                return String.Format("{0}{1}x{2}", 
                     PieceSymbol(piece), 
                     disambiguator,
-                    LocationToLower(newLocation),
-                    Annotation());
+                    LocationToLower(newLocation));
             }
 
-            return String.Format("{0}{1}{2}{3}",
+            return String.Format("{0}{1}{2}",
                 PieceSymbol(piece), 
                 disambiguator,
-                LocationToLower(newLocation),
-                Annotation());
+                LocationToLower(newLocation));
         }
 
         private string Disambiguator()
