@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
@@ -14,101 +9,102 @@ namespace Redchess.Engine
 {
     internal class MoveTextConverter
     {
-        public MoveTextConverter(IBoardExtended x)
+        private readonly BoardWithNextMove m_moveToPlay;
+
+        internal MoveTextConverter(BoardWithNextMove previousState)
         {
+            m_moveToPlay = previousState;
         }
 
-        public string MoveAsText(BoardWithNextMove previousState)
+        internal string MoveAsText()
         {
-            if (previousState.MovedPiece.Type.IsOfType(PieceType.Pawn))
+            if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
             {
-                if (previousState.Promotion != null)
-                    return Promotion(previousState);
+                if (m_moveToPlay.Promotion != null)
+                    return Promotion();
 
-                return PawnMove(previousState);
+                return PawnMove();
             }
-            else if (previousState.MovedPiece.Type.IsOfType(PieceType.King))
+            else if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.King))
             {
-                return KingMove(previousState);
+                return KingMove();
             }
             else
             {
-                return PieceMove(previousState);
+                return PieceMove();
             }
-
-            return "";
         }
 
-        private string Promotion(BoardWithNextMove previousState)
+        private string Promotion()
         {
             return String.Format("{0}(={1}){2}",
-                PawnMove(previousState).TrimEnd('+', '#'),
-                previousState.Promotion,
-                Annotation(previousState));
+                PawnMove().TrimEnd('+', '#'),
+                m_moveToPlay.Promotion,
+                Annotation());
         }
 
-        private string KingMove(BoardWithNextMove previousState)
+        private string KingMove()
         {
-            int dX = new Square(previousState.Target).X - previousState.MovedPiece.Position.X;
+            int dX = new Square(m_moveToPlay.Target).X - m_moveToPlay.MovedPiece.Position.X;
 
             switch (dX)
             {
                 case 2:
-                    return "O-O" + Annotation(previousState);
+                    return "O-O" + Annotation();
                 case -2:
-                    return "O-O-O" + Annotation(previousState);
+                    return "O-O-O" + Annotation();
                 default:
-                    return PieceMove(previousState);
+                    return PieceMove();
             }
         }
 
-        private string PawnMove(BoardWithNextMove previousState)
+        private string PawnMove()
         {
-            var piece = previousState.MovedPiece;
-            var newLocation = previousState.Target;
+            var piece = m_moveToPlay.MovedPiece;
+            var newLocation = m_moveToPlay.Target;
 
-            if (previousState.Board.GetContents(newLocation) != null || previousState.Board.EnPassantTarget == newLocation)
+            if (m_moveToPlay.Board.GetContents(newLocation) != null || m_moveToPlay.Board.EnPassantTarget == newLocation)
             {
                 return String.Format("{0}x{1}{2}", PieceColumn(piece), 
                     LocationToLower(newLocation),
-                    Annotation(previousState));
+                    Annotation());
             }
 
-            return LocationToLower(newLocation) + Annotation(previousState);
+            return LocationToLower(newLocation) + Annotation();
         }
 
-        private string PieceMove(BoardWithNextMove previousState)
+        private string PieceMove()
         {
-            var piece = previousState.MovedPiece;
-            var newLocation = previousState.Target;
-            var disambiguator = Disambiguator(previousState);
+            var piece = m_moveToPlay.MovedPiece;
+            var newLocation = m_moveToPlay.Target;
+            var disambiguator = Disambiguator();
 
-            if (previousState.Board.GetContents(newLocation) != null)
+            if (m_moveToPlay.Board.GetContents(newLocation) != null)
             {
                 return String.Format("{0}{1}x{2}{3}", 
                     PieceSymbol(piece), 
                     disambiguator,
                     LocationToLower(newLocation),
-                    Annotation(previousState));
+                    Annotation());
             }
 
             return String.Format("{0}{1}{2}{3}",
                 PieceSymbol(piece), 
                 disambiguator,
                 LocationToLower(newLocation),
-                Annotation(previousState));
+                Annotation());
         }
 
-        private string Disambiguator(BoardWithNextMove previousState)
+        private string Disambiguator()
         {
             var disambiguator = String.Empty;
-            var piece = previousState.MovedPiece;
+            var piece = m_moveToPlay.MovedPiece;
 
-            if (MoveIsAmbiguous(previousState))
+            if (MoveIsAmbiguous())
             {
-                if (MoveIsAmbiguousWithColumn(previousState))
+                if (MoveIsAmbiguousWithColumn())
                 {
-                    if (MoveIsAmbiguousWithRow(previousState))
+                    if (MoveIsAmbiguousWithRow())
                     {
                         disambiguator = LocationToLower(piece.Position.Location);
                     }
@@ -126,31 +122,31 @@ namespace Redchess.Engine
             return disambiguator;
         }
 
-        private bool MoveIsAmbiguous(BoardWithNextMove previousState)
+        private bool MoveIsAmbiguous()
         {
-            var piece = previousState.MovedPiece;
-            var newLocation = previousState.Target;
+            var piece = m_moveToPlay.MovedPiece;
+            var newLocation = m_moveToPlay.Target;
 
-            return previousState.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
-                Any(p => previousState.Board.GetContents(p).ValidMoves(previousState.Board).Contains(newLocation));
+            return m_moveToPlay.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
+                Any(p => m_moveToPlay.Board.GetContents(p).ValidMoves(m_moveToPlay.Board).Contains(newLocation));
         }
 
-        private bool MoveIsAmbiguousWithColumn(BoardWithNextMove previousState)
+        private bool MoveIsAmbiguousWithColumn()
         {
-            var piece = previousState.MovedPiece;
-            var newLocation = previousState.Target;
+            var piece = m_moveToPlay.MovedPiece;
+            var newLocation = m_moveToPlay.Target;
 
-            return previousState.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).X == piece.Position.X).
-                Any(p => previousState.Board.GetContents(p).ValidMoves(previousState.Board).Contains(newLocation));
+            return m_moveToPlay.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).X == piece.Position.X).
+                Any(p => m_moveToPlay.Board.GetContents(p).ValidMoves(m_moveToPlay.Board).Contains(newLocation));
         }
 
-        private bool MoveIsAmbiguousWithRow(BoardWithNextMove previousState)
+        private bool MoveIsAmbiguousWithRow()
         {
-            var piece = previousState.MovedPiece;
-            var newLocation = previousState.Target;
+            var piece = m_moveToPlay.MovedPiece;
+            var newLocation = m_moveToPlay.Target;
 
-            return previousState.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).Y == piece.Position.Y).
-                Any(p => previousState.Board.GetContents(p).ValidMoves(previousState.Board).Contains(newLocation));
+            return m_moveToPlay.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).Y == piece.Position.Y).
+                Any(p => m_moveToPlay.Board.GetContents(p).ValidMoves(m_moveToPlay.Board).Contains(newLocation));
         }
 
         private string LocationToLower(Location location)
@@ -168,16 +164,16 @@ namespace Redchess.Engine
             return PieceData.Symbol(piece.Type).ToUpper();
         }
 
-        private string Annotation(BoardWithNextMove previousState)
+        private string Annotation()
         {
-            var piece = previousState.MovedPiece;
-            var newLocation = previousState.Target;
+            var piece = m_moveToPlay.MovedPiece;
+            var newLocation = m_moveToPlay.Target;
 
             var boardCopy = new Board();
-            boardCopy.FromFen(previousState.Board.ToFen());
+            boardCopy.FromFen(m_moveToPlay.Board.ToFen());
             boardCopy.Move(piece.Position.Location, newLocation);
-            if(previousState.Promotion != null)
-                boardCopy.PromotePiece(previousState.Promotion);
+            if(m_moveToPlay.Promotion != null)
+                boardCopy.PromotePiece(m_moveToPlay.Promotion);
 
             var isCheck = boardCopy.KingInCheck();
             var isMate = isCheck && boardCopy.IsCheckmate(skipCheckTest: true);

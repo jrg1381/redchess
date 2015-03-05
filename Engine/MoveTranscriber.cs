@@ -7,7 +7,6 @@ namespace Redchess.Engine
     {
         private readonly IBoardExtended m_board;
         private readonly IDisposable m_unsubscriber;
-        private readonly MoveTextConverter m_converter;
         private string m_lastMove;
         private BoardWithNextMove m_previousState;
         private bool m_upToDate;
@@ -16,13 +15,12 @@ namespace Redchess.Engine
         {
             m_board = board;
             m_unsubscriber = m_board.Subscribe(this);
-            m_converter = new MoveTextConverter(board);
         }
 
-        public string LastMove()
+        internal string LastMove()
         {
             if(!m_upToDate)
-                m_lastMove = m_converter.MoveAsText(m_previousState);
+                m_lastMove = (new MoveTextConverter(m_previousState)).MoveAsText();
 
             m_upToDate = true;
 

@@ -9,9 +9,7 @@ namespace Redchess.EngineTests
     {
         [Test]
         public void FirstMoveOfPawn()
-        {
-            var converter = new MoveTextConverter(m_normalBoard);
-            
+        {           
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_normalBoard.GetContents(Location.D2),
@@ -19,7 +17,9 @@ namespace Redchess.EngineTests
                 Board = m_normalBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+
+            string move = converter.MoveAsText();
             Assert.AreEqual("e4",move, "Pawn move was not correctly converted to text");
         }
 
@@ -27,7 +27,6 @@ namespace Redchess.EngineTests
         public void PawnPromotes()
         {
             m_emptyBoard.FromFen("8/P7/8/8/8/8/8/1k5K w - - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -37,7 +36,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("a8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen"); 
         }
 
@@ -45,7 +45,6 @@ namespace Redchess.EngineTests
         public void AmbiguousPawnPromotes()
         {
             m_emptyBoard.FromFen("1q6/P1P5/8/8/8/8/8/k6K w - - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -55,7 +54,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("axb8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen");
         }
 
@@ -63,7 +63,6 @@ namespace Redchess.EngineTests
         public void AmbiguousPawnPromotesAndChecks()
         {
             m_emptyBoard.FromFen("1q5k/P1P5/8/8/8/8/8/7K w - - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -72,8 +71,9 @@ namespace Redchess.EngineTests
                 Promotion = "Q",
                 Board = m_emptyBoard
             };
-            
-            string move = converter.MoveAsText(moveDefinition);
+
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("axb8(=Q)+", move, "Pawn on a7 moves to a8 and promotes to queen");
         }
 
@@ -81,7 +81,6 @@ namespace Redchess.EngineTests
         public void NormalMoveOfKing()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/8/8/8/PPPP1PPP/RNB1KBNR w KQkq - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -90,7 +89,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("Kd1", move, "King moves to D1"); 
         }
 
@@ -98,7 +98,6 @@ namespace Redchess.EngineTests
         public void PawnTakesPiece()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
             
             var moveDefinition = new BoardWithNextMove
             {
@@ -107,7 +106,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("exd5", move, "Pawn move was not correctly converted to text");
         }
 
@@ -115,7 +115,6 @@ namespace Redchess.EngineTests
         public void PawnTakesEnPassant()
         {
             m_emptyBoard.FromFen("rnbqkbnr/pppp1ppp/8/8/P2Pp3/8/1PP1PPPP/RNBQKBNR b KQkq D3 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -124,7 +123,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("exd3", move, "Pawn move was not correctly converted to text");
         }
 
@@ -132,7 +132,6 @@ namespace Redchess.EngineTests
         public void PieceMovesWithCheck()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -141,7 +140,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("Qa4+", move, "Queen moves to A4");
         }
 
@@ -149,7 +149,6 @@ namespace Redchess.EngineTests
         public void PieceMovesWithMate()
         {
             m_emptyBoard.FromFen("k7/7R/6R1/8/8/8/8/K7 w - - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -158,7 +157,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("Rg8#", move, "Rook moves to g8 and mate");
         }
 
@@ -166,7 +166,6 @@ namespace Redchess.EngineTests
         public void PieceMoves()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -175,7 +174,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("Qb4", move, "Queen moves to B4");
         }
 
@@ -183,7 +183,6 @@ namespace Redchess.EngineTests
         public void PieceTakesPiece()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -192,7 +191,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("Qxd5", move, "Queen takes bishop on D5");
         }
 
@@ -200,7 +200,6 @@ namespace Redchess.EngineTests
         public void CastleKingSide()
         {
             m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq -");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -209,7 +208,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("O-O", move, "White king castles kingside");
         }
 
@@ -217,7 +217,6 @@ namespace Redchess.EngineTests
         public void CastleQueenSide()
         {
             m_emptyBoard.FromFen("3k4/8/8/8/8/8/8/R3K2R w KQ -");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -226,7 +225,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("O-O-O+", move, "White king castles queenside");
         }
 
@@ -234,7 +234,6 @@ namespace Redchess.EngineTests
         public void AmbiguousMoveByRow()
         {
             m_emptyBoard.FromFen("1k4K1/8/8/8/8/8/8/R6R w - -");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -243,7 +242,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("Rac1", move, "Rook on A1 moves to C1"); 
         }
 
@@ -251,7 +251,6 @@ namespace Redchess.EngineTests
         public void AmbiguousMoveByColumn()
         {
             m_emptyBoard.FromFen("R7/8/8/7k/8/7K/8/R7 w - -");
-            var converter = new MoveTextConverter(m_emptyBoard);
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -260,7 +259,8 @@ namespace Redchess.EngineTests
                 Board = m_emptyBoard
             };
 
-            string move = converter.MoveAsText(moveDefinition);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
             Assert.AreEqual("R1a3", move, "Rook on A1 moves to a3");
         }
     }
