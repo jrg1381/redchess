@@ -15,7 +15,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_normalBoard.GetContents(Location.D2),
-                Target = Location.E4
+                Target = Location.E4,
+                Board = m_normalBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -32,7 +33,8 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_normalBoard.GetContents(Location.A7),
                 Target = Location.A8,
-                Promotion = "Q"
+                Promotion = "Q",
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -49,7 +51,8 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_normalBoard.GetContents(Location.A7),
                 Target = Location.B8,
-                Promotion = "Q"
+                Promotion = "Q",
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -66,7 +69,8 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_normalBoard.GetContents(Location.A7),
                 Target = Location.B8,
-                Promotion = "Q"
+                Promotion = "Q",
+                Board = m_emptyBoard
             };
             
             string move = converter.MoveAsText(moveDefinition);
@@ -81,8 +85,9 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.E1),
-                Target = Location.D1
+                MovedPiece = m_emptyBoard.GetContents(Location.E1),
+                Target = Location.D1,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -98,7 +103,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
-                Target = Location.D5
+                Target = Location.D5,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -114,7 +120,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
-                Target = Location.D3
+                Target = Location.D3,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -130,7 +137,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
-                Target = Location.A4
+                Target = Location.A4,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -146,7 +154,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.G6),
-                Target = Location.G8
+                Target = Location.G8,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -162,7 +171,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
-                Target = Location.B4
+                Target = Location.B4,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -178,7 +188,8 @@ namespace Redchess.EngineTests
             var moveDefinition = new BoardWithNextMove
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
-                Target = Location.D5
+                Target = Location.D5,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -193,8 +204,9 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.E1),
-                Target = Location.G1
+                MovedPiece = m_emptyBoard.GetContents(Location.E1),
+                Target = Location.G1,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -209,8 +221,9 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.E1),
-                Target = Location.C1
+                MovedPiece = m_emptyBoard.GetContents(Location.E1),
+                Target = Location.C1,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -225,8 +238,9 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.A1),
-                Target = Location.C1
+                MovedPiece = m_emptyBoard.GetContents(Location.A1),
+                Target = Location.C1,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
@@ -241,8 +255,9 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.A1),
-                Target = Location.A3
+                MovedPiece = m_emptyBoard.GetContents(Location.A1),
+                Target = Location.A3,
+                Board = m_emptyBoard
             };
 
             string move = converter.MoveAsText(moveDefinition);
