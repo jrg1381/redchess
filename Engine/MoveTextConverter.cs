@@ -11,6 +11,12 @@ namespace Redchess.Engine
     internal class MoveTextConverter
     {
         private readonly BoardWithNextMove m_moveToPlay;
+        private Task<string> m_disambiguatorTask;
+
+        private string DisambiguatorText
+        {
+            get { return m_disambiguatorTask == null ? String.Empty : m_disambiguatorTask.Result; }
+        }
 
         internal MoveTextConverter(BoardWithNextMove previousState)
         {
@@ -24,7 +30,8 @@ namespace Redchess.Engine
 
         private async Task<string> MoveAsTextAsync()
         {
-            string annotation = await Task.Run(() => Annotation());
+            var annotationTask = Task.Run(() => Annotation());
+
             string answer;
 
             if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
@@ -37,10 +44,11 @@ namespace Redchess.Engine
             }
             else
             {
+                m_disambiguatorTask = Task.Run(() => Disambiguator());
                 answer = PieceMove();
             }
 
-            return answer + annotation;
+            return answer + await annotationTask;
         }
 
         private string Promotion()
@@ -83,19 +91,18 @@ namespace Redchess.Engine
         {
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
-            var disambiguator = Disambiguator();
 
             if (m_moveToPlay.Board.GetContents(newLocation) != null)
             {
                 return String.Format("{0}{1}x{2}", 
-                    PieceSymbol(piece), 
-                    disambiguator,
+                    PieceSymbol(piece),
+                    DisambiguatorText,
                     LocationToLower(newLocation));
             }
 
             return String.Format("{0}{1}{2}",
-                PieceSymbol(piece), 
-                disambiguator,
+                PieceSymbol(piece),
+                DisambiguatorText,
                 LocationToLower(newLocation));
         }
 
