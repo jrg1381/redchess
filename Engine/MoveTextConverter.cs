@@ -30,7 +30,7 @@ namespace Redchess.Engine
 
         private async Task<string> MoveAsTextAsync()
         {
-            var annotationTask = Task.Run(() => Annotation());
+            var annotationTask = AnnotationTask();
             string answer;
 
             if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
@@ -43,7 +43,7 @@ namespace Redchess.Engine
             }
             else
             {
-                m_disambiguatorTask = Task.Run(() => Disambiguator());
+                m_disambiguatorTask = DisambiguatorTask();
                 answer = PieceMove();
             }
 
@@ -105,31 +105,34 @@ namespace Redchess.Engine
                 LocationToLower(newLocation));
         }
 
-        private string Disambiguator()
+        private Task<string> DisambiguatorTask()
         {
-            var disambiguator = String.Empty;
-            var piece = m_moveToPlay.MovedPiece;
-
-            if (MoveIsAmbiguous())
+            return Task.Run(() =>
             {
-                if (MoveIsAmbiguousWithColumn())
+                var disambiguator = String.Empty;
+                var piece = m_moveToPlay.MovedPiece;
+
+                if (MoveIsAmbiguous())
                 {
-                    if (MoveIsAmbiguousWithRow())
+                    if (MoveIsAmbiguousWithColumn())
                     {
-                        disambiguator = LocationToLower(piece.Position.Location);
+                        if (MoveIsAmbiguousWithRow())
+                        {
+                            disambiguator = LocationToLower(piece.Position.Location);
+                        }
+                        else
+                        {
+                            disambiguator = (piece.Position.Y + 1).ToString();
+                        }
                     }
                     else
                     {
-                        disambiguator = (piece.Position.Y + 1).ToString();
+                        disambiguator = PieceColumn(piece);
                     }
                 }
-                else
-                {
-                    disambiguator = PieceColumn(piece);
-                }
-            }
 
-            return disambiguator;
+                return disambiguator;
+            });
         }
 
         private bool MoveIsAmbiguous()
@@ -174,24 +177,27 @@ namespace Redchess.Engine
             return PieceData.Symbol(piece.Type).ToUpper();
         }
 
-        private string Annotation()
+        private Task<string> AnnotationTask()
         {
-            var piece = m_moveToPlay.MovedPiece;
-            var newLocation = m_moveToPlay.Target;
+            return Task.Run(() =>
+            {
+                var piece = m_moveToPlay.MovedPiece;
+                var newLocation = m_moveToPlay.Target;
 
-            var boardCopy = new Board();
-            boardCopy.FromFen(m_moveToPlay.Board.ToFen());
-            boardCopy.Move(piece.Position.Location, newLocation);
-            if(m_moveToPlay.Promotion != null)
-                boardCopy.PromotePiece(m_moveToPlay.Promotion);
+                var boardCopy = new Board();
+                boardCopy.FromFen(m_moveToPlay.Board.ToFen());
+                boardCopy.Move(piece.Position.Location, newLocation);
+                if (m_moveToPlay.Promotion != null)
+                    boardCopy.PromotePiece(m_moveToPlay.Promotion);
 
-            var isCheck = boardCopy.KingInCheck();
-            var isMate = isCheck && boardCopy.IsCheckmate(skipCheckTest: true);
+                var isCheck = boardCopy.KingInCheck();
+                var isMate = isCheck && boardCopy.IsCheckmate(skipCheckTest: true);
 
-            if (isMate) return "#";
-            if (isCheck) return "+";
+                if (isMate) return "#";
+                if (isCheck) return "+";
 
-            return String.Empty;
+                return String.Empty;
+            });
         }
     }
 }
