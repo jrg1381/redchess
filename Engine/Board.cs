@@ -131,14 +131,17 @@ namespace Redchess.Engine
             };
 
             MovePiece(piece, end);
-
-            if (m_observers != null)
-            {
-                foreach (var o in m_observers)
-                    o.OnCompleted();
-            }
+            NotifyObservers();
 
             return true;
+        }
+
+        private void NotifyObservers()
+        {
+            if (m_observers == null) return;
+
+            foreach (var o in m_observers)
+                o.OnCompleted();
         }
 
         public bool IsAwaitingPromotionDecision()
@@ -230,6 +233,8 @@ namespace Redchess.Engine
                     PromotePiece(PieceType.Knight | flagsForPromotedPiece);
                     break;
             }
+
+            NotifyObservers();
         }
 
         public int FiftyMoveCounter { get { return m_fiftyMoveRuleCounter; } }
