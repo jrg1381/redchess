@@ -198,8 +198,6 @@ namespace Redchess.Engine
 
         public void PromotePiece(string promotionTarget)
         {
-            PreviousState.Promotion = promotionTarget;
-
             // Crappy, but we want to allow K (for Knight, when the UI asks for it) but not King.
             // We also want to work on the intial letters only, for when the parser reads a PGN file.
             if (promotionTarget.ToLower() == "king")
@@ -216,6 +214,8 @@ namespace Redchess.Engine
                 flagsForPromotedPiece |= PieceType.Black;
             else
                 flagsForPromotedPiece |= PieceType.White;
+
+            PreviousState.Promotion = initialLetter.ToString();
 
             switch (initialLetter)
             {
