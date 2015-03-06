@@ -3,18 +3,15 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class MoveTranscriber : IObserver<IBoardExtended>, IDisposable
+    internal sealed class MoveTranscriber : AbstractBoardObserver
     {
-        private readonly IBoardExtended m_board;
         private readonly IDisposable m_unsubscriber;
         private string m_lastMove;
         private BoardWithNextMove m_previousState;
         private bool m_upToDate;
 
-        internal MoveTranscriber(IBoardExtended board)
+        internal MoveTranscriber(IBoardExtended board) : base(board)
         {
-            m_board = board;
-            m_unsubscriber = m_board.Subscribe(this);
         }
 
         internal string LastMove()
@@ -29,7 +26,7 @@ namespace Redchess.Engine
 
         private void UpdateMove()
         {
-            m_previousState = m_board.PreviousState;
+            m_previousState = Board.PreviousState;
             m_upToDate = false;
         }
 

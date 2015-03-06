@@ -5,18 +5,14 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class Fen : IObserver<IBoardExtended>, IDisposable
+    internal sealed class Fen : AbstractBoardObserver
     {
-        private readonly IBoardExtended m_board;
         private readonly CastlingRules m_castlingRules;
         private string m_fen;
-        private readonly IDisposable m_unsubscriber;
 
-        internal Fen(IBoardExtended board, CastlingRules castlingRules)
+        internal Fen(IBoardExtended board, CastlingRules castlingRules) : base(board)
         {
-            m_board = board;
             m_castlingRules = castlingRules;
-            m_unsubscriber = m_board.Subscribe(this);
             UpdateFen();
         }
 
@@ -35,7 +31,7 @@ namespace Redchess.Engine
             {
                 for (var x= 0; x < 8; x++)
                 {
-                    var p = m_board.GetContents((Location) (y*8+x));
+                    var p = Board.GetContents((Location) (y*8+x));
 
                     if (p == null) // Square is empty
                     {
@@ -72,32 +68,17 @@ namespace Redchess.Engine
                 }
             }
 
-            sb.AppendFormat(" {0} {1} {2} {3}", m_board.CurrentTurn.ToString().ToLower()[0],
+            sb.AppendFormat(" {0} {1} {2} {3}", Board.CurrentTurn.ToString().ToLower()[0],
                                             m_castlingRules.FenCastleString(),
-                                            m_board.EnPassantTarget == Location.InvalidSquare ? "-" : m_board.EnPassantTarget.ToString(),
-                                            m_board.FiftyMoveCounter);
+                                            Board.EnPassantTarget == Location.InvalidSquare ? "-" : Board.EnPassantTarget.ToString(),
+                                            Board.FiftyMoveCounter);
 
             m_fen = sb.ToString();
         }
 
-        public void OnCompleted()
+        public override void OnCompleted()
         {
             UpdateFen();
-        }
-
-        public void OnError(Exception error)
-        {
-            return;
-        }
-
-        public void OnNext(IBoardExtended value)
-        {
-            return;
-        }
-
-        public void Dispose()
-        {
-            m_unsubscriber.Dispose();
         }
 
         internal void ForceFen(string fen)
