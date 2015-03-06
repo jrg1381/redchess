@@ -24,7 +24,7 @@ namespace Redchess.EngineTests
         public override bool Move(Location start, Location end)
         {
             bool success = base.Move(start, end);
-            Console.WriteLine("Move is annotated as {0}", LastMove());
+           // Console.WriteLine("Move is annotated as {0}", LastMove());
             Assert.IsTrue(success, "Expected move from {0} to {1} to succeed", start, end);
             Console.WriteLine("Moved from {0} to {1}", start, end);
             Console.WriteLine(this);
