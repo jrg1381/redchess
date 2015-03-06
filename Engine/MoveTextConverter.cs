@@ -15,7 +15,13 @@ namespace Redchess.Engine
 
         private string DisambiguatorText
         {
-            get { return m_disambiguatorTask == null ? String.Empty : m_disambiguatorTask.Result; }
+            get
+            {
+                if (m_disambiguatorTask == null)
+                    return String.Empty;
+
+                return m_disambiguatorTask.ConfigureAwait(false).GetAwaiter().GetResult();
+            }
         }
 
         internal MoveTextConverter(BoardWithNextMove previousState)
@@ -30,7 +36,7 @@ namespace Redchess.Engine
 
         private async Task<string> MoveAsTextAsync()
         {
-            var annotationTask = AnnotationTask();
+            var annotationTask = AnnotationTask().ConfigureAwait(false);
             string answer;
 
             if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
