@@ -59,7 +59,7 @@ namespace Redchess.Engine
         private string Promotion()
         {
             return String.Format("{0}(={1})",
-                PawnMove().TrimEnd('+', '#'),
+                PawnMove(),
                 m_moveToPlay.Promotion);
         }
 
