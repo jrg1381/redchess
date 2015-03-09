@@ -436,14 +436,10 @@ namespace Redchess.Engine
 
         private Location KingPosition(PieceColor colorOfKing)
         {
+            var king = colorOfKing == PieceColor.Black ? PieceType.BlackKing : PieceType.WhiteKing;
             // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
             // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
-
-            return SimpleBoard.OccupiedSquares().First(loc =>
-            {
-                var x = GetContents(loc);
-                return x.Type.IsOfType(PieceType.King) && x.Color == colorOfKing;
-            });
+            return FindPieces(king).First();
         }
 
         private Board DeepClone()
