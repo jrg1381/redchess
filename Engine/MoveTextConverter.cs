@@ -193,6 +193,7 @@ namespace Redchess.Engine
                 var boardCopy = new Board();
                 boardCopy.FromFen(m_moveToPlay.Board.ToFen());
                 boardCopy.Move(piece.Position.Location, newLocation);
+
                 if (m_moveToPlay.Promotion != null)
                     boardCopy.PromotePiece(m_moveToPlay.Promotion);
 

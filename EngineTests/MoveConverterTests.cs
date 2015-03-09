@@ -12,7 +12,7 @@ namespace Redchess.EngineTests
         {           
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.D2),
+                MovedPiece = m_normalBoard.GetContents(Location.E2),
                 Target = Location.E4,
                 Board = m_normalBoard
             };
@@ -245,6 +245,23 @@ namespace Redchess.EngineTests
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Rac1", move, "Rook on A1 moves to C1"); 
+        }
+
+        [Test]
+        public void FoolsMate()
+        {
+            // f3 e5
+            // 2. g4 Qh4#
+
+            m_normalBoard.Move(Location.F2, Location.F3);
+            Assert.AreEqual("f3", m_normalBoard.LastMove(), "Expected pawn move f3");
+            m_normalBoard.Move(Location.E7, Location.E5);
+            Assert.AreEqual("e5", m_normalBoard.LastMove(), "Expected pawn move e5");
+            m_normalBoard.Move(Location.G2, Location.G4);
+            Assert.AreEqual("g4", m_normalBoard.LastMove(), "Expected pawn move g4");
+            m_normalBoard.Move(Location.D8, Location.H4);
+
+            Assert.AreEqual("Qh4#",m_normalBoard.LastMove(), "Expected mate with queen");
         }
 
         [Test]

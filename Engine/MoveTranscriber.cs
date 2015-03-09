@@ -37,9 +37,5 @@ namespace Redchess.Engine
         public override void OnError(Exception error)
         {
         }
-
-        public override void OnNext(IBoardExtended value)
-        {
-        }
     }
 }
