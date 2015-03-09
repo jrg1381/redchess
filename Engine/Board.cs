@@ -34,10 +34,11 @@ namespace Redchess.Engine
 
         protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
         {
-            CurrentTurn = whoseTurn;
-            m_castlingRules = new CastlingRules();
-            m_enPassantTarget = Location.InvalidSquare;
             m_observers = new List<IObserver<IBoardExtended>>();
+            CurrentTurn = whoseTurn;
+            m_enPassantTarget = Location.InvalidSquare;
+
+            m_castlingRules = new CastlingRules(this);
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
 
             if (createNewSimpleBoard)
@@ -270,7 +271,7 @@ namespace Redchess.Engine
 
         public bool MayCastle(IPiece king, Side side)
         {
-            return m_castlingRules.MayCastle(king.Color, side, this);
+            return m_castlingRules.MayCastle(king.Color, side);
         }
 
         /// <summary>
@@ -330,8 +331,6 @@ namespace Redchess.Engine
         {
             if (m_promotedPawn != null)
                 throw new InvalidMoveException("The previous player has not decided what to promote their pawn to");
-
-            m_castlingRules.Update(piece, newLocation);
 
             // Delete any piece on the target square
             var originalLocation = piece.Position;

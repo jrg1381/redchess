@@ -113,11 +113,11 @@ namespace Redchess.EngineTests
         [Test]
         public void MayCastleFailModes()
         {
-            CastlingRules rules = new CastlingRules();
+            CastlingRules rules = new CastlingRules(m_emptyBoard);
             // Cast to invalid enum values to exercise this code and prevent annoying complaints from NCover
-            Assert.Throws(typeof(ArgumentException),() => rules.MayCastle((PieceColor) 125, Side.QueenSide, m_emptyBoard));
-            Assert.Throws(typeof(ArgumentException), () => rules.MayCastle(PieceColor.White, (Side)44, m_emptyBoard));
-            Assert.Throws(typeof(ArgumentException), () => rules.MayCastle(PieceColor.Black, (Side)44, m_emptyBoard));
+            Assert.Throws(typeof(ArgumentException),() => rules.MayCastle((PieceColor) 125, Side.QueenSide));
+            Assert.Throws(typeof(ArgumentException), () => rules.MayCastle(PieceColor.White, (Side)44));
+            Assert.Throws(typeof(ArgumentException), () => rules.MayCastle(PieceColor.Black, (Side)44));
         }
 
         [Test]

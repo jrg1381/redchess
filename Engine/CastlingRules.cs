@@ -6,12 +6,16 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    sealed class CastlingRules
+    sealed class CastlingRules : AbstractBoardObserver
     {
         private bool m_blackMayCastleKingSide = true;
         private bool m_blackMayCastleQueenSide = true;
         private bool m_whiteMayCastleKingSide = true;
         private bool m_whiteMayCastleQueenSide = true;
+
+        internal CastlingRules(IBoardExtended board) : base(board)
+        {
+        }
 
         /// <summary>
         ///     Update the castling settings from a fen substring (something like "KkQq") where K indicates castling White
@@ -48,9 +52,9 @@ namespace Redchess.Engine
         /// <param name="squares">Set of squares to check</param>
         /// <param name="game"></param>
         /// <returns></returns>
-        private static bool SquaresEmpty(IEnumerable<Location> squares, IBoardExtended game)
+        private bool SquaresEmpty(IEnumerable<Location> squares)
         {
-            return squares.All(s => game.GetContents(s) == null);
+            return squares.All(s => Board.GetContents(s) == null);
         }
 
         /// <summary>
@@ -60,9 +64,9 @@ namespace Redchess.Engine
         /// <param name="squares">Set of squares to check</param>
         /// <param name="game"></param>
         /// <returns></returns>
-        private static bool SquaresNotAttacked(PieceColor color, IEnumerable<Location> squares, IBoardExtended game)
+        private bool SquaresNotAttacked(PieceColor color, IEnumerable<Location> squares)
         {
-            return squares.All(s => !game.KingInCheck(color, s));
+            return squares.All(s => !Board.KingInCheck(color, s));
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace Redchess.Engine
         /// <param name="color"></param>
         /// <param name="sideOfBoard"></param>
         /// <returns></returns>
-        internal bool MayCastle(PieceColor color, Side sideOfBoard, IBoardExtended game)
+        internal bool MayCastle(PieceColor color, Side sideOfBoard)
         {
             switch (color)
             {
@@ -81,12 +85,12 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return m_whiteMayCastleKingSide && SquaresEmpty(new[] {Location.F1, Location.G1}, game) &&
-                                   SquaresNotAttacked(color, new[] {Location.E1, Location.F1, Location.G1}, game);
+                            return m_whiteMayCastleKingSide && SquaresEmpty(new[] {Location.F1, Location.G1}) &&
+                                   SquaresNotAttacked(color, new[] { Location.E1, Location.F1, Location.G1 });
                         case Side.QueenSide:
                             return m_whiteMayCastleQueenSide &&
-                                   SquaresEmpty(new[] {Location.B1, Location.C1, Location.D1}, game) &&
-                                   SquaresNotAttacked(color, new[] {Location.C1, Location.D1, Location.E1}, game);
+                                   SquaresEmpty(new[] { Location.B1, Location.C1, Location.D1 }) &&
+                                   SquaresNotAttacked(color, new[] { Location.C1, Location.D1, Location.E1 });
                     }
                     break;
                 case PieceColor.Black:
@@ -94,12 +98,12 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return m_blackMayCastleKingSide && SquaresEmpty(new[] {Location.F8, Location.G8}, game) &&
-                                   SquaresNotAttacked(color, new[] {Location.E8, Location.F8, Location.G8}, game);
+                            return m_blackMayCastleKingSide && SquaresEmpty(new[] { Location.F8, Location.G8 }) &&
+                                   SquaresNotAttacked(color, new[] { Location.E8, Location.F8, Location.G8 });
                         case Side.QueenSide:
                             return m_blackMayCastleQueenSide &&
-                                   SquaresEmpty(new[] {Location.B8, Location.C8, Location.D8}, game) &&
-                                   SquaresNotAttacked(color, new[] {Location.C8, Location.D8, Location.E8}, game);
+                                   SquaresEmpty(new[] { Location.B8, Location.C8, Location.D8 }) &&
+                                   SquaresNotAttacked(color, new[] { Location.C8, Location.D8, Location.E8 });
                     }
                 }
                     break;
@@ -108,15 +112,11 @@ namespace Redchess.Engine
             throw new ArgumentException("Parameters to MayCastle made no sense");
         }
 
-        /// <summary>
-        ///     Update the castling status based on the movement of '<paramref name="piece" />' from its original location
-        /// </summary>
-        /// <param name="piece"></param>
-        /// <param name="originalLocation"></param>
-        /// <param name="newLocation"></param>
-        internal void Update(IPiece piece, Location newLocation)
+        public override void OnCompleted()
         {
+            var piece = Board.PreviousState.MovedPiece;
             var originalLocation = piece.Position.Location;
+            var newLocation = Board.PreviousState.Target;
 
             // All castling options have been exhausted so there's no need to update anything
             if (!(m_whiteMayCastleKingSide || m_whiteMayCastleQueenSide || m_blackMayCastleKingSide || m_blackMayCastleQueenSide))
