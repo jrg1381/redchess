@@ -33,5 +33,13 @@ namespace Redchess.Engine
         {
             UpdateMove();
         }
+
+        public override void OnError(Exception error)
+        {
+        }
+
+        public override void OnNext(IBoardExtended value)
+        {
+        }
     }
 }

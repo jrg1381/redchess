@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Redchess.Engine.Exceptions;
+using Redchess.Engine.Interfaces;
+using Redchess.Engine.Pieces.Abstract;
+using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
-using Redchess.Engine.Exceptions;
-using Redchess.Engine.Interfaces;
-using Redchess.Engine.Pieces;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Structures;
 
 namespace Redchess.Engine
 {
@@ -23,8 +22,8 @@ namespace Redchess.Engine
         protected SimpleBoard SimpleBoard;
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
-        private int m_fiftyMoveRuleCounter;
         private List<IObserver<IBoardExtended>> m_observers;
+        private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
 
         public Board()
             : this(PieceColor.White, false, true)
@@ -35,11 +34,12 @@ namespace Redchess.Engine
 
         protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
         {
-            m_fiftyMoveRuleCounter = 0;
             CurrentTurn = whoseTurn;
             m_castlingRules = new CastlingRules();
             m_enPassantTarget = Location.InvalidSquare;
             m_observers = new List<IObserver<IBoardExtended>>();
+            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
+
             if (createNewSimpleBoard)
             {
                 SimpleBoard = new SimpleBoard(isEmpty);
@@ -80,7 +80,7 @@ namespace Redchess.Engine
                 m_enPassantTarget = (Location) Enum.Parse(typeof (Location), enPassantTarget.ToUpper());
             }
 
-            m_fiftyMoveRuleCounter = Int32.Parse(halfMoveClock);
+            m_fiftyMoveRule.HalfMoveClock = Int32.Parse(halfMoveClock);
 
             SimpleBoard = new SimpleBoard(true);
 
@@ -237,7 +237,7 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter { get { return m_fiftyMoveRuleCounter; } }
+        public int FiftyMoveCounter { get { return m_fiftyMoveRule.HalfMoveClock; } }
 
         /// <summary>
         ///     Returns true if the king of the current player is in check right now
@@ -331,6 +331,8 @@ namespace Redchess.Engine
             if (m_promotedPawn != null)
                 throw new InvalidMoveException("The previous player has not decided what to promote their pawn to");
 
+            m_castlingRules.Update(piece, newLocation);
+
             // Delete any piece on the target square
             var originalLocation = piece.Position;
             var originalOccupier = GetContents(newLocation);
@@ -338,7 +340,6 @@ namespace Redchess.Engine
             {
                 SimpleBoard.RemovePiece(originalOccupier);
                 m_enPassantTarget = Location.InvalidSquare;
-                m_fiftyMoveRuleCounter = -1; // a piece has been taken, reset the clock
             }
 
             // Move the piece with no checking
@@ -358,16 +359,13 @@ namespace Redchess.Engine
             {
                 // If the target square was empty, could have been an e.p. capture
                 MovePawn(piece as Pawn, newLocation, originalLocation);
-                m_fiftyMoveRuleCounter = -1; // a pawn has moved, reset the clock
             }
             else
             {
                 m_enPassantTarget = Location.InvalidSquare;
             }
 
-            m_castlingRules.Update(piece, originalLocation.Location, newLocation);
             CurrentTurn = ~CurrentTurn;
-            m_fiftyMoveRuleCounter++;
         }
 
         private void MovePawn(Pawn piece, Location newLocation, Square originalLocation)
@@ -436,14 +434,10 @@ namespace Redchess.Engine
 
         private Location KingPosition(PieceColor colorOfKing)
         {
+            var king = colorOfKing == PieceColor.Black ? PieceType.BlackKing : PieceType.WhiteKing;
             // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
             // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
-
-            return SimpleBoard.OccupiedSquares().First(loc =>
-            {
-                var x = GetContents(loc);
-                return x.Type.IsOfType(PieceType.King) && x.Color == colorOfKing;
-            });
+            return FindPieces(king).First();
         }
 
         private Board DeepClone()
@@ -483,6 +477,8 @@ namespace Redchess.Engine
         {
             if(m_fen != null)
                 m_fen.Dispose();
+            if(m_transcriber != null)
+                m_transcriber.Dispose();
         }
     }
 }

@@ -114,8 +114,10 @@ namespace Redchess.Engine
         /// <param name="piece"></param>
         /// <param name="originalLocation"></param>
         /// <param name="newLocation"></param>
-        internal void Update(IPiece piece, Location originalLocation, Location newLocation)
+        internal void Update(IPiece piece, Location newLocation)
         {
+            var originalLocation = piece.Position.Location;
+
             // All castling options have been exhausted so there's no need to update anything
             if (!(m_whiteMayCastleKingSide || m_whiteMayCastleQueenSide || m_blackMayCastleKingSide || m_blackMayCastleQueenSide))
                 return;
