@@ -61,6 +61,7 @@
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />
     <Compile Include="Fen.cs" />
     <Compile Include="Exceptions\InvalidMoveException.cs" />
+    <Compile Include="FiftyMoveRuleCounter.cs" />
     <Compile Include="Interfaces\IBoardBitmap.cs" />
     <Compile Include="Interfaces\IBoardExtended.cs" />
     <Compile Include="Interfaces\IPiece.cs" />

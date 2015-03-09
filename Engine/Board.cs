@@ -22,8 +22,8 @@ namespace Redchess.Engine
         protected SimpleBoard SimpleBoard;
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
-        private int m_fiftyMoveRuleCounter;
         private List<IObserver<IBoardExtended>> m_observers;
+        private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
 
         public Board()
             : this(PieceColor.White, false, true)
@@ -34,11 +34,12 @@ namespace Redchess.Engine
 
         protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
         {
-            m_fiftyMoveRuleCounter = 0;
             CurrentTurn = whoseTurn;
             m_castlingRules = new CastlingRules();
             m_enPassantTarget = Location.InvalidSquare;
             m_observers = new List<IObserver<IBoardExtended>>();
+            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
+
             if (createNewSimpleBoard)
             {
                 SimpleBoard = new SimpleBoard(isEmpty);
@@ -79,7 +80,7 @@ namespace Redchess.Engine
                 m_enPassantTarget = (Location) Enum.Parse(typeof (Location), enPassantTarget.ToUpper());
             }
 
-            m_fiftyMoveRuleCounter = Int32.Parse(halfMoveClock);
+            m_fiftyMoveRule.HalfMoveClock = Int32.Parse(halfMoveClock);
 
             SimpleBoard = new SimpleBoard(true);
 
@@ -236,7 +237,7 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter { get { return m_fiftyMoveRuleCounter; } }
+        public int FiftyMoveCounter { get { return m_fiftyMoveRule.HalfMoveClock; } }
 
         /// <summary>
         ///     Returns true if the king of the current player is in check right now
@@ -337,7 +338,6 @@ namespace Redchess.Engine
             {
                 SimpleBoard.RemovePiece(originalOccupier);
                 m_enPassantTarget = Location.InvalidSquare;
-                m_fiftyMoveRuleCounter = -1; // a piece has been taken, reset the clock
             }
 
             // Move the piece with no checking
@@ -357,7 +357,6 @@ namespace Redchess.Engine
             {
                 // If the target square was empty, could have been an e.p. capture
                 MovePawn(piece as Pawn, newLocation, originalLocation);
-                m_fiftyMoveRuleCounter = -1; // a pawn has moved, reset the clock
             }
             else
             {
@@ -366,7 +365,6 @@ namespace Redchess.Engine
 
             m_castlingRules.Update(piece, originalLocation.Location, newLocation);
             CurrentTurn = ~CurrentTurn;
-            m_fiftyMoveRuleCounter++;
         }
 
         private void MovePawn(Pawn piece, Location newLocation, Square originalLocation)
