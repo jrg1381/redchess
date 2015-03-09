@@ -68,9 +68,7 @@ namespace Redchess.Engine
             string currentTurn = fields[1];
             string castling = fields[2];
             string enPassantTarget = fields[3];
-            string halfMoveClock = "0";
-            if(fields.Length >= 5)
-                halfMoveClock = fields[4];
+            string halfMoveClock = fields[4];
             int index = 0;
 
             CurrentTurn = currentTurn == "b" ? PieceColor.Black : PieceColor.White;

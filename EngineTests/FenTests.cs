@@ -24,7 +24,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void TwoKingsPosition()
 		{
-            m_emptyBoard.FromFen("8/2K5/8/8/8/8/8/k7 w KQkq -");
+            m_emptyBoard.FromFen("8/2K5/8/8/8/8/8/k7 w KQkq - 0");
 
             string fen = new Fen(m_emptyBoard, new CastlingRules(m_emptyBoard)).ToFen();
 			// Castling settings are invalid here, ignore this

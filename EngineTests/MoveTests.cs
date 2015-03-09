@@ -63,7 +63,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PawnCanAdvanceOrTake()
 		{
-            m_emptyBoard.FromFen("8/8/8/4p3/3P4/8/8/8 w KQkq -");
+            m_emptyBoard.FromFen("8/8/8/4p3/3P4/8/8/8 w KQkq - 0");
             var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.AreEquivalent(new [] {Location.D5, Location.E5}, thePawn1.ReachableSquares(m_emptyBoard), "Set of reachable squares for pawn was incorrect");
 		}
@@ -71,7 +71,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PawnCannotAdvanceBlockedByEnemy()
 		{
-            m_emptyBoard.FromFen("8/8/8/3p4/3P4/8/8/8 w KQkq -");
+            m_emptyBoard.FromFen("8/8/8/3p4/3P4/8/8/8 w KQkq - 0");
             var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
 		}
@@ -79,7 +79,7 @@ namespace Redchess.EngineTests
         [Test]
         public void PawnCannotAdvanceBlockedByFriend()
         {
-            m_emptyBoard.FromFen("8/8/8/3P4/3P4/8/8/8 w KQkq -");
+            m_emptyBoard.FromFen("8/8/8/3P4/3P4/8/8/8 w KQkq - 0");
             var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
         }
@@ -87,7 +87,7 @@ namespace Redchess.EngineTests
         [Test]
         public void AwaitingPromotion()
         {
-            m_emptyBoard.FromFen("8/P6k/8/8/8/8/1p5K/8 w KQkq -");
+            m_emptyBoard.FromFen("8/P6k/8/8/8/8/1p5K/8 w KQkq - 0");
 
             Assert.False(m_emptyBoard.IsAwaitingPromotionDecision(), "Should not be waiting for promotion decision from white");
             m_emptyBoard.Move(Location.A7, Location.A8);
@@ -103,7 +103,7 @@ namespace Redchess.EngineTests
 	    [Test]
 	    public void QueenMoves1()
 	    {
-            m_emptyBoard.FromFen("8/8/8/3p4/3q4/8/8/8 w KQkq -");
+            m_emptyBoard.FromFen("8/8/8/3p4/3q4/8/8/8 w KQkq - 0");
 	        var theQueen = m_emptyBoard.GetContents(Location.D4);
 	        var thePawn = m_emptyBoard.GetContents(Location.D5);
 	        var blackPieces = m_emptyBoard.Pieces(PieceColor.Black);
@@ -122,18 +122,18 @@ namespace Redchess.EngineTests
 	            "Queen reachable squares not as expected");
 	    }
 
-	    [TestCase("7k/6P1/8/8/8/8/8/8 b KQkq -")]
-        [TestCase("3k4/2B5/8/8/8/8/8/8 b KQkq -")]
-        [TestCase("3k4/5N2/8/8/8/8/8/8 b KQkq -")]
+	    [TestCase("7k/6P1/8/8/8/8/8/8 b KQkq - 0")]
+        [TestCase("3k4/2B5/8/8/8/8/8/8 b KQkq - 0")]
+        [TestCase("3k4/5N2/8/8/8/8/8/8 b KQkq - 0")]
 		public void BlackKingShouldBeInCheck(string fen)
 		{
             m_emptyBoard.FromFen(fen);
             Assert.True(m_emptyBoard.KingInCheck(), "Black king should be in check");
 		}
 
-        [TestCase("7k/7P/8/8/8/8/8/K7 b KQkq -")]
-        [TestCase("3k4/2b5/8/8/8/8/8/K7 b KQkq -")]
-        [TestCase("3k3K/2r5/1B6/8/8/8/8/8 b KQkq -")]
+        [TestCase("7k/7P/8/8/8/8/8/K7 b KQkq - 0")]
+        [TestCase("3k4/2b5/8/8/8/8/8/K7 b KQkq - 0")]
+        [TestCase("3k3K/2r5/1B6/8/8/8/8/8 b KQkq - 0")]
         public void BlackKingShouldNotBeInCheck(string fen)
         {
             m_emptyBoard.FromFen(fen);
@@ -143,7 +143,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PawnDoesNotAttackSquareInFrontOfIt()
 		{
-            m_emptyBoard.FromFen("3K3k/6P1/8/8/8/8/8/8 w KQkq -");
+            m_emptyBoard.FromFen("3K3k/6P1/8/8/8/8/8/8 w KQkq - 0");
 		    var theBlackKing = m_emptyBoard.GetContents(Location.H8);
             CollectionAssert.Contains(theBlackKing.ValidMoves(m_emptyBoard), Location.G8, "Pawn should not attack square in front of it");
 		}
@@ -151,7 +151,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PieceMovesFromOneSquareToAnother()
 		{
-            m_emptyBoard.FromFen("8/3k4/8/8/8/8/8/8 b KQ -");
+            m_emptyBoard.FromFen("8/3k4/8/8/8/8/8/8 b KQ - 0");
 			Assert.True(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D7), "Expected a piece on D7");
             Assert.False(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D8), "Didn't expect a piece on D8");
             Assert.AreEqual(1, m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected only one black piece on the board");
@@ -161,31 +161,31 @@ namespace Redchess.EngineTests
 		[Test]
 		public void CannotTakeOwnPiece()
 		{
-            m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq -");
+            m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq - 0");
             m_emptyBoard.MoveExpectFailure(Location.D8, Location.D7);
 		}
 
         [Test]
         public void CannotPlayOutOfTurn()
         {
-            m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq -");
+            m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq - 0");
             m_emptyBoard.MoveExpectFailure(Location.C7, Location.D7);
         }
 
 		[Test]
 		public void TakenPiecesAreRemovedFromTheBoard()
 		{
-            m_emptyBoard.FromFen("3N4/3k4/8/8/8/8/8/7K b KQ -");
+            m_emptyBoard.FromFen("3N4/3k4/8/8/8/8/8/7K b KQ - 0");
             m_emptyBoard.Move(Location.D7, Location.D8);
             FenAssert.AreEqual("3k4/8/8/8/8/8/8/7K w KQ - 0", m_emptyBoard.ToFen(), "Expected knight to be taken");
 		}
 
-        [TestCase("7k/8/8/8/8/8/8/8 b - -", Location.H8, Location.B2)]
-        [TestCase("8/7k/8/8/8/8/8/Q7 w KQkq -", Location.H7, Location.H8)]
-        [TestCase("7k/8/8/8/8/8/8/Q7 w KQkq -", Location.H8, Location.G7)]
-        [TestCase("7k/8/8/8/8/8/1n6/Q7 w KQkq -", Location.B2, Location.A4)]
-        [TestCase("7k/8/8/8/n2p4/8/8/Q7 w KQkq -", Location.D4, Location.D5)]
-        [TestCase("8/7k/8/8/8/8/8/8 b KQkq -", Location.H7, Location.H7)]
+        [TestCase("7k/8/8/8/8/8/8/8 b - - 0", Location.H8, Location.B2)]
+        [TestCase("8/7k/8/8/8/8/8/Q7 w KQkq - 0", Location.H7, Location.H8)]
+        [TestCase("7k/8/8/8/8/8/8/Q7 w KQkq - 0", Location.H8, Location.G7)]
+        [TestCase("7k/8/8/8/8/8/1n6/Q7 w KQkq - 0", Location.B2, Location.A4)]
+        [TestCase("7k/8/8/8/n2p4/8/8/Q7 w KQkq - 0", Location.D4, Location.D5)]
+        [TestCase("8/7k/8/8/8/8/8/8 b KQkq - 0", Location.H7, Location.H7)]
         public void IllegalMovesAreDisallowed(string fen, Location from, Location to)
         {
             m_emptyBoard.FromFen(fen);
@@ -201,7 +201,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void CannotMoveUntilOpponentMakesPromotionChoice()
 		{
-            m_emptyBoard.FromFen("8/8/8/8/8/6k1/3p4/Q5K1 b KQkq -");
+            m_emptyBoard.FromFen("8/8/8/8/8/6k1/3p4/Q5K1 b KQkq - 0");
             m_emptyBoard.Move(Location.D2, Location.D1); // but don't promote it
 			// Try to move the queen, but this is not allowed because the previous player hasn't made a promotion choice yet
             Assert.Throws(typeof(InvalidMoveException), () => m_emptyBoard.Move(Location.A1, Location.A2));
@@ -210,7 +210,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void KingHasReachableSquaresButNoneAreValidStalemate()
 		{
-            m_emptyBoard.FromFen("7k/2P2Q2/6R1/8/8/8/8/K7 b KQkq -");
+            m_emptyBoard.FromFen("7k/2P2Q2/6R1/8/8/8/8/K7 b KQkq - 0");
 		    var theKing = m_emptyBoard.GetContents(Location.H8);
             var kingReachableSquares = theKing.ReachableSquares(m_emptyBoard);
 		    var expectedReachableSquares = new[] {Location.G7, Location.H7, Location.G8};
@@ -235,7 +235,7 @@ namespace Redchess.EngineTests
         [Test]
         public void PawnDoubleHopBlocked()
         {
-            m_emptyBoard.FromFen("rnbqkbnr/pppppppp/8/8/8/Q7/PPPPPPPP/RNBQKBNR w KQkq -");
+            m_emptyBoard.FromFen("rnbqkbnr/pppppppp/8/8/8/Q7/PPPPPPPP/RNBQKBNR w KQkq - 0");
             var pawnReachableSquares = m_emptyBoard.GetContents(Location.A2).ReachableSquares(m_emptyBoard);
             CollectionAssert.IsEmpty(pawnReachableSquares, "Expected pawn to have no reachable squares");
         }
@@ -243,7 +243,7 @@ namespace Redchess.EngineTests
         [Test]
 		public void PromotionByType()
 		{
-            m_emptyBoard.FromFen("k7/7P/8/8/8/8/8/4K3 w KQkq -");
+            m_emptyBoard.FromFen("k7/7P/8/8/8/8/8/4K3 w KQkq - 0");
 			m_emptyBoard.Move(Location.H7, Location.H8);
 			m_emptyBoard.PromotePiece("Queen");
 			
@@ -256,7 +256,7 @@ namespace Redchess.EngineTests
         [TestCase("Knight", Location.E7, false)]
 		public void PromotionByString(string target, Location kingLocation, bool kingShouldBeInCheck)
 		{
-            m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w KQkq -");
+            m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w KQkq - 0");
 			m_emptyBoard.Move(Location.H7, Location.G8);
             m_emptyBoard.PromotePiece(target);
 			
@@ -277,8 +277,8 @@ namespace Redchess.EngineTests
             Assert.Throws(typeof(CannotPromoteException), () => PromotionByString(pieceType, Location.A8, false));
         }
 
-		[TestCase("7r/2k5/8/8/8/5q2/8/6K1/ w - -")]
-        [TestCase("7r/2k5/2P5/8/8/5q2/8/6K1/ w - -")]
+		[TestCase("7r/2k5/8/8/8/5q2/8/6K1/ w - - 0")]
+        [TestCase("7r/2k5/2P5/8/8/5q2/8/6K1/ w - - 0")]
 		public void StaleMateTest(string fen)
 		{
 			m_emptyBoard.FromFen(fen);		
@@ -287,8 +287,8 @@ namespace Redchess.EngineTests
 			Assert.That(m_emptyBoard.IsStalemate(),"Should be stalemate - White has no moves");
 		}
 
-        [TestCase("7r/2k5/8/8/8/8/8/6K1/ w - -")]
-        [TestCase("7r/2k5/2P5/8/8/8/8/6K1/ w - -")]
+        [TestCase("7r/2k5/8/8/8/8/8/6K1/ w - - 0")]
+        [TestCase("7r/2k5/2P5/8/8/8/8/6K1/ w - - 0")]
         public void NotStaleMateTest(string fen)
         {
             m_emptyBoard.FromFen(fen);          
@@ -297,7 +297,7 @@ namespace Redchess.EngineTests
             Assert.That(!m_emptyBoard.IsStalemate() && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
         }
 
-        [TestCase("6qk/8/8/8/8/8/8/K7/ w - -")]
+        [TestCase("6qk/8/8/8/8/8/8/K7/ w - - 0")]
         public void NotDrawTest(string fen)
         {
             m_emptyBoard.FromFen(fen);
@@ -321,7 +321,7 @@ namespace Redchess.EngineTests
         [Test]
 		public void IsMateAndOnlyMate()
 		{
-			m_emptyBoard.FromFen("rn5k/7Q/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ -");
+			m_emptyBoard.FromFen("rn5k/7Q/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ - 0");
             // Both methods calls should return true
             bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) && m_emptyBoard.IsCheckmate(skipCheckTest: true);
             Assert.IsTrue(isMate, "Given position should be checkmate");
@@ -331,7 +331,7 @@ namespace Redchess.EngineTests
         [Test]
         public void IsNotMate()
         {
-            m_emptyBoard.FromFen("rn5k/8/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ -");
+            m_emptyBoard.FromFen("rn5k/8/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ - 0");
             // Shouldn't matter whether we test for check first or not, they should both be false
             bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) || m_emptyBoard.IsCheckmate(skipCheckTest: true);
             Assert.IsFalse(isMate, "Given position should not be checkmate because the king is not in check");
@@ -357,7 +357,7 @@ namespace Redchess.EngineTests
         [Test]
         public void EarlyExitFromCastlingUpdateFunction()
         {
-            m_emptyBoard.FromFen("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - -");
+            m_emptyBoard.FromFen("1nbqkbn1/rppppppr/p6p/8/8/P6P/RPPPPPPR/1NBQKBN1 w - - 0");
             m_emptyBoard.Move(Location.B2, Location.B3);
             // Exercises the early exit from Update in the castling rules class
         }
@@ -366,7 +366,7 @@ namespace Redchess.EngineTests
 		public void EscapableMate()
 		{
 			// Mate isn't just that the King can't do anything, it's that NO pieces can do anything. In this case, the white bishop can take the rook.
-            m_emptyBoard.FromFen("B6k/8/8/8/8/8/7r/4K2r w KQkq -");
+            m_emptyBoard.FromFen("B6k/8/8/8/8/8/7r/4K2r w KQkq - 0");
 
             Assert.That(m_emptyBoard.KingInCheck(), "King should be in check");
             CollectionAssert.IsEmpty(m_emptyBoard.GetContents(Location.E1).ValidMoves(m_emptyBoard), "King should have nowhere to go");
@@ -396,17 +396,17 @@ namespace Redchess.EngineTests
 		    m_normalBoard.MoveExpectFailure(Location.A2, Location.A1);
 		}
 
-        [TestCase("7k/8/8/8/8/8/8/K7/ w - -", "two kings")]
-        [TestCase("7k/8/3b7/8/8/8/8/K7/ w - -", "king and bishop")]
-        [TestCase("7k/8/8/8/8/6N1/8/K7/ w - -", "king and knight")]
+        [TestCase("7k/8/8/8/8/8/8/K7/ w - - 0", "two kings")]
+        [TestCase("7k/8/3b7/8/8/8/8/K7/ w - - 0", "king and bishop")]
+        [TestCase("7k/8/8/8/8/6N1/8/K7/ w - - 0", "king and knight")]
 		public void TestDraw(string fen, string description)
 		{
             m_emptyBoard.FromFen(fen);
             Assert.True(m_emptyBoard.IsDraw(), "This position is a draw - " + description);
 		}
 
-        [TestCase("6nk/8/8/8/8/6N1/8/K7/ w - -", "king and two knights")]
-        [TestCase("7k/8/8/8/8/6bn/8/K7/ w - -", "king, bishop and knight")]
+        [TestCase("6nk/8/8/8/8/6N1/8/K7/ w - - 0", "king and two knights")]
+        [TestCase("7k/8/8/8/8/6bn/8/K7/ w - - 0", "king, bishop and knight")]
         public void TestNotDraw(string fen, string description)
         {
             m_emptyBoard.FromFen(fen);

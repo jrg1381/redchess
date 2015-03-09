@@ -199,7 +199,7 @@ namespace Redchess.EngineTests
         [Test]
         public void CastleKingSide()
         {
-            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq -");
+            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq - 0");
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -216,7 +216,7 @@ namespace Redchess.EngineTests
         [Test]
         public void CastleQueenSide()
         {
-            m_emptyBoard.FromFen("3k4/8/8/8/8/8/8/R3K2R w KQ -");
+            m_emptyBoard.FromFen("3k4/8/8/8/8/8/8/R3K2R w KQ - 0");
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -233,7 +233,7 @@ namespace Redchess.EngineTests
         [Test]
         public void AmbiguousMoveByRow()
         {
-            m_emptyBoard.FromFen("1k4K1/8/8/8/8/8/8/R6R w - -");
+            m_emptyBoard.FromFen("1k4K1/8/8/8/8/8/8/R6R w - - 0");
 
             var moveDefinition = new BoardWithNextMove
             {
@@ -250,7 +250,7 @@ namespace Redchess.EngineTests
         [Test]
         public void AmbiguousMoveByColumn()
         {
-            m_emptyBoard.FromFen("R7/8/8/7k/8/7K/8/R7 w - -");
+            m_emptyBoard.FromFen("R7/8/8/7k/8/7K/8/R7 w - - 0");
 
             var moveDefinition = new BoardWithNextMove
             {
