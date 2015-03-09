@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Redchess.Engine.Exceptions;
+using Redchess.Engine.Interfaces;
+using Redchess.Engine.Pieces.Abstract;
+using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
-using Redchess.Engine.Exceptions;
-using Redchess.Engine.Interfaces;
-using Redchess.Engine.Pieces;
-using Redchess.Engine.Pieces.Abstract;
-using Redchess.Engine.Structures;
 
 namespace Redchess.Engine
 {
@@ -479,6 +478,8 @@ namespace Redchess.Engine
         {
             if(m_fen != null)
                 m_fen.Dispose();
+            if(m_transcriber != null)
+                m_transcriber.Dispose();
         }
     }
 }
