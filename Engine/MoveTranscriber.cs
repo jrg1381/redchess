@@ -5,7 +5,6 @@ namespace Redchess.Engine
 {
     internal sealed class MoveTranscriber : AbstractBoardObserver
     {
-        private readonly IDisposable m_unsubscriber;
         private string m_lastMove;
         private BoardWithNextMove m_previousState;
         private bool m_upToDate;
@@ -30,24 +29,17 @@ namespace Redchess.Engine
             m_upToDate = false;
         }
 
-        public void OnCompleted()
+        public override void OnCompleted()
         {
             UpdateMove();
         }
 
-        public void OnError(Exception error)
+        public override void OnError(Exception error)
         {
-            return;
         }
 
-        public void OnNext(IBoardExtended value)
+        public override void OnNext(IBoardExtended value)
         {
-            return;
-        }
-
-        public void Dispose()
-        {
-            m_unsubscriber.Dispose();
         }
     }
 }

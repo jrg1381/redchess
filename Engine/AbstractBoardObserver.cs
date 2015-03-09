@@ -26,7 +26,7 @@ namespace Redchess.Engine
         {
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Unsubscriber.Dispose();
         }
