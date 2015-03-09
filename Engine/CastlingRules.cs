@@ -50,7 +50,6 @@ namespace Redchess.Engine
         ///     Returns true if all the supplied squares are empty
         /// </summary>
         /// <param name="squares">Set of squares to check</param>
-        /// <param name="game"></param>
         /// <returns></returns>
         private bool SquaresEmpty(IEnumerable<Location> squares)
         {
@@ -62,7 +61,6 @@ namespace Redchess.Engine
         /// </summary>
         /// <param name="color">The friendly side</param>
         /// <param name="squares">Set of squares to check</param>
-        /// <param name="game"></param>
         /// <returns></returns>
         private bool SquaresNotAttacked(PieceColor color, IEnumerable<Location> squares)
         {

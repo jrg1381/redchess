@@ -10,7 +10,7 @@ namespace Redchess.Engine.Pieces.Abstract
 {
     internal abstract class Piece : IPiece
     {
-        private readonly int s_parallelism = Environment.ProcessorCount;
+        private readonly static int s_parallelism = Environment.ProcessorCount;
         private readonly PieceType m_pieceType;
         private readonly PieceColor m_color;
         private readonly Square m_position;

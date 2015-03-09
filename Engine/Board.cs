@@ -12,7 +12,7 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace Redchess.Engine
 {
-    public class Board : IBoard, IBoardExtended, IDisposable
+    public class Board : IBoardExtended, IDisposable
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
@@ -124,7 +124,7 @@ namespace Redchess.Engine
             var tmpBoard = new Board(PieceColor.White, isEmpty: true);
             tmpBoard.FromFen(ToFen());
 
-            PreviousState = new BoardWithNextMove()
+            PreviousState = new BoardWithNextMove
             {
                 Board = tmpBoard,
                 MovedPiece = piece,
@@ -478,6 +478,8 @@ namespace Redchess.Engine
                 m_fen.Dispose();
             if(m_transcriber != null)
                 m_transcriber.Dispose();
+            if(m_castlingRules != null)
+                m_castlingRules.Dispose();
         }
     }
 }
