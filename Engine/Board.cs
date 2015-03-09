@@ -331,6 +331,8 @@ namespace Redchess.Engine
             if (m_promotedPawn != null)
                 throw new InvalidMoveException("The previous player has not decided what to promote their pawn to");
 
+            m_castlingRules.Update(piece, newLocation);
+
             // Delete any piece on the target square
             var originalLocation = piece.Position;
             var originalOccupier = GetContents(newLocation);
@@ -363,7 +365,6 @@ namespace Redchess.Engine
                 m_enPassantTarget = Location.InvalidSquare;
             }
 
-            m_castlingRules.Update(piece, originalLocation.Location, newLocation);
             CurrentTurn = ~CurrentTurn;
         }
 
