@@ -119,8 +119,7 @@ namespace Redchess.Engine
             if (!ValidateMoveForCheck(piece, end))
                 return false;
 
-            var tmpBoard = new Board(PieceColor.White, isEmpty: true);
-            tmpBoard.FromFen(ToFen());
+            var tmpBoard = DeepClone();
 
             PreviousState = new BoardWithNextMove
             {
@@ -439,13 +438,13 @@ namespace Redchess.Engine
 
         private Board DeepClone()
         {
-            // Important - does not copy the castling state because this is not required for determining check or not.
-            var copy = new Board(CurrentTurn, isEmpty: true, createNewSimpleBoard: false)
+            var copy = new Board(CurrentTurn)
             {
                 SimpleBoard = SimpleBoard.DeepClone(),
-                m_enPassantTarget = m_enPassantTarget
+                m_enPassantTarget = m_enPassantTarget,
             };
 
+            copy.m_castlingRules.UpdateFromFen(m_castlingRules.FenCastleString());
             return copy;
         }
 
