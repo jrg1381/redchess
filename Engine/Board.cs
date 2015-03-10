@@ -16,7 +16,7 @@ namespace Redchess.Engine
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
-        private readonly CastlingRules m_castlingRules;
+        private CastlingRules m_castlingRules;
         private Fen m_fen;
         private MoveTranscriber m_transcriber;
         protected SimpleBoard SimpleBoard;
@@ -445,8 +445,8 @@ namespace Redchess.Engine
             };
 
             // Transfer the observers to watch the copy
+            copy.m_castlingRules = m_castlingRules.DeepClone(copy);
             copy.m_fen = new Fen(copy, copy.m_castlingRules);
-            copy.m_castlingRules.UpdateFromFen(m_castlingRules.FenCastleString());
             copy.m_transcriber = new MoveTranscriber(copy);
 
             return copy;

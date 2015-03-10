@@ -17,6 +17,17 @@ namespace Redchess.Engine
         {
         }
 
+        internal CastlingRules DeepClone(IBoardExtended board)
+        {
+            return new CastlingRules(board)
+            {
+                m_blackMayCastleKingSide = this.m_blackMayCastleKingSide,
+                m_blackMayCastleQueenSide = this.m_blackMayCastleQueenSide,
+                m_whiteMayCastleKingSide = this.m_whiteMayCastleKingSide,
+                m_whiteMayCastleQueenSide = this.m_whiteMayCastleQueenSide
+            };
+        }
+
         /// <summary>
         ///     Update the castling settings from a fen substring (something like "KkQq") where K indicates castling White
         ///     king-side, etc.
