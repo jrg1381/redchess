@@ -8,7 +8,6 @@ using Redchess.Engine.Pieces.Abstract;
 using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
-using RedChess.ChessCommon.Interfaces;
 
 namespace Redchess.Engine
 {
@@ -16,19 +15,14 @@ namespace Redchess.Engine
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
-        private CastlingRules m_castlingRules;
-        private Fen m_fen;
-        private MoveTranscriber m_transcriber;
-        protected SimpleBoard SimpleBoard;
+        private readonly CastlingRules m_castlingRules;
+        private readonly Fen m_fen;
+        private readonly MoveTranscriber m_transcriber;
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
-        private List<IObserver<IBoardExtended>> m_observers;
+        private List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
         private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
-
-        public Board()
-            : this(PieceColor.White, false, true)
-        {
-        }
+        protected SimpleBoard SimpleBoard { get; set; }
 
         public BoardWithNextMove PreviousState { get; private set; }
 
@@ -37,21 +31,31 @@ namespace Redchess.Engine
             return m_castlingRules.FenCastleString();
         }
 
-        protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
+        // Copy constructor
+        protected Board(Board replacementBoard)
         {
-            m_observers = new List<IObserver<IBoardExtended>>();
+            CurrentTurn = replacementBoard.CurrentTurn;
+            m_enPassantTarget = replacementBoard.EnPassantTarget;
+
+            SimpleBoard = replacementBoard.SimpleBoard.DeepClone();
+            m_castlingRules = replacementBoard.m_castlingRules.DeepClone(this);
+
+            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
+            m_fen = new Fen(this);
+            m_transcriber = new MoveTranscriber(this);
+        }
+
+        public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
+        {
             CurrentTurn = whoseTurn;
             m_enPassantTarget = Location.InvalidSquare;
 
+            SimpleBoard = new SimpleBoard(isEmpty);
             m_castlingRules = new CastlingRules(this);
-            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
 
-            if (createNewSimpleBoard)
-            {
-                SimpleBoard = new SimpleBoard(isEmpty);
-                m_fen = new Fen(this);
-                m_transcriber = new MoveTranscriber(this);
-            }
+            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
+            m_fen = new Fen(this);
+            m_transcriber = new MoveTranscriber(this);
         }
 
         public string LastMove()
@@ -253,7 +257,7 @@ namespace Redchess.Engine
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
-            var boardCopy = DeepClone();
+            var boardCopy = DeepClone() as Board;
             boardCopy.MovePiece(piece, newLocation);
 
             // Note that CurrentTurn comes from the current board, not boardCopy, because MovePiece changes the turn...
@@ -441,20 +445,9 @@ namespace Redchess.Engine
             return FindPieces(king).First();
         }
 
-        private Board DeepClone()
+        public IBoardExtended DeepClone()
         {
-            var copy = new Board(CurrentTurn)
-            {
-                SimpleBoard = SimpleBoard.DeepClone(),
-                m_enPassantTarget = m_enPassantTarget,
-            };
-
-            // Transfer the observers to watch the copy
-            copy.m_castlingRules = m_castlingRules.DeepClone(copy);
-            copy.m_fen = new Fen(copy);
-            copy.m_transcriber = new MoveTranscriber(copy);
-
-            return copy;
+            return new Board(this);
         }
 
         public IDisposable Subscribe(IObserver<IBoardExtended> observer)
