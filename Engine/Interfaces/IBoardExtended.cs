@@ -14,5 +14,6 @@ namespace Redchess.Engine.Interfaces
         Location EnPassantTarget { get; }
         int FiftyMoveCounter { get; }
         BoardWithNextMove PreviousState { get; }
+        string FenCastleString();
     }
 }

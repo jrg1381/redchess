@@ -32,6 +32,11 @@ namespace Redchess.Engine
 
         public BoardWithNextMove PreviousState { get; private set; }
 
+        public string FenCastleString()
+        {
+            return m_castlingRules.FenCastleString();
+        }
+
         protected Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false, bool createNewSimpleBoard = true)
         {
             m_observers = new List<IObserver<IBoardExtended>>();
@@ -44,7 +49,7 @@ namespace Redchess.Engine
             if (createNewSimpleBoard)
             {
                 SimpleBoard = new SimpleBoard(isEmpty);
-                m_fen = new Fen(this, m_castlingRules);
+                m_fen = new Fen(this);
                 m_transcriber = new MoveTranscriber(this);
             }
         }
@@ -446,7 +451,7 @@ namespace Redchess.Engine
 
             // Transfer the observers to watch the copy
             copy.m_castlingRules = m_castlingRules.DeepClone(copy);
-            copy.m_fen = new Fen(copy, copy.m_castlingRules);
+            copy.m_fen = new Fen(copy);
             copy.m_transcriber = new MoveTranscriber(copy);
 
             return copy;

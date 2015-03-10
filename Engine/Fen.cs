@@ -7,12 +7,10 @@ namespace Redchess.Engine
 {
     internal sealed class Fen : AbstractBoardObserver
     {
-        private readonly CastlingRules m_castlingRules;
         private string m_fen;
 
-        internal Fen(IBoardExtended board, CastlingRules castlingRules) : base(board)
+        internal Fen(IBoardExtended board) : base(board)
         {
-            m_castlingRules = castlingRules;
             UpdateFen();
         }
 
@@ -69,7 +67,7 @@ namespace Redchess.Engine
             }
 
             sb.AppendFormat(" {0} {1} {2} {3}", Board.CurrentTurn.ToString().ToLower()[0],
-                                            m_castlingRules.FenCastleString(),
+                                            Board.FenCastleString(),
                                             Board.EnPassantTarget == Location.InvalidSquare ? "-" : Board.EnPassantTarget.ToString(),
                                             Board.FiftyMoveCounter);
 
