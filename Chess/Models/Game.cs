@@ -11,7 +11,7 @@ using RedChess.ChessCommon.Interfaces;
 namespace Chess.Models
 {
     [Table("Boards")]
-    public class Game
+    public class Game : IDisposable
     {
         private readonly IBoard m_board;
         private bool m_gameOver;
@@ -155,6 +155,11 @@ namespace Chess.Models
             Status = message;
             CompletionDate = DateTime.UtcNow;
             GameOver = true;
+        }
+
+        public void Dispose()
+        {
+            m_board.Dispose();
         }
     }
 }

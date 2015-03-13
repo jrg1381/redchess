@@ -1,3 +1,4 @@
+using System;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.EngineFactory;
@@ -75,6 +76,11 @@ namespace Chess.Models
         public bool IsAwaitingPromotionDecision()
         {
             return m_boardImpl.IsAwaitingPromotionDecision();
+        }
+
+        public void Dispose()
+        {
+            m_boardImpl.Dispose();
         }
     }
 }

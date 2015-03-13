@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using RedChess.ChessCommon.Enumerations;
 
 namespace RedChess.ChessCommon.Interfaces
 {
-    public interface IBoard
+    public interface IBoard : IDisposable
     {
         PieceColor CurrentTurn { get; }
         bool KingInCheck();
