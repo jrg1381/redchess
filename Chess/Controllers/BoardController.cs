@@ -45,7 +45,7 @@ namespace Chess.Controllers
         {
             using (var dbChessContext = new ChessContext())
             {
-                return View(dbChessContext.UserProfiles.Where(profile => profile.UserName != System.Web.HttpContext.Current.User.Identity.Name));
+                return View(dbChessContext.UserProfiles.Where(profile => profile.UserName != System.Web.HttpContext.Current.User.Identity.Name).ToList());
             }
         }
 
