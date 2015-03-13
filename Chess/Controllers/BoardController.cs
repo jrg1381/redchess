@@ -18,7 +18,7 @@ namespace Chess.Controllers
         {
             using (var dbChessContext = new ChessContext())
             {
-                return View(dbChessContext.Boards);
+                return View(dbChessContext.Boards.ToList());
             }
         }
 
