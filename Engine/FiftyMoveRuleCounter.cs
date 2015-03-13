@@ -16,7 +16,7 @@ namespace Redchess.Engine
         {
             if (Board.PreviousState.MovedPiece.Type.IsOfType(PieceType.Pawn))
                 HalfMoveClock = -1;
-            if (Board.PreviousState.Board.GetContents(Board.PreviousState.Target) != null)
+            if (Board.PreviousState.BoardBefore.GetContents(Board.PreviousState.Target) != null)
                 HalfMoveClock = -1;
 
             HalfMoveClock++;

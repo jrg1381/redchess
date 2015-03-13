@@ -83,7 +83,7 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            if (m_moveToPlay.Board.GetContents(newLocation) != null || m_moveToPlay.Board.EnPassantTarget == newLocation)
+            if (m_moveToPlay.BoardBefore.GetContents(newLocation) != null || m_moveToPlay.BoardBefore.EnPassantTarget == newLocation)
             {
                 return String.Format("{0}x{1}", PieceColumn(piece), 
                     LocationToLower(newLocation));
@@ -97,7 +97,7 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            if (m_moveToPlay.Board.GetContents(newLocation) != null)
+            if (m_moveToPlay.BoardBefore.GetContents(newLocation) != null)
             {
                 return String.Format("{0}{1}x{2}", 
                     PieceSymbol(piece),
@@ -146,8 +146,8 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            return m_moveToPlay.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
-                Any(p => m_moveToPlay.Board.GetContents(p).ValidMoves(m_moveToPlay.Board).Contains(newLocation));
+            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
+                Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
         }
 
         private bool MoveIsAmbiguousWithColumn()
@@ -155,8 +155,8 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            return m_moveToPlay.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).X == piece.Position.X).
-                Any(p => m_moveToPlay.Board.GetContents(p).ValidMoves(m_moveToPlay.Board).Contains(newLocation));
+            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).X == piece.Position.X).
+                Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
         }
 
         private bool MoveIsAmbiguousWithRow()
@@ -164,8 +164,8 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            return m_moveToPlay.Board.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).Y == piece.Position.Y).
-                Any(p => m_moveToPlay.Board.GetContents(p).ValidMoves(m_moveToPlay.Board).Contains(newLocation));
+            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).Y == piece.Position.Y).
+                Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
         }
 
         private string LocationToLower(Location location)
@@ -187,17 +187,8 @@ namespace Redchess.Engine
         {
             return Task.Run(() =>
             {
-                var piece = m_moveToPlay.MovedPiece;
-                var newLocation = m_moveToPlay.Target;
-
-                var boardCopy = m_moveToPlay.Board.DeepClone();
-                boardCopy.Move(piece.Position.Location, newLocation);
-
-                if (m_moveToPlay.Promotion != null)
-                    boardCopy.PromotePiece(m_moveToPlay.Promotion);
-
-                var isCheck = boardCopy.KingInCheck();
-                var isMate = isCheck && boardCopy.IsCheckmate(skipCheckTest: true);
+                var isCheck = m_moveToPlay.BoardAfter.KingInCheck();
+                var isMate = isCheck && m_moveToPlay.BoardAfter.IsCheckmate(skipCheckTest: true);
 
                 if (isMate) return "#";
                 if (isCheck) return "+";

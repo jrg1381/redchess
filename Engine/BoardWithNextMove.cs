@@ -7,7 +7,8 @@ namespace Redchess.Engine
     {
         public IPiece MovedPiece { get; set; }
         public Location Target { get; set; }
-        public IBoardExtended Board { get; set; }
+        public IBoardExtended BoardBefore { get; set; }
+        public IBoardExtended BoardAfter { get; set; }
         public string Promotion { get; set; }
     }
 }

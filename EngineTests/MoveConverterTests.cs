@@ -14,9 +14,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_normalBoard.GetContents(Location.E2),
                 Target = Location.E4,
-                Board = m_normalBoard
+                BoardBefore = m_normalBoard.DeepClone()
             };
 
+            m_normalBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_normalBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
 
             string move = converter.MoveAsText();
@@ -30,12 +32,15 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.A7),
+                MovedPiece = m_emptyBoard.GetContents(Location.A7),
                 Target = Location.A8,
                 Promotion = "Q",
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            m_emptyBoard.PromotePiece(moveDefinition.Promotion);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("a8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen"); 
@@ -51,9 +56,11 @@ namespace Redchess.EngineTests
                 MovedPiece = m_normalBoard.GetContents(Location.A7),
                 Target = Location.B8,
                 Promotion = "Q",
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("axb8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen");
@@ -66,12 +73,15 @@ namespace Redchess.EngineTests
 
             var moveDefinition = new BoardWithNextMove
             {
-                MovedPiece = m_normalBoard.GetContents(Location.A7),
+                MovedPiece = m_emptyBoard.GetContents(Location.A7),
                 Target = Location.B8,
                 Promotion = "Q",
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            m_emptyBoard.PromotePiece(moveDefinition.Promotion);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("axb8(=Q)+", move, "Pawn on a7 moves to a8 and promotes to queen");
@@ -86,9 +96,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E1),
                 Target = Location.D1,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Kd1", move, "King moves to D1"); 
@@ -103,9 +115,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.D5,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("exd5", move, "Pawn move was not correctly converted to text");
@@ -120,9 +134,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.D3,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("exd3", move, "Pawn move was not correctly converted to text");
@@ -137,9 +153,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.A4,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Qa4+", move, "Queen moves to A4");
@@ -154,9 +172,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.G6),
                 Target = Location.G8,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Rg8#", move, "Rook moves to g8 and mate");
@@ -171,9 +191,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.B4,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Qb4", move, "Queen moves to B4");
@@ -188,9 +210,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.D5,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Qxd5", move, "Queen takes bishop on D5");
@@ -205,9 +229,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E1),
                 Target = Location.G1,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("O-O", move, "White king castles kingside");
@@ -222,9 +248,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E1),
                 Target = Location.C1,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("O-O-O+", move, "White king castles queenside");
@@ -239,9 +267,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.A1),
                 Target = Location.C1,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
 
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
             Assert.AreEqual("Rac1", move, "Rook on A1 moves to C1"); 
@@ -273,8 +303,11 @@ namespace Redchess.EngineTests
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.A1),
                 Target = Location.A3,
-                Board = m_emptyBoard
+                BoardBefore = m_emptyBoard.DeepClone()
             };
+
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = m_emptyBoard.DeepClone();
 
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();

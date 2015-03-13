@@ -11,7 +11,7 @@ using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.Engine
 {
-    public class Board : IBoardExtended, IDisposable
+    public class Board : IBoardExtended
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
 
@@ -128,16 +128,17 @@ namespace Redchess.Engine
             if (!ValidateMoveForCheck(piece, end))
                 return false;
 
-            var tmpBoard = DeepClone();
-
             PreviousState = new BoardWithNextMove
             {
-                Board = tmpBoard,
+                BoardBefore = new Board(this),
                 MovedPiece = piece,
                 Target = end
             };
 
             MovePiece(piece, end);
+
+            PreviousState.BoardAfter = new Board(this);
+
             NotifyObservers();
 
             return true;
@@ -241,6 +242,7 @@ namespace Redchess.Engine
                     break;
             }
 
+            PreviousState.BoardAfter = new Board(this);
             NotifyObservers();
         }
 
@@ -257,7 +259,7 @@ namespace Redchess.Engine
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
-            var boardCopy = DeepClone() as Board;
+            var boardCopy = new Board(this);
             boardCopy.MovePiece(piece, newLocation);
 
             // Note that CurrentTurn comes from the current board, not boardCopy, because MovePiece changes the turn...
