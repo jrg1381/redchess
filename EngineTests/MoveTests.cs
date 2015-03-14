@@ -47,9 +47,9 @@ namespace Redchess.EngineTests
 			}
 		}
 
-		[TestCase("8/8/8/8/8/8/P7/8 w KQkq - 0", Location.A2, new [] { Location.A3, Location.A4 })]
-        [TestCase("8/8/8/8/8/P7/8/8 w KQkq - 0", Location.A3, new[] { Location.A4 })]
-        [TestCase("8/8/8/8/3P4/3P4/8/8 w KQkq - 0", Location.D3, new Location[0])]
+		[TestCase("k7/8/8/8/8/8/P7/7K w KQkq - 0", Location.A2, new [] { Location.A3, Location.A4 })]
+        [TestCase("k7/8/8/8/8/P7/8/7K w KQkq - 0", Location.A3, new[] { Location.A4 })]
+        [TestCase("k6K/8/8/8/3P4/3P4/8/8 w KQkq - 0", Location.D3, new Location[0])]
         [TestCase("rnbqkbnr/1ppppppp/8/8/p7/8/PPPPPPPP/RNBQKBNR w KQkq - 0", Location.A2, new [] { Location.A3 })]
         [TestCase("rnbqkbnr/1ppppppp/8/8/P7/8/PPPPPPP1/RNBQKBNR w KQkq - 0", Location.A2, new [] {Location.A3})]
 		public void PawnMoves(string initialFen, Location pawnLocation, IEnumerable<Location> expectedReachableSquares)
@@ -63,7 +63,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PawnCanAdvanceOrTake()
 		{
-            m_emptyBoard.FromFen("8/8/8/4p3/3P4/8/8/8 w KQkq - 0");
+            m_emptyBoard.FromFen("8/8/8/4p3/3P4/8/8/k6K w KQkq - 0");
             var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.AreEquivalent(new [] {Location.D5, Location.E5}, thePawn1.ReachableSquares(m_emptyBoard), "Set of reachable squares for pawn was incorrect");
 		}
@@ -71,7 +71,7 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PawnCannotAdvanceBlockedByEnemy()
 		{
-            m_emptyBoard.FromFen("8/8/8/3p4/3P4/8/8/8 w KQkq - 0");
+            m_emptyBoard.FromFen("8/8/8/3p4/3P4/8/8/k6K w KQkq - 0");
             var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
 		}
@@ -79,7 +79,7 @@ namespace Redchess.EngineTests
         [Test]
         public void PawnCannotAdvanceBlockedByFriend()
         {
-            m_emptyBoard.FromFen("8/8/8/3P4/3P4/8/8/8 w KQkq - 0");
+            m_emptyBoard.FromFen("8/8/8/3P4/3P4/8/8/k6K w KQkq - 0");
             var thePawn1 = m_emptyBoard.GetContents(Location.D4);
             CollectionAssert.IsEmpty(thePawn1.ReachableSquares(m_emptyBoard), "Expected pawn to have no reachable squares");
         }
@@ -103,11 +103,11 @@ namespace Redchess.EngineTests
 	    [Test]
 	    public void QueenMoves1()
 	    {
-            m_emptyBoard.FromFen("8/8/8/3p4/3q4/8/8/8 w KQkq - 0");
+            m_emptyBoard.FromFen("k6K/8/8/3p4/3q4/8/8/8 w KQkq - 0");
 	        var theQueen = m_emptyBoard.GetContents(Location.D4);
 	        var thePawn = m_emptyBoard.GetContents(Location.D5);
 	        var blackPieces = m_emptyBoard.Pieces(PieceColor.Black);
-	        Assert.AreEqual(2, blackPieces.OccupiedSquares().Count(), "Expected two black pieces on the board after adding a black queen and black pawn");
+	        Assert.AreEqual(3, blackPieces.OccupiedSquares().Count(), "Expected two black pieces on the board after adding a black queen and black pawn");
 	        Assert.That(blackPieces.IsOccupied(Location.D4) && blackPieces.IsOccupied(Location.D5),
 	            "Expected pieces to be on D4 and D5, but they were on " +
 	            LocationListAsFriendlyString(m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares()));
@@ -122,9 +122,9 @@ namespace Redchess.EngineTests
 	            "Queen reachable squares not as expected");
 	    }
 
-	    [TestCase("7k/6P1/8/8/8/8/8/8 b KQkq - 0")]
-        [TestCase("3k4/2B5/8/8/8/8/8/8 b KQkq - 0")]
-        [TestCase("3k4/5N2/8/8/8/8/8/8 b KQkq - 0")]
+	    [TestCase("7k/6P1/8/8/8/8/8/7K b KQkq - 0")]
+        [TestCase("3k4/2B5/8/8/8/8/8/7K b KQkq - 0")]
+        [TestCase("3k4/5N2/8/8/8/8/8/7K b KQkq - 0")]
 		public void BlackKingShouldBeInCheck(string fen)
 		{
             m_emptyBoard.FromFen(fen);
@@ -151,24 +151,24 @@ namespace Redchess.EngineTests
 		[Test]
 		public void PieceMovesFromOneSquareToAnother()
 		{
-            m_emptyBoard.FromFen("8/3k4/8/8/8/8/8/8 b KQ - 0");
+            m_emptyBoard.FromFen("8/3k4/8/8/8/8/8/7K b KQ - 0");
 			Assert.True(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D7), "Expected a piece on D7");
             Assert.False(m_emptyBoard.Pieces(PieceColor.Black).IsOccupied(Location.D8), "Didn't expect a piece on D8");
             Assert.AreEqual(1, m_emptyBoard.Pieces(PieceColor.Black).OccupiedSquares().Count(), "Expected only one black piece on the board");
-            Assert.AreEqual(0, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected no white pieces on the board");
+            Assert.AreEqual(1, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected one white piece on the board");
 		}
 
 		[Test]
 		public void CannotTakeOwnPiece()
 		{
-            m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/8 b KQkq - 0");
+            m_emptyBoard.FromFen("3k4/3n4/8/8/8/8/8/7K b KQkq - 0");
             m_emptyBoard.MoveExpectFailure(Location.D8, Location.D7);
 		}
 
         [Test]
         public void CannotPlayOutOfTurn()
         {
-            m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/8 b KQkq - 0");
+            m_emptyBoard.FromFen("7k/2Rn4/8/8/8/8/8/7K b KQkq - 0");
             m_emptyBoard.MoveExpectFailure(Location.C7, Location.D7);
         }
 
@@ -180,12 +180,12 @@ namespace Redchess.EngineTests
             FenAssert.AreEqual("3k4/8/8/8/8/8/8/7K w KQ - 0", m_emptyBoard.ToFen(), "Expected knight to be taken");
 		}
 
-        [TestCase("7k/8/8/8/8/8/8/8 b - - 0", Location.H8, Location.B2)]
-        [TestCase("8/7k/8/8/8/8/8/Q7 w KQkq - 0", Location.H7, Location.H8)]
-        [TestCase("7k/8/8/8/8/8/8/Q7 w KQkq - 0", Location.H8, Location.G7)]
-        [TestCase("7k/8/8/8/8/8/1n6/Q7 w KQkq - 0", Location.B2, Location.A4)]
-        [TestCase("7k/8/8/8/n2p4/8/8/Q7 w KQkq - 0", Location.D4, Location.D5)]
-        [TestCase("8/7k/8/8/8/8/8/8 b KQkq - 0", Location.H7, Location.H7)]
+        [TestCase("7k/8/8/8/8/8/8/7K b - - 0", Location.H8, Location.B2)]
+        [TestCase("K7/7k/8/8/8/8/8/QK6 w KQkq - 0", Location.H7, Location.H8)]
+        [TestCase("7k/8/8/8/8/8/8/QK6 w KQkq - 0", Location.H8, Location.G7)]
+        [TestCase("7k/8/8/8/8/8/1n6/QK6 w KQkq - 0", Location.B2, Location.A4)]
+        [TestCase("7k/8/8/8/n2p4/8/8/QK6 w KQkq - 0", Location.D4, Location.D5)]
+        [TestCase("8/7k/8/8/8/8/8/7K b KQkq - 0", Location.H7, Location.H7)]
         public void IllegalMovesAreDisallowed(string fen, Location from, Location to)
         {
             m_emptyBoard.FromFen(fen);

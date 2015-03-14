@@ -18,6 +18,7 @@ namespace Redchess.Engine
         private readonly CastlingRules m_castlingRules;
         private readonly Fen m_fen;
         private readonly MoveTranscriber m_transcriber;
+        private readonly CheckCache m_checkCache;
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
         private List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
@@ -43,6 +44,15 @@ namespace Redchess.Engine
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
+            m_checkCache = new CheckCache(this);
+        }
+
+        private Location KingPosition(PieceColor colorOfKing)
+        {
+            var king = colorOfKing == PieceColor.Black ? PieceType.BlackKing : PieceType.WhiteKing;
+            // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
+            // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
+            return FindPieces(king).First();
         }
 
         public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
@@ -56,6 +66,7 @@ namespace Redchess.Engine
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
+            m_checkCache = new CheckCache(this);
         }
 
         public string LastMove()
@@ -113,6 +124,7 @@ namespace Redchess.Engine
             }
 
             m_fen.ForceFen(fen);
+            m_checkCache.OnCompleted();
         }
 
         public virtual bool Move(Location start, Location end)
@@ -254,17 +266,16 @@ namespace Redchess.Engine
         /// <returns></returns>
         public bool KingInCheck()
         {
-            return KingInCheck(CurrentTurn, KingPosition(CurrentTurn));
+            return m_checkCache.IsInCheck;
         }
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
             var boardCopy = new Board(this);
             boardCopy.MovePiece(piece, newLocation);
+            boardCopy.m_checkCache.OnCompleted();
 
-            // Note that CurrentTurn comes from the current board, not boardCopy, because MovePiece changes the turn...
-            // Note that KingPosition comes from the boardCopy, because the move might have moved the king...
-            return !boardCopy.KingInCheck(CurrentTurn, boardCopy.KingPosition(CurrentTurn));
+            return !boardCopy.m_checkCache.OtherPlayerInCheck;
         }
 
         public IPiece GetContents(Location loc)
@@ -437,14 +448,6 @@ namespace Redchess.Engine
                     SimpleBoard.UnsafeMovePiece(ref piece, Location.D8);
                 }
             }
-        }
-
-        private Location KingPosition(PieceColor colorOfKing)
-        {
-            var king = colorOfKing == PieceColor.Black ? PieceType.BlackKing : PieceType.WhiteKing;
-            // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
-            // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
-            return FindPieces(king).First();
         }
 
         public IBoardExtended DeepClone()

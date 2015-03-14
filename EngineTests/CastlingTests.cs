@@ -12,28 +12,28 @@ namespace Redchess.EngineTests
         [Test]
         public void CastlingTest1()
         {
-            m_emptyBoard.FromFen("8/8/8/8/8/8/8/4K2R w KQkq - 0");
+            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq - 0");
             Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched king and rook should be allowed to castle");
         }
 
         [Test]
         public void CastlingTest2()
         {
-            m_emptyBoard.FromFen("8/8/8/8/4q3/8/8/4K2R w KQkq - 0");
+            m_emptyBoard.FromFen("k7/8/8/8/4q3/8/8/4K2R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is in check right now! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest3()
         {
-            m_emptyBoard.FromFen("8/8/8/8/5q2/8/8/4K2R w KQkq - 0");
+            m_emptyBoard.FromFen("k7/8/8/8/5q2/8/8/4K2R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king would pass through check! No castling allowed.");
         }
 
         [Test]
         public void CastlingTest4()
         {
-            m_emptyBoard.FromFen("8/8/8/8/6q1/8/8/4K2R w KQkq - 0");
+            m_emptyBoard.FromFen("k7/8/8/8/6q1/8/8/4K2R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king would finish in check! No castling allowed.");
         }
 
@@ -52,7 +52,7 @@ namespace Redchess.EngineTests
         [Test]
         public void CastlingTest6()
         {
-            m_emptyBoard.FromFen("8/8/8/8/8/8/8/4Kb1R w KQkq - 0");
+            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4Kb1R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is blocked by another piece. No castling.");
         }
 
