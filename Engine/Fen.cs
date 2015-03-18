@@ -8,19 +8,25 @@ namespace Redchess.Engine
     internal sealed class Fen : AbstractBoardObserver
     {
         private string m_fen;
+        private bool m_upToDate;
 
-        internal Fen(IBoardExtended board) : base(board)
-        {
-            UpdateFen();
-        }
+        internal Fen(IBoardExtended board) : base(board) { }
 
         internal string ToFen()
         {
+            if (!m_upToDate)
+                UpdateFen();
+
             return m_fen;
         }
 
         private void UpdateFen()
         {
+            if (m_upToDate)
+                return;
+
+            m_upToDate = true;
+
             var counter = 0; // number of consecutive empty squares seen
             var index = 0; // number of squares seen so far (0-63)
             var sb = new StringBuilder();
@@ -76,12 +82,14 @@ namespace Redchess.Engine
 
         public override void OnCompleted()
         {
+            m_upToDate = false;
             UpdateFen();
         }
 
         internal void ForceFen(string fen)
         {
             m_fen = fen;
+            m_upToDate = true;
         }
     }
 }
