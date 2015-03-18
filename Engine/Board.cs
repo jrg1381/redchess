@@ -14,15 +14,17 @@ namespace Redchess.Engine
     public class Board : IBoardExtended
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
-
+        
+        // Observers
         private readonly CastlingRules m_castlingRules;
         private readonly Fen m_fen;
         private readonly MoveTranscriber m_transcriber;
         private readonly CheckCache m_checkCache;
+        private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
+
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
         private List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
-        private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
         protected SimpleBoard SimpleBoard { get; set; }
 
         public BoardWithNextMove PreviousState { get; private set; }

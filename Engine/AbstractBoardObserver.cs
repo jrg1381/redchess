@@ -7,6 +7,7 @@ namespace Redchess.Engine
     {
         protected readonly IBoardExtended Board;
         protected readonly IDisposable Unsubscriber;
+        protected bool DataIsCurrent;
 
         protected AbstractBoardObserver(IBoardExtended board)
         {
@@ -24,6 +25,7 @@ namespace Redchess.Engine
 
         public virtual void OnCompleted()
         {
+            DataIsCurrent = true;
         }
 
         public virtual void Dispose()
