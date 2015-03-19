@@ -15,6 +15,5 @@ namespace Redchess.Engine.Interfaces
         int FiftyMoveCounter { get; }
         BoardWithNextMove PreviousState { get; }
         string FenCastleString();
-        IBoardExtended DeepClone();
     }
 }

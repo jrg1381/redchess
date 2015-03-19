@@ -35,7 +35,7 @@ namespace Redchess.Engine
         }
 
         // Copy constructor
-        protected Board(Board replacementBoard)
+        internal Board(Board replacementBoard)
         {
             CurrentTurn = replacementBoard.CurrentTurn;
             m_enPassantTarget = replacementBoard.EnPassantTarget;
@@ -442,11 +442,6 @@ namespace Redchess.Engine
                     SimpleBoard.UnsafeMovePiece(ref piece, Location.D8);
                 }
             }
-        }
-
-        public IBoardExtended DeepClone()
-        {
-            return new Board(this);
         }
 
         public IDisposable Subscribe(IObserver<IBoardExtended> observer)

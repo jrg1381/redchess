@@ -10,6 +10,8 @@ namespace Redchess.EngineTests
 {
     internal sealed class InteractiveBoard : Board
     {
+        internal InteractiveBoard(Board board) : base(board) { }
+
         public InteractiveBoard(PieceColor color, bool isEmpty) : base(color, isEmpty)
         {
         }
