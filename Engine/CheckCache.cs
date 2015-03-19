@@ -7,26 +7,42 @@ namespace Redchess.Engine
 {
     internal class CheckCache : AbstractBoardObserver
     {
-        public CheckCache(IBoardExtended board) : base(board)
+        private bool m_isInCheck;
+        private bool m_otherPlayerInCheck;
+        private bool m_otherPlayerInCheckDataUpToDate;
+
+        public CheckCache(IBoardExtended board) : base(board) {}
+
+        public bool IsInCheck
         {
-            try
+            get
             {
-                IsInCheck = Board.KingInCheck(Board.CurrentTurn, KingPosition(Board.CurrentTurn));
-                OtherPlayerInCheck = Board.KingInCheck(~Board.CurrentTurn, KingPosition(~Board.CurrentTurn));
-            }
-            catch (InvalidOperationException)
-            {
-                // TODO: For tests which use an empty board, Sequence contains no elements when looking for the king
+                if (DataIsCurrent)
+                    return m_isInCheck;
+
+                m_isInCheck = Board.KingInCheck(Board.CurrentTurn, KingPosition(Board.CurrentTurn));
+                DataIsCurrent = true;
+                return m_isInCheck;
             }
         }
 
-        public bool IsInCheck { get; private set; }
-        public bool OtherPlayerInCheck { get; private set; }
+        public bool OtherPlayerInCheck
+        {
+            get
+            {
+                if (m_otherPlayerInCheckDataUpToDate)
+                    return m_otherPlayerInCheck;
+
+                m_otherPlayerInCheck = Board.KingInCheck(~Board.CurrentTurn, KingPosition(~Board.CurrentTurn));
+                m_otherPlayerInCheckDataUpToDate = true;
+                return m_otherPlayerInCheck;
+            }
+        }
 
         public override void OnCompleted()
         {
-            IsInCheck =  Board.KingInCheck(Board.CurrentTurn, KingPosition(Board.CurrentTurn));
-            OtherPlayerInCheck = Board.KingInCheck(~Board.CurrentTurn, KingPosition(~Board.CurrentTurn));
+            DataIsCurrent = false;
+            m_otherPlayerInCheckDataUpToDate = false;
         }
 
         private Location KingPosition(PieceColor colorOfKing)
