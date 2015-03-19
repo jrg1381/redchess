@@ -447,21 +447,23 @@ namespace Redchess.Engine
         public IDisposable Subscribe(IObserver<IBoardExtended> observer)
         {
             m_observers.Add(observer);
-            return new Unsubscriber(this);
+            return new Unsubscriber(this, observer);
         }
 
         sealed class Unsubscriber : IDisposable
         {
             private readonly Board m_board;
+            private readonly IObserver<IBoardExtended> m_observer; 
 
-            internal Unsubscriber(Board b)
+            internal Unsubscriber(Board b, IObserver<IBoardExtended> observer)
             {
                 m_board = b;
+                m_observer = observer;
             }
 
             public void Dispose()
             {
-                m_board.m_observers = null;
+                m_board.m_observers.Remove(m_observer);
             }
         }
 
