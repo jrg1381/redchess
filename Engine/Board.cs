@@ -49,14 +49,6 @@ namespace Redchess.Engine
             m_checkCache = new CheckCache(this);
         }
 
-        private Location KingPosition(PieceColor colorOfKing)
-        {
-            var king = colorOfKing == PieceColor.Black ? PieceType.BlackKing : PieceType.WhiteKing;
-            // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
-            // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
-            return FindPieces(king).First();
-        }
-
         public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
         {
             CurrentTurn = whoseTurn;
