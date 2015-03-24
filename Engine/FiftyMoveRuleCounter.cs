@@ -4,22 +4,30 @@ using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.Engine
 {
-    internal class FiftyMoveRuleCounter : AbstractBoardObserver
+    internal class FiftyMoveRuleCounter : AbstractBoardObserver2<int>
     {
         public FiftyMoveRuleCounter(IBoardExtended board) : base(board)
         {
+            Value = 0;
         }
 
-        internal int HalfMoveClock { get; set; }
-
-        public override void OnCompleted()
+        public void ForceUpdate(int moveCounter)
         {
-            if (Board.PreviousState.MovedPiece.Type.IsOfType(PieceType.Pawn))
-                HalfMoveClock = -1;
-            if (Board.PreviousState.BoardBefore.GetContents(Board.PreviousState.Target) != null)
-                HalfMoveClock = -1;
+            Value = moveCounter;
+            DataIsCurrent = true;
+        }
 
-            HalfMoveClock++;
+        protected override void UpdateValue()
+        {
+            if (Board.PreviousState == null)
+                return;
+
+            if (Board.PreviousState.MovedPiece.Type.IsOfType(PieceType.Pawn))
+                Value = -1;
+            if (Board.PreviousState.BoardBefore.GetContents(Board.PreviousState.Target) != null)
+                Value = -1;
+
+            m_data++;
         }
     }
 }

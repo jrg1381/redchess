@@ -3,39 +3,23 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class MoveTranscriber : AbstractBoardObserver
+    internal sealed class MoveTranscriber : AbstractBoardObserver2<string>
     {
-        private string m_lastMove;
         private BoardWithNextMove m_previousState;
-        private bool m_upToDate;
 
         internal MoveTranscriber(IBoardExtended board) : base(board)
         {
         }
 
-        internal string LastMove()
+        protected override void UpdateValue()
         {
-            if(!m_upToDate)
-                m_lastMove = (new MoveTextConverter(m_previousState)).MoveAsText();
-
-            m_upToDate = true;
-
-            return m_lastMove;
-        }
-
-        private void UpdateMove()
-        {
-            m_previousState = Board.PreviousState;
-            m_upToDate = false;
+            Value = (new MoveTextConverter(m_previousState)).MoveAsText();
         }
 
         public override void OnCompleted()
         {
-            UpdateMove();
-        }
-
-        public override void OnError(Exception error)
-        {
+            m_previousState = Board.PreviousState;
+            base.OnCompleted();
         }
     }
 }

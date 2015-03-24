@@ -24,7 +24,7 @@ namespace Redchess.Engine
 
         private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
-        private List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
+        private readonly List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
         protected SimpleBoard SimpleBoard { get; set; }
 
         public BoardWithNextMove PreviousState { get; private set; }
@@ -65,7 +65,7 @@ namespace Redchess.Engine
 
         public string LastMove()
         {
-            return m_transcriber.LastMove();
+            return m_transcriber.Value;
         }
 
         public PieceColor CurrentTurn { get; private set; }
@@ -93,7 +93,7 @@ namespace Redchess.Engine
                 m_enPassantTarget = (Location) Enum.Parse(typeof (Location), enPassantTarget.ToUpper());
             }
 
-            m_fiftyMoveRule.HalfMoveClock = Int32.Parse(halfMoveClock);
+            m_fiftyMoveRule.ForceUpdate(Int32.Parse(halfMoveClock));
 
             SimpleBoard = new SimpleBoard(true);
 
@@ -252,7 +252,7 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter { get { return m_fiftyMoveRule.HalfMoveClock; } }
+        public int FiftyMoveCounter { get { return m_fiftyMoveRule.Value; } }
 
         /// <summary>
         ///     Returns true if the king of the current player is in check right now
