@@ -62,6 +62,16 @@ namespace Redchess.Engine.Structures
             return false;
         }
 
+        public static bool operator ==(Square s1, Square s2)
+        {
+            return s1.Equals(s2);
+        }
+
+        public static bool operator !=(Square s1, Square s2)
+        {
+            return !(s1.Equals(s2));
+        }
+
         public override int GetHashCode()
         {
             return (int) m_location;

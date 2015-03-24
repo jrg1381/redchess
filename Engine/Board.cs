@@ -467,14 +467,24 @@ namespace Redchess.Engine
             }
         }
 
+        private void Dispose(bool isDisposing)
+        {
+            if (m_fen != null)
+                m_fen.Dispose();
+            if (m_transcriber != null)
+                m_transcriber.Dispose();
+            if (m_castlingRules != null)
+                m_castlingRules.Dispose();
+            if (m_fiftyMoveRule != null)
+                m_fiftyMoveRule.Dispose();
+            if (m_checkCache != null)
+                m_checkCache.Dispose();
+        }
+
         public void Dispose()
         {
-            if(m_fen != null)
-                m_fen.Dispose();
-            if(m_transcriber != null)
-                m_transcriber.Dispose();
-            if(m_castlingRules != null)
-                m_castlingRules.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
