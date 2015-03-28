@@ -25,7 +25,11 @@ namespace Redchess.Engine
                 return m_data;
             }
 
-            protected set { m_data = value; }
+            protected set 
+            { 
+                m_data = value;
+                DataIsCurrent = true;
+            }
         }
 
         protected AbstractBoardObserver2(IBoardExtended board)

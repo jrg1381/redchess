@@ -73,10 +73,10 @@ namespace Redchess.EngineTests
         [Test]
         public void CastlingTest8()
         {
-            m_emptyBoard.FromFen("7k/8/8/8/8/8/8/4K2R w KQkq - 0");
+            m_emptyBoard.FromFen("7k/8/8/8/8/8/8/4K2R w KQ - 0");
             Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched white king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E1,Location.G1);
-            FenAssert.AreEqual("7k/8/8/8/8/8/8/5RK1 b kq - 1", m_emptyBoard.ToFen(), "Unexpected FEN after castling");
+            FenAssert.AreEqual("7k/8/8/8/8/8/8/5RK1 b - - 1", m_emptyBoard.ToFen(), "Unexpected FEN after castling");
         }
 
         [Test]
@@ -108,16 +108,6 @@ namespace Redchess.EngineTests
             Assert.True(m_emptyBoard.MayCastle(BlackKingLocation(), Side.QueenSide), "Untouched king and rook should be allowed to castle");
             m_emptyBoard.Move(Location.E8, Location.C8);
             Assert.False(m_emptyBoard.MayCastle(m_emptyBoard.GetContents(Location.C8), Side.QueenSide), "Castling has occurred already, not allowed again");
-        }
-
-        [Test]
-        public void MayCastleFailModes()
-        {
-            CastlingRules rules = new CastlingRules(m_emptyBoard);
-            // Cast to invalid enum values to exercise this code and prevent annoying complaints from NCover
-            Assert.Throws(typeof(ArgumentException),() => rules.MayCastle((PieceColor) 125, Side.QueenSide));
-            Assert.Throws(typeof(ArgumentException), () => rules.MayCastle(PieceColor.White, (Side)44));
-            Assert.Throws(typeof(ArgumentException), () => rules.MayCastle(PieceColor.Black, (Side)44));
         }
 
         [Test]

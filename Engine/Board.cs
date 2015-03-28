@@ -16,7 +16,8 @@ namespace Redchess.Engine
         private static readonly int s_parallelism = Environment.ProcessorCount;
         
         // Observers
-        private readonly CastlingRules m_castlingRules;
+        private readonly CastlingRules m_transientCastlingRules;
+        private readonly PermanentCastlingRules m_permanentCastlingRules;
         private readonly Fen m_fen;
         private readonly MoveTranscriber m_transcriber;
         private readonly CheckCache m_checkCache;
@@ -31,7 +32,12 @@ namespace Redchess.Engine
 
         public string FenCastleString()
         {
-            return m_castlingRules.FenCastleString();
+            return m_permanentCastlingRules.FenCastleString();
+        }
+
+        public CastlingOptions PermanentCastlingOptions
+        {
+            get { return m_permanentCastlingRules.Value; }
         }
 
         // Copy constructor
@@ -41,8 +47,9 @@ namespace Redchess.Engine
             m_enPassantTarget = replacementBoard.EnPassantTarget;
 
             SimpleBoard = replacementBoard.SimpleBoard.DeepClone();
-            m_castlingRules = replacementBoard.m_castlingRules.DeepClone(this);
 
+            m_permanentCastlingRules = new PermanentCastlingRules(this, replacementBoard);
+            m_transientCastlingRules = new CastlingRules(this);
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
@@ -55,8 +62,9 @@ namespace Redchess.Engine
             m_enPassantTarget = Location.InvalidSquare;
 
             SimpleBoard = new SimpleBoard(isEmpty);
-            m_castlingRules = new CastlingRules(this);
 
+            m_permanentCastlingRules = new PermanentCastlingRules(this);
+            m_transientCastlingRules = new CastlingRules(this);
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
@@ -86,7 +94,7 @@ namespace Redchess.Engine
             int index = 0;
 
             CurrentTurn = currentTurn == "b" ? PieceColor.Black : PieceColor.White;
-            m_castlingRules.UpdateFromFen(castling);
+            m_permanentCastlingRules.UpdateFromFen(castling);
 
             if (enPassantTarget != "-")
             {
@@ -284,7 +292,16 @@ namespace Redchess.Engine
 
         public bool MayCastle(IPiece king, Side side)
         {
-            return m_castlingRules.MayCastle(king.Color, side);
+            if(king.Color == PieceColor.Black && side == Side.KingSide)
+                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
+            if (king.Color == PieceColor.Black && side == Side.QueenSide)
+                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
+            if (king.Color == PieceColor.White && side == Side.KingSide)
+                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
+            if (king.Color == PieceColor.White && side == Side.QueenSide)
+                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
+
+            throw new ArgumentException("Asked for impossible combination of casting");
         }
 
         /// <summary>
@@ -473,8 +490,8 @@ namespace Redchess.Engine
                 m_fen.Dispose();
             if (m_transcriber != null)
                 m_transcriber.Dispose();
-            if (m_castlingRules != null)
-                m_castlingRules.Dispose();
+            if (m_transientCastlingRules != null)
+                m_transientCastlingRules.Dispose();
             if (m_fiftyMoveRule != null)
                 m_fiftyMoveRule.Dispose();
             if (m_checkCache != null)
