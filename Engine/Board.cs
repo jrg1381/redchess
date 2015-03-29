@@ -276,6 +276,7 @@ namespace Redchess.Engine
             var boardCopy = new Board(this);
             boardCopy.MovePiece(piece, newLocation);
             boardCopy.m_checkCache.OnCompleted();
+            boardCopy.m_permanentCastlingRules.OnCompleted();
 
             return !boardCopy.m_checkCache.OtherPlayerInCheck;
         }
