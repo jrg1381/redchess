@@ -4,7 +4,7 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    sealed class PermanentCastlingRules : AbstractBoardObserver2<CastlingOptions>
+    sealed class PermanentCastlingRules : AbstractBoardObserver<CastlingOptions>
     {
         internal PermanentCastlingRules(IBoardExtended board)
             : base(board)

@@ -5,7 +5,7 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal abstract class AbstractBoardObserver2<T> : IObserver<IBoardExtended>, IDisposable
+    internal abstract class AbstractBoardObserver<T> : IObserver<IBoardExtended>, IDisposable
     {
         protected readonly IBoardExtended Board;
         private readonly IDisposable m_unsubscriber;
@@ -34,7 +34,7 @@ namespace Redchess.Engine
             }
         }
 
-        protected AbstractBoardObserver2(IBoardExtended board)
+        protected AbstractBoardObserver(IBoardExtended board)
         {
             Board = board;
             m_unsubscriber = Board.Subscribe(this);
@@ -64,37 +64,6 @@ namespace Redchess.Engine
             // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
             // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
             return Board.FindPieces(king).First();
-        }
-    }
-
-    internal abstract class AbstractBoardObserver : IObserver<IBoardExtended>, IDisposable
-    {
-        protected readonly IBoardExtended Board;
-        private readonly IDisposable m_unsubscriber;
-        protected bool DataIsCurrent;
-
-        protected AbstractBoardObserver(IBoardExtended board)
-        {
-            Board = board;
-            m_unsubscriber = Board.Subscribe(this);
-        }
-
-        public virtual void OnError(Exception error)
-        {
-        }
-
-        public virtual void OnNext(IBoardExtended value)
-        {
-        }
-
-        public virtual void OnCompleted()
-        {
-            DataIsCurrent = true;
-        }
-
-        public virtual void Dispose()
-        {
-            m_unsubscriber.Dispose();
         }
     }
 }

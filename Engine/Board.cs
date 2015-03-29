@@ -83,7 +83,7 @@ namespace Redchess.Engine
 
         public string ToFen()
         {
-            return m_fen.ToFen();
+            return m_fen.Value;
         }
 
         public virtual void FromFen(string fen)

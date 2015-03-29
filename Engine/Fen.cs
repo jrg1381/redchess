@@ -5,20 +5,11 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class Fen : AbstractBoardObserver
+    internal sealed class Fen : AbstractBoardObserver<string>
     {
-        private string m_fen;
-
         internal Fen(IBoardExtended board) : base(board) { }
 
-        internal string ToFen()
-        {
-            UpdateFen();
-            DataIsCurrent = true;
-            return m_fen;
-        }
-
-        private void UpdateFen()
+        protected override void UpdateValue()
         {
             if (DataIsCurrent)
                 return;
@@ -73,19 +64,12 @@ namespace Redchess.Engine
                                             Board.EnPassantTarget == Location.InvalidSquare ? "-" : Board.EnPassantTarget.ToString(),
                                             Board.FiftyMoveCounter);
 
-            m_fen = sb.ToString();
-        }
-
-        public override void OnCompleted()
-        {
-            DataIsCurrent = false;
-            UpdateFen();
-            base.OnCompleted();
+            m_data = sb.ToString();
         }
 
         internal void ForceFen(string fen)
         {
-            m_fen = fen;
+            m_data = fen;
             DataIsCurrent = true;
         }
     }

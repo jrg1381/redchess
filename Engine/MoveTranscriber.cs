@@ -3,7 +3,7 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    internal sealed class MoveTranscriber : AbstractBoardObserver2<string>
+    internal sealed class MoveTranscriber : AbstractBoardObserver<string>
     {
         private BoardWithNextMove m_previousState;
 

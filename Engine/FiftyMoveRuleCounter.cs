@@ -4,7 +4,7 @@ using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.Engine
 {
-    internal class FiftyMoveRuleCounter : AbstractBoardObserver2<int>
+    internal class FiftyMoveRuleCounter : AbstractBoardObserver<int>
     {
         public FiftyMoveRuleCounter(IBoardExtended board) : base(board)
         {
