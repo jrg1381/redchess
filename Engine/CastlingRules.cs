@@ -8,17 +8,14 @@ namespace Redchess.Engine
 {
     sealed class CastlingRules : AbstractBoardObserver2<CastlingOptions>
     {
-        private CastlingOptions m_permanentCastlingFlags = CastlingOptions.All;
-
         internal CastlingRules(IBoardExtended board) : base(board)
         {
         }
 
         protected override void UpdateValue()
         {
-            m_permanentCastlingFlags = Board.PermanentCastlingOptions;
             // Nothing to do
-            if (m_permanentCastlingFlags == CastlingOptions.None)
+            if (Board.PermanentCastlingOptions == CastlingOptions.None)
                 return;
 
             var temp = CastlingOptions.None;
@@ -72,12 +69,13 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return m_permanentCastlingFlags.HasFlag(CastlingOptions.WhiteKingSide) && SquaresEmpty(new[] {Location.F1, Location.G1}) &&
-                                   SquaresNotAttacked(color, new[] { Location.E1, Location.F1, Location.G1 });
+                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.WhiteKingSide) &&
+                                   SquaresEmpty(new[] {Location.F1, Location.G1}) &&
+                                   SquaresNotAttacked(color, new[] {Location.E1, Location.F1, Location.G1});
                         case Side.QueenSide:
-                            return m_permanentCastlingFlags.HasFlag(CastlingOptions.WhiteQueenSide) &&
-                                   SquaresEmpty(new[] { Location.B1, Location.C1, Location.D1 }) &&
-                                   SquaresNotAttacked(color, new[] { Location.C1, Location.D1, Location.E1 });
+                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.WhiteQueenSide) &&
+                                   SquaresEmpty(new[] {Location.B1, Location.C1, Location.D1}) &&
+                                   SquaresNotAttacked(color, new[] {Location.C1, Location.D1, Location.E1});
                     }
                     break;
                 case PieceColor.Black:
@@ -85,15 +83,16 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return m_permanentCastlingFlags.HasFlag(CastlingOptions.BlackKingSide) && SquaresEmpty(new[] { Location.F8, Location.G8 }) &&
-                                   SquaresNotAttacked(color, new[] { Location.E8, Location.F8, Location.G8 });
+                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.BlackKingSide) &&
+                                   SquaresEmpty(new[] {Location.F8, Location.G8}) &&
+                                   SquaresNotAttacked(color, new[] {Location.E8, Location.F8, Location.G8});
                         case Side.QueenSide:
-                            return m_permanentCastlingFlags.HasFlag(CastlingOptions.BlackQueenSide) &&
-                                   SquaresEmpty(new[] { Location.B8, Location.C8, Location.D8 }) &&
-                                   SquaresNotAttacked(color, new[] { Location.C8, Location.D8, Location.E8 });
+                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.BlackQueenSide) &&
+                                   SquaresEmpty(new[] {Location.B8, Location.C8, Location.D8}) &&
+                                   SquaresNotAttacked(color, new[] {Location.C8, Location.D8, Location.E8});
                     }
-                }
                     break;
+                }
             }
 
             throw new ArgumentException("Parameters to MayCastle made no sense");
