@@ -57,7 +57,8 @@
     <Compile Include="BoardBitmap.cs" />
     <Compile Include="BoardWithNextMove.cs" />
     <Compile Include="CastlingOptions.cs" />
-    <Compile Include="CheckCache.cs" />
+    <Compile Include="CheckCacheOtherPlayer.cs" />
+    <Compile Include="CheckCacheCurrentPlayer.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
     <Compile Include="CastlingRules.cs" />
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />

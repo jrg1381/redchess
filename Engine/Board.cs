@@ -20,7 +20,8 @@ namespace Redchess.Engine
         private readonly PermanentCastlingRules m_permanentCastlingRules;
         private readonly Fen m_fen;
         private readonly MoveTranscriber m_transcriber;
-        private readonly CheckCache m_checkCache;
+        private readonly CheckCacheCurrentPlayer m_checkCacheCurrentPlayer;
+        private readonly CheckCacheOtherPlayer m_checkCacheOtherPlayer;
         private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
 
         private Location m_enPassantTarget;
@@ -53,7 +54,8 @@ namespace Redchess.Engine
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
-            m_checkCache = new CheckCache(this);
+            m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
+            m_checkCacheOtherPlayer = new CheckCacheOtherPlayer(this);
         }
 
         public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
@@ -68,7 +70,8 @@ namespace Redchess.Engine
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
-            m_checkCache = new CheckCache(this);
+            m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
+            m_checkCacheOtherPlayer = new CheckCacheOtherPlayer(this);
         }
 
         public string LastMove()
@@ -126,7 +129,7 @@ namespace Redchess.Engine
             }
 
             m_fen.ForceFen(fen);
-            m_checkCache.OnCompleted();
+            m_checkCacheCurrentPlayer.OnCompleted();
         }
 
         public virtual bool Move(Location start, Location end)
@@ -268,17 +271,17 @@ namespace Redchess.Engine
         /// <returns></returns>
         public bool KingInCheck()
         {
-            return m_checkCache.IsInCheck;
+            return m_checkCacheCurrentPlayer.Value;
         }
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
             var boardCopy = new Board(this);
             boardCopy.MovePiece(piece, newLocation);
-            boardCopy.m_checkCache.OnCompleted();
+            boardCopy.m_checkCacheOtherPlayer.OnCompleted();
             boardCopy.m_permanentCastlingRules.OnCompleted();
 
-            return !boardCopy.m_checkCache.OtherPlayerInCheck;
+            return !boardCopy.m_checkCacheOtherPlayer.Value;
         }
 
         public IPiece GetContents(Location loc)
@@ -495,8 +498,10 @@ namespace Redchess.Engine
                 m_transientCastlingRules.Dispose();
             if (m_fiftyMoveRule != null)
                 m_fiftyMoveRule.Dispose();
-            if (m_checkCache != null)
-                m_checkCache.Dispose();
+            if (m_checkCacheCurrentPlayer != null)
+                m_checkCacheCurrentPlayer.Dispose();
+            if (m_checkCacheOtherPlayer != null)
+                m_checkCacheOtherPlayer.Dispose();
         }
 
         public void Dispose()

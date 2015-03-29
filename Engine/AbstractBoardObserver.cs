@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
@@ -54,6 +56,14 @@ namespace Redchess.Engine
         public virtual void Dispose()
         {
             m_unsubscriber.Dispose();
+        }
+
+        protected Location KingPosition(PieceColor colorOfKing)
+        {
+            var king = colorOfKing == PieceColor.Black ? PieceType.BlackKing : PieceType.WhiteKing;
+            // Crashes if there is no king with SequenceHasNoElements exception. This is deliberate, there should always be two kings.
+            // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
+            return Board.FindPieces(king).First();
         }
     }
 
