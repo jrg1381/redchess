@@ -16,12 +16,6 @@ namespace Redchess.Engine
             Value = replacementBoard.FiftyMoveCounter;
         }
 
-        public void ForceUpdate(int moveCounter)
-        {
-            Value = moveCounter;
-            DataIsCurrent = true;
-        }
-
         protected override void UpdateValue()
         {
             if (Board.PreviousState == null)

@@ -16,7 +16,7 @@ namespace Redchess.Engine
         private static readonly int s_parallelism = Environment.ProcessorCount;
         
         // Observers
-        private readonly CastlingRules m_transientCastlingRules;
+        private readonly TransientCastlingRules m_transientCastlingRules;
         private readonly PermanentCastlingRules m_permanentCastlingRules;
         private readonly Fen m_fen;
         private readonly MoveTranscriber m_transcriber;
@@ -50,7 +50,7 @@ namespace Redchess.Engine
             SimpleBoard = replacementBoard.SimpleBoard.DeepClone();
 
             m_permanentCastlingRules = new PermanentCastlingRules(this, replacementBoard);
-            m_transientCastlingRules = new CastlingRules(this);
+            m_transientCastlingRules = new TransientCastlingRules(this);
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this, replacementBoard);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
@@ -66,7 +66,7 @@ namespace Redchess.Engine
             SimpleBoard = new SimpleBoard(isEmpty);
 
             m_permanentCastlingRules = new PermanentCastlingRules(this);
-            m_transientCastlingRules = new CastlingRules(this);
+            m_transientCastlingRules = new TransientCastlingRules(this);
             m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
@@ -128,7 +128,7 @@ namespace Redchess.Engine
                 index++;
             }
 
-            m_fen.ForceFen(fen);
+            m_fen.ForceUpdate(fen);
             m_checkCacheCurrentPlayer.OnCompleted();
         }
 

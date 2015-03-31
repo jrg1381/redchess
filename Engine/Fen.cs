@@ -66,11 +66,5 @@ namespace Redchess.Engine
 
             m_data = sb.ToString();
         }
-
-        internal void ForceFen(string fen)
-        {
-            m_data = fen;
-            DataIsCurrent = true;
-        }
     }
 }

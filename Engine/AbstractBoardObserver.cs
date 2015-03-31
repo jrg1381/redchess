@@ -65,5 +65,11 @@ namespace Redchess.Engine
             // Using FirstOrDefault will claim that the King is on A1, which is unhelpful.
             return Board.FindPieces(king).First();
         }
+
+        public void ForceUpdate(T newValue)
+        {
+            m_data = newValue;
+            DataIsCurrent = true;
+        }
     }
 }

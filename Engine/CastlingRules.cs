@@ -6,9 +6,9 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    sealed class CastlingRules : AbstractBoardObserver<CastlingOptions>
+    sealed class TransientCastlingRules : AbstractBoardObserver<CastlingOptions>
     {
-        internal CastlingRules(IBoardExtended board) : base(board)
+        internal TransientCastlingRules(IBoardExtended board) : base(board)
         {
         }
 
