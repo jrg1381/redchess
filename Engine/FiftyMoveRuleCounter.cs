@@ -11,6 +11,11 @@ namespace Redchess.Engine
             Value = 0;
         }
 
+        public FiftyMoveRuleCounter(Board board, Board replacementBoard) : base(board)
+        {
+            Value = replacementBoard.FiftyMoveCounter;
+        }
+
         public void ForceUpdate(int moveCounter)
         {
             Value = moveCounter;

@@ -51,7 +51,7 @@ namespace Redchess.Engine
 
             m_permanentCastlingRules = new PermanentCastlingRules(this, replacementBoard);
             m_transientCastlingRules = new CastlingRules(this);
-            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
+            m_fiftyMoveRule = new FiftyMoveRuleCounter(this, replacementBoard);
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
             m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
