@@ -23,11 +23,13 @@ namespace Redchess.EngineTests
 					var piece = m_normalBoard.GetContents(loc);
                     if (piece == null || piece.Color != m_normalBoard.CurrentTurn)
 						continue;
-                    var validMoves = piece.ValidMoves(m_normalBoard).ToArray();
-					if (validMoves.Any())
+				    var validMoves = piece.ValidMoves(m_normalBoard);
+                    Assert.NotNull(validMoves, "Expected not null");
+                    var validMovesArray = validMoves.ToArray();
+                    if (validMovesArray.Any())
 					{
                         // Take a random valid move
-						Location targetSquare = validMoves.Skip(random.Next(validMoves.Count() - 1)).First();
+                        Location targetSquare = validMovesArray.Skip(random.Next(validMovesArray.Count() - 1)).First();
 						Console.WriteLine("[{0}] Moving {1} from {2} to {3}", i, piece, piece.Position.Location, targetSquare);
                         m_normalBoard.Move(piece.Position.Location, targetSquare);
                         if (m_normalBoard.IsAwaitingPromotionDecision())

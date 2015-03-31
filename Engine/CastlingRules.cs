@@ -14,10 +14,6 @@ namespace Redchess.Engine
 
         protected override void UpdateValue()
         {
-            // Nothing to do
-            if (Board.PermanentCastlingOptions == CastlingOptions.None)
-                return;
-
             var temp = CastlingOptions.None;
 
             if (MayCastle(PieceColor.Black, Side.KingSide))
@@ -69,12 +65,10 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.WhiteKingSide) &&
-                                   SquaresEmpty(new[] {Location.F1, Location.G1}) &&
+                            return SquaresEmpty(new[] {Location.F1, Location.G1}) &&
                                    SquaresNotAttacked(color, new[] {Location.E1, Location.F1, Location.G1});
                         case Side.QueenSide:
-                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.WhiteQueenSide) &&
-                                   SquaresEmpty(new[] {Location.B1, Location.C1, Location.D1}) &&
+                            return SquaresEmpty(new[] {Location.B1, Location.C1, Location.D1}) &&
                                    SquaresNotAttacked(color, new[] {Location.C1, Location.D1, Location.E1});
                     }
                     break;
@@ -83,12 +77,10 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.BlackKingSide) &&
-                                   SquaresEmpty(new[] {Location.F8, Location.G8}) &&
+                            return SquaresEmpty(new[] {Location.F8, Location.G8}) &&
                                    SquaresNotAttacked(color, new[] {Location.E8, Location.F8, Location.G8});
                         case Side.QueenSide:
-                            return Board.PermanentCastlingOptions.HasFlag(CastlingOptions.BlackQueenSide) &&
-                                   SquaresEmpty(new[] {Location.B8, Location.C8, Location.D8}) &&
+                            return SquaresEmpty(new[] {Location.B8, Location.C8, Location.D8}) &&
                                    SquaresNotAttacked(color, new[] {Location.C8, Location.D8, Location.E8});
                     }
                     break;

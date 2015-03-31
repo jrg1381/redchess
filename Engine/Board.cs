@@ -297,13 +297,17 @@ namespace Redchess.Engine
         public bool MayCastle(IPiece king, Side side)
         {
             if(king.Color == PieceColor.Black && side == Side.KingSide)
-                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide) 
+                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
             if (king.Color == PieceColor.Black && side == Side.QueenSide)
-                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide)
+                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
             if (king.Color == PieceColor.White && side == Side.KingSide)
-                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide) 
+                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
             if (king.Color == PieceColor.White && side == Side.QueenSide)
-                return m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide) 
+                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
 
             throw new ArgumentException("Asked for impossible combination of casting");
         }
