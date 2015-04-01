@@ -278,8 +278,7 @@ namespace Redchess.Engine
         {
             var boardCopy = new Board(this);
             boardCopy.MovePiece(piece, newLocation);
-            boardCopy.m_checkCacheOtherPlayer.OnCompleted();
-            boardCopy.m_permanentCastlingRules.OnCompleted();
+            boardCopy.m_checkCacheOtherPlayer.OnCompleted(); // only need to tell one observer
 
             return !boardCopy.m_checkCacheOtherPlayer.Value;
         }
