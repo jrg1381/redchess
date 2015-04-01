@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
 
@@ -31,12 +32,12 @@ namespace Redchess.Engine
             // A white piece has moved, potentially taking the black rooks
             if (piece.Color == PieceColor.White)
             {
-                if (newLocation == Location.A8)
+                if (newLocation == Location.A8 && castlingFlags.HasFlag(CastlingOptions.BlackQueenSide))
                 {
-                    castlingFlags ^= CastlingOptions.BlackQueenSide;
+                        castlingFlags ^= CastlingOptions.BlackQueenSide;
                 }
 
-                if (newLocation == Location.H8)
+                if (newLocation == Location.H8 && castlingFlags.HasFlag(CastlingOptions.BlackKingSide))
                 {
                     castlingFlags ^= CastlingOptions.BlackKingSide;
                 }
@@ -45,12 +46,12 @@ namespace Redchess.Engine
             // A black piece has moved, potentially taking the white rooks
             if (piece.Color == PieceColor.Black)
             {
-                if (newLocation == Location.A1)
+                if (newLocation == Location.A1 && castlingFlags.HasFlag(CastlingOptions.WhiteQueenSide))
                 {
                     castlingFlags ^= CastlingOptions.WhiteQueenSide;
                 }
 
-                if (newLocation == Location.H1)
+                if (newLocation == Location.H1 && castlingFlags.HasFlag(CastlingOptions.WhiteKingSide))
                 {
                     castlingFlags ^= CastlingOptions.WhiteKingSide;
                 }
@@ -122,6 +123,7 @@ namespace Redchess.Engine
         internal void UpdateFromFen(string fenSubstring)
         {
             m_data = CastlingOptions.None;
+            var start = m_data;
 
             if (fenSubstring.Contains("K"))
                 m_data |= CastlingOptions.WhiteKingSide;
