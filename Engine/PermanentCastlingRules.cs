@@ -32,28 +32,28 @@ namespace Redchess.Engine
             // A white piece has moved, potentially taking the black rooks
             if (piece.Color == PieceColor.White)
             {
-                if (newLocation == Location.A8 && castlingFlags.HasFlag(CastlingOptions.BlackQueenSide))
+                if (newLocation == Location.A8)
                 {
-                        castlingFlags ^= CastlingOptions.BlackQueenSide;
+                        castlingFlags &= ~CastlingOptions.BlackQueenSide;
                 }
 
-                if (newLocation == Location.H8 && castlingFlags.HasFlag(CastlingOptions.BlackKingSide))
+                if (newLocation == Location.H8)
                 {
-                    castlingFlags ^= CastlingOptions.BlackKingSide;
+                    castlingFlags &= ~CastlingOptions.BlackKingSide;
                 }
             }
 
             // A black piece has moved, potentially taking the white rooks
             if (piece.Color == PieceColor.Black)
             {
-                if (newLocation == Location.A1 && castlingFlags.HasFlag(CastlingOptions.WhiteQueenSide))
+                if (newLocation == Location.A1)
                 {
-                    castlingFlags ^= CastlingOptions.WhiteQueenSide;
+                    castlingFlags &= ~CastlingOptions.WhiteQueenSide;
                 }
 
-                if (newLocation == Location.H1 && castlingFlags.HasFlag(CastlingOptions.WhiteKingSide))
+                if (newLocation == Location.H1)
                 {
-                    castlingFlags ^= CastlingOptions.WhiteKingSide;
+                    castlingFlags &= ~CastlingOptions.WhiteKingSide;
                 }
             }
 
@@ -62,31 +62,27 @@ namespace Redchess.Engine
             {
                 case PieceType.WhiteKing:
                 {
-                    if (castlingFlags.HasFlag(CastlingOptions.WhiteQueenSide))
-                        castlingFlags ^= CastlingOptions.WhiteQueenSide;
-                    if (castlingFlags.HasFlag(CastlingOptions.WhiteKingSide))
-                        castlingFlags ^= CastlingOptions.WhiteKingSide;
+                    castlingFlags &= ~CastlingOptions.WhiteQueenSide;
+                    castlingFlags &= ~CastlingOptions.WhiteKingSide;
                     break;
                 }
                 case PieceType.BlackKing:
                 {
-                    if (castlingFlags.HasFlag(CastlingOptions.BlackQueenSide))
-                        castlingFlags ^= CastlingOptions.BlackQueenSide;
-                    if (castlingFlags.HasFlag(CastlingOptions.BlackKingSide))
-                        castlingFlags ^= CastlingOptions.BlackKingSide;
+                    castlingFlags &= ~CastlingOptions.BlackQueenSide;
+                    castlingFlags &= ~CastlingOptions.BlackKingSide;
                     break;
                 }
                 case PieceType.BlackRook:
-                    if (originalLocation == Location.H8 && castlingFlags.HasFlag(CastlingOptions.BlackKingSide))
-                        castlingFlags ^= CastlingOptions.BlackKingSide;
-                    if (originalLocation == Location.A8 && castlingFlags.HasFlag(CastlingOptions.BlackQueenSide))
-                        castlingFlags ^= CastlingOptions.BlackQueenSide;
+                    if (originalLocation == Location.H8)
+                        castlingFlags &= ~CastlingOptions.BlackKingSide;
+                    if (originalLocation == Location.A8)
+                        castlingFlags &= ~CastlingOptions.BlackQueenSide;
                     break;
                 case PieceType.WhiteRook:
-                    if (originalLocation == Location.H1 && castlingFlags.HasFlag(CastlingOptions.WhiteKingSide))
-                        castlingFlags ^= CastlingOptions.WhiteKingSide;
-                    if (originalLocation == Location.A1 && castlingFlags.HasFlag(CastlingOptions.WhiteQueenSide))
-                        castlingFlags ^= CastlingOptions.WhiteQueenSide;
+                    if (originalLocation == Location.H1)
+                        castlingFlags &= ~CastlingOptions.WhiteKingSide;
+                    if (originalLocation == Location.A1)
+                        castlingFlags &= ~CastlingOptions.WhiteQueenSide;
                     break;
             }
 
