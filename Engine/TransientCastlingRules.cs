@@ -8,6 +8,15 @@ namespace Redchess.Engine
 {
     sealed class TransientCastlingRules : AbstractBoardObserver<CastlingOptions>
     {
+        private static readonly Location[] s_whiteKingCastlingSquares = { Location.E1, Location.F1, Location.G1 };
+        private static readonly Location[] s_whiteKingCastlingSquaresEmpty = {Location.F1, Location.G1};
+        private static readonly Location[] s_whiteQueenCastlingSquaresEmpty = {Location.B1, Location.C1, Location.D1};
+        private static readonly Location[] s_whiteQueenCastlingSquares = {Location.C1, Location.D1, Location.E1};
+        private static readonly Location[] s_blackKingCastlingSquares = {Location.F8, Location.G8};
+        private static readonly Location[] s_blackKingCastlingSquareEmpty = {Location.E8, Location.F8, Location.G8};
+        private static readonly Location[] s_blackQueenCastlingSquaresEmpty = {Location.B8, Location.C8, Location.D8};
+        private static readonly Location[] s_blackQueenCastlingSquares = {Location.C8, Location.D8, Location.E8};
+
         internal TransientCastlingRules(IBoardExtended board) : base(board)
         {
         }
@@ -65,11 +74,11 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return SquaresEmpty(new[] {Location.F1, Location.G1}) &&
-                                   SquaresNotAttacked(color, new[] {Location.E1, Location.F1, Location.G1});
+                            return SquaresEmpty(s_whiteKingCastlingSquaresEmpty) &&
+                                   SquaresNotAttacked(color, s_whiteKingCastlingSquares);
                         case Side.QueenSide:
-                            return SquaresEmpty(new[] {Location.B1, Location.C1, Location.D1}) &&
-                                   SquaresNotAttacked(color, new[] {Location.C1, Location.D1, Location.E1});
+                            return SquaresEmpty(s_whiteQueenCastlingSquaresEmpty) &&
+                                   SquaresNotAttacked(color, s_whiteQueenCastlingSquares);
                     }
                     break;
                 case PieceColor.Black:
@@ -77,11 +86,11 @@ namespace Redchess.Engine
                     switch (sideOfBoard)
                     {
                         case Side.KingSide:
-                            return SquaresEmpty(new[] {Location.F8, Location.G8}) &&
-                                   SquaresNotAttacked(color, new[] {Location.E8, Location.F8, Location.G8});
+                            return SquaresEmpty(s_blackKingCastlingSquares) &&
+                                   SquaresNotAttacked(color, s_blackKingCastlingSquareEmpty);
                         case Side.QueenSide:
-                            return SquaresEmpty(new[] {Location.B8, Location.C8, Location.D8}) &&
-                                   SquaresNotAttacked(color, new[] {Location.C8, Location.D8, Location.E8});
+                            return SquaresEmpty(s_blackQueenCastlingSquaresEmpty) &&
+                                   SquaresNotAttacked(color, s_blackQueenCastlingSquares);
                     }
                     break;
                 }
