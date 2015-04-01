@@ -60,7 +60,7 @@
     <Compile Include="CheckCacheOtherPlayer.cs" />
     <Compile Include="CheckCacheCurrentPlayer.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
-    <Compile Include="CastlingRules.cs" />
+    <Compile Include="TransientCastlingRules.cs" />
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />
     <Compile Include="Fen.cs" />
     <Compile Include="Exceptions\InvalidMoveException.cs" />
