@@ -57,6 +57,14 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void CastlingTest6a()
+        {
+            m_emptyBoard.FromFen("k7/p7/8/8/8/8/8/RQ2K1QR w KQkq - 0");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is blocked by another piece. No castling.");
+            Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.QueenSide), "The king is blocked by another piece. No castling.");
+        }
+
+        [Test]
         public void CastlingTest7()
         {
             m_emptyBoard.FromFen("b7/8/8/1k6/8/8/8/R3K2R b KQkq - 0");
