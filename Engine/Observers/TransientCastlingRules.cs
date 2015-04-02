@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Redchess.Engine.Interfaces;
+using Redchess.Engine.Structures;
 using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.Engine.Observers

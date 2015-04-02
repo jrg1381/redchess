@@ -1,5 +1,6 @@
 using System;
 using Redchess.Engine.Interfaces;
+using Redchess.Engine.Structures;
 using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.Engine.Observers

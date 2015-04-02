@@ -1,6 +1,6 @@
 using System;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Structures
 {
     [Flags]
     public enum CastlingOptions
