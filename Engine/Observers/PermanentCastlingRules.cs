@@ -100,14 +100,15 @@ namespace Redchess.Engine.Observers
                 DataIsCurrent = true;
             }
 
+            if (Value == CastlingOptions.None)
+                return "-";
+
             string whiteKingside = Value.HasFlag(CastlingOptions.WhiteKingSide) ? "K" : "";
             string whiteQueenside = Value.HasFlag(CastlingOptions.WhiteQueenSide) ? "Q" : "";
             string blackKingside = Value.HasFlag(CastlingOptions.BlackKingSide) ? "k" : "";
             string blackQueenside = Value.HasFlag(CastlingOptions.BlackQueenSide) ? "q" : "";
 
-            string answer = String.Format("{0}{1}{2}{3}", whiteKingside, whiteQueenside, blackKingside, blackQueenside);
-
-            return String.IsNullOrEmpty(answer) ? "-" : answer;
+            return String.Format("{0}{1}{2}{3}", whiteKingside, whiteQueenside, blackKingside, blackQueenside);
         }
 
         /// <summary>
