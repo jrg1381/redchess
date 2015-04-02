@@ -56,10 +56,10 @@
     <Compile Include="Board.cs" />
     <Compile Include="BoardBitmap.cs" />
     <Compile Include="BoardWithNextMove.cs" />
-    <Compile Include="CastlingOptions.cs" />
     <Compile Include="CheckCacheOtherPlayer.cs" />
     <Compile Include="CheckCacheCurrentPlayer.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
+    <Compile Include="Structures\CastlingOptions.cs" />
     <Compile Include="TransientCastlingRules.cs" />
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />
     <Compile Include="Fen.cs" />
