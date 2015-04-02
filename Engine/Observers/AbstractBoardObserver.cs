@@ -5,7 +5,7 @@ using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.Engine.Observers
 {
-    internal abstract class AbstractBoardObserver<T> : IObserver<IBoardExtended>, IDisposable
+    abstract class AbstractBoardObserver<T> : IObserver<IBoardExtended>, IDisposable
     {
         protected readonly IBoardExtended Board;
         private readonly IDisposable m_unsubscriber;
