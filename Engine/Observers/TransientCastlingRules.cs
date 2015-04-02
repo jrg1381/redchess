@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
+using RedChess.ChessCommon.Enumerations;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Observers
 {
     sealed class TransientCastlingRules : AbstractBoardObserver<CastlingOptions>
     {

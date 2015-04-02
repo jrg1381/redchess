@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
-using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Observers
 {
     internal class CheckCacheOtherPlayer : AbstractBoardObserver<bool>
     {

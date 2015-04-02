@@ -1,6 +1,6 @@
 using Redchess.Engine.Interfaces;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Observers
 {
     internal class CheckCacheCurrentPlayer : AbstractBoardObserver<bool>
     {

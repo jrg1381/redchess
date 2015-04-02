@@ -2,7 +2,7 @@ using Redchess.Engine.Interfaces;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Observers
 {
     internal class FiftyMoveRuleCounter : AbstractBoardObserver<int>
     {

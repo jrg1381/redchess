@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
+using Redchess.Engine.Observers;
 
 namespace Redchess.Engine
 {

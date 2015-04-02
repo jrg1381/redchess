@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Redchess.Engine.Exceptions;
 using Redchess.Engine.Interfaces;
+using Redchess.Engine.Observers;
 using Redchess.Engine.Pieces.Abstract;
 using Redchess.Engine.Structures;
 using RedChess.ChessCommon;

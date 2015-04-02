@@ -1,9 +1,8 @@
 using System;
-using System.Diagnostics;
-using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
+using RedChess.ChessCommon.Enumerations;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Observers
 {
     sealed class PermanentCastlingRules : AbstractBoardObserver<CastlingOptions>
     {

@@ -1,7 +1,6 @@
-using System;
 using Redchess.Engine.Interfaces;
 
-namespace Redchess.Engine
+namespace Redchess.Engine.Observers
 {
     internal sealed class MoveTranscriber : AbstractBoardObserver<string>
     {
