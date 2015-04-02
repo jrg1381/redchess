@@ -34,7 +34,7 @@ namespace Redchess.Engine
 
         public string FenCastleString()
         {
-            return m_permanentCastlingRules.FenCastleString();
+            return m_permanentCastlingRules.Value.Fen();
         }
 
         public CastlingOptions PermanentCastlingOptions

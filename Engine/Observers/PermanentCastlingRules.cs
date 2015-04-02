@@ -90,29 +90,6 @@ namespace Redchess.Engine.Observers
         }
 
         /// <summary>
-        ///     Return a fen substring ("KkQq") representing the current castling state
-        /// </summary>
-        /// <returns></returns>
-        internal string FenCastleString()
-        {
-            if (!DataIsCurrent)
-            {
-                UpdateValue();
-                DataIsCurrent = true;
-            }
-
-            if (Value == CastlingOptions.None)
-                return "-";
-
-            string whiteKingside = Value.HasFlag(CastlingOptions.WhiteKingSide) ? "K" : "";
-            string whiteQueenside = Value.HasFlag(CastlingOptions.WhiteQueenSide) ? "Q" : "";
-            string blackKingside = Value.HasFlag(CastlingOptions.BlackKingSide) ? "k" : "";
-            string blackQueenside = Value.HasFlag(CastlingOptions.BlackQueenSide) ? "q" : "";
-
-            return String.Format("{0}{1}{2}{3}", whiteKingside, whiteQueenside, blackKingside, blackQueenside);
-        }
-
-        /// <summary>
         ///     Update the castling settings from a fen substring (something like "KkQq") where K indicates castling White
         ///     king-side, etc.
         /// </summary>
@@ -120,7 +97,6 @@ namespace Redchess.Engine.Observers
         internal void UpdateFromFen(string fenSubstring)
         {
             m_data = CastlingOptions.None;
-            var start = m_data;
 
             if (fenSubstring.Contains("K"))
                 m_data |= CastlingOptions.WhiteKingSide;
