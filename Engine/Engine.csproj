@@ -62,7 +62,7 @@
     <Compile Include="Structures\CastlingOptions.cs" />
     <Compile Include="Observers\TransientCastlingRules.cs" />
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />
-    <Compile Include="Fen.cs" />
+    <Compile Include="Observers\Fen.cs" />
     <Compile Include="Exceptions\InvalidMoveException.cs" />
     <Compile Include="Observers\FiftyMoveRuleCounter.cs" />
     <Compile Include="Interfaces\IBoardBitmap.cs" />
