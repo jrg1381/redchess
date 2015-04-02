@@ -52,25 +52,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractBoardObserver.cs" />
+    <Compile Include="Observers\AbstractBoardObserver.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="BoardBitmap.cs" />
     <Compile Include="BoardWithNextMove.cs" />
-    <Compile Include="CheckCacheOtherPlayer.cs" />
-    <Compile Include="CheckCacheCurrentPlayer.cs" />
+    <Compile Include="Observers\CheckCacheOtherPlayer.cs" />
+    <Compile Include="Observers\CheckCacheCurrentPlayer.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
     <Compile Include="Structures\CastlingOptions.cs" />
-    <Compile Include="TransientCastlingRules.cs" />
+    <Compile Include="Observers\TransientCastlingRules.cs" />
     <Compile Include="Exceptions\DoubleOccupancyException.cs" />
     <Compile Include="Fen.cs" />
     <Compile Include="Exceptions\InvalidMoveException.cs" />
-    <Compile Include="FiftyMoveRuleCounter.cs" />
+    <Compile Include="Observers\FiftyMoveRuleCounter.cs" />
     <Compile Include="Interfaces\IBoardBitmap.cs" />
     <Compile Include="Interfaces\IBoardExtended.cs" />
     <Compile Include="Interfaces\IPiece.cs" />
     <Compile Include="MoveTextConverter.cs" />
-    <Compile Include="MoveTranscriber.cs" />
-    <Compile Include="PermanentCastlingRules.cs" />
+    <Compile Include="Observers\MoveTranscriber.cs" />
+    <Compile Include="Observers\PermanentCastlingRules.cs" />
     <Compile Include="PieceData.cs" />
     <Compile Include="Pieces\Abstract\Bishop.cs" />
     <Compile Include="Pieces\Abstract\ExtensionMethods.cs" />
