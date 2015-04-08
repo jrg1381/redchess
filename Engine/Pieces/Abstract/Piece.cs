@@ -65,12 +65,17 @@ namespace Redchess.Engine.Pieces.Abstract
             foreach (var moveVector in moveSet)
             {
                 Square generatedSquare = Position;
-                while (!generatedSquare.Equals(Square.InvalidSquare))
-                {
-                    generatedSquare = new Square(generatedSquare.X + moveVector.X, generatedSquare.Y + moveVector.Y);
 
-                    if (generatedSquare.Equals(Square.InvalidSquare))
-                        break; // Edge of board
+                while (true)
+                {
+                    var newX = generatedSquare.X + moveVector.X;
+                    if (newX < 0 || newX > 7)
+                        break;
+                    var newY = generatedSquare.Y + moveVector.Y;
+                    if (newY < 0 || newY > 7)
+                        break;
+
+                    generatedSquare = new Square(newX, newY);
 
                     if (enemyPieces.IsOccupied(generatedSquare.Location))
                     {

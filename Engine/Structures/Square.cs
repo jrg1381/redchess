@@ -5,8 +5,6 @@ namespace Redchess.Engine.Structures
 {
     public struct Square : IEquatable<Square>
     {
-        private static readonly Square s_invalidSquare = new Square(Location.InvalidSquare);
-
         private readonly Location m_location;
 
         public Square(Location location)
@@ -16,19 +14,11 @@ namespace Redchess.Engine.Structures
 
         public Square(int x, int y)
         {
-            if (x >= 0 && x <= 7 && y >= 0 && y <= 7)
-            {
-                m_location = (Location) (x + y*8);
-            }
-            else
-            {
-                this = InvalidSquare;
-            }
-        }
-
-        public static Square InvalidSquare
-        {
-            get { return s_invalidSquare; }
+#if DEBUG
+            if (!(x >= 0 && x <= 7 && y >= 0 && y <= 7))
+                throw new InvalidOperationException("Location out of range");
+#endif
+            m_location = (Location) (x + y*8);
         }
 
         public Location Location

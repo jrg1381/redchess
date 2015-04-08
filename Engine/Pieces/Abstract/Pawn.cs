@@ -27,26 +27,34 @@ namespace Redchess.Engine.Pieces.Abstract
 
             bool squareInFrontFree = false;
 
-            var generatedSquare = new Square(Position.X, Position.Y + DirectionOfTravel);
-            if (!generatedSquare.Equals(Square.InvalidSquare) && !ownPieces.IsOccupied(generatedSquare.Location) &&
-                !enemyPieces.IsOccupied(generatedSquare.Location))
+            var newY = Position.Y + DirectionOfTravel;
+
+            if (newY < 0 || newY > 7) // This can happen when we calculate the moves available to a pre-promotion pawn
+                yield break;
+
+            var generatedSquare = new Square(Position.X, newY);
+            if (!ownPieces.IsOccupied(generatedSquare.Location) && !enemyPieces.IsOccupied(generatedSquare.Location))
             {
                 squareInFrontFree = true;
                 yield return generatedSquare.Location;
             }
 
-            var takeLeft = new Square(Position.X - 1, Position.Y + DirectionOfTravel);
-            if (!takeLeft.Equals(Square.InvalidSquare) &&
-                (enemyPieces.IsOccupied(takeLeft.Location) || game.EnPassantTarget == takeLeft.Location))
+            if (Position.X - 1 >= 0)
             {
-                yield return takeLeft.Location;
+                var takeLeft = new Square(Position.X - 1, newY);
+                if (enemyPieces.IsOccupied(takeLeft.Location) || game.EnPassantTarget == takeLeft.Location)
+                {
+                    yield return takeLeft.Location;
+                }
             }
 
-            var takeRight = new Square(Position.X + 1, Position.Y + DirectionOfTravel);
-            if (!takeRight.Equals(Square.InvalidSquare) &&
-                (enemyPieces.IsOccupied(takeRight.Location) || game.EnPassantTarget == takeRight.Location))
+            if (Position.X + 1 <= 7)
             {
-                yield return takeRight.Location;
+                var takeRight = new Square(Position.X + 1, newY);
+                if (enemyPieces.IsOccupied(takeRight.Location) || game.EnPassantTarget == takeRight.Location)
+                {
+                    yield return takeRight.Location;
+                }
             }
 
             if (Position.Y == StartRow && squareInFrontFree)
