@@ -10,35 +10,35 @@ namespace Redchess.EngineTests
     internal class CastlingTests : AbstractChessTest
     {
         [Test]
-        public void CastlingTest1()
+        public void WhiteCastlesKingside()
         {
             m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq - 0");
             Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched king and rook should be allowed to castle");
         }
 
         [Test]
-        public void CastlingTest2()
+        public void NoCastlingWhenInCheck()
         {
             m_emptyBoard.FromFen("k7/8/8/8/4q3/8/8/4K2R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is in check right now! No castling allowed.");
         }
 
         [Test]
-        public void CastlingTest3()
+        public void NoCastlingPassingThroughCheck()
         {
             m_emptyBoard.FromFen("k7/8/8/8/5q2/8/8/4K2R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king would pass through check! No castling allowed.");
         }
 
         [Test]
-        public void CastlingTest4()
+        public void NoCastlingFinishingInCheck()
         {
             m_emptyBoard.FromFen("k7/8/8/8/6q1/8/8/4K2R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king would finish in check! No castling allowed.");
         }
 
         [Test]
-        public void CastlingTest5()
+        public void NoCastlingAfterKingHasMoved()
         {
             m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq - 0");
             m_emptyBoard.Move(Location.E1, Location.E2);
@@ -50,14 +50,14 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void CastlingTest6()
+        public void NoCastlingThroughAnotherPiece()
         {
             m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4Kb1R w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is blocked by another piece. No castling.");
         }
 
         [Test]
-        public void CastlingTest6a()
+        public void NoCastlingThroughAFriendlyPiece()
         {
             m_emptyBoard.FromFen("k7/p7/8/8/8/8/8/RQ2K1QR w KQkq - 0");
             Assert.False(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "The king is blocked by another piece. No castling.");
@@ -65,7 +65,7 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void CastlingTest7()
+        public void NoCastlingIfARookHasBeenTaken()
         {
             m_emptyBoard.FromFen("b7/8/8/1k6/8/8/8/R3K2R b KQkq - 0");
             m_emptyBoard.Move(Location.A8, Location.H1);
@@ -79,7 +79,7 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void CastlingTest8()
+        public void FenAfterCastling()
         {
             m_emptyBoard.FromFen("7k/8/8/8/8/8/8/4K2R w KQ - 0");
             Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.KingSide), "Untouched white king and rook should be allowed to castle");
@@ -88,7 +88,7 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void CastlingTest9()
+        public void BlackCastlesKingside()
         {
             m_emptyBoard.FromFen("4k2r/8/8/8/8/8/8/7K b KQkq - 0");
             Assert.True(m_emptyBoard.MayCastle(BlackKingLocation(), Side.KingSide), "Untouched black king and rook should be allowed to castle");
@@ -101,7 +101,7 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void CastlingTest10()
+        public void DoubleCastlingNotAllowedWhiteQueenSide()
         {
             m_emptyBoard.FromFen("7k/8/8/8/8/8/8/R3K3 w KQkq - 0");
             Assert.True(m_emptyBoard.MayCastle(WhiteKingLocation(), Side.QueenSide), "Untouched king and rook should be allowed to castle");
@@ -110,7 +110,7 @@ namespace Redchess.EngineTests
         }
 
         [Test]
-        public void CastlingTest11()
+        public void DoubleCastlingNotAllowedBlackQueenSide()
         {
             m_emptyBoard.FromFen("r3k3/8/8/8/8/8/8/K7 b KQkq - 0");
             Assert.True(m_emptyBoard.MayCastle(BlackKingLocation(), Side.QueenSide), "Untouched king and rook should be allowed to castle");
