@@ -13,7 +13,10 @@ namespace Redchess.EngineTests
 		public void PlayRandomlyFor100Moves()
 		{
             DateTime startTime = DateTime.UtcNow;
-			Random random = new Random();
+		    var seed = (int)((DateTime.Now - DateTime.MinValue).TotalMilliseconds%Int32.MaxValue);
+		    var random = new Random(seed);
+
+		    Console.WriteLine("Starting random moves with seed {0}", seed);
 
 			for (int j = 0; j < 1000; j++)
 			{
