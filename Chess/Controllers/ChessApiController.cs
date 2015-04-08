@@ -39,7 +39,7 @@ namespace Chess.Controllers
             m_dbChessContext.Boards.Add(dto);
             dto.UpdateMessage();
             m_dbChessContext.SaveChanges();
-            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1 });
+            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1, Move = "" });
             m_dbChessContext.SaveChanges();
 
             return new BoardCreationResult {Status = "OK", Message = "Board created", Id = dto.GameId};
