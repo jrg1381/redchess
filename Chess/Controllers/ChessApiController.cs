@@ -85,7 +85,7 @@ namespace Chess.Controllers
             }
 
             int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == id).Max(x => x.MoveNumber) + 1;
-            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = id, MoveNumber = nextMoveNumber });
+            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = id, MoveNumber = nextMoveNumber, Move = board.LastMove });
             board.UpdateMessage();
             UpdateDrawClaimStatus(board);
             m_dbChessContext.SaveChanges();
