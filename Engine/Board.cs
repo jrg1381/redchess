@@ -30,7 +30,7 @@ namespace Redchess.Engine
         private readonly List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
         protected SimpleBoard SimpleBoard { get; set; }
 
-        public BoardWithNextMove PreviousState { get; private set; }
+        public BoardStateTransition PreviousState { get; private set; }
 
         public string FenCastleString()
         {
@@ -146,7 +146,7 @@ namespace Redchess.Engine
             if (!ValidateMoveForCheck(piece, end))
                 return false;
 
-            PreviousState = new BoardWithNextMove
+            PreviousState = new BoardStateTransition
             {
                 BoardBefore = new Board(this),
                 MovedPiece = piece,

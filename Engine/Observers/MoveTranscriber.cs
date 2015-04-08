@@ -4,7 +4,7 @@ namespace Redchess.Engine.Observers
 {
     internal sealed class MoveTranscriber : AbstractBoardObserver<string>
     {
-        private BoardWithNextMove m_previousState;
+        private BoardStateTransition m_previousState;
 
         internal MoveTranscriber(IBoardExtended board) : base(board)
         {

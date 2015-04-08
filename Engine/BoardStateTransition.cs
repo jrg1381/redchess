@@ -3,7 +3,7 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine
 {
-    public class BoardWithNextMove
+    public class BoardStateTransition
     {
         public IPiece MovedPiece { get; set; }
         public Location Target { get; set; }

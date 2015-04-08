@@ -10,7 +10,7 @@ namespace Redchess.Engine
 {
     internal class MoveTextConverter
     {
-        private readonly BoardWithNextMove m_moveToPlay;
+        private readonly BoardStateTransition m_moveToPlay;
         private Task<string> m_disambiguatorTask;
 
         private string DisambiguatorText
@@ -24,7 +24,7 @@ namespace Redchess.Engine
             }
         }
 
-        internal MoveTextConverter(BoardWithNextMove previousState)
+        internal MoveTextConverter(BoardStateTransition previousState)
         {
             m_moveToPlay = previousState;
         }

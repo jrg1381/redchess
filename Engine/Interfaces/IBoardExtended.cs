@@ -14,7 +14,7 @@ namespace Redchess.Engine.Interfaces
         IBoardBitmap Pieces(PieceColor color);
         Location EnPassantTarget { get; }
         int FiftyMoveCounter { get; }
-        BoardWithNextMove PreviousState { get; }
+        BoardStateTransition PreviousState { get; }
         CastlingOptions PermanentCastlingOptions { get; }
         string FenCastleString();
     }

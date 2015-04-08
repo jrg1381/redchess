@@ -10,7 +10,7 @@ namespace Redchess.EngineTests
         [Test]
         public void FirstMoveOfPawn()
         {           
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_normalBoard.GetContents(Location.E2),
                 Target = Location.E4,
@@ -30,7 +30,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("8/P7/8/8/8/8/8/1k5K w - - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.A7),
                 Target = Location.A8,
@@ -51,7 +51,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("1q6/P1P5/8/8/8/8/8/k6K w - - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_normalBoard.GetContents(Location.A7),
                 Target = Location.B8,
@@ -71,7 +71,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("1q5k/P1P5/8/8/8/8/8/7K w - - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.A7),
                 Target = Location.B8,
@@ -92,7 +92,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/8/8/8/PPPP1PPP/RNB1KBNR w KQkq - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E1),
                 Target = Location.D1,
@@ -111,7 +111,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
             
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.D5,
@@ -130,7 +130,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rnbqkbnr/pppp1ppp/8/8/P2Pp3/8/1PP1PPPP/RNBQKBNR b KQkq D3 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.D3,
@@ -149,7 +149,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.A4,
@@ -168,7 +168,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("k7/7R/6R1/8/8/8/8/K7 w - - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.G6),
                 Target = Location.G8,
@@ -187,7 +187,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.B4,
@@ -206,7 +206,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/3b4/4Q3/8/PPPP1PPP/RNBQKBNR w KQkq - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E4),
                 Target = Location.D5,
@@ -225,7 +225,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E1),
                 Target = Location.G1,
@@ -244,7 +244,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("3k4/8/8/8/8/8/8/R3K2R w KQ - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.E1),
                 Target = Location.C1,
@@ -263,7 +263,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("1k4K1/8/8/8/8/8/8/R6R w - - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.A1),
                 Target = Location.C1,
@@ -299,7 +299,7 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("R7/8/8/7k/8/7K/8/R7 w - - 0");
 
-            var moveDefinition = new BoardWithNextMove
+            var moveDefinition = new BoardStateTransition
             {
                 MovedPiece = m_emptyBoard.GetContents(Location.A1),
                 Target = Location.A3,

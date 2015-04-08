@@ -55,7 +55,7 @@
     <Compile Include="Observers\AbstractBoardObserver.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="BoardBitmap.cs" />
-    <Compile Include="BoardWithNextMove.cs" />
+    <Compile Include="BoardStateTransition.cs" />
     <Compile Include="Observers\CheckCacheOtherPlayer.cs" />
     <Compile Include="Observers\CheckCacheCurrentPlayer.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
