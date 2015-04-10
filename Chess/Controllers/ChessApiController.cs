@@ -84,6 +84,13 @@ namespace Chess.Controllers
                 return new PlayMoveResult { Status = "FAIL", Fen = board.Fen, Message = "Invalid move" };
             }
 
+            try
+            {
+                board.PromotePiece("Q");
+            }
+            catch(Exception)
+            { }
+
             int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == id).Max(x => x.MoveNumber) + 1;
             m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = id, MoveNumber = nextMoveNumber, Move = board.LastMove });
             board.UpdateMessage();
