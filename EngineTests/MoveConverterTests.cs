@@ -26,6 +26,25 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void FourKnights()
+        {
+            m_emptyBoard.FromFen("N1N5/8/8/8/N1N5/8/8/5k1K w - - 0");
+
+            var moveDefinition = new BoardStateTransition
+            {
+                MovedPiece = m_emptyBoard.GetContents(Location.A8),
+                Target = Location.B6,
+                BoardBefore = new InteractiveBoard(m_emptyBoard)
+            };
+
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = new InteractiveBoard(m_emptyBoard);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
+            Assert.AreEqual("Na8b6", move, "Knight moves"); 
+        }
+
+        [Test]
         public void PawnPromotes()
         {
             m_emptyBoard.FromFen("8/P7/8/8/8/8/8/1k5K w - - 0");
