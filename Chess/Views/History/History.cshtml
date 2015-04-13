@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Chess.Models.HistoryEntry>
+﻿@using Chess.Models
+@model IEnumerable<Chess.Models.HistoryEntry>
     
 <script src="/Scripts/app/spinner.js" type="text/javascript"></script>
 <script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
@@ -17,26 +18,21 @@
 
     <script>
         $(document).ready(function () {
-            lastMove = @maxMoves ;
+            lastMove = @maxMoves;
             var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
             board = new ChessBoard('board', cfg);
             renderMoves();
             board.position(positions[0].fen);
 
-            if(location.hash.length != 0) {
+            if (location.hash.length != 0) {
                 updateBoard(parseInt(location.hash.substring(1)));
             } else {
                 updateBoard(0);
             }
 
+            PopulateMovesBox();
             ConfigureActionButtons();
-
-            @{
-                var allMoves = String.Join(" ", @Model.Select(m => m.Move));
-            }
-            
-            $('#moves').append("<tr><td>" + '@allMoves' +  "</td></tr>");
-        });
+            });
     </script>
 
     <script>
@@ -51,24 +47,24 @@
         var i = 0;
 
         function renderMoves() {
-            @foreach (var data in @Model.Select(x => new {Fen = x.Fen.Split(new[] {' '})[0], Move = "*"}))
+            @foreach (var data in @Model.Select(x => new {Fen = x.Fen.Split(new[] {' '})[0], Move = x.Move}))
             {
                 <text>positions[i++] = { "Fen" : '@data.Fen', "Move" : '@data.Move'} ;</text>
             }
         }
     </script>
 
-<div class="left">
-    <p class="title">@description</p>
-
+<div id="main">
+    <p id="errors"></p>
     <div class="left">
         <p class="title">&nbsp;</p>
-        <div id="scrollbox"><table id="moves"></table></div>
+        <div id="scrollbox"><table id="moves"></table>
+        </div>
     </div>
 
     <div class="left">
         <p class="title" id="title"></p>
-        <div style="width:500px" id="board"></div>
+        <div id="board"></div>
         <div class="navigation">
             <div class="wrapper"><span class="button" id="goStart"></span></div>
             <div class="wrapper"><span class="button" id="goBack"></span></div>
@@ -77,14 +73,13 @@
             <div class="wrapper"><span class="button" id="goForward"></span></div>
         </div>
     </div>
-    <br />
-    <br />
-    <div>
-        @if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
-        {
-            <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
-        } |
-        @Html.ActionLink("Back to list of games", "Index", "Board")
-    </div>
+</div>
+
+<div>
+    @if (Request.IsAuthenticated && currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name))
+    {
+        <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
+    } |
+    @Html.ActionLink("Back to list of games", "Index", "Board")
 </div>
 
