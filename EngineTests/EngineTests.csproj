@@ -57,6 +57,7 @@
     <Compile Include="EnPassantTests.cs" />
     <Compile Include="FenAssert.cs" />
     <Compile Include="FenTests.cs" />
+    <Compile Include="HashCodeTests.cs" />
     <Compile Include="InteractiveBoard.cs" />
     <Compile Include="MoveConverterTests.cs" />
     <Compile Include="MoveTests.cs" />

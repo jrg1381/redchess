@@ -37,6 +37,11 @@ namespace Redchess.Engine.Pieces.Abstract
             return String.Format("{0} {1}", base.ToString(), Position.Location);
         }
 
+        public override int GetHashCode()
+        {
+            return (int) m_color + 10*(int) m_pieceType + 10000*(int) Position.Location;
+        }
+
         public Square Position { get { return m_position; } }
         public abstract IEnumerable<Location> ReachableSquares(IBoardExtended game);
 

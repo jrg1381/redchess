@@ -475,6 +475,12 @@ namespace Redchess.Engine
             return new Unsubscriber(this, observer);
         }
 
+        public override int GetHashCode()
+        {
+            var key = FenCastleString().GetHashCode() ^ 397 * EnPassantTarget.GetHashCode() ^ 641 * (int)CurrentTurn;
+            return SimpleBoard.OccupiedSquares().Aggregate(key, (current, p) => current ^ SimpleBoard.GetContents(p).GetHashCode());
+        }
+
         sealed class Unsubscriber : IDisposable
         {
             private readonly Board m_board;

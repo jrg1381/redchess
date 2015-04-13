@@ -22,6 +22,15 @@ namespace Redchess.EngineTests
 			FenAssert.AreEqual("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", fen, "Fen representation of start position not as expected");
 		}
 
+        [Test]
+        public void FenCaching()
+        {
+            string fen = m_normalBoard.ToFen();
+            string fromBoard = m_normalBoard.ToFen();
+            Assert.AreEqual(fromBoard, fen, "Expected two fen strings to be equal");
+        }
+
+
 		[Test]
 		public void TwoKingsPosition()
 		{

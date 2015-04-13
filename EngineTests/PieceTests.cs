@@ -12,5 +12,13 @@ namespace Redchess.EngineTests
 			var b = new Board();
 			Assert.NotNull(b);
 		}
+
+	    [Test]
+	    public void DisposeABoard()
+	    {
+	        var b = new Board();
+            b.Dispose();
+            Assert.Pass();
+	    }
 	}
 }
