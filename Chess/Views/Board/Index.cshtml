@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Chess.Models.Game>
+﻿@using Chess.Models
+@model IEnumerable<Chess.Models.GameData>
 
 @{
     ViewBag.Title = "Index of games";
@@ -54,7 +55,7 @@
 	@if (Request.IsAuthenticated)
  {
 		<tr><td><h3>My current games</h3></td></tr>
-     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
+     foreach (var item in @Model.Where(x => (new Game(x)).CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
      {
 			<tr>
                 <td>
@@ -66,17 +67,18 @@
 			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time></td>
 			</tr>
      <tr>
-         <td>@item.Description</td>
+         <td>@{ var tmp = (new Game(item)).Description;}@tmp</td>
 		 <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
      </tr>
      }
      
      <tr><td><h3>My finished games</h3></td></tr>
-     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
+     foreach (var item in @Model.Where(x => (new Game(x)).CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
      {
 			<tr>
 			    <td>
-			        <div id="f-@item.GameId" onclick="GoToGame(@item.GameId)">@Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</div>
+			        @{ var tmp = (new Game(item.GameId).Description);}
+			        <div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.ActionLink(@tmp, "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)</div>
 			    </td>
                 @{
                     var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
@@ -87,7 +89,7 @@
 			</tr>
      }
      
-     if(@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
+     if(@Model.Any(x => (new Game(x)).CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
       {
           <tr><td></td><td></td><td><a class="asbutton" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
       }
@@ -97,7 +99,7 @@
 
 <table style="padding-left: 50px">
 		<tr><td><h3>Other games</h3></td></tr>
-		@foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
+		@foreach (var item in @Model.Where(x => (new Game(x)).CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
   {
 			<tr>
                 <td>
@@ -106,7 +108,7 @@
                 <td>@item.Status</td>
 			</tr>
            <tr>
-			   <td>@item.Description</td>
+               <td>@{ var tmp = (new Game(item)).Description;}@tmp</td>
                		 <td>@Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
      </tr>
   }

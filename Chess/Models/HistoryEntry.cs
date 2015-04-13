@@ -27,7 +27,7 @@ namespace Chess.Models
         {
             using (var db = new ChessContext())
             {
-                return db.Boards.First(g => g.GameId == GameId).Description;
+                return new Game(GameId).Description;
             }
         }
 

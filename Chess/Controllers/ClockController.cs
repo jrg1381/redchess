@@ -13,7 +13,7 @@ namespace Chess.Controllers
 		{
 		    using (var chessContext = new ChessContext())
 		    {
-		        var board = chessContext.Boards.Find(id);
+		        var board = new Game(id);
 		        var clock = chessContext.Clocks.FirstOrDefault(c => c.GameId == id);
 
 		        if (board == null || clock == null)

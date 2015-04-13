@@ -27,15 +27,12 @@ namespace Chess.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            using (var dbChessContext = new ChessContext())
+            var board = new Game(id);
+            if (board == null)
             {
-                Game board = dbChessContext.Boards.Find(id);
-                if (board == null)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(board);
+                return RedirectToAction("Index");
             }
+            return View(board);
         }
 
         //
@@ -63,7 +60,7 @@ namespace Chess.Controllers
                     int opponentId = Int32.Parse(opponent);
                     var myProfile = UserUtilities.UserProfileFromName(dbChessContext);
                     var dto = playAsBlack ? new Game(board, opponentId, myProfile.UserId) : new Game(board, myProfile.UserId, opponentId);
-                    dbChessContext.Boards.Add(dto);
+                    dbChessContext.Boards.Add(dto.Data);
                     dbChessContext.SaveChanges();
 
                     if (useClock)
@@ -88,40 +85,39 @@ namespace Chess.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            using (var dbChessContext = new ChessContext())
-            {
-                Game board = dbChessContext.Boards.Find(id);
-                if (board == null)
-                {
-                    return RedirectToAction("Index");
-                }
+            var board = new Game(id);
 
-                return View(board);
+            if (board == null)
+            {
+                return RedirectToAction("Index");
             }
+
+            return View(board);
         }
 
         [HttpPost, ActionName("DeleteMultiple")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteMultiple(string ids)
         {
-            using (var dbChessContext = new ChessContext())
+            foreach (var id in ids.Split(',').Select(Int32.Parse))
             {
-                foreach (var id in ids.Split(',').Select(Int32.Parse))
-                    DestroyBoard(id, dbChessContext);
-
-                dbChessContext.SaveChanges();
-                return RedirectToAction("Index");
+                DestroyBoard(id);
             }
+
+            return RedirectToAction("Index");
         }
 
-        private void DestroyBoard(int id, ChessContext context)
+        private void DestroyBoard(int id)
         {
-
-            var board = context.Boards.Find(id);
+            var board = new Game(id);
 
             if (board != null && MayManipulateBoard(board))
             {
-                context.Boards.Remove(board);
+                using (var context = new ChessContext())
+                {
+                    context.Boards.Remove(board.Data);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -132,13 +128,8 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            using (var dbChessContext = new ChessContext())
-            {
-                DestroyBoard(id, dbChessContext);
-
-                dbChessContext.SaveChanges();
+                DestroyBoard(id);
                 return RedirectToAction("Index");
-            }
         }
 
 		private bool MayManipulateBoard(Game dto)
@@ -168,7 +159,7 @@ namespace Chess.Controllers
         {
             using (var dbChessContext = new ChessContext())
             {
-                Game board = dbChessContext.Boards.Find(id);
+                var board = new Game(id);
 
                 if (!MayManipulateBoard(board))
                 {
@@ -210,7 +201,7 @@ namespace Chess.Controllers
         {
             using (var dbChessContext = new ChessContext())
             {
-                Game board = dbChessContext.Boards.Find(id);
+                var board = new Game(id);
 
                 if (!MayManipulateBoard(board))
                 {
@@ -238,7 +229,7 @@ namespace Chess.Controllers
         {
             using (var dbChessContext = new ChessContext())
             {
-                Game board = dbChessContext.Boards.Find(id);
+                var board = new Game(id);
 
                 if (!MayManipulateBoard(board))
                 {
@@ -271,7 +262,7 @@ namespace Chess.Controllers
 		{
 		    using (var dbChessContext = new ChessContext())
 		    {
-                Game board = dbChessContext.Boards.Find(id);
+                var board = new Game(id);
 		        if (board == null)
 		        {
 		            return Json(new {fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH"});

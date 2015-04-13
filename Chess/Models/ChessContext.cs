@@ -20,7 +20,7 @@ namespace Chess.Models
         {
         }
 
-		public DbSet<Game> Boards { get; set; }
+		public DbSet<GameData> Boards { get; set; }
 		public DbSet<Clock> Clocks { get; set; }
         public DbSet<HistoryEntry> HistoryEntries { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }

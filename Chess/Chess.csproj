@@ -209,6 +209,7 @@
     <Compile Include="Models\BoardImpl.cs" />
     <Compile Include="Models\ChessContext.cs" />
     <Compile Include="Models\Clock.cs" />
+    <Compile Include="Models\GameData.cs" />
     <Compile Include="Models\HistoryEntry.cs" />
     <Compile Include="Models\PgnModel.cs" />
     <Compile Include="Controllers\PgnController.cs" />

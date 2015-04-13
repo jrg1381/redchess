@@ -36,7 +36,7 @@ namespace Chess.Controllers
 
             var board = BoardFactory.CreateInstance();
             var dto = new Game(board, playerId, opponentId);
-            m_dbChessContext.Boards.Add(dto);
+            m_dbChessContext.Boards.Add(dto.Data);
             dto.UpdateMessage();
             m_dbChessContext.SaveChanges();
             m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1, Move = "" });
@@ -52,7 +52,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public Dictionary<int, Game> Boards()
+        public Dictionary<int, GameData> Boards()
         {
             return m_dbChessContext.Boards.ToDictionary(b => b.GameId, b => b);
         }
@@ -64,7 +64,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public Game Board(int id)
+        public GameData Board(int id)
         {
             return m_dbChessContext.Boards.Find(id);
         }
@@ -72,7 +72,7 @@ namespace Chess.Controllers
         [HttpGet]
         public PlayMoveResult PlayMove(int id, string start, string end)
         {
-            var board = m_dbChessContext.Boards.Find(id);
+            var board = new Game(id);
 
             if (board.GameOver)
             {
@@ -94,7 +94,6 @@ namespace Chess.Controllers
             int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == id).Max(x => x.MoveNumber) + 1;
             m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = id, MoveNumber = nextMoveNumber, Move = board.LastMove });
             board.UpdateMessage();
-            UpdateDrawClaimStatus(board);
             m_dbChessContext.SaveChanges();
 
             var jsonObject = new { fen = board.Fen, message = board.Status + " [API updated board]", movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw };
@@ -102,11 +101,6 @@ namespace Chess.Controllers
             hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
 
             return new PlayMoveResult { Status = "OK", Fen = board.Fen, Message = board.Status };
-        }
-
-        private void UpdateDrawClaimStatus(Game board)
-        {
-            board.MayClaimDraw = m_dbChessContext.Database.SqlQuery<bool>("SELECT dbo.MayClaimDraw(@p0)", board.GameId).FirstOrDefault();
         }
 
         private bool VerifyUser(int playerId)

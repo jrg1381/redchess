@@ -1,8 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Data.SqlTypes;
 using System.Linq;
 using Chess.Controllers;
 using RedChess.ChessCommon.Enumerations;
@@ -10,35 +6,46 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace Chess.Models
 {
-    [Table("Boards")]
     public class Game : IDisposable
     {
         private readonly IBoard m_board;
-        private bool m_gameOver;
-        private bool m_canClaimDraw;
-        private DateTime m_creationDate;
-        private DateTime? m_completionDate;
+        private GameData m_gameData;
 
         public Game()
         {
             m_board = new BoardImpl();
+            m_gameData = new GameData();
+        }
+
+        public Game(GameData data)
+        {
+            m_board = new BoardImpl();
+            m_gameData = data;
+        }
+
+        public Game(int id)
+        {
+            using (var context = new ChessContext())
+            {
+                m_gameData = context.Boards.Find(id);
+                m_board = new BoardImpl();
+                m_board.FromFen(m_gameData.Fen);
+            }
         }
 
         public Game(IBoard board, int owner, int opponent)
         {
             m_board = board;
-            UserIdWhite = owner;
-            UserIdBlack = opponent;
-            Status = String.Empty;
+            m_gameData = new GameData
+            {
+                UserIdWhite = owner,
+                UserIdBlack = opponent, 
+                Status = String.Empty, 
+                Fen = m_board.ToFen()
+            };
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GameId { get; set; }
-
-        public int UserIdWhite { get; set; }
-        public int UserIdBlack { get; set; }
-        public string Status { get; set; }
+        public int GameId { get { return m_gameData.GameId; } }
 
         public string Turn
         {
@@ -47,8 +54,8 @@ namespace Chess.Models
 
         public bool IsUsersTurn(int userId)
         {
-            return (m_board.CurrentTurn == PieceColor.Black && userId == UserIdBlack) ||
-                   (m_board.CurrentTurn == PieceColor.White && userId == UserIdWhite);
+            return (m_board.CurrentTurn == PieceColor.Black && userId == m_gameData.UserIdBlack) ||
+                   (m_board.CurrentTurn == PieceColor.White && userId == m_gameData.UserIdWhite);
         }
 
         /// <summary>
@@ -64,9 +71,9 @@ namespace Chess.Models
 
             int userId = profile.UserId;
 
-            if (userId == UserIdBlack)
+            if (userId == m_gameData.UserIdBlack)
                 return "b";
-            if (userId == UserIdWhite)
+            if (userId == m_gameData.UserIdWhite)
                 return "w";
             return "";
         }
@@ -79,15 +86,14 @@ namespace Chess.Models
             }
         }
 
-        [NotMapped]
         public string Description
         {
             get
             {
                 using (var dbContext = new ChessContext())
                 {
-                    var whiteProfile = UserUtilities.UserProfileFromId(dbContext, UserIdWhite);
-                    var blackProfile = UserUtilities.UserProfileFromId(dbContext, UserIdBlack);
+                    var whiteProfile = UserUtilities.UserProfileFromId(dbContext, m_gameData.UserIdWhite);
+                    var blackProfile = UserUtilities.UserProfileFromId(dbContext, m_gameData.UserIdBlack);
                     return String.Format("{0} vs {1}", whiteProfile.UserName, blackProfile.UserName);
                 }
             }
@@ -95,11 +101,11 @@ namespace Chess.Models
 
         public void UpdateMessage()
         {
-            Status = String.Empty;
+            m_gameData.Status = String.Empty;
 
             if (m_board.KingInCheck())
             {
-                Status = "Check!";
+                m_gameData.Status = "Check!";
                 if (m_board.IsCheckmate(true))
                 {
                     EndGameWithMessage("Checkmate!");
@@ -115,46 +121,55 @@ namespace Chess.Models
             }
         }
 
-        public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
-        public string Fen { get { return m_board.ToFen(); } set { m_board.FromFen(value); } }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public bool MayClaimDraw { get { return m_canClaimDraw; } set { m_canClaimDraw = value; }}
-
         public bool Move(Location start, Location end)
         {
             var success = m_board.Move(start, end);
             if (success)
-                LastMove = m_board.LastMove();
+            {
+                using (var context = new ChessContext())
+                {
+                    m_gameData = context.Boards.Find(GameId);
+                    m_gameData.LastMove = m_board.LastMove();
+                    m_gameData.Fen = m_board.ToFen();
+                    context.SaveChanges();
+                }
+            }
             return success;
         }
 
         public void PromotePiece(string typeToPromoteTo)
         {
-            m_board.PromotePiece(typeToPromoteTo);
-            LastMove = m_board.LastMove();
+            using (var context = new ChessContext())
+            {
+                m_gameData = context.Boards.Find(GameId);
+                m_board.PromotePiece(typeToPromoteTo);
+                m_gameData.LastMove = m_board.LastMove();
+                m_gameData.Fen = m_board.ToFen();
+                context.SaveChanges();
+            }
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime CreationDate
-        {
-            get { return new DateTime(m_creationDate.Ticks, DateTimeKind.Utc); }
-            set { m_creationDate = value; }
-        }
-
-        public DateTime CompletionDate
-        {
-            get { return m_completionDate.HasValue ? new DateTime(m_completionDate.Value.Ticks, DateTimeKind.Utc) : SqlDateTime.MinValue.Value; }
-            set { m_completionDate = value; }
-        }
-
-        public string LastMove { get; set; }
+        public string Status { get { return m_gameData.Status; } }
+        public int UserIdWhite { get { return m_gameData.UserIdWhite; } }
+        public int UserIdBlack { get { return m_gameData.UserIdBlack; } }
+        public bool MayClaimDraw { get { return m_gameData.MayClaimDraw; } }
+        public bool GameOver { get { return m_gameData.GameOver; } }
+        public GameData Data { get { return m_gameData;} }
+        public DateTime CreationDate { get { return m_gameData.CreationDate; } }
+        public DateTime CompletionDate { get { return m_gameData.CompletionDate; } }
+        public string LastMove { get { return m_gameData.LastMove; }}
+        public string Fen { get { return m_gameData.Fen; } }
 
         public void EndGameWithMessage(string message)
         {
-            Status = message;
-            CompletionDate = DateTime.UtcNow;
-            GameOver = true;
+            using (var context = new ChessContext())
+            {
+                m_gameData = context.Boards.Find(GameId);
+                m_gameData.Status = message;
+                m_gameData.CompletionDate = DateTime.UtcNow;
+                m_gameData.GameOver = true;
+                context.SaveChanges();
+            }
         }
 
         public void Dispose()
