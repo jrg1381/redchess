@@ -25,10 +25,8 @@ namespace Chess.Models
 
         public string Description()
         {
-            using (var db = new ChessContext())
-            {
-                return new Game(GameId).Description;
-            }
+            var repo = new GameRepository();
+            return repo.FindById(GameId).Description;
         }
 
         public bool IsParticipant(string username)

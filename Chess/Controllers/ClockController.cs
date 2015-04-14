@@ -8,55 +8,46 @@ namespace Chess.Controllers
 {
     public class ClockController : Controller
     {
-		[System.Web.Mvc.HttpPost]
-		public ActionResult PlayerReady(int id)
-		{
-		    using (var chessContext = new ChessContext())
-		    {
-		        var board = new Game(id);
-		        var clock = chessContext.Clocks.FirstOrDefault(c => c.GameId == id);
+        private GameRepository m_repository = new GameRepository();
 
-		        if (board == null || clock == null)
-		            return Json(new {status = "NULL"});
+        [System.Web.Mvc.HttpPost]
+        public ActionResult PlayerReady(int id)
+        {
+            var game = m_repository.FindById(id);
+            var clock = m_repository.Clock(id);
 
-		        string playerColor = board.CurrentPlayerColor(System.Web.HttpContext.Current.User.Identity.Name);
-		        //var transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.Serializable, Timeout = TimeSpan.FromSeconds(10) };
+            if (game == null || clock == null)
+                return Json(new {status = "NULL"});
 
-		        // Need to avoid the race condition where white and black are accessing this function at the same time.
-		        //using (var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
-		        //{
-		        switch (playerColor)
-		        {
-		            case "w":
-		                clock.PlayersReady |= 1;
-		                break;
-		            case "b":
-		                clock.PlayersReady |= 2;
-		                break;
-		            default:
-		                return Json(new {status = "AUTH"});
-		        }
+            string playerColor = game.CurrentPlayerColor(System.Web.HttpContext.Current.User.Identity.Name);
+            switch (playerColor)
+            {
+                case "w":
+                    clock.PlayersReady |= 1;
+                    break;
+                case "b":
+                    clock.PlayersReady |= 2;
+                    break;
+                default:
+                    return Json(new {status = "AUTH"});
+            }
 
-		        chessContext.SaveChanges();
-		        //	scope.Complete();
-		        //}
+            string status = "WAIT";
 
-		        string status = "WAIT";
+            if (clock.PlayersReady == 3)
+            {
+                clock.LastActionWhite = DateTime.UtcNow;
+                status = "OK";
+            }
 
-		        if (clock.PlayersReady == 3)
-		        {
-		            clock.LastActionWhite = DateTime.UtcNow;
-		            chessContext.SaveChanges();
-		            status = "OK";
-		        }
+            m_repository.SaveClock(clock);
 
-		        IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-		        hubContext.Clients.Group(board.GameId.ToString()).startClock(new {status = status, who = playerColor});
-		        return Json(new {status = status});
-		    }
-		}
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(game.Id.ToString()).startClock(new {status = status, who = playerColor});
+            return Json(new {status = status});
+        }
 
-		[System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpPost]
 		public ActionResult RefreshClock(int id)
 		{
 		    using (var chessContext = new ChessContext())

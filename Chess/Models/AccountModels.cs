@@ -1,18 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chess.Models
 {
-	[Table("UserProfile")]
-	public class UserProfile
-	{
-		[Key]
-		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-		public int UserId { get; set; }
-		public string UserName { get; set; }
-	}
-
-	public class RegisterExternalLoginModel
+    public class RegisterExternalLoginModel
 	{
 		[Required]
 		[Display(Name = "User name")]

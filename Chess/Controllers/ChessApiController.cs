@@ -35,14 +35,10 @@ namespace Chess.Controllers
             if (!VerifyUser(opponentId)) return new BoardCreationResult { Status = "FAIL", Message = "opponentId invalid" };
 
             var board = BoardFactory.CreateInstance();
-            var dto = new Game(board, playerId, opponentId);
-            m_dbChessContext.Boards.Add(dto.Data);
-            dto.UpdateMessage();
-            m_dbChessContext.SaveChanges();
-            m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1, Move = "" });
-            m_dbChessContext.SaveChanges();
+            var dto = (new GameRepository()).Add(board, playerId, opponentId);
+            dto.UpdateMessage(dto.Id);
 
-            return new BoardCreationResult {Status = "OK", Message = "Board created", Id = dto.GameId};
+            return new BoardCreationResult {Status = "OK", Message = "Board created", Id = dto.Id};
         }
 
         [HttpGet]
@@ -52,7 +48,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public Dictionary<int, GameData> Boards()
+        public Dictionary<int, GameDto> Boards()
         {
             return m_dbChessContext.Boards.ToDictionary(b => b.GameId, b => b);
         }
@@ -64,7 +60,7 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public GameData Board(int id)
+        public GameDto Board(int id)
         {
             return m_dbChessContext.Boards.Find(id);
         }
@@ -72,7 +68,7 @@ namespace Chess.Controllers
         [HttpGet]
         public PlayMoveResult PlayMove(int id, string start, string end)
         {
-            var board = new Game(id);
+            var board = (new GameRepository()).FindById(id);
 
             if (board.GameOver)
             {
@@ -93,7 +89,7 @@ namespace Chess.Controllers
 
             int nextMoveNumber = m_dbChessContext.HistoryEntries.Where(x => x.GameId == id).Max(x => x.MoveNumber) + 1;
             m_dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = id, MoveNumber = nextMoveNumber, Move = board.LastMove });
-            board.UpdateMessage();
+            //board.UpdateMessage();
             m_dbChessContext.SaveChanges();
 
             var jsonObject = new { fen = board.Fen, message = board.Status + " [API updated board]", movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw };

@@ -12,14 +12,13 @@ namespace Chess.Controllers
 {
     public class BoardController : Controller
     {
+        private GameRepository m_repository = new GameRepository();
+
         // GET: /Board/
 
         public ActionResult Index()
         {
-            using (var dbChessContext = new ChessContext())
-            {
-                return View(dbChessContext.Boards.ToList());
-            }
+            return View(m_repository.FindAll());
         }
 
         //
@@ -27,7 +26,7 @@ namespace Chess.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            var board = new Game(id);
+            var board = m_repository.FindById(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
@@ -53,39 +52,30 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BoardImpl board, string opponent, bool useClock, string timeLimit, bool playAsBlack = false)
         {
-            using (var dbChessContext = new ChessContext())
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                int opponentId = Int32.Parse(opponent);
+                IGame dto = m_repository.Add(board, opponentId, System.Web.HttpContext.Current.User.Identity.Name, playAsBlack);
+
+                if (useClock)
                 {
-                    int opponentId = Int32.Parse(opponent);
-                    var myProfile = UserUtilities.UserProfileFromName(dbChessContext);
-                    var dto = playAsBlack ? new Game(board, opponentId, myProfile.UserId) : new Game(board, myProfile.UserId, opponentId);
-                    dbChessContext.Boards.Add(dto.Data);
-                    dbChessContext.SaveChanges();
-
-                    if (useClock)
-                    {
-                        double timeLimitAsNumber = 0;
-                        Double.TryParse(timeLimit, out timeLimitAsNumber);
-                        var clock = new Clock(dto.GameId, (int) (timeLimitAsNumber*60*1000));
-                        dbChessContext.Clocks.Add(clock);
-                    }
-
-                    dbChessContext.HistoryEntries.Add(new HistoryEntry() { GameId = dto.GameId, Fen = dto.Fen, MoveNumber = 1, Move = "" });
-                    dbChessContext.SaveChanges();
-                    return RedirectToAction("Details", "Board", new {id = dto.GameId});
+                    double timeLimitAsNumber = 0;
+                    Double.TryParse(timeLimit, out timeLimitAsNumber);
+                    m_repository.AddClock(dto.Id, (int) (timeLimitAsNumber*60*1000));
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Board", new {id = dto.Id});
             }
+
+            return RedirectToAction("Index");
         }
 
-	    //
+        //
         // GET: /Board/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            var board = new Game(id);
+            var board = m_repository.FindById(id);
 
             if (board == null)
             {
@@ -109,16 +99,7 @@ namespace Chess.Controllers
 
         private void DestroyBoard(int id)
         {
-            var board = new Game(id);
-
-            if (board != null && MayManipulateBoard(board))
-            {
-                using (var context = new ChessContext())
-                {
-                    context.Boards.Remove(board.Data);
-                    context.SaveChanges();
-                }
-            }
+            m_repository.Delete(id);
         }
 
         //
@@ -132,213 +113,143 @@ namespace Chess.Controllers
                 return RedirectToAction("Index");
         }
 
-		private bool MayManipulateBoard(Game dto)
-		{
-		    using (var dbChessContext = new ChessContext())
-		    {
-                var profile = UserUtilities.UserProfileFromName(dbChessContext);
-
-		        return (profile != null && (profile.UserId == dto.UserIdWhite || profile.UserId == dto.UserIdBlack));
-		    }
-		}
-
-        private bool IsCurrentUsersTurn(Game dto)
+        private bool IsCurrentUsersTurn(int gameId)
         {
-            using (var dbChessContext = new ChessContext())
-            {
-                var profile = UserUtilities.UserProfileFromName(dbChessContext);
-                if (profile == null)
-                    return false;
-                return dto.IsUsersTurn(profile.UserId);
-            }
+            return m_repository.FindById(gameId).IsUsersTurn(System.Web.HttpContext.Current.User.Identity.Name);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TimedOut(int id, string message)
         {
-            using (var dbChessContext = new ChessContext())
+            var game = m_repository.FindById(id);
+
+            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
             {
-                var board = new Game(id);
-
-                if (!MayManipulateBoard(board))
-                {
-                    return Json(new {fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-                }
-
-                // Because the user who timed out hasn't made a move to update the clock, the database will contains an elapsed time
-                // which is too small. It will be equal to the time spent on all their _completed_ moves, and not the time they spent
-                // thinking about the last one. This has the annoying effect that reloading the page will increase their time from 0.
-                // To fix this, edit the loser's elapsed time in the database and set it equal to the time limit for the game.
-
-                int timeLimit = board.Clock().TimeLimitMs;
-                var profile = UserUtilities.UserProfileFromName(dbChessContext);
-
-                if (profile.UserId == board.UserIdWhite)
-                {
-                    dbChessContext.Clocks.Single(clock => clock.GameId == id).TimeElapsedWhiteMs = timeLimit;
-                }
-                else if (profile.UserId == board.UserIdBlack)
-                {
-                    dbChessContext.Clocks.Single(clock => clock.GameId == id).TimeElapsedBlackMs = timeLimit;
-                }
-
-                board.EndGameWithMessage(message);
-                dbChessContext.SaveChanges();
-
-                var jsonObject = new {fen = board.Fen, message = message, status = "TIME"};
-
-                IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-                hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
-
-                return Json(jsonObject);
+                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
+
+            m_repository.TimeGameOut(id, message, System.Web.HttpContext.Current.User.Identity.Name);
+            var jsonObject = new { fen = game.Fen, message = message, status = "TIME" };
+
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+
+            return Json(jsonObject);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Resign(int id)
         {
-            using (var dbChessContext = new ChessContext())
+            var game = m_repository.FindById(id);
+
+            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
             {
-                var board = new Game(id);
-
-                if (!MayManipulateBoard(board))
-                {
-                    return Json(new {fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-                }
-
-                var profile = UserUtilities.UserProfileFromName(dbChessContext);
-                var resignationMessage = String.Format("{0} resigned", profile.UserName);
-
-                board.EndGameWithMessage(resignationMessage);
-                dbChessContext.SaveChanges();
-
-                var jsonObject = new {fen = board.Fen, message = resignationMessage, status = "RESIGN"};
-
-                IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-                hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
-
-                return Json(jsonObject);
+                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
+
+            var resignationMessage = String.Format("{0} resigned", System.Web.HttpContext.Current.User.Identity.Name);
+
+            game.EndGameWithMessage(game.Id, resignationMessage);
+
+            var jsonObject = new { fen = game.Fen, message = resignationMessage, status = "RESIGN" };
+
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+
+            return Json(jsonObject);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ClaimDraw(int id)
         {
-            using (var dbChessContext = new ChessContext())
+            var game = m_repository.FindById(id);
+
+            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
             {
-                var board = new Game(id);
-
-                if (!MayManipulateBoard(board))
-                {
-                    return Json(new {fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-                }
-
-                if (!board.MayClaimDraw)
-                {
-                    return Json(new {fen = board.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
-                }
-
-                board.EndGameWithMessage("Draw claimed");
-                dbChessContext.SaveChanges();
-
-                var jsonObject = new {fen = board.Fen, message = "Draw claimed", status = "DRAW"};
-
-                IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-                hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
-
-                return Json(jsonObject);
+                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
+
+            if (!game.MayClaimDraw)
+            {
+                return Json(new {fen = game.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
+            }
+
+            game.EndGameWithMessage(id, "Draw claimed");
+
+            var jsonObject = new { fen = game.Fen, message = "Draw claimed", status = "DRAW" };
+
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+
+            return Json(jsonObject);
         }
 
-		//
+        //
 		// POST: /Board/PlayMove/5
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult PlayMove(int id, string start, string end, string promote)
-		{
-		    using (var dbChessContext = new ChessContext())
-		    {
-                var board = new Game(id);
-		        if (board == null)
-		        {
-		            return Json(new {fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH"});
-		        }
-		        // Allowed to be null for an un-timed game
-                var clock = dbChessContext.Clocks.FirstOrDefault(c => c.GameId == id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PlayMove(int id, string start, string end, string promote)
+        {
+            var game = m_repository.FindById(id);
 
-		        // This is also covered by client side validation
-		        if (!MayManipulateBoard(board))
-		        {
-		            return Json(new {fen = board.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-		        }
+            if (game == null)
+            {
+                return Json(new {fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH"});
+            }
 
-		        // This is also covered by client side validation
-		        if (!IsCurrentUsersTurn(board))
-		        {
-		            return Json(new {fen = board.Fen, message = "It's not your turn.", status = "AUTH"});
-		        }
+            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
+            {
+                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
+            }
 
-		        Location endLocation = Location.InvalidSquare, startLocation = Location.InvalidSquare;
-		        bool parseOk = Enum.TryParse(start, out startLocation) && Enum.TryParse(end, out endLocation);
+            // This is also covered by client side validation
+            if (!IsCurrentUsersTurn(game.Id))
+            {
+                return Json(new { fen = game.Fen, message = "It's not your turn.", status = "AUTH" });
+            }
 
-		        if (!parseOk)
-		        {
-		            return Json(new {fen = board.Fen, message = "Invalid move", status = "FAIL"});
-		        }
+            Location endLocation = Location.InvalidSquare, startLocation = Location.InvalidSquare;
+            bool parseOk = Enum.TryParse(start, out startLocation) && Enum.TryParse(end, out endLocation);
 
-		        bool success = board.Move(startLocation, endLocation);
+            if (!parseOk)
+            {
+                return Json(new { fen = game.Fen, message = "Invalid move", status = "FAIL" });
+            }
 
-		        if (!success)
-		        {
-		            string errorMessage = "Invalid move";
+            bool success = game.Move(startLocation, endLocation);
 
-		            if (!String.IsNullOrEmpty(board.Status))
-		            {
-		                errorMessage = board.Status + " - invalid move";
-		            }
+            if (!success)
+            {
+                string errorMessage = "Invalid move";
 
-		            return Json(new {fen = board.Fen, message = errorMessage, status = "FAIL"});
-		        }
+                if (!String.IsNullOrEmpty(game.Status))
+                {
+                    errorMessage = game.Status + " - invalid move";
+                }
 
-		        if (!String.IsNullOrEmpty(promote))
-		        {
-		            board.PromotePiece(promote);
-		        }
+                return Json(new { fen = game.Fen, message = errorMessage, status = "FAIL" });
+            }
 
-                int nextMoveNumber = dbChessContext.HistoryEntries.Where(x => x.GameId == board.GameId).Max(x => x.MoveNumber) + 1;
-                dbChessContext.HistoryEntries.Add(new HistoryEntry() { Fen = board.Fen, GameId = board.GameId, MoveNumber = nextMoveNumber, Move = board.LastMove });
+            if (!String.IsNullOrEmpty(promote))
+            {
+                game.PromotePiece(promote);
+            }
 
-		        if (clock != null)
-		        {
-		            if (board.Turn == "Black")
-		            {
-		                clock.LastActionBlack = DateTime.UtcNow;
-		                clock.TimeElapsedWhiteMs += (int) (DateTime.UtcNow - clock.LastActionWhite).TotalMilliseconds;
-		            }
-		            if (board.Turn == "White")
-		            {
-		                clock.LastActionWhite = DateTime.UtcNow;
-		                clock.TimeElapsedBlackMs += (int) (DateTime.UtcNow - clock.LastActionBlack).TotalMilliseconds;
-		            }
-		        }
+            game.UpdateMessage(game.Id);
 
-		        board.UpdateMessage();
-                dbChessContext.SaveChanges();
+            string messageForUser = game.Status;
+            string lastMove = game.LastMove;
 
-		        string messageForUser = board.Status;
-		        string lastMove = board.LastMove;
+            var jsonObject = new { fen = game.Fen, message = messageForUser, lastmove = lastMove, movefrom = start, moveto = end, status = "OK", mayClaimDraw = game.MayClaimDraw };
 
-		        var jsonObject = new {fen = board.Fen, message = messageForUser, lastmove = lastMove, movefrom = start, moveto = end, status = "OK", mayClaimDraw = board.MayClaimDraw};
-
-		        IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-		        hubContext.Clients.Group(board.GameId.ToString()).addMessage(jsonObject);
-		        return Json(jsonObject);
-		    }
-		}
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+            return Json(jsonObject);
+        }
     }
 
 	public class UpdateServer : Hub

@@ -6,7 +6,7 @@ using System.Data.SqlTypes;
 namespace Chess.Models
 {
     [Table("Boards")]
-    public class GameData
+    public class GameDto
     {
         private DateTime m_creationDate;
         private DateTime? m_completionDate;
@@ -38,5 +38,10 @@ namespace Chess.Models
             get { return m_completionDate.HasValue ? new DateTime(m_completionDate.Value.Ticks, DateTimeKind.Utc) : SqlDateTime.MinValue.Value; }
             set { m_completionDate = value; }
         }
+
+        [ForeignKey("UserIdWhite")]
+        public virtual UserProfile UserProfileWhite { get; set; }
+        [ForeignKey("UserIdBlack")]
+        public virtual UserProfile UserProfileBlack { get; set; }
     }
 }
