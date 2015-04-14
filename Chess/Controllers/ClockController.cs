@@ -11,6 +11,7 @@ namespace Chess.Controllers
     {
         private readonly GameRepository m_repository = new GameRepository();
         private readonly ClockRepository m_clockRepository = new ClockRepository();
+        private readonly ICurrentUser m_identityProvider = new CurrentUserImpl();
 
         [System.Web.Mvc.HttpPost]
         public ActionResult PlayerReady(int id)
@@ -21,7 +22,7 @@ namespace Chess.Controllers
             if (game == null || clock == null)
                 return Json(new {status = "NULL"});
 
-            string playerColor = game.CurrentPlayerColor(System.Web.HttpContext.Current.User.Identity.Name);
+            string playerColor = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
             switch (playerColor)
             {
                 case "w":

@@ -8,20 +8,30 @@ using RedChess.ChessCommon.Enumerations;
 
 namespace Chess.Controllers
 {
+    public interface ICurrentUser
+    {
+        string CurrentUser { get; }
+    }
+
+    public class CurrentUserImpl : ICurrentUser
+    {
+        public string CurrentUser
+        {
+            get { return System.Web.HttpContext.Current.User.Identity.Name; }
+        }
+    }
+
     public class BoardController : Controller
     {
-        private readonly GameRepository m_repository;
+        private readonly IGameRepository m_repository;
         private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
+        private readonly ICurrentUser m_identityProvider;
 
-        public BoardController(GameRepository gameRepository)
+        public BoardController(IGameRepository gameRepository = null, ICurrentUser identityProvider = null)
         {
-            m_repository = gameRepository;
-        }
-
-        public BoardController()
-        {
-            m_repository = new GameRepository();
+            m_repository = gameRepository ?? new GameRepository();
+            m_identityProvider = identityProvider ?? new CurrentUserImpl();
         }
 
         // GET: /Board/
@@ -49,7 +59,7 @@ namespace Chess.Controllers
 
         public ActionResult Create()
         {
-            return View(m_usersRepository.FindAll().Where(x => x.UserName != System.Web.HttpContext.Current.User.Identity.Name));
+            return View(m_usersRepository.FindAll().Where(x => x.UserName != m_identityProvider.CurrentUser));
         }
 
         //
@@ -62,7 +72,7 @@ namespace Chess.Controllers
             if (ModelState.IsValid)
             {
                 int opponentId = Int32.Parse(opponent);
-                var dto = m_repository.Add(board, opponentId, System.Web.HttpContext.Current.User.Identity.Name, playAsBlack);
+                var dto = m_repository.Add(board, opponentId, m_identityProvider.CurrentUser, playAsBlack);
 
                 if (useClock)
                 {
@@ -122,7 +132,7 @@ namespace Chess.Controllers
 
         private bool IsCurrentUsersTurn(int gameId)
         {
-            return m_repository.FindById(gameId).IsUsersTurn(System.Web.HttpContext.Current.User.Identity.Name);
+            return m_repository.FindById(gameId).IsUsersTurn(m_identityProvider.CurrentUser);
         }
 
         [HttpPost]
@@ -131,12 +141,12 @@ namespace Chess.Controllers
         {
             var game = m_repository.FindById(id);
 
-            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
+            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
 
-            m_repository.TimeGameOut(id, message, System.Web.HttpContext.Current.User.Identity.Name);
+            m_repository.TimeGameOut(id, message, m_identityProvider.CurrentUser);
             var jsonObject = new { fen = game.Fen, message = message, status = "TIME" };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
@@ -151,12 +161,12 @@ namespace Chess.Controllers
         {
             var game = m_repository.FindById(id);
 
-            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
+            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
 
-            var resignationMessage = String.Format("{0} resigned", System.Web.HttpContext.Current.User.Identity.Name);
+            var resignationMessage = String.Format("{0} resigned", m_identityProvider.CurrentUser);
 
             game.EndGameWithMessage(game.Id, resignationMessage);
 
@@ -168,13 +178,19 @@ namespace Chess.Controllers
             return Json(jsonObject);
         }
 
+        public bool MayManipulateBoard(int gameId, string userName)
+        {
+            var game = m_repository.FindById(gameId);
+            return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ClaimDraw(int id)
         {
             var game = m_repository.FindById(id);
 
-            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
+            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
@@ -208,7 +224,7 @@ namespace Chess.Controllers
                 return Json(new {fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH"});
             }
 
-            if (!m_repository.MayManipulateBoard(id, System.Web.HttpContext.Current.User.Identity.Name))
+            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }

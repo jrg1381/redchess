@@ -10,6 +10,7 @@ namespace Chess.Controllers
     {
         readonly GameRepository m_gameRepository = new GameRepository();
         readonly HistoryRepository m_historyRepository = new HistoryRepository();
+        private readonly ICurrentUser m_identityProvider = new CurrentUserImpl();
 
         public ActionResult Index()
         {
@@ -30,7 +31,7 @@ namespace Chess.Controllers
                 return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in database"), "History", "PlayFromHere"));
             }
 
-            if (thisGame.UserProfileBlack.UserName == System.Web.HttpContext.Current.User.Identity.Name)
+            if (thisGame.UserProfileBlack.UserName == m_identityProvider.CurrentUser)
             {
                 opponent = thisGame.UserIdWhite.ToString();
                 playAsBlack = true;

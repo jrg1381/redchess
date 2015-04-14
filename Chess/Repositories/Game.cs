@@ -11,6 +11,11 @@ namespace Chess.Repositories
         private GameDto m_gameDto;
         private readonly IBoard m_board;
 
+        public Game()
+        {
+            
+        }
+
         public Game(GameDto game)
         {
             m_gameDto = game;

@@ -7,15 +7,6 @@ namespace Chess.Repositories
 {
     public class GameRepository : IGameRepository
     {
-        internal bool MayManipulateBoard(int gameId, string userName)
-        {
-            using (var context = new ChessContext())
-            {
-                var game = context.Boards.Find(gameId);
-                return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
-            }
-        }
-
         public IGame FindById(int id)
         {
             using (var context = new ChessContext())
@@ -25,7 +16,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal void Delete(int id)
+        public void Delete(int id)
         {
             using (var dbContext = new ChessContext())
             {
@@ -35,7 +26,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal void TimeGameOut(int id, string message, string userName)
+        public void TimeGameOut(int id, string message, string userName)
         {
             using (var context = new ChessContext())
             {
@@ -63,7 +54,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal IEnumerable<IGame> FindAll()
+        public IEnumerable<IGame> FindAll()
         {
             using (var context = new ChessContext())
             {
@@ -71,7 +62,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal IGame Add(BoardImpl board, int opponentId, string user, bool playAsBlack)
+        public IGame Add(BoardImpl board, int opponentId, string user, bool playAsBlack)
         {
             using (var context = new ChessContext())
             {
