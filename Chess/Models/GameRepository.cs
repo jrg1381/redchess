@@ -2,15 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Net.Mime;
 using RedChess.ChessCommon.Interfaces;
-using WebGrease.Css.Extensions;
 
 namespace Chess.Models
 {
     public class GameRepository
     {
-        public bool MayManipulateBoard(int gameId, string userName)
+        internal bool MayManipulateBoard(int gameId, string userName)
         {
             using (var context = new ChessContext())
             {
@@ -19,7 +17,7 @@ namespace Chess.Models
             }
         }
 
-        public IGame FindById(int id)
+        internal IGame FindById(int id)
         {
             using (var context = new ChessContext())
             {
@@ -28,7 +26,7 @@ namespace Chess.Models
             }
         }
 
-        public IGame Add(IBoard board, int owner, int opponent)
+        internal IGame Add(IBoard board, int owner, int opponent)
         {
             using (var context = new ChessContext())
             {
@@ -49,7 +47,7 @@ namespace Chess.Models
             }
         }
 
-        public Clock Clock(int gameId)
+        internal Clock Clock(int gameId)
         {
             using (var dbContext = new ChessContext())
             {
@@ -57,7 +55,7 @@ namespace Chess.Models
             }
         }
 
-        public void Delete(int id)
+        internal void Delete(int id)
         {
             using (var dbContext = new ChessContext())
             {
@@ -66,12 +64,12 @@ namespace Chess.Models
             }
         }
 
-        public void TimeGameOut(int id, string message, string userName)
+        internal void TimeGameOut(int id, string message, string userName)
         {
             using (var context = new ChessContext())
             {
-                var game = context.Boards.Find(id);
-                var foo = new Game(game);
+                var game = FindById(id);
+
                 // Because the user who timed out hasn't made a move to update the clock, the database will contains an elapsed time
                 // which is too small. It will be equal to the time spent on all their _completed_ moves, and not the time they spent
                 // thinking about the last one. This has the annoying effect that reloading the page will increase their time from 0.
@@ -88,12 +86,12 @@ namespace Chess.Models
                     context.Clocks.Single(clock => clock.GameId == id).TimeElapsedBlackMs = timeLimit;
                 }
 
-                foo.EndGameWithMessage(id, message);
+                game.EndGameWithMessage(id, message);
                 context.SaveChanges();
             }
         }
 
-        public void SaveClock(Clock clock)
+        internal void SaveClock(Clock clock)
         {
             using (var context = new ChessContext())
             {
@@ -120,7 +118,7 @@ namespace Chess.Models
             }
         }
 
-        public IGame Add(BoardImpl board, int opponentId, string user, bool playAsBlack)
+        internal IGame Add(BoardImpl board, int opponentId, string user, bool playAsBlack)
         {
             using (var context = new ChessContext())
             {
@@ -144,11 +142,6 @@ namespace Chess.Models
                     Status = String.Empty,
                     Fen = board.ToFen()
                 };
-
-                if (playAsBlack)
-                {
-                    
-                }
 
                 context.Boards.Add(game);
                 context.SaveChanges();
