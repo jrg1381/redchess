@@ -256,6 +256,7 @@ namespace Redchess.Engine
                     break;
                 case 'K':
                 case 'N':
+                    PreviousState.Promotion = "N";
                     PromotePiece(PieceType.Knight | flagsForPromotedPiece);
                     break;
             }
