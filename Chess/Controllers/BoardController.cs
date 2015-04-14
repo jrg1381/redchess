@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http.Results;
 using System.Web.Mvc;
 using Chess.Models;
 using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
-using RedChess.ChessCommon.Interfaces;
 
 namespace Chess.Controllers
 {

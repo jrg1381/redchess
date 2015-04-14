@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
+using Chess.Models;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
-namespace Chess.Models
+namespace Chess.Repositories
 {
     public class Game : IGame
     {

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Chess.Controllers;
+using Chess.Repositories;
 
 namespace Chess.Models
 {

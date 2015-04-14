@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Chess.Models;
+using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 
 namespace Chess.Controllers

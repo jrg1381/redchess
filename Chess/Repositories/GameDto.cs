@@ -2,8 +2,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
+using Chess.Models;
 
-namespace Chess.Models
+namespace Chess.Repositories
 {
     [Table("Boards")]
     public class GameDto

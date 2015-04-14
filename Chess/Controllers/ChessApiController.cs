@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using Antlr.Runtime;
 using Chess.Models;
+using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;

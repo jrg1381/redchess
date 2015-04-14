@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using Chess.Controllers;
+using Chess.Repositories;
 
 namespace Chess.Models
 {
