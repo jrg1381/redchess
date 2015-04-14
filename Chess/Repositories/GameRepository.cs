@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Chess.Models;
+using System.Data.Entity;
 
 namespace Chess.Repositories
 {
@@ -11,7 +12,7 @@ namespace Chess.Repositories
         {
             using (var context = new ChessContext())
             {
-                var game = context.Boards.Find(id);
+                var game = context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Single(b => b.GameId == id);
                 return new Game(game);
             }
         }

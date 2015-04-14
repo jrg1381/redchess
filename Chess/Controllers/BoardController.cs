@@ -28,6 +28,11 @@ namespace Chess.Controllers
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
 
+        public BoardController() : this(null, null)
+        {
+            
+        }
+
         public BoardController(IGameRepository gameRepository = null, ICurrentUser identityProvider = null)
         {
             m_repository = gameRepository ?? new GameRepository();
