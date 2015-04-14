@@ -10,9 +10,19 @@ namespace Chess.Controllers
 {
     public class BoardController : Controller
     {
-        private readonly GameRepository m_repository = new GameRepository();
+        private readonly GameRepository m_repository;
         private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
+
+        public BoardController(GameRepository gameRepository)
+        {
+            m_repository = gameRepository;
+        }
+
+        public BoardController()
+        {
+            m_repository = new GameRepository();
+        }
 
         // GET: /Board/
 
