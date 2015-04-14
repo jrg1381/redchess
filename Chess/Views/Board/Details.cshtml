@@ -27,8 +27,8 @@
 </style>
 
 @{
+    var shouldLock = @Model.ShouldLockUi;
     var myClock = @Model.Clock;
-    var shouldLock = myClock != null && (myClock.PlayersReady != 3 || myClock.TimeElapsedBlackMs <= myClock.TimeLimitMs || myClock.TimeElapsedWhiteMs <= myClock.TimeLimitMs);
 }
 
 <script type="text/javascript">

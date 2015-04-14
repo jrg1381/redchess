@@ -35,10 +35,10 @@ namespace Chess.Controllers
             if (!VerifyUser(opponentId)) return new BoardCreationResult { Status = "FAIL", Message = "opponentId invalid" };
 
             var board = BoardFactory.CreateInstance();
-            var dto = (new GameRepository()).Add(board, playerId, opponentId);
-            dto.UpdateMessage(dto.Id);
+            //var dto = (new GameRepository()).Add(board, playerId, opponentId,);
+            //dto.UpdateMessage(dto.Id);
 
-            return new BoardCreationResult {Status = "OK", Message = "Board created", Id = dto.Id};
+            return new BoardCreationResult {Status = "OK", Message = "Board created", Id = 0};
         }
 
         [HttpGet]

@@ -13,6 +13,7 @@ namespace Chess.Controllers
     public class BoardController : Controller
     {
         private GameRepository m_repository = new GameRepository();
+        private ClockRepository m_clockRepository = new ClockRepository();
 
         // GET: /Board/
 
@@ -55,13 +56,13 @@ namespace Chess.Controllers
             if (ModelState.IsValid)
             {
                 int opponentId = Int32.Parse(opponent);
-                IGame dto = m_repository.Add(board, opponentId, System.Web.HttpContext.Current.User.Identity.Name, playAsBlack);
+                var dto = m_repository.Add(board, opponentId, System.Web.HttpContext.Current.User.Identity.Name, playAsBlack);
 
                 if (useClock)
                 {
                     double timeLimitAsNumber = 0;
                     Double.TryParse(timeLimit, out timeLimitAsNumber);
-                    m_repository.AddClock(dto.Id, (int) (timeLimitAsNumber*60*1000));
+                    m_clockRepository.AddClock(dto.Id, (int) (timeLimitAsNumber*60*1000));
                 }
 
                 return RedirectToAction("Details", "Board", new {id = dto.Id});

@@ -13,8 +13,9 @@ namespace Chess.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult PlayerReady(int id)
         {
+            var clockRepository = new ClockRepository();
             var game = m_repository.FindById(id);
-            var clock = m_repository.Clock(id);
+            var clock = clockRepository.Clock(id);
 
             if (game == null || clock == null)
                 return Json(new {status = "NULL"});
@@ -40,7 +41,7 @@ namespace Chess.Controllers
                 status = "OK";
             }
 
-            m_repository.SaveClock(clock);
+            clockRepository.SaveClock(clock);
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
             hubContext.Clients.Group(game.Id.ToString()).startClock(new {status = status, who = playerColor});

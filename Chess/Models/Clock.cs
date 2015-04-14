@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chess.Models
 {
-	public class Clock
-	{
+    public class Clock : IClock
+    {
 		public static readonly DateTime MinimumDateTime;
 
 		static Clock()

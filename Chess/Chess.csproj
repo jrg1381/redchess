@@ -205,6 +205,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ClockRepository.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameRepository.cs" />
     <Compile Include="Models\BoardImpl.cs" />
@@ -212,7 +213,9 @@
     <Compile Include="Models\Clock.cs" />
     <Compile Include="Models\GameDto.cs" />
     <Compile Include="Models\HistoryEntry.cs" />
+    <Compile Include="Models\IClock.cs" />
     <Compile Include="Models\IGame.cs" />
+    <Compile Include="Models\IGameRepository.cs" />
     <Compile Include="Models\PgnModel.cs" />
     <Compile Include="Controllers\PgnController.cs" />
     <Compile Include="Models\UserProfile.cs" />

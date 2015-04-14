@@ -1,4 +1,5 @@
 using System;
+using System.Web.Mvc;
 using RedChess.ChessCommon.Enumerations;
 
 namespace Chess.Models
@@ -24,7 +25,8 @@ namespace Chess.Models
         void PromotePiece(string typeToPromoteTo);
         int Id { get; }
         string Description { get; }
-        Clock Clock { get; }
+        bool ShouldLockUi { get; }
+        IClock Clock { get; }
 
         string CurrentPlayerColor(string p);
     }

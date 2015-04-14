@@ -17,21 +17,33 @@ namespace Chess.Models
             m_board.FromFen(m_gameDto.Fen);
         }
 
-        public string Turn
-        {
-            get { return m_board.CurrentTurn.ToString(); }
-        }
-
-        public Clock Clock
+        public IClock Clock
         {
             get
             {
-                using (var context = new ChessContext())
-                {
-                    m_gameDto = context.Boards.Find(m_gameDto.GameId);
-                    return context.Clocks.Single(c => c.GameId == m_gameDto.GameId);
-                }
+                return (new ClockRepository()).Clock(m_gameDto.GameId);
             }
+        }
+
+        public bool ShouldLockUi
+        {
+            get
+            {
+                var clock = (new ClockRepository()).Clock(m_gameDto.GameId);
+
+                if (clock == null)
+                    return false;
+
+                if (clock.PlayersReady != 3 || clock.TimeElapsedBlackMs <= clock.TimeLimitMs || clock.TimeElapsedWhiteMs <= clock.TimeLimitMs)
+                    return true;
+
+                return false;
+            }
+        }
+
+        public string Turn
+        {
+            get { return m_board.CurrentTurn.ToString(); }
         }
 
         public bool IsUsersTurn(string userName)
