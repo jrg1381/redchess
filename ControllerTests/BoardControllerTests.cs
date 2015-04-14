@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 using NUnit.Framework;
 using Chess.Controllers;
 using Chess.Models;
 using Chess.Repositories;
+using RedChess.ChessCommon.Enumerations;
 using Rhino.Mocks;
 
 namespace ControllerTests
@@ -87,6 +83,31 @@ namespace ControllerTests
             bool ok = controller.MayManipulateBoard(10, userName);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
+        }
+
+        [Test]
+        public void PlayMoveChangesBoardCorrectly()
+        {
+            var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
+            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
+
+            var fakeGame = MockRepository.GenerateMock<IGame>();
+            fakeGame.Stub(x => x.UserProfileBlack).Return(myUserProfile);
+            fakeGame.Stub(x => x.UserProfileWhite).Return(opponentUserProfile);
+            fakeGame.Stub(x => x.IsUsersTurn("james")).Return(true);
+            fakeGame.Stub(x => x.Id).Return(10);
+            fakeGame.Expect(x => x.Move(Location.E2, Location.E4)).Return(true);
+
+            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
+            identityProvider.Stub(x => x.CurrentUser).Return("james");
+
+            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+
+            var controller = new BoardController(fakeRepo, identityProvider);
+            controller.PlayMove(10, "E2", "E4", "");
+
+            Assert.AreEqual("", fakeGame.Fen, "fek");
         }
     }
 }

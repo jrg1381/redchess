@@ -3,6 +3,7 @@ using System.Linq;
 using Chess.Models;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
+using RedChess.EngineFactory;
 
 namespace Chess.Repositories
 {
@@ -11,15 +12,15 @@ namespace Chess.Repositories
         private GameDto m_gameDto;
         private readonly IBoard m_board;
 
-        public Game()
+        public Game(IBoard board = null)
         {
-            
+            m_board = board ?? BoardFactory.CreateInstance();
         }
 
         public Game(GameDto game)
         {
             m_gameDto = game;
-            m_board = new BoardImpl();
+            m_board = BoardFactory.CreateInstance();
             m_board.FromFen(m_gameDto.Fen);
         }
 
