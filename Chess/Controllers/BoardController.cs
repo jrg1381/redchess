@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using Chess.Models;
+using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
@@ -12,8 +13,9 @@ namespace Chess.Controllers
 {
     public class BoardController : Controller
     {
-        private GameRepository m_repository = new GameRepository();
-        private ClockRepository m_clockRepository = new ClockRepository();
+        private readonly GameRepository m_repository = new GameRepository();
+        private readonly ClockRepository m_clockRepository = new ClockRepository();
+        private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
 
         // GET: /Board/
 
@@ -40,10 +42,7 @@ namespace Chess.Controllers
 
         public ActionResult Create()
         {
-            using (var dbChessContext = new ChessContext())
-            {
-                return View(dbChessContext.UserProfiles.Where(profile => profile.UserName != System.Web.HttpContext.Current.User.Identity.Name).ToList());
-            }
+            return View(m_usersRepository.FindAll().Where(x => x.UserName != System.Web.HttpContext.Current.User.Identity.Name));
         }
 
         //

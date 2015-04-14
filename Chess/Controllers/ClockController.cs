@@ -8,14 +8,14 @@ namespace Chess.Controllers
 {
     public class ClockController : Controller
     {
-        private GameRepository m_repository = new GameRepository();
+        private readonly GameRepository m_repository = new GameRepository();
+        private readonly ClockRepository m_clockRepository = new ClockRepository();
 
         [System.Web.Mvc.HttpPost]
         public ActionResult PlayerReady(int id)
         {
-            var clockRepository = new ClockRepository();
             var game = m_repository.FindById(id);
-            var clock = clockRepository.Clock(id);
+            var clock = m_clockRepository.Clock(id);
 
             if (game == null || clock == null)
                 return Json(new {status = "NULL"});
@@ -41,7 +41,7 @@ namespace Chess.Controllers
                 status = "OK";
             }
 
-            clockRepository.SaveClock(clock);
+            m_clockRepository.SaveClock(clock);
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
             hubContext.Clients.Group(game.Id.ToString()).startClock(new {status = status, who = playerColor});
@@ -49,19 +49,17 @@ namespace Chess.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-		public ActionResult RefreshClock(int id)
-		{
-		    using (var chessContext = new ChessContext())
-		    {
-		        var clock = chessContext.Clocks.FirstOrDefault(c => c.GameId == id);
-		        if (clock == null)
-		            return Json(new {status = "NULL"});
+        public ActionResult RefreshClock(int id)
+        {
+            var clock = m_clockRepository.Clock(id);
 
-		        int timeLeftBlack = clock.TimeLimitMs - clock.TimeElapsedBlackMs;
-		        int timeLeftWhite = clock.TimeLimitMs - clock.TimeElapsedWhiteMs;
+            if (clock == null)
+                return Json(new {status = "NULL"});
 
-		        return Json(new {timeleftblack = timeLeftBlack, timeleftwhite = timeLeftWhite, status = "OK"});
-		    }
-		}
+            int timeLeftBlack = clock.TimeLimitMs - clock.TimeElapsedBlackMs;
+            int timeLeftWhite = clock.TimeLimitMs - clock.TimeElapsedWhiteMs;
+
+            return Json(new {timeleftblack = timeLeftBlack, timeleftwhite = timeLeftWhite, status = "OK"});
+        }
     }
 }

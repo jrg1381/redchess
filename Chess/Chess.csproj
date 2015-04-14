@@ -205,13 +205,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\ClockRepository.cs" />
-    <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\GameRepository.cs" />
+    <Compile Include="Repositories\ClockRepository.cs" />
+    <Compile Include="Repositories\Game.cs" />
+    <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Models\BoardImpl.cs" />
     <Compile Include="Models\ChessContext.cs" />
     <Compile Include="Models\Clock.cs" />
-    <Compile Include="Models\GameDto.cs" />
+    <Compile Include="Repositories\GameDto.cs" />
     <Compile Include="Models\HistoryEntry.cs" />
     <Compile Include="Models\IClock.cs" />
     <Compile Include="Models\IGame.cs" />
@@ -220,6 +220,8 @@
     <Compile Include="Controllers\PgnController.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\HistoryRepository.cs" />
+    <Compile Include="Repositories\UserProfileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

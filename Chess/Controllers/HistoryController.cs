@@ -2,79 +2,71 @@
 using System.Linq;
 using System.Web.Mvc;
 using Chess.Models;
+using Chess.Repositories;
 
 namespace Chess.Controllers
 {
     public class HistoryController : Controller
     {
+        readonly GameRepository m_gameRepository = new GameRepository();
+        readonly HistoryRepository m_historyRepository = new HistoryRepository();
+
         public ActionResult Index()
         {
 			return HttpNotFound();
         }
 
         public ActionResult PlayFromHere(string move, string gameId)
-		{
-		    bool playAsBlack = false;
-		    string opponent = "";
+        {
+            bool playAsBlack = false;
             int moveNumber = Int32.Parse(move);
             int game = Int32.Parse(gameId);
+            string opponent;
 
-            using (var db = new ChessContext())
+            var thisGame = m_gameRepository.FindById(game);
+
+            if (thisGame == null)
             {
-                var myProfile = UserUtilities.UserProfileFromName(db);
-
-                if (myProfile == null) // The user is not logged in or doesn't exist in the database for some reason
-                {
-                    return View("Error", new HandleErrorInfo(new ArgumentException("User must be logged in"), "History", "PlayFromHere"));
-                }
-
-                var thisGame = db.Boards.FirstOrDefault(x => x.GameId == game);
-                if (thisGame == null)
-                {
-                    return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in database"), "History", "PlayFromHere"));
-                }
-
-                if (thisGame.UserIdWhite == myProfile.UserId)
-                {
-                    opponent = thisGame.UserIdBlack.ToString();
-                }
-                else if (thisGame.UserIdBlack == myProfile.UserId)
-                {
-                    opponent = thisGame.UserIdWhite.ToString();
-                    playAsBlack = true;
-                }
-
-                var historyEntry = db.HistoryEntries.FirstOrDefault(x => x.GameId == game && x.MoveNumber == moveNumber + 1);
-                if (historyEntry == null)
-                {
-                    return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in history"), "History", "PlayFromHere"));
-                }
-
-                var newBoard = new BoardImpl();
-                newBoard.FromFen(historyEntry.Fen);
-
-                var bc = new BoardController();
-                return bc.Create(newBoard, opponent, false, String.Empty, playAsBlack);
+                return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in database"), "History", "PlayFromHere"));
             }
-		}
 
-		public ActionResult ShowMove(string gameId, string moveNumber)
+            if (thisGame.UserProfileBlack.UserName == System.Web.HttpContext.Current.User.Identity.Name)
+            {
+                opponent = thisGame.UserIdWhite.ToString();
+                playAsBlack = true;
+            }
+            else
+            {
+                opponent = thisGame.UserIdBlack.ToString();
+            }
+
+            var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(game, moveNumber + 1);
+            if (historyEntry == null)
+            {
+                return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in history"), "History", "PlayFromHere"));
+            }
+
+            var newBoard = new BoardImpl();
+            newBoard.FromFen(historyEntry.Fen);
+
+            var bc = new BoardController();
+            return bc.Create(newBoard, opponent, false, String.Empty, playAsBlack);
+        }
+
+        public ActionResult ShowMove(string gameId, string moveNumber)
 		{
 			int game = Int32.Parse(gameId);
 			int move = Int32.Parse(moveNumber);
 
-		    using (var db = new ChessContext())
-		    {
-		        var entries = db.HistoryEntries.Where(h => h.GameId == game).ToArray();
+            var entries = m_historyRepository.FindAllMoves(game);
 
-		        if (!entries.Any())
-		        {
-		            return HttpNotFound("No such game or move");
-		        }
+            if (!entries.Any())
+            {
+                return HttpNotFound("No such game or move");
+            }
 
-		        ViewBag.MoveNumber = move;
-		        return View("History", entries);
-		    }
+            ViewBag.MoveNumber = move;
+            return View("History", entries);
 		}
     }
 }
