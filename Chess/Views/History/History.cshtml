@@ -1,5 +1,5 @@
 ﻿@using RedChess.WebEngine.Models
-@model IEnumerable<RedChess.WebEngine.Models.HistoryEntry>
+@model IEnumerable<HistoryEntry>
 
     <script src="/Scripts/app/spinner.js" type="text/javascript"></script>
     <script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
@@ -13,10 +13,13 @@
         HistoryEntry currentHistoryEntry;
 
         if (maxMoves == 1)
+        {
             currentHistoryEntry = @Model.First();
+        }
         else
+        {
             currentHistoryEntry = @Model.First(historyEntry => historyEntry.MoveNumber == Math.Max(1, Math.Min(maxMoves, ViewBag.MoveNumber)));
-            
+        }
         var breakCharacters = new char[1];
         breakCharacters[0] = ' ';
         var description = currentHistoryEntry.Description();
