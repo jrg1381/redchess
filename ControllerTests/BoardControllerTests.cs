@@ -11,10 +11,24 @@ namespace ControllerTests
     [TestFixture]
     class BoardControllerTests
     {
+        private GameDto GetFakeGame()
+        {
+            var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
+            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
+
+            var fakeGame = MockRepository.GenerateStub<GameDto>();
+            fakeGame.UserProfileBlack = myUserProfile;
+            fakeGame.UserProfileWhite = opponentUserProfile;
+            fakeGame.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
+            fakeGame.GameId = 10;
+
+            return fakeGame;
+        }
+
         [Test]
         public void GetDetailsCallsFindById()
         {
-            var fakeGame = MockRepository.GenerateMock<GameDto>();
+            var fakeGame = GetFakeGame();
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(40)).Return(fakeGame);
             fakeRepo.Replay();
@@ -69,12 +83,7 @@ namespace ControllerTests
         [TestCase("jason", false)]
         public void MayManipulateBoardTest(string userName, bool expectedResult)
         {
-            var myUserProfile = new UserProfile {UserId = 23, UserName = "james"};
-            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
-
-            var fakeGame = MockRepository.GenerateStub<GameDto>();
-            fakeGame.UserProfileBlack = myUserProfile;
-            fakeGame.UserProfileWhite = opponentUserProfile;
+            var fakeGame = GetFakeGame();
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
@@ -88,17 +97,7 @@ namespace ControllerTests
         [Test]
         public void PlayMoveChangesBoardCorrectly()
         {
-            var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
-            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
-
-            var fakeGame = MockRepository.GenerateMock<GameDto>();
-            fakeGame.UserProfileBlack = myUserProfile;
-            fakeGame.UserProfileWhite = opponentUserProfile;
-            fakeGame.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
-            fakeGame.GameId = 10;
-
-            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
-            identityProvider.Stub(x => x.CurrentUser).Return("james");
+            var fakeGame = GetFakeGame();
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
@@ -121,6 +120,37 @@ namespace ControllerTests
             Assert.AreEqual("e4", newHistoryEntry.Move, "Expected move to be e4");
             Assert.AreEqual(10, newHistoryEntry.GameId, "Expected history entry to refer to this game, 10");
             Assert.AreEqual(1, newHistoryEntry.MoveNumber, "Expected this to be move 1");
+        }
+
+        [Test]
+        public void MoveNumberIncrementsInHistory()
+        {
+            var fakeGame = GetFakeGame();
+            int moveCount = 0;
+
+            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            fakeHistoryRepo.Expect(x => x.LatestMoveInGame(10)).WhenCalled(y => { y.ReturnValue = moveCount++; }).Return(0);
+            
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
+            manager.Move(10, Location.E2, Location.E4);
+            manager.Move(10, Location.E7, Location.E5);
+
+            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(null));
+            fakeRepo.VerifyAllExpectations();
+            var newHistoryEntryE4 = historyArgs[0][0] as HistoryEntry;
+            var newHistoryEntryE5 = historyArgs[1][0] as HistoryEntry;
+
+            Assert.AreEqual("e4", newHistoryEntryE4.Move, "Expected move to be e4");
+            Assert.AreEqual(10, newHistoryEntryE4.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(1, newHistoryEntryE4.MoveNumber, "Expected this to be move 1");
+
+            Assert.AreEqual("e5", newHistoryEntryE5.Move, "Expected move to be e5");
+            Assert.AreEqual(10, newHistoryEntryE5.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(2, newHistoryEntryE5.MoveNumber, "Expected this to be move 2");
         }
     }
 }
