@@ -8,7 +8,7 @@ using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;
-
+/*
 namespace Chess.Controllers
 {
     public class BoardCreationResult
@@ -105,4 +105,4 @@ namespace Chess.Controllers
             return m_dbChessContext.UserProfiles.Any(x => x.UserId == playerId);
         }
     }
-}
+}*/

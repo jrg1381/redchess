@@ -16,5 +16,13 @@ namespace Chess.Repositories
                 return context.UserProfiles.ToSafeReadOnlyCollection();
             }
         }
+
+        internal int UserId(string currentUser)
+        {
+            using (var context = new ChessContext())
+            {
+                return context.UserProfiles.Single(u => u.UserName == currentUser).UserId;
+            }
+        }
     }
 }

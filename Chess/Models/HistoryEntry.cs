@@ -18,8 +18,8 @@ namespace Chess.Models
 
         public string Description()
         {
-            var repo = new GameRepository();
-            return repo.FindById(GameId).Description;
+            var manager = new GameManager();
+            return manager.FetchGame(GameId).Description;
         }
     }
 }

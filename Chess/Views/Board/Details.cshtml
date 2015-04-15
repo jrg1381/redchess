@@ -1,4 +1,4 @@
-﻿@model Chess.Models.IGame
+﻿@model Chess.Repositories.IGameBinding
 
 @{
     ViewBag.Title = "Game";
@@ -32,7 +32,7 @@
 }
 
 <script type="text/javascript">
-    gameId = @Model.Id;
+    gameId = @Model.GameId;
     currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
 
     $(document).ready(function() {
@@ -111,7 +111,7 @@
             <text>
                 <script src="/Scripts/app/clock.js" type="text/javascript"></script>
                 <script>
-                    var myClock = new Clock(@Model.Id, @myClock.TimeLimitMs, '@Model.CurrentPlayerColor(@User.Identity.Name)');
+                    var myClock = new Clock(@Model.GameId, @myClock.TimeLimitMs, '@Model.CurrentPlayerColor(@User.Identity.Name)');
                     isTimedGame = true;
                     $(document).ready(function() {
                         myClock.ClockDocumentReady();

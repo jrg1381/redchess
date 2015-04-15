@@ -9,14 +9,14 @@ namespace Chess.Controllers
 {
     public class ClockController : Controller
     {
-        private readonly GameRepository m_repository = new GameRepository();
+        private readonly IGameManager m_gameManager = new GameManager();
         private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly ICurrentUser m_identityProvider = new CurrentUserImpl();
 
         [System.Web.Mvc.HttpPost]
         public ActionResult PlayerReady(int id)
         {
-            var game = m_repository.FindById(id);
+            var game = m_gameManager.FetchGame(id);
             var clock = m_clockRepository.Clock(id);
 
             if (game == null || clock == null)
@@ -46,7 +46,7 @@ namespace Chess.Controllers
             m_clockRepository.SaveClock(clock);
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-            hubContext.Clients.Group(game.Id.ToString()).startClock(new {status = status, who = playerColor});
+            hubContext.Clients.Group(game.GameId.ToString()).startClock(new {status = status, who = playerColor});
             return Json(new {status = status});
         }
 

@@ -46,7 +46,7 @@ namespace Chess.Repositories
                     context.Clocks.Single(clock => clock.GameId == id).TimeElapsedBlackMs = timeLimit;
                 }
 
-                game.EndGameWithMessage(id, message);
+                new GameManager().EndGameWithMessage(id, message);
                 context.SaveChanges();
             }
         }

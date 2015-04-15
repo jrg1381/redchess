@@ -6,28 +6,12 @@ namespace Chess.Models
 {
     public interface IGame
     {
-        string Status { get; }
-        int UserIdWhite { get; }
-        int UserIdBlack { get; }
-        bool MayClaimDraw { get; }
-        bool GameOver { get; }
-        DateTime CreationDate { get; }
-        DateTime CompletionDate { get; }
-        string LastMove { get; }
-        string Fen { get; }
-        UserProfile UserProfileWhite { get; }
-        UserProfile UserProfileBlack { get; }
-        string Turn { get; }
-        bool IsUsersTurn(string userName);
-        void UpdateMessage(int gameId);
         void EndGameWithMessage(int gameId, string message);
-        bool Move(Location start, Location end);
-        void PromotePiece(string typeToPromoteTo);
-        int Id { get; }
-        string Description { get; }
-        bool ShouldLockUi { get; }
-        IClock Clock { get; }
-
-        string CurrentPlayerColor(string p);
+        bool Move(int gameId, Location start, Location end);
+        void PromotePiece(int gameId, string typeToPromoteTo);
+        string Description(int gameId);
+        bool ShouldLockUi(int gameId);
+        IClock Clock(int gameId);
+        string CurrentPlayerColor(int gameId, string userName);
     }
 }

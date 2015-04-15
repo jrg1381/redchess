@@ -1,4 +1,4 @@
-﻿@model Chess.Models.IGame
+﻿@model Chess.Repositories.IGameBinding
 
 @{
     ViewBag.Title = "Delete";
@@ -23,7 +23,7 @@
 
 <h3>Are you sure you want to delete this game?</h3>
 
-<div style="width:300px" id="board" onclick="GoToGame(@Model.Id)"></div>
+<div style="width:300px" id="board" onclick="GoToGame(@Model.GameId)"></div>
 
 @using (Html.BeginForm("Delete", "Board", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "deleteForm" }))
 {

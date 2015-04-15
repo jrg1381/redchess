@@ -9,7 +9,7 @@ namespace Chess.Controllers
 {
     public class HistoryController : Controller
     {
-        readonly GameRepository m_gameRepository = new GameRepository();
+        readonly IGameManager m_gameManager = new GameManager();
         readonly HistoryRepository m_historyRepository = new HistoryRepository();
         private readonly ICurrentUser m_identityProvider = new CurrentUserImpl();
 
@@ -25,7 +25,7 @@ namespace Chess.Controllers
             int game = Int32.Parse(gameId);
             string opponent;
 
-            var thisGame = m_gameRepository.FindById(game);
+            var thisGame = m_gameManager.FetchGame(game);
 
             if (thisGame == null)
             {
@@ -34,15 +34,15 @@ namespace Chess.Controllers
 
             if (thisGame.UserProfileBlack.UserName == m_identityProvider.CurrentUser)
             {
-                opponent = thisGame.UserIdWhite.ToString();
+                opponent = thisGame.UserProfileWhite.UserId.ToString();
                 playAsBlack = true;
             }
             else
             {
-                opponent = thisGame.UserIdBlack.ToString();
+                opponent = thisGame.UserProfileBlack.UserId.ToString();
             }
 
-            var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(game, moveNumber + 1);
+            var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(game, moveNumber);
             if (historyEntry == null)
             {
                 return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in history"), "History", "PlayFromHere"));

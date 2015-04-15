@@ -23,7 +23,7 @@ namespace Chess.Controllers
 
     public class BoardController : Controller
     {
-        private readonly IGameRepository m_repository;
+        private readonly GameManager m_gameManager;
         private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
@@ -33,9 +33,9 @@ namespace Chess.Controllers
             
         }
 
-        public BoardController(IGameRepository gameRepository = null, ICurrentUser identityProvider = null)
+        public BoardController(GameManager gameManager = null, ICurrentUser identityProvider = null)
         {
-            m_repository = gameRepository ?? new GameRepository();
+            m_gameManager = gameManager ?? new GameManager();
             m_identityProvider = identityProvider ?? new CurrentUserImpl();
         }
 
@@ -43,7 +43,7 @@ namespace Chess.Controllers
 
         public ActionResult Index()
         {
-            return View(m_repository.FindAll());
+            return View(m_gameManager.FindAll());
         }
 
         //
@@ -51,7 +51,7 @@ namespace Chess.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            var board = m_repository.FindById(id);
+            var board = m_gameManager.FetchGame(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
@@ -74,22 +74,17 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BoardImpl board, string opponent, bool useClock, string timeLimit, bool playAsBlack = false)
         {
-            if (ModelState.IsValid)
+            double timeLimitAsNumber = 0;
+
+            if (useClock)
             {
-                int opponentId = Int32.Parse(opponent);
-                var dto = m_repository.Add(board, opponentId, m_identityProvider.CurrentUser, playAsBlack);
-
-                if (useClock)
-                {
-                    double timeLimitAsNumber = 0;
-                    Double.TryParse(timeLimit, out timeLimitAsNumber);
-                    m_clockRepository.AddClock(dto.Id, (int) (timeLimitAsNumber*60*1000));
-                }
-
-                return RedirectToAction("Details", "Board", new {id = dto.Id});
+                Double.TryParse(timeLimit, out timeLimitAsNumber);
             }
+            int opponentId = Int32.Parse(opponent);
 
-            return RedirectToAction("Index");
+            var newGameId = m_gameManager.Add(board, opponentId, m_identityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber*60*1000);
+
+            return RedirectToAction("Details", "Board", new {id = newGameId});
         }
 
         //
@@ -97,13 +92,11 @@ namespace Chess.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            var board = m_repository.FindById(id);
-
+            var board = m_gameManager.FetchGame(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
             }
-
             return View(board);
         }
 
@@ -121,7 +114,7 @@ namespace Chess.Controllers
 
         private void DestroyBoard(int id)
         {
-            m_repository.Delete(id);
+            m_gameManager.Delete(id);
         }
 
         //
@@ -137,25 +130,25 @@ namespace Chess.Controllers
 
         private bool IsCurrentUsersTurn(int gameId)
         {
-            return m_repository.FindById(gameId).IsUsersTurn(m_identityProvider.CurrentUser);
+            return m_gameManager.IsUsersTurn(gameId, m_identityProvider.CurrentUser); 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TimedOut(int id, string message)
         {
-            var game = m_repository.FindById(id);
+            var game = m_gameManager.FetchGame(id);
 
             if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
 
-            m_repository.TimeGameOut(id, message, m_identityProvider.CurrentUser);
+            m_gameManager.TimeGameOut(id, message, m_identityProvider.CurrentUser);
             var jsonObject = new { fen = game.Fen, message = message, status = "TIME" };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+            hubContext.Clients.Group(game.GameId.ToString()).addMessage(jsonObject);
 
             return Json(jsonObject);
         }
@@ -164,7 +157,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Resign(int id)
         {
-            var game = m_repository.FindById(id);
+            var game = m_gameManager.FetchGame(id);
 
             if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
@@ -173,19 +166,19 @@ namespace Chess.Controllers
 
             var resignationMessage = String.Format("{0} resigned", m_identityProvider.CurrentUser);
 
-            game.EndGameWithMessage(game.Id, resignationMessage);
+            m_gameManager.EndGameWithMessage(id, resignationMessage);
 
             var jsonObject = new { fen = game.Fen, message = resignationMessage, status = "RESIGN" };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+            hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
 
             return Json(jsonObject);
         }
 
         public bool MayManipulateBoard(int gameId, string userName)
         {
-            var game = m_repository.FindById(gameId);
+            var game = m_gameManager.FetchGame(gameId);
             return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
         }
 
@@ -193,7 +186,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ClaimDraw(int id)
         {
-            var game = m_repository.FindById(id);
+            var game = m_gameManager.FetchGame(id);
 
             if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
@@ -205,12 +198,12 @@ namespace Chess.Controllers
                 return Json(new {fen = game.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
             }
 
-            game.EndGameWithMessage(id, "Draw claimed");
+            m_gameManager.EndGameWithMessage(id, "Draw claimed");
 
             var jsonObject = new { fen = game.Fen, message = "Draw claimed", status = "DRAW" };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+            hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
 
             return Json(jsonObject);
         }
@@ -222,7 +215,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PlayMove(int id, string start, string end, string promote)
         {
-            var game = m_repository.FindById(id);
+            var game = m_gameManager.FetchGame(id);
 
             if (game == null)
             {
@@ -235,7 +228,7 @@ namespace Chess.Controllers
             }
 
             // This is also covered by client side validation
-            if (!IsCurrentUsersTurn(game.Id))
+            if (!IsCurrentUsersTurn(id))
             {
                 return Json(new { fen = game.Fen, message = "It's not your turn.", status = "AUTH" });
             }
@@ -248,7 +241,7 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = "Invalid move", status = "FAIL" });
             }
 
-            bool success = game.Move(startLocation, endLocation);
+            bool success = m_gameManager.Move(id, startLocation, endLocation);
 
             if (!success)
             {
@@ -264,18 +257,19 @@ namespace Chess.Controllers
 
             if (!String.IsNullOrEmpty(promote))
             {
-                game.PromotePiece(promote);
+                m_gameManager.PromotePiece(id, promote);
             }
 
-            game.UpdateMessage(game.Id);
+            m_gameManager.UpdateMessage(id);
 
+            game = m_gameManager.FetchGame(id);
             string messageForUser = game.Status;
             string lastMove = game.LastMove;
 
             var jsonObject = new { fen = game.Fen, message = messageForUser, lastmove = lastMove, movefrom = start, moveto = end, status = "OK", mayClaimDraw = game.MayClaimDraw };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-            hubContext.Clients.Group(game.Id.ToString()).addMessage(jsonObject);
+            hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
             return Json(jsonObject);
         }
     }

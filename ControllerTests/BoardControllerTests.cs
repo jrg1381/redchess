@@ -14,12 +14,12 @@ namespace ControllerTests
         [Test]
         public void GetDetailsCallsFindById()
         {
-            var fakeGame = MockRepository.GenerateMock<Game>();
+            var fakeGame = MockRepository.GenerateMock<GameDto>();
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(40)).Return(fakeGame);
             fakeRepo.Replay();
-
-            var controller = new BoardController(fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
             controller.Details(40);
            
             fakeRepo.VerifyAllExpectations();
@@ -30,8 +30,8 @@ namespace ControllerTests
         {
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.Delete(40));
-
-            var controller = new BoardController(fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
             controller.DeleteConfirmed(40);
 
             fakeRepo.VerifyAllExpectations();
@@ -45,8 +45,8 @@ namespace ControllerTests
             fakeRepo.Expect(x => x.Delete(20));
             fakeRepo.Expect(x => x.Delete(30));
             fakeRepo.Expect(x => x.Delete(40));
-
-            var controller = new BoardController(fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
             controller.DeleteMultiple("10,20,30,40");
 
             fakeRepo.VerifyAllExpectations();
@@ -57,8 +57,8 @@ namespace ControllerTests
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
             fakeRepo.Expect(x => x.Delete(10));
-
-            var controller = new BoardController(fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
             controller.DeleteMultiple("10");
 
             fakeRepo.VerifyAllExpectations();
@@ -72,14 +72,14 @@ namespace ControllerTests
             var myUserProfile = new UserProfile {UserId = 23, UserName = "james"};
             var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
 
-            var fakeGame = MockRepository.GenerateStub<IGame>();
-            fakeGame.Stub(x => x.UserProfileBlack).Return(myUserProfile);
-            fakeGame.Stub(x => x.UserProfileWhite).Return(opponentUserProfile);
+            var fakeGame = MockRepository.GenerateStub<GameDto>();
+            fakeGame.UserProfileBlack = myUserProfile;
+            fakeGame.UserProfileWhite = opponentUserProfile;
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
-
-            var controller = new BoardController(fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
             bool ok = controller.MayManipulateBoard(10, userName);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
@@ -91,23 +91,22 @@ namespace ControllerTests
             var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
             var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
 
-            var fakeGame = MockRepository.GenerateMock<IGame>();
-            fakeGame.Stub(x => x.UserProfileBlack).Return(myUserProfile);
-            fakeGame.Stub(x => x.UserProfileWhite).Return(opponentUserProfile);
-            fakeGame.Stub(x => x.IsUsersTurn("james")).Return(true);
-            fakeGame.Stub(x => x.Id).Return(10);
-            fakeGame.Expect(x => x.Move(Location.E2, Location.E4)).Return(true);
+            var fakeGame = MockRepository.GenerateMock<GameDto>();
+            fakeGame.UserProfileBlack = myUserProfile;
+            fakeGame.UserProfileWhite = opponentUserProfile;
+            fakeGame.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
+            fakeGame.GameId = 10;
 
             var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
             identityProvider.Stub(x => x.CurrentUser).Return("james");
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
-
-            var controller = new BoardController(fakeRepo, identityProvider);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager, identityProvider);
             controller.PlayMove(10, "E2", "E4", "");
 
-            Assert.AreEqual("", fakeGame.Fen, "fek");
+            fakeGame.VerifyAllExpectations();
         }
     }
 }
