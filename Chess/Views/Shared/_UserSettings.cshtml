@@ -7,9 +7,12 @@
                     {
                         <text>
                             <li>
-                                @Html.ActionLink("Hello " + User.Identity.Name, "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {title = "Manage"})
+                                @Html.ActionLink("My account", "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {title = "Logged on as " + HttpContext.Current.User.Identity.Name})
                             </li>
                         </text>
+                        <li>
+                             @Html.ActionLink("New game", "Create", "Board")
+                        </li>
                     }
 
                     <li>

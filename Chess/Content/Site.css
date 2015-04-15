@@ -28,26 +28,6 @@ select {
     background-color: rgb(169, 169, 169);
 }
 
-body {
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
-    font-size: 1.2em;
-}
-
-body {
-    background-color: #380706;
-    color: #b57271;
-    margin-left: 50px;
-    margin-right: 25px;
-}
-
-a:visited {
-    color: #b57271;
-}
-
-a:link {
-    color: #8f514f;
-}
-
 div.lockIcon {
     position:absolute;
     height:128px;
