@@ -60,7 +60,7 @@
     });
 </script>  
 
-<div style="position:absolute;left:10px;top:10px">@Html.ActionLink("Back to list of games", "Index")
+<!-- <div style="position:absolute;left:10px;top:10px">@Html.ActionLink("Back to list of games", "Index") -->
  @if (!Request.IsAuthenticated)
  {
      <text><div>You must be <a href="/">logged in</a> to participate in games.</div></text>
@@ -78,10 +78,10 @@
     <div style="width:512px" id="board"></div>
     <div style="position : absolute;left:5px;top:550px;">
         <table><tr><td>
-                               <div id="resign"><a class="buttonlink" id="resignbutton" onclick="Resign();">Resign</a></div>
+                               <div id="resign"><a class="btn btn-default" id="resignbutton" onclick="Resign();">Resign</a></div>
                    </td>
                    <td>
-                               <div id="claim-draw" style="float:right"><a class="buttonlink" id="drawbutton" onclick="ClaimDraw();">Claim draw</a></div>
+                               <div id="claim-draw" style="float:right"><a class="btn btn-default" id="drawbutton" onclick="ClaimDraw();">Claim draw</a></div>
                    </td>
                </tr></table>
     </div>

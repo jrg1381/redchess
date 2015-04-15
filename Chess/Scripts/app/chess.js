@@ -221,16 +221,4 @@ function DocumentReady() {
         $("#Promote").val([]);
         return false;
     });
-
-    $("#resignbutton").mouseenter(function () {
-        $("#resignbutton").css("background-color", "#B57271");
-    }).mouseleave(function () {
-        $("#resignbutton").css("background-color", "#8F514F");
-    });
-
-    $("#drawbutton").mouseenter(function () {
-        $("#drawbutton").css("background-color", "#B57271");
-    }).mouseleave(function () {
-        $("#drawbutton").css("background-color", "#8F514F");
-    });
 }
