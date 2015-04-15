@@ -208,7 +208,6 @@
     <Compile Include="Repositories\GameBinding.cs" />
     <Compile Include="Repositories\GameManager.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
-    <Compile Include="Models\BoardImpl.cs" />
     <Compile Include="Models\ChessContext.cs" />
     <Compile Include="Models\Clock.cs" />
     <Compile Include="Repositories\GameDto.cs" />

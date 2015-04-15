@@ -513,6 +513,8 @@ namespace Redchess.Engine
                 m_checkCacheCurrentPlayer.Dispose();
             if (m_checkCacheOtherPlayer != null)
                 m_checkCacheOtherPlayer.Dispose();
+            if((m_permanentCastlingRules != null))
+                m_permanentCastlingRules.Dispose();
         }
 
         public void Dispose()

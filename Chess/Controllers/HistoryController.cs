@@ -23,7 +23,7 @@ namespace Chess.Controllers
             bool playAsBlack = false;
             int moveNumber = Int32.Parse(move);
             int game = Int32.Parse(gameId);
-            string opponent;
+            int opponent;
 
             var thisGame = m_gameManager.FetchGame(game);
 
@@ -34,12 +34,12 @@ namespace Chess.Controllers
 
             if (thisGame.UserProfileBlack.UserName == m_identityProvider.CurrentUser)
             {
-                opponent = thisGame.UserProfileWhite.UserId.ToString();
+                opponent = thisGame.UserProfileWhite.UserId;
                 playAsBlack = true;
             }
             else
             {
-                opponent = thisGame.UserProfileBlack.UserId.ToString();
+                opponent = thisGame.UserProfileBlack.UserId;
             }
 
             var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(game, moveNumber);
@@ -48,11 +48,11 @@ namespace Chess.Controllers
                 return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in history"), "History", "PlayFromHere"));
             }
 
-            var newBoard = new BoardImpl();
+            var newBoard = BoardFactory.CreateInstance();
             newBoard.FromFen(historyEntry.Fen);
 
-            var bc = new BoardController();
-            return bc.Create(newBoard, opponent, false, String.Empty, playAsBlack);
+            int gameIdOfNewGame = m_gameManager.Add(newBoard, opponent, m_identityProvider.CurrentUser, playAsBlack, 0);
+            return RedirectToAction("Details", "Board", new { id = gameIdOfNewGame});
         }
 
         public ActionResult ShowMove(string gameId, string moveNumber)

@@ -5,6 +5,7 @@ using Chess.Models;
 using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
+using RedChess.EngineFactory;
 
 namespace Chess.Controllers
 {
@@ -72,7 +73,7 @@ namespace Chess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(BoardImpl board, string opponent, bool useClock, string timeLimit, bool playAsBlack = false)
+        public ActionResult Create(string opponent, bool useClock, string timeLimit, bool playAsBlack = false)
         {
             double timeLimitAsNumber = 0;
 
@@ -82,7 +83,8 @@ namespace Chess.Controllers
             }
             int opponentId = Int32.Parse(opponent);
 
-            var newGameId = m_gameManager.Add(board, opponentId, m_identityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber*60*1000);
+            var newBoard = BoardFactory.CreateInstance();
+            var newGameId = m_gameManager.Add(newBoard, opponentId, m_identityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber * 60 * 1000);
 
             return RedirectToAction("Details", "Board", new {id = newGameId});
         }
