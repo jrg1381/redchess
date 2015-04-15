@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Web.Mvc;
 using Chess.Models;
-using Chess.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;
+using RedChess.WebEngine.Repositories;
 
 namespace Chess.Controllers
 {

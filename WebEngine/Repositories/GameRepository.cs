@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Chess.Models;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Linq;
 
-namespace Chess.Repositories
+namespace RedChess.WebEngine.Repositories
 {
     public class GameRepository : IGameRepository
     {

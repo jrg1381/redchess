@@ -1,8 +1,8 @@
 using System.Data.Entity.Migrations;
 using System.Linq;
-using Chess.Models;
+using RedChess.WebEngine.Models;
 
-namespace Chess.Repositories
+namespace RedChess.WebEngine.Repositories
 {
     public class ClockRepository : IClockRepository
     {

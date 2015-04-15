@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Chess.Models
+namespace RedChess.WebEngine.Models
 {
     [Table("UserProfile")]
     public class UserProfile

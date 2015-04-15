@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Chess.Models;
-using WebGrease.Css.Extensions;
+using RedChess.WebEngine.Models;
 
-namespace Chess.Repositories
+namespace RedChess.WebEngine.Repositories
 {
     public class HistoryRepository : IHistoryRepository
     {
@@ -21,7 +18,7 @@ namespace Chess.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.HistoryEntries.Where(x => x.GameId == gameId).OrderBy(x => x.MoveNumber).ToSafeReadOnlyCollection();
+                return context.HistoryEntries.Where(x => x.GameId == gameId).OrderBy(x => x.MoveNumber).ToList();
             }
         }
 

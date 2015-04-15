@@ -8,6 +8,14 @@ using Chess.Models;
 
 namespace Chess.Filters
 {
+    public class WebDbContext : DbContext
+    {
+        public WebDbContext()
+            : base("name=DefaultConnection")
+        {
+        }
+    }
+
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 	public sealed class InitializeSimpleMembershipAttribute : ActionFilterAttribute
 	{
@@ -25,11 +33,11 @@ namespace Chess.Filters
 		{
 			public SimpleMembershipInitializer()
 			{
-				Database.SetInitializer<ChessContext>(null);
+                Database.SetInitializer<WebDbContext>(null);
 
 				try
 				{
-                    using (var context = new ChessContext())
+                    using (var context = new WebDbContext())
 					{
 						if (!context.Database.Exists())
 						{

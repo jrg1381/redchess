@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Chess.Models;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
+using RedChess.WebEngine.Models;
 using RedChess.EngineFactory;
 
-namespace Chess.Repositories
+namespace RedChess.WebEngine.Repositories
 {
     public class GameManager : IGameManager
     {

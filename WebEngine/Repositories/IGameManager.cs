@@ -1,6 +1,6 @@
 using RedChess.ChessCommon.Interfaces;
 
-namespace Chess.Repositories
+namespace RedChess.WebEngine.Repositories
 {
     public interface IGameManager
     {

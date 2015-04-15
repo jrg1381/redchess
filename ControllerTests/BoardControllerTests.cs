@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Chess.Controllers;
-using Chess.Models;
-using Chess.Repositories;
+using RedChess.WebEngine.Repositories;
 using RedChess.ChessCommon.Enumerations;
+using RedChess.WebEngine.Models;
+using Chess.Controllers;
 using Rhino.Mocks;
 
 namespace ControllerTests

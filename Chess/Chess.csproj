@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chess</RootNamespace>
     <AssemblyName>Chess</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -51,7 +51,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer" />
     <Reference Include="log4net, Version=1.2.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
@@ -204,26 +203,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Repositories\ClockRepository.cs" />
-    <Compile Include="Repositories\GameBinding.cs" />
-    <Compile Include="Repositories\GameManager.cs" />
-    <Compile Include="Repositories\GameRepository.cs" />
-    <Compile Include="Models\ChessContext.cs" />
-    <Compile Include="Models\Clock.cs" />
-    <Compile Include="Repositories\GameDto.cs" />
-    <Compile Include="Models\HistoryEntry.cs" />
-    <Compile Include="Models\IClock.cs" />
-    <Compile Include="Repositories\IGameRepository.cs" />
     <Compile Include="Models\PgnModel.cs" />
     <Compile Include="Controllers\PgnController.cs" />
-    <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\HistoryRepository.cs" />
-    <Compile Include="Repositories\IClockRepository.cs" />
-    <Compile Include="Repositories\IGameBinding.cs" />
-    <Compile Include="Repositories\IGameManager.cs" />
-    <Compile Include="Repositories\IHistoryRepository.cs" />
-    <Compile Include="Repositories\UserProfileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -389,6 +371,10 @@
     <ProjectReference Include="..\ParserFactory\ParserFactory.csproj">
       <Project>{20ee0545-80c1-4b86-9263-7007a6f52ecb}</Project>
       <Name>ParserFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebEngine\WebEngine.csproj">
+      <Project>{694e0750-b7dd-4d92-a3e9-a627e82e6b64}</Project>
+      <Name>WebEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Chess.Models
+namespace RedChess.WebEngine.Models
 {
     public interface IClock
     {
