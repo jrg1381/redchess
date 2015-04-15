@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Chess.Repositories;
 
-namespace Chess.Models
+namespace Chess.Repositories
 {
     public interface IGameRepository
     {

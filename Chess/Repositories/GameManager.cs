@@ -118,8 +118,8 @@ namespace Chess.Repositories
 
             m_repository.AddOrUpdate(gameDto);
 
-            int nextMoveNumber = m_historyRepository.LatestMoveInGame(gameDto.GameId) + 1;
-            m_historyRepository.Add(new HistoryEntry() {Fen = gameDto.Fen, GameId = gameDto.GameId, MoveNumber = nextMoveNumber, Move = gameDto.LastMove});
+            var moveNumber = m_historyRepository.LatestMoveInGame(gameId) + 1;
+            m_historyRepository.Add(new HistoryEntry {Fen = gameDto.Fen, GameId = gameDto.GameId, Move = gameDto.LastMove, MoveNumber = moveNumber});
 
             var clock = m_clockRepository.Clock(gameId);
 
@@ -227,7 +227,7 @@ namespace Chess.Repositories
                 m_clockRepository.AddClock(newGame.GameId, timeLimitMs);
             }
 
-            m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = "", MoveNumber = 0});
+            m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = ""});
 
             return newGame.GameId;
         }

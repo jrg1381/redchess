@@ -216,7 +216,7 @@
     <Compile Include="Models\HistoryEntry.cs" />
     <Compile Include="Models\IClock.cs" />
     <Compile Include="Models\IGame.cs" />
-    <Compile Include="Models\IGameRepository.cs" />
+    <Compile Include="Repositories\IGameRepository.cs" />
     <Compile Include="Models\PgnModel.cs" />
     <Compile Include="Controllers\PgnController.cs" />
     <Compile Include="Models\UserProfile.cs" />
