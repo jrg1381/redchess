@@ -109,9 +109,18 @@ namespace ControllerTests
             manager.Move(10, Location.E2, Location.E4);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
+            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(null));
+
             fakeRepo.VerifyAllExpectations();
-            var f = args[0][0] as GameDto;
-            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", f.Fen, "Fen after move not as expected");
+
+            var updatedDto = args[0][0] as GameDto;
+            var newHistoryEntry = historyArgs[0][0] as HistoryEntry;
+
+            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", updatedDto.Fen, "Fen after move not as expected");
+            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", newHistoryEntry.Fen, "Fen in history is wrong");
+            Assert.AreEqual("e4", newHistoryEntry.Move, "Expected move to be e4");
+            Assert.AreEqual(10, newHistoryEntry.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(1, newHistoryEntry.MoveNumber, "Expected this to be move 1");
         }
     }
 }
