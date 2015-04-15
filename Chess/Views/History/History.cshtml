@@ -12,8 +12,6 @@
         var maxMoves = @Model.Count();
 
         var currentHistoryEntry = maxMoves == 1 ? @Model.First() : @Model.First(historyEntry => historyEntry.MoveNumber == Math.Max(1, Math.Min(maxMoves, ViewBag.MoveNumber)));
-        var breakCharacters = new char[1];
-        breakCharacters[0] = ' ';
         var description = currentHistoryEntry.Description();
         var isParticipant = currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name, currentHistoryEntry.GameId);
     }
@@ -46,7 +44,7 @@
     </script>
 
     <script>
-        var positions = new Array(@Model.Count());
+        var positions = new Array(@maxMoves);
         var i = 0;
 
         function renderMoves() {
