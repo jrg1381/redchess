@@ -11,15 +11,15 @@ namespace Chess.Repositories
     public class GameManager : IGameManager
     {
         private readonly IGameRepository m_repository;
-        private readonly HistoryRepository m_historyRepository;
-        private readonly ClockRepository m_clockRepository;
+        private readonly IHistoryRepository m_historyRepository;
+        private readonly IClockRepository m_clockRepository;
         private readonly IBoard m_board;
 
-        public GameManager(IGameRepository gameRepository = null)
+        public GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null)
         {
             m_repository = gameRepository ?? new GameRepository();
-            m_historyRepository = new HistoryRepository();
-            m_clockRepository = new ClockRepository();
+            m_historyRepository = historyRepository ?? new HistoryRepository();
+            m_clockRepository = clockRepository ?? new ClockRepository();
             m_board = BoardFactory.CreateInstance();
         }
 

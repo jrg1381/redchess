@@ -102,11 +102,16 @@ namespace ControllerTests
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
-            var manager = new GameManager(fakeRepo);
-            var controller = new BoardController(manager, identityProvider);
-            controller.PlayMove(10, "E2", "E4", "");
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            fakeGame.VerifyAllExpectations();
+            var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
+            manager.Move(10, Location.E2, Location.E4);
+
+            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
+            fakeRepo.VerifyAllExpectations();
+            var f = args[0][0] as GameDto;
+            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", f.Fen, "Fen after move not as expected");
         }
     }
 }

@@ -7,7 +7,7 @@ using WebGrease.Css.Extensions;
 
 namespace Chess.Repositories
 {
-    public class HistoryRepository
+    public class HistoryRepository : IHistoryRepository
     {
         public HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber)
         {

@@ -4,9 +4,9 @@ using Chess.Models;
 
 namespace Chess.Repositories
 {
-    public class ClockRepository
+    public class ClockRepository : IClockRepository
     {
-        internal IClock Clock(int gameId)
+        public IClock Clock(int gameId)
         {
             using (var dbContext = new ChessContext())
             {
@@ -14,7 +14,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal void SaveClock(IClock clock)
+        public void SaveClock(IClock clock)
         {
             using (var context = new ChessContext())
             {
@@ -23,7 +23,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal void TimeGameOut(int id, string message, string userName)
+        public void TimeGameOut(int id, string message, string userName)
         {
             using (var context = new ChessContext())
             {
@@ -51,7 +51,7 @@ namespace Chess.Repositories
             }
         }
 
-        internal void AddClock(int gameId, int timeLimitMs)
+        public void AddClock(int gameId, int timeLimitMs)
         {
             using (var context = new ChessContext())
             {
