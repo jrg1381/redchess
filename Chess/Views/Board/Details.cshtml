@@ -40,12 +40,19 @@
         UpdateUi('@Model.Fen');
 
         // Draw any user messages, and update the set of taken pieces
-        $("#messages").parent().css('visibility', 'hidden');
-        $("#messages").text('@Model.Status');
-
         @if (!String.IsNullOrEmpty(@Model.Status))
         {
-            <text>$("#messages").parent().css('visibility', 'visible');</text>
+            <text>
+                $("#messages").text('@Model.Status');
+                $("#messages").parent().css('visibility', 'visible');
+            </text>
+        }
+        else
+        {
+            <text>
+                $("#messages").html('&nbsp;');
+                $("#messages").parent().css('visibility', 'hidden');
+            </text>
         }
 
         $("#lastmove").text('@Model.LastMove');
@@ -89,7 +96,7 @@
 
         <div class="col-md-3">
             <div class="alert alert-danger" role="alert">
-                <div id="messages" style="text-align: center"></div>
+                <div id="messages" style="text-align: center">&nbsp;</div>
             </div>
             <div id="submitmove">
                 @using (Html.BeginForm("PlayMove", "Board", FormMethod.Post))

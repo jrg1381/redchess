@@ -122,11 +122,11 @@ function ProcessServerResponse(data) {
 
     if (data.message) {
         $("#messages").parent().css('visibility', 'visible');
+        $("#messages").text(data.message);
     } else {
         $("#messages").parent().css('visibility', 'hidden');
+        $("#messages").html('&nbsp;');
     }
-
-    $("#messages").text(data.message);
    
     if (data.mayClaimDraw) {
         $("#claim-draw").show();
