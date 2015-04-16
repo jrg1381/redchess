@@ -60,7 +60,7 @@
 	{
 	    <h3>My current games</h3>
 	    <div class="container">
-	        <span class="col-md-10">
+	        <div class="col-md-10">
 	            <table class="table"> 
 	                @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
 	                {
@@ -96,14 +96,14 @@
 	                    </tr>
 	                }
 	            </table>
-	        </span>
+	        </div>
 	    </div>
     }
 
      
 <h3>My finished games</h3>
 <div class="container">
-    <span class="col-md-10">
+    <div class="col-md-10">
         <table class="table">
             @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
             {
@@ -123,12 +123,12 @@
                 <tr><td colspan="4"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
             }
         </table>
-    </span>
+    </div>
 </div>
 
 <h3>Other games</h3>
 <div class="container">
-    <span class="col-md-10">
+    <div class="col-md-10">
         <table class="table">
             @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
             {
@@ -162,6 +162,6 @@
                 </tr>
             }
         </table>
-    </span>
+    </div>
 </div>
 

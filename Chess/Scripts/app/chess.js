@@ -191,8 +191,24 @@ function UpdateTakenPieces(fen) {
         whiteArmy = whiteArmy.replace(c, "");
     }
 
-    $("#blacktaken").text(blackArmy.split("").map(function(x) { return pieceMapping[x]; }).join(""));
-    $("#whitetaken").text(whiteArmy.split("").map(function(x) { return pieceMapping[x]; }).join(""));
+    var regexBlack = /p+/;
+    var answer = regexBlack.exec(blackArmy);
+    if (answer != null && answer[0].length > 3) {
+        blackArmy = blackArmy.replace(answer, 'p(' + answer[0].length + ')');
+    }
+    var regexWhite = /P+/;
+    answer = regexWhite.exec(whiteArmy);
+    if (answer != null && answer[0].length > 3) {
+        whiteArmy = whiteArmy.replace(answer, 'P(' + answer[0].length + ')');
+    }
+
+    var whitePieces = whiteArmy.split('P', 2)[0];
+    var blackPieces = blackArmy.split('p', 2)[0];
+    var whitePawnsTaken = pieceMapping['P'] + "<span style=\"font-size : medium\">" + whiteArmy.split('P', 2)[1] + "</span>";
+    var blackPawnsTaken = pieceMapping['p'] + "<span style=\"font-size : medium\">" + blackArmy.split('p', 2)[1] + "</span>";
+
+    $("#blacktaken").html(blackPieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + blackPawnsTaken);
+    $("#whitetaken").html(whitePieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + whitePawnsTaken);
 }
 
 function DocumentReady() {
