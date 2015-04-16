@@ -121,9 +121,9 @@ function ProcessServerResponse(data) {
     UpdateUi(data.fen);
 
     if (data.message) {
-        $("#messages").parent().show();
+        $("#messages").parent().css('visibility', 'visible');
     } else {
-        $("#messages").parent().hide();
+        $("#messages").parent().css('visibility', 'hidden');
     }
 
     $("#messages").text(data.message);

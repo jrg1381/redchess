@@ -40,12 +40,12 @@
         UpdateUi('@Model.Fen');
 
         // Draw any user messages, and update the set of taken pieces
-        $("#messages").parent().hide();
+        $("#messages").parent().css('visibility', 'hidden');
         $("#messages").text('@Model.Status');
 
         @if (!String.IsNullOrEmpty(@Model.Status))
         {
-            <text>$("#messages").parent().show()</text>
+            <text>$("#messages").parent().css('visibility', 'visible');</text>
         }
 
         $("#lastmove").text('@Model.LastMove');
@@ -73,11 +73,10 @@
      <text><div>You must be <a href="/">logged in</a> to participate in games.</div></text>
  }
 
-<h2 id="title">@Model.Description</h2>
-
 <div class="container">
     <div class="row">
         <div class="col-md-7">
+            <h2 id="title">@Model.Description</h2>
             <div style="width: 512px; margin-bottom: 10px" id="board"></div>
 
             <div id="resign">
@@ -89,6 +88,9 @@
         </div>
 
         <div class="col-md-3">
+            <div class="alert alert-danger" role="alert">
+                <div id="messages" style="text-align: center"></div>
+            </div>
             <div id="submitmove">
                 @using (Html.BeginForm("PlayMove", "Board", FormMethod.Post))
                 {
@@ -121,10 +123,6 @@
                         </script>
                     </text>
                 }
-
-                <div class="alert alert-danger" role="alert">
-                    <div id="messages" style="text-align: center"></div>
-                </div>
 
                 <div class="well">
                     <div id="lastmove"></div>
