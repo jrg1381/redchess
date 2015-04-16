@@ -119,6 +119,13 @@ function UpdateUi(fen) {
 
 function ProcessServerResponse(data) {
     UpdateUi(data.fen);
+
+    if (data.message) {
+        $("#messages").parent().show();
+    } else {
+        $("#messages").parent().hide();
+    }
+
     $("#messages").text(data.message);
    
     if (data.mayClaimDraw) {
