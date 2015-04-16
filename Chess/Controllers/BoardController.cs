@@ -125,8 +125,12 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-                DestroyBoard(id);
+            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
+            {
                 return RedirectToAction("Index");
+            }
+            DestroyBoard(id);
+            return RedirectToAction("Index");
         }
 
         private bool IsCurrentUsersTurn(int gameId)

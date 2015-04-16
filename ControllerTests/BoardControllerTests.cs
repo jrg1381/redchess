@@ -94,6 +94,33 @@ namespace ControllerTests
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
         }
 
+        [TestCase("james", true)]
+        [TestCase("clive", true)]
+        [TestCase("jason", false)]
+        public void CannotDeleteOtherUsersGames(string userName, bool allowedToDelete)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+
+            if (allowedToDelete)
+            {
+                fakeRepo.Expect(x => x.Delete(10)).Repeat.Once();
+            }
+            else
+            {
+                fakeRepo.Expect(x => x.Delete(10)).Repeat.Never();
+            }
+
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager, fakeIdentity);
+            controller.DeleteConfirmed(10);
+            fakeRepo.VerifyAllExpectations();
+        }
+
         [Test]
         public void PlayMoveChangesBoardCorrectly()
         {
