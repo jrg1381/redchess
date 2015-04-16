@@ -25,7 +25,6 @@ namespace Chess.Controllers
     public class BoardController : Controller
     {
         private readonly GameManager m_gameManager;
-        private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
 

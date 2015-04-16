@@ -23,9 +23,24 @@ namespace RedChess.WebEngine.Repositories
             m_board = BoardFactory.CreateInstance();
         }
 
+        public void SaveClock(IClock clock)
+        {
+            m_clockRepository.SaveClock(clock);
+        }
+
         public IClock Clock(int gameId)
         {
-            return (new ClockRepository()).Clock(gameId);
+            return m_clockRepository.Clock(gameId);
+        }
+
+        public HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber)
+        {
+            return m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
+        }
+
+        public IEnumerable<HistoryEntry> FindAllMoves(int gameId)
+        {
+            return m_historyRepository.FindAllMoves(gameId);
         }
 
         public void TimeGameOut(int gameId, string message, string userName)
