@@ -193,19 +193,21 @@ function UpdateTakenPieces(fen) {
 
     var regexBlack = /p+/;
     var answer = regexBlack.exec(blackArmy);
-    if (answer != null && answer[0].length > 3) {
+    if (answer != null && answer[0].length > 1) {
         blackArmy = blackArmy.replace(answer, 'p(' + answer[0].length + ')');
     }
     var regexWhite = /P+/;
     answer = regexWhite.exec(whiteArmy);
-    if (answer != null && answer[0].length > 3) {
+    if (answer != null && answer[0].length > 1) {
         whiteArmy = whiteArmy.replace(answer, 'P(' + answer[0].length + ')');
     }
 
-    var whitePieces = whiteArmy.split('P', 2)[0];
-    var blackPieces = blackArmy.split('p', 2)[0];
-    var whitePawnsTaken = pieceMapping['P'] + "<span style=\"font-size : medium\">" + whiteArmy.split('P', 2)[1] + "</span>";
-    var blackPawnsTaken = pieceMapping['p'] + "<span style=\"font-size : medium\">" + blackArmy.split('p', 2)[1] + "</span>";
+    var partialWhitePieces = whiteArmy.split('P', 2);
+    var partialBlackPieces = blackArmy.split('p', 2);
+    var whitePieces = partialWhitePieces[0];
+    var blackPieces = partialBlackPieces[0];
+    var whitePawnsTaken = pieceMapping['P'] + "<span style=\"font-size : medium\">" + partialWhitePieces[1] + "</span>";
+    var blackPawnsTaken = pieceMapping['p'] + "<span style=\"font-size : medium\">" + partialBlackPieces[1] + "</span>";
 
     $("#blacktaken").html(blackPieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + blackPawnsTaken);
     $("#whitetaken").html(whitePieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + whitePawnsTaken);
