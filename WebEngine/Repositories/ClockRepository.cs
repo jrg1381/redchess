@@ -4,7 +4,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public class ClockRepository : IClockRepository
+    internal class ClockRepository : IClockRepository
     {
         public IClock Clock(int gameId)
         {

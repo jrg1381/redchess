@@ -3,7 +3,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-	public class ChessContext : DbContext
+	internal class ChessContext : DbContext
 	{
         // You can add custom code to this file. Changes will not be overwritten.
         // 

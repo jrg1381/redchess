@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using RedChess.WebEngine.Repositories;
 using RedChess.ChessCommon.Enumerations;
@@ -92,6 +93,95 @@ namespace ControllerTests
             bool ok = controller.MayManipulateBoard(10, userName);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
+        }
+
+        private BoardController GetControllerForFakeGameAsUser(string userName, out IGameRepository repository)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(10)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            return new BoardController(manager, fakeIdentity);
+        }
+
+        [TestCase("james", true)]
+        [TestCase("clive", true)]
+        [TestCase("jason", false)]
+        public void CannotDeleteOtherUsersGames(string userName, bool allowed)
+        {
+            IGameRepository fakeRepo;
+            var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+
+            if (allowed)
+            {
+                fakeRepo.Expect(x => x.Delete(10)).Repeat.Once();
+            }
+            else
+            {
+                fakeRepo.Expect(x => x.Delete(10)).Repeat.Never();
+            }
+
+            controller.DeleteConfirmed(10);
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [TestCase("james", false)]
+        [TestCase("clive", true)]
+        [TestCase("jason", false)]
+        public void CannotPlayOnOtherUsersGames(string userName, bool allowed)
+        {
+            IGameRepository fakeRepo;
+            var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var g = fakeRepo.FindById(10);
+
+            if (allowed)
+            {
+                fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Once();
+            }
+            else
+            {
+                fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Never();
+            }
+
+            controller.PlayMove(10, "E2", "E4", "");
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [TestCase("james", true)]
+        [TestCase("clive", true)]
+        [TestCase("jason", false)]
+        public void CannotResignOtherUsersGames(string userName, bool allowed)
+        {
+            IGameRepository fakeRepo;
+            var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var g = fakeRepo.FindById(10);
+
+            if (allowed)
+            {
+                fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Once();
+            }
+            else
+            {
+                fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Never();
+            }
+
+            controller.Resign(10);
+
+            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
+            if (args.Count > 0)
+            {
+                var dto = args[0][0] as GameDto;
+                Assert.AreEqual(allowed, dto.GameOver, "Expected game over state to change correctly");
+            }
+
+            fakeRepo.VerifyAllExpectations();
         }
 
         [Test]
