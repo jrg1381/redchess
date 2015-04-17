@@ -10,14 +10,13 @@ namespace Chess.Controllers
     public class ClockController : Controller
     {
         private readonly IGameManager m_gameManager = new GameManager();
-        private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly ICurrentUser m_identityProvider = new CurrentUserImpl();
 
         [System.Web.Mvc.HttpPost]
         public ActionResult PlayerReady(int id)
         {
             var game = m_gameManager.FetchGame(id);
-            var clock = m_clockRepository.Clock(id);
+            var clock = m_gameManager.Clock(id);
 
             if (game == null || clock == null)
                 return Json(new {status = "NULL"});
@@ -43,7 +42,7 @@ namespace Chess.Controllers
                 status = "OK";
             }
 
-            m_clockRepository.SaveClock(clock);
+            m_gameManager.SaveClock(clock);
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
             hubContext.Clients.Group(game.GameId.ToString()).startClock(new {status = status, who = playerColor});
@@ -53,7 +52,7 @@ namespace Chess.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult RefreshClock(int id)
         {
-            var clock = m_clockRepository.Clock(id);
+            var clock = m_gameManager.Clock(id);
 
             if (clock == null)
                 return Json(new {status = "NULL"});

@@ -119,7 +119,14 @@ function UpdateUi(fen) {
 
 function ProcessServerResponse(data) {
     UpdateUi(data.fen);
-    $("#messages").text(data.message);
+
+    if (data.message) {
+        $("#messages").parent().css('visibility', 'visible');
+        $("#messages").text(data.message);
+    } else {
+        $("#messages").parent().css('visibility', 'hidden');
+        $("#messages").html('&nbsp;');
+    }
    
     if (data.mayClaimDraw) {
         $("#claim-draw").show();
@@ -184,8 +191,33 @@ function UpdateTakenPieces(fen) {
         whiteArmy = whiteArmy.replace(c, "");
     }
 
-    $("#blacktaken").text(blackArmy.split("").map(function(x) { return pieceMapping[x]; }).join(""));
-    $("#whitetaken").text(whiteArmy.split("").map(function(x) { return pieceMapping[x]; }).join(""));
+    var regexBlack = /p+/;
+    var answer = regexBlack.exec(blackArmy);
+    if (answer != null && answer[0].length > 1) {
+        blackArmy = blackArmy.replace(answer, 'p(' + answer[0].length + ')');
+    }
+    var regexWhite = /P+/;
+    answer = regexWhite.exec(whiteArmy);
+    if (answer != null && answer[0].length > 1) {
+        whiteArmy = whiteArmy.replace(answer, 'P(' + answer[0].length + ')');
+    }
+
+    var whitePawnsTaken = "";
+    var blackPawnsTaken = "";
+
+    var partialWhitePieces = whiteArmy.split('P', 2);
+    var partialBlackPieces = blackArmy.split('p', 2);
+    var whitePieces = partialWhitePieces[0];
+    var blackPieces = partialBlackPieces[0];
+    if (partialWhitePieces.length > 1) {
+        whitePawnsTaken = pieceMapping['P'] + "<span style=\"font-size : medium\">" + partialWhitePieces[1] + "</span>";
+    }
+    if (partialBlackPieces.length > 1) {
+        blackPawnsTaken = pieceMapping['p'] + "<span style=\"font-size : medium\">" + partialBlackPieces[1] + "</span>";
+    }
+
+    $("#blacktaken").html(blackPieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + blackPawnsTaken);
+    $("#whitetaken").html(whitePieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + whitePawnsTaken);
 }
 
 function DocumentReady() {
@@ -220,17 +252,5 @@ function DocumentReady() {
         $("#submitmove form").hide();
         $("#Promote").val([]);
         return false;
-    });
-
-    $("#resignbutton").mouseenter(function () {
-        $("#resignbutton").css("background-color", "#B57271");
-    }).mouseleave(function () {
-        $("#resignbutton").css("background-color", "#8F514F");
-    });
-
-    $("#drawbutton").mouseenter(function () {
-        $("#drawbutton").css("background-color", "#B57271");
-    }).mouseleave(function () {
-        $("#drawbutton").css("background-color", "#8F514F");
     });
 }

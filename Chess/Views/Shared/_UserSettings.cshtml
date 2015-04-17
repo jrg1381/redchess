@@ -1,21 +1,47 @@
-﻿@if (Request.IsAuthenticated)
+﻿<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <div class="container"><div class="navbar-header"><a class="navbar-brand">Redchess</a></div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>
+                            @Html.ActionLink("New game", "Create", "Board")
+                        </li>
+                    }
+
+                    <li>
+                        @Html.ActionLink("My games", "Index", "Board")
+                    </li>
+
+                    <li>
+                        @Html.ActionLink("PGN viewer", "", "Pgn")
+                    </li>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("My account", "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {title = "Logged on as " + HttpContext.Current.User.Identity.Name})
+                                </li>
+                                <li>
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+@using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
 {
-    <text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {title = "Manage"}) |
-    </text>
+    @Html.AntiForgeryToken()
 }
 
-@Html.ActionLink("Play", "Index", "Board")
-|
-@Html.ActionLink("PGN viewer", "", "Pgn")
 
-@if(Request.IsAuthenticated)
-{
-<text>
-        @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        }
-    </text>
-}
 

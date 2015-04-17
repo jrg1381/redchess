@@ -4,7 +4,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public class HistoryRepository : IHistoryRepository
+    internal class HistoryRepository : IHistoryRepository
     {
         public HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber)
         {

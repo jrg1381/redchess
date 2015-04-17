@@ -23,9 +23,24 @@ namespace RedChess.WebEngine.Repositories
             m_board = BoardFactory.CreateInstance();
         }
 
+        public void SaveClock(IClock clock)
+        {
+            m_clockRepository.SaveClock(clock);
+        }
+
         public IClock Clock(int gameId)
         {
-            return (new ClockRepository()).Clock(gameId);
+            return m_clockRepository.Clock(gameId);
+        }
+
+        public HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber)
+        {
+            return m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
+        }
+
+        public IEnumerable<HistoryEntry> FindAllMoves(int gameId)
+        {
+            return m_historyRepository.FindAllMoves(gameId);
         }
 
         public void TimeGameOut(int gameId, string message, string userName)
@@ -60,7 +75,7 @@ namespace RedChess.WebEngine.Repositories
             if (clock == null)
                 return false;
 
-            if (clock.PlayersReady != 3 || clock.TimeElapsedBlackMs <= clock.TimeLimitMs || clock.TimeElapsedWhiteMs <= clock.TimeLimitMs)
+            if (clock.PlayersReady != 3)
                 return true;
 
             return false;
@@ -159,30 +174,39 @@ namespace RedChess.WebEngine.Repositories
 
             if (m_board.KingInCheck())
             {
-                gameDto.Status = "Check!";
+                gameDto.Status = "Check";
                 if (m_board.IsCheckmate(true))
                 {
-                    EndGameWithMessage(gameId, "Checkmate!");
+                    EndGameWithMessage(gameDto, "Checkmate");
+                    return;
                 }
             }
             else if (m_board.IsStalemate())
             {
-                EndGameWithMessage(gameId, "Stalemate :-(");
+                EndGameWithMessage(gameDto, "Stalemate");
+                return;
             }
             else if (m_board.IsDraw())
             {
-                EndGameWithMessage(gameId, "Insufficient material - draw");
+                EndGameWithMessage(gameDto, "Insufficient material - draw");
+                return;
             }
             else
             {
                 gameDto.Status = "";
-                m_repository.AddOrUpdate(gameDto);
             }
+
+            m_repository.AddOrUpdate(gameDto);
         }
 
         public void EndGameWithMessage(int gameId, string message)
         {
             var gameDto = m_repository.FindById(gameId);
+            EndGameWithMessage(gameDto, message);
+        }
+
+        internal void EndGameWithMessage(GameDto gameDto, string message)
+        {
             gameDto.Status = message;
             gameDto.CompletionDate = DateTime.UtcNow;
             gameDto.GameOver = true;

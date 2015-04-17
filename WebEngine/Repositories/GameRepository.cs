@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public class GameRepository : IGameRepository
+    internal class GameRepository : IGameRepository
     {
         public GameDto FindById(int id)
         {

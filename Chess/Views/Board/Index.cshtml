@@ -5,15 +5,7 @@
     ViewBag.Title = "Index of games";
 }
 
-<h2>Index of games</h2>
-
- @if (Request.IsAuthenticated)
- {
-	 <p>
-		 @Html.ActionLink("New Game", "Create")
-	 </p>
- }
- else
+ @if (!Request.IsAuthenticated)
  {
 	 <p> 
 		 You need to be logged in to create new games.<br />
@@ -37,6 +29,11 @@
             var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false };
             var board = new ChessBoard(element, cfg);
         });
+
+        $("h3#turnindicator").each(function(index, element) {
+            var originalText = element.innerText;
+            element.innerText = TurnIndicatorText(originalText);
+        });
     });
 
     function DeleteMultiple() {
@@ -47,70 +44,124 @@
     function GoToGame(id) {
         document.location.href = "/Board/Details/" + id;
     }
+
+    function TurnIndicatorText(fen) {
+        var f = fen.split(" ");
+        if (f[1] === "b") {
+            return "Black to play";
+        } else {
+            return "White to play";
+        }
+    }
 </script>
-<table style="padding-left: 50px">
-	<tr>
-		<th></th>
-	</tr>  
+
+
 	@if (Request.IsAuthenticated)
- {
-		<tr><td><h3>My current games</h3></td></tr>
-     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
-     {
-			<tr>
-                <td>
-				<div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
-                </td>
-                @{
-                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-                }
-			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time></td>
-			</tr>
-     <tr>
-         <td>@item.Description</td>
-		 <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
-     </tr>
-     }
-     
-     <tr><td><h3>My finished games</h3></td></tr>
-     foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
-     {
-			<tr>
-                <td>
-                <td>@item.Description</td>
-                    <td><div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.ActionLink(@item.GameId.ToString(), "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)</div>
-			    </td>
-                @{
-                    var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-                }
-			    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
-                <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId })</td>
-			    <td>@Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
-			</tr>
-     }
-     
-     if(@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
-      {
-          <tr><td></td><td></td><td><a class="asbutton" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
-      }
+	{
+	    <h3>My current games</h3>
+	    <div class="container">
+	        <div class="col-md-10">
+	            <table class="table"> 
+	                @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
+	                {
+         	
+	                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+	        
+	                    <tr>
+	                        <td width="300px">
+	                            <div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick=" GoToGame(@item.GameId) ">@item.Fen</div>
+	                        </td>
+	                        <td>
+	                            <div class="panel panel-default">
+	                                <div class="panel-heading">
+	                                    <h3 class="panel-title" id="turnindicator">@item.Fen</h3>
+	                                </div>
+	                                <div class="panel-body">
+	                                    @item.LastMove
+	                                </div>
+	                            </div>
+	                        </td>
+	                        <td>
+	                            <div class="panel panel-default">
+	                                <div class="panel-heading">
+	                                    <h3 class="panel-title">@item.Description</h3>
+	                                    @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
+	                                </div>
+	                                <div class="panel-body">
 
- }
-</table>
+	                                    @Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)
+	                                </div>
+	                            </div>
+	                        </td>
+	                    </tr>
+	                }
+	            </table>
+	        </div>
+	    </div>
+    }
 
-<table style="padding-left: 50px">
-		<tr><td><h3>Other games</h3></td></tr>
-		@foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
-  {
-			<tr>
-                <td>
-				<div class="miniboard" id="o-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId)">@item.Fen</div>
-                </td>
-                <td>@item.Status</td>
-			</tr>
-           <tr>
-               <td>@item.Description</td>
-               		 <td>@Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</td>
-     </tr>
-  }
-</table>
+     
+<h3>My finished games</h3>
+<div class="container">
+    <div class="col-md-10">
+        <table class="table">
+            @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
+            {
+                <tr>
+                    <td>
+                    <td><div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</div></td>
+                    @{
+                        var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
+                    <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId })</td>
+                    <td>@Html.CheckBox(@item.GameId.ToString(), false, new { @class = "deleteCheckbox"})</td>
+                </tr>
+            }
+            @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
+            {
+                <tr><td colspan="4"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+            }
+        </table>
+    </div>
+</div>
+
+<h3>Other games</h3>
+<div class="container">
+    <div class="col-md-10">
+        <table class="table">
+            @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
+            {
+                var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+	        
+                <tr>
+                    <td width="300px">
+                        <div class="miniboard" id="o-@item.GameId" style="width: 300px" onclick=" GoToGame(@item.GameId) ">@item.Fen</div>
+                    </td>
+                    <td>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title" id="turnindicator">@item.Fen</h3>
+                            </div>
+                            <div class="panel-body">
+                                @item.LastMove
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@item.Description</h3>
+                                @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
+                            </div>
+                            <div class="panel-body">
+                                @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
 

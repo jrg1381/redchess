@@ -25,7 +25,6 @@ namespace Chess.Controllers
     public class BoardController : Controller
     {
         private readonly GameManager m_gameManager;
-        private readonly ClockRepository m_clockRepository = new ClockRepository();
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
 
@@ -126,8 +125,12 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-                DestroyBoard(id);
+            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
+            {
                 return RedirectToAction("Index");
+            }
+            DestroyBoard(id);
+            return RedirectToAction("Index");
         }
 
         private bool IsCurrentUsersTurn(int gameId)
