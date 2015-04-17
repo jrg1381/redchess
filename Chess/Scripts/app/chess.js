@@ -202,12 +202,19 @@ function UpdateTakenPieces(fen) {
         whiteArmy = whiteArmy.replace(answer, 'P(' + answer[0].length + ')');
     }
 
+    var whitePawnsTaken = "";
+    var blackPawnsTaken = "";
+
     var partialWhitePieces = whiteArmy.split('P', 2);
     var partialBlackPieces = blackArmy.split('p', 2);
     var whitePieces = partialWhitePieces[0];
     var blackPieces = partialBlackPieces[0];
-    var whitePawnsTaken = pieceMapping['P'] + "<span style=\"font-size : medium\">" + partialWhitePieces[1] + "</span>";
-    var blackPawnsTaken = pieceMapping['p'] + "<span style=\"font-size : medium\">" + partialBlackPieces[1] + "</span>";
+    if (partialWhitePieces.length > 1) {
+        whitePawnsTaken = pieceMapping['P'] + "<span style=\"font-size : medium\">" + partialWhitePieces[1] + "</span>";
+    }
+    if (partialBlackPieces.length > 1) {
+        blackPawnsTaken = pieceMapping['p'] + "<span style=\"font-size : medium\">" + partialBlackPieces[1] + "</span>";
+    }
 
     $("#blacktaken").html(blackPieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + blackPawnsTaken);
     $("#whitetaken").html(whitePieces.split("").map(function (x) { return pieceMapping[x]; }).join("&#8203;") + whitePawnsTaken);
