@@ -46,7 +46,7 @@ namespace Chess.Filters
 						}
 					}
 
-					WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+					WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", true, SimpleMembershipProviderCasingBehavior.RelyOnDatabaseCollation);
 				}
 				catch (Exception ex)
 				{
