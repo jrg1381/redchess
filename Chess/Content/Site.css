@@ -39,28 +39,6 @@ div.lockIcon {
     display: inline-block;
 }
 
-#changePasswordForm input,
-#registerForm input,
-#loginForm input,
-#deleteForm input,
-#createForm input,
-#submitbutton,
-a.asbutton
-    {
-        border-top: 1px solid ;
-        border-right: 1px solid ;
-        border-bottom: 1px solid ;
-        border-left: 1px solid ;
-        background-color: #8F514F;
-        border-color: #B57271;
-        color: #ffffff;
-        padding: 2px 6px 2px 6px;
-        text-decoration: none;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
-    }
-
 .content-wrapper {
     margin: 0 auto;
     max-width: 960px;

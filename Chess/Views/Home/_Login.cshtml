@@ -1,30 +1,38 @@
 ﻿@model Chess.Models.LoginModel
 
-@using (Html.BeginForm("JsonLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginForm" }))
-{
-    @Html.AntiForgeryToken()
+<h2>Log in</h2>
+<div class="container">
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @using (Html.BeginForm("JsonLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="well">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username" id="loginName" name="userName"/>
+                        </div>
 
-    <fieldset>
-        <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName, new { autofocus = "autofocus", id = "loginName" })
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-            <li>
-                <input type="submit" value="Log in" id="submitbutton"/>
-            </li>
-        </ol>
-        @Html.ValidationSummary() 
-    </fieldset>
-}
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Password" id="password" name="Password" type="password"/>
+                        </div>
+                    </div>
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-lg-7">Remember me</div>
+                            <div class="input-group" >
+                                <input type="checkbox" id="RememberMe" name="RememberMe"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" >
+                        <input type="submit" value="Log in" id="submitbutton" class="btn btn-default" />
+                    </div>
+                    
+                    <div data-valmsg-summary="true" class="validation-summary-valid"><ul><li style="display:none"></li>
+</ul></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

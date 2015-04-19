@@ -11,37 +11,18 @@
     }
 }
 
-<header>
-    <h1>@ViewBag.Title</h1>
-</header>
-
-<div id="main-content">
-@if (@User.Identity.IsAuthenticated)
-{
-	<script>window.location.href="/Board"</script>
-}
-else
-{
-    <div class="todoList" id="loginPanel">
-        <section id="localLoginPanel">
-            <h2>Log in</h2>
+<div id="main-content" class="container">
+    <div class="col-lg-2">
+        @if (@User.Identity.IsAuthenticated)
+        {
+            <script> window.location.href = "/Board" </script>
+        }
+        else
+        {
             @Html.Partial("_Login")
-        </section>
-        <p>First time here? <a class="menuaction" id="showRegister">Sign up</a></p>
+
+            <p>First time here? <a class="menuaction" id="showRegister">Sign up</a></p>
+        }
     </div>
-    <div class="todoList" id="registerPanel">
-        <h2>Sign up</h2>
-        @Html.Partial("_Register")
-        <p>Already signed up? <a class="menuaction" id="showLogin">Log in</a></p>
-    </div>
-}
 </div>
 
-@if (@User.Identity.IsAuthenticated)
-{
-    @section scripts {
-        @Scripts.Render("~/bundles/knockout")
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/todo")
-    }
-}
