@@ -18,7 +18,7 @@ namespace Chess.Controllers
     {
         public string CurrentUser
         {
-            get { return System.Web.HttpContext.Current.User.Identity.Name; }
+            get { return System.Web.HttpContext.Current.User.Identity.Name.ToLowerInvariant(); }
         }
     }
 

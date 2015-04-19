@@ -17,7 +17,7 @@ namespace RedChess.WebEngine.Models
         public string UserName
         {
             get { return m_underlyingUsername; }
-            set { m_underlyingUsername = value.ToLower(); }
+            set { m_underlyingUsername = value.ToLowerInvariant(); }
         }
     }
 }
