@@ -106,9 +106,9 @@ namespace RedChess.WebEngine.Repositories
         {
             var gameDto = m_repository.FindById(gameId);
 
-            if (gameDto.UserProfileBlack.UserName == userName)
+            if (gameDto.UserProfileBlack.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
                 return "b";
-            if (gameDto.UserProfileWhite.UserName == userName)
+            if (gameDto.UserProfileWhite.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
                 return "w";
 
             return "";
