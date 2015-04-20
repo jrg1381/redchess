@@ -15,26 +15,38 @@
     function ShowRegister() {
         $("div#login").hide();
         $("div#register").show();
+        var link = $("a#showRegister");
+
+        link.text("Log in");
+        link.off("click");
+        link.click(ShowLogin);
     }
 
     function ShowLogin() {
         $("div#register").hide();
         $("div#login").show();
+        var link = $("a#showRegister");
+
+        link.text("Sign up");
+        link.off("click");
+        link.click(ShowRegister);
     }
+
+    $(document).ready(function () {
+        var link = $("a#showRegister");
+        link.click(ShowRegister);
+    });
 </script>
 
 <div id="main-content" class="container">
     <div class="col-lg-2">
         <div id="login">
             @Html.Partial("_Login")
-            <p>First time here? <a class="menuaction" id="showRegister" href="javascript:ShowRegister()">Sign up</a>
-            </p>
         </div>
         <div style="display: none" id="register">
             @Html.Partial("_Register")
-            <p>First time here? <a class="menuaction" id="showLogin" href="javascript:ShowLogin()">Log in</a>
-            </p>
         </div>
-    </div>
+        <p>First time here? <a id="showRegister" href="#">Sign up</a>
+</div>
 </div>
 
