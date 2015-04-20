@@ -11,6 +11,11 @@
     }
 }
 
+@if (@User.Identity.IsAuthenticated)
+{
+    <script>window.location.href = "/Board"</script>
+}
+
 <script>
     function ShowRegister() {
         $("div#login").hide();
