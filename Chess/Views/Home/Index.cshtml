@@ -13,25 +13,28 @@
 
 <script>
     function ShowRegister() {
-        $("#register").show();
+        $("div#login").hide();
+        $("div#register").show();
+    }
+
+    function ShowLogin() {
+        $("div#register").hide();
+        $("div#login").show();
     }
 </script>
 
 <div id="main-content" class="container">
     <div class="col-lg-2">
-        @if (@User.Identity.IsAuthenticated)
-        {
-            <script> window.location.href = "/Board" </script>
-        }
-        else
-        {
+        <div id="login">
             @Html.Partial("_Login")
-            <div style="display: none" id="register">
-                @Html.Partial("_Register")
-            </div>
-
-            <p>First time here? <a class="menuaction" id="showRegister" href="javascript:ShowRegister()">Sign up</a></p>
-        }
+            <p>First time here? <a class="menuaction" id="showRegister" href="javascript:ShowRegister()">Sign up</a>
+            </p>
+        </div>
+        <div style="display: none" id="register">
+            @Html.Partial("_Register")
+            <p>First time here? <a class="menuaction" id="showLogin" href="javascript:ShowLogin()">Log in</a>
+            </p>
+        </div>
     </div>
 </div>
 

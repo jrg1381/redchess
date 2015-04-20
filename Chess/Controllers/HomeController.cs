@@ -6,6 +6,10 @@ namespace Chess.Controllers
 	{
 		public ActionResult Index(string returnUrl)
 		{
+		    if (Request.IsAuthenticated)
+		    {
+		        return RedirectToAction("Index", "Board");
+		    }
 			ViewBag.ReturnUrl = returnUrl;
 			return View();
 		}
