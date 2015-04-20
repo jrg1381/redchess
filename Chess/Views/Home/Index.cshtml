@@ -11,6 +11,12 @@
     }
 }
 
+<script>
+    function ShowRegister() {
+        $("#register").show();
+    }
+</script>
+
 <div id="main-content" class="container">
     <div class="col-lg-2">
         @if (@User.Identity.IsAuthenticated)
@@ -20,8 +26,11 @@
         else
         {
             @Html.Partial("_Login")
+            <div style="display: none" id="register">
+                @Html.Partial("_Register")
+            </div>
 
-            <p>First time here? <a class="menuaction" id="showRegister">Sign up</a></p>
+            <p>First time here? <a class="menuaction" id="showRegister" href="javascript:ShowRegister()">Sign up</a></p>
         }
     </div>
 </div>
