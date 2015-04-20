@@ -23,36 +23,6 @@ textarea {
      width: 500px;
 }
 
-#textarea {
-    background : #380706;
-    color: white;
-    border: thin solid #cecece;
-}
-
-#accordion div {
-    background:#380706;
-    height:100px;
-    line-height:100px;
-    display:block;
-    padding-left:10px;
-    padding-right:15px;
-    padding-top: 10px;
-    padding-bottom:10px;
-}
-
-a.pgn-header {
-    display:block;
-    width:483px;
-    background:#6E2E2D;
-    color:whitesmoke;
-    padding-left:15px;
-    height:40px;
-    line-height:40px;
-    text-decoration:none;
-    font-size:13px;
-    font-weight:bold;
-}
-
 .first {
     border-top:thin solid #cecece;    
 }
@@ -60,16 +30,6 @@ a.pgn-header {
 .movenumber {
     text-align : right;
     padding-right : 12pt;
-}
-
-textarea.pgn-text {
-    background-color: whitesmoke;
-}
-
-#scrollbox {
-    overflow: auto;
-    height: 75vh;
-    min-width: 250px;
 }
 
 .title {
@@ -92,7 +52,6 @@ textarea.pgn-text {
 
 .highlightText {
     font-weight : bold;
-    color: whitesmoke;
 }
 
 .button {
