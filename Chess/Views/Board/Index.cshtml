@@ -34,9 +34,11 @@
             var originalText = element.innerText;
             if (originalText == null) {
                 originalText = element.innerHTML;
+                element.innerHTML = TurnIndicatorText(originalText);
             }
-            
-            element.innerText = TurnIndicatorText(originalText);
+            else {
+                element.innerText = TurnIndicatorText(originalText);
+            }
         });
     });
 
