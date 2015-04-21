@@ -32,6 +32,10 @@
 
         $("h3#turnindicator").each(function(index, element) {
             var originalText = element.innerText;
+            if (originalText == null) {
+                originalText = element.innerHTML;
+            }
+            
             element.innerText = TurnIndicatorText(originalText);
         });
     });
