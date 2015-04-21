@@ -1,11 +1,14 @@
 ﻿@model Chess.Models.RegisterModel
 
-<h2>Register</h2>
-<div class="container">
+<div class="row">
+    <h2 class="col-lg-3">Register</h2>
+</div>
+
+<div class="row">
     <div class="col-lg-3">
         <div class="panel panel-default">
             <div class="panel-body">
-                @using (Html.BeginForm("JsonRegister", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {Id = "registerForm"}))
+                @using (Html.BeginForm("JsonRegister", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {id = "registerForm"}))
                 {
                     @Html.AntiForgeryToken()
                     <div class="well">
