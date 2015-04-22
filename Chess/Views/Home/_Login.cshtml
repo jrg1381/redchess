@@ -1,7 +1,9 @@
 ﻿@model Chess.Models.LoginModel
 
-<h2>Log in</h2>
-<div class="container">
+<div class="row">
+    <h2 class="col-lg-3">Log in</h2>
+</div>
+<div class="row">
     <div class="col-lg-3">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -16,15 +18,17 @@
                         <div class="input-group">
                             <input class="form-control" placeholder="Password" id="password" name="Password" type="password"/>
                         </div>
-                    </div>
-                    <div class="well">
+                        <div class="row">&nbsp;</div>
                         <div class="row">
-                            <div class="col-lg-10">Remember me</div>
-                            <div class="input-group" >
-                                <input type="checkbox" id="RememberMe" name="RememberMe"/>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" id="RememberMe" name="RememberMe">
+                                    Remember&nbsp;me
+                                </label>
                             </div>
                         </div>
                     </div>
+
                     <div class="input-group" >
                         <input type="submit" value="Log in" id="submitbutton" class="btn btn-default" />
                     </div>

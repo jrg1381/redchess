@@ -30,13 +30,15 @@
             var board = new ChessBoard(element, cfg);
         });
 
-        $("h3#turnindicator").each(function(index, element) {
+        $("h3#turnindicator-o,h3#turnindicator-m").each(function(index, element) {
             var originalText = element.innerText;
             if (originalText == null) {
                 originalText = element.innerHTML;
+                element.innerHTML = TurnIndicatorText(originalText);
             }
-            
-            element.innerText = TurnIndicatorText(originalText);
+            else {
+                element.innerText = TurnIndicatorText(originalText);
+            }
         });
     });
 
@@ -68,9 +70,9 @@
 	            <table class="table"> 
 	                @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
 	                {
-         	
+
 	                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-	        
+
 	                    <tr>
 	                        <td width="300px">
 	                            <div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick=" GoToGame(@item.GameId) ">@item.Fen</div>
@@ -78,7 +80,7 @@
 	                        <td>
 	                            <div class="panel panel-default">
 	                                <div class="panel-heading">
-	                                    <h3 class="panel-title" id="turnindicator">@item.Fen</h3>
+	                                    <h3 class="panel-title" id="turnindicator-m">@item.Fen</h3>
 	                                </div>
 	                                <div class="panel-body">
 	                                    @item.LastMove
@@ -93,7 +95,7 @@
 	                                </div>
 	                                <div class="panel-body">
 
-	                                    @Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)
+	                                    @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) | @Html.ActionLink("History", "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)
 	                                </div>
 	                            </div>
 	                        </td>
@@ -102,33 +104,34 @@
 	            </table>
 	        </div>
 	    </div>
-    }
 
-     
-<h3>My finished games</h3>
-<div class="container">
-    <div class="col-md-10">
-        <table class="table">
-            @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
-            {
-                <tr>
-                    <td>
-                    <td><div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)</div></td>
-                    @{
-                        var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-                    }
-                    <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
-                    <td>@Html.ActionLink("Delete", "Delete", new { id = item.GameId })</td>
-                    <td>@Html.CheckBox(@item.GameId.ToString(), false, new { @class = "deleteCheckbox"})</td>
-                </tr>
-            }
-            @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
-            {
-                <tr><td colspan="4"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
-            }
-        </table>
-    </div>
-</div>
+
+
+	    <h3>My finished games</h3>
+	    <div class="container">
+	        <div class="col-md-10">
+	            <table class="table">
+	                @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
+	                {
+	                    <tr>
+	                        <td>
+	                        <td><div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.ActionLink(@item.Description, "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)</div></td>
+	                        @{
+	                            var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+	                        }
+	                        <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
+	                        <td>@Html.ActionLink("Delete", "Delete", new {id = item.GameId})</td>
+	                        <td>@Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
+	                    </tr>
+	                }
+	                @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
+	                {
+	                    <tr><td colspan="4"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+	                }
+	            </table>
+	        </div>
+	    </div>
+	}
 
 <h3>Other games</h3>
 <div class="container">
@@ -145,7 +148,7 @@
                     <td>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title" id="turnindicator">@item.Fen</h3>
+                                <h3 class="panel-title" id="turnindicator-o">@item.Fen</h3>
                             </div>
                             <div class="panel-body">
                                 @item.LastMove
