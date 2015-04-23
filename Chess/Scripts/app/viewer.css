@@ -32,6 +32,10 @@ textarea {
     padding-right : 12pt;
 }
 
+table#moves td {
+       padding-right : 12pt; 
+}
+
 .title {
     font-family : arial;
     width : 100%;
@@ -93,5 +97,10 @@ textarea {
 
 .button#goFlip {
     background:  url("/Images/flip.png");
+    float : right;
+}
+
+.button#playFromHere {
+    background:  url("/Images/crossed_swords.png");
     float : right;
 }

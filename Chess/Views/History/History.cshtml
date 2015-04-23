@@ -74,26 +74,17 @@
             
         </div>
         <div class="col-lg-7">
-            <div class="wrapper"><span class="button" id="goStart"></span></div>
-            <div class="wrapper"><span class="button" id="goBack"></span></div>
-            <div class="wrapper"><span class="button" id="goFlip"></span></div>
-            <div class="wrapper"><span class="button" id="goEnd"></span></div>
-            <div class="wrapper"><span class="button" id="goForward"></span></div>
+            <div style="width: 512px">
+                <div class="wrapper"><span class="button" id="goStart"></span></div>
+                <div class="wrapper"><span class="button" id="goBack"></span></div>
+                <div class="wrapper"><span class="button" id="playFromHere"></span></div>
+                <div class="wrapper"><span class="button" id="goFlip"></span></div>
+                <div class="wrapper"><span class="button" id="goEnd"></span></div>
+                <div class="wrapper"><span class="button" id="goForward"></span></div>
+            </div>
         </div>
 
     </div>
-    <div class="row">
-        @if (Request.IsAuthenticated && isParticipant)
-        {
-            <a class="btn btn-default" href="javascript:playFromHere();">Play from here</a>
-        }
-    </div>
-
 </div>
-
-<div id="main">
-        <p id="errors"></p>
-            <p class="title">&nbsp;</p>
-
 
 

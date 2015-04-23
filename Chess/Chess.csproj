@@ -292,6 +292,7 @@
     <Content Include="Images\bP.png" />
     <Content Include="Images\bQ.png" />
     <Content Include="Images\bR.png" />
+    <Content Include="Images\crossed_swords.png" />
     <Content Include="Images\fast-forward.png" />
     <Content Include="Images\fast-rewind.png" />
     <Content Include="Images\flip.png" />
