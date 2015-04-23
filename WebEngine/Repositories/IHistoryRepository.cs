@@ -10,5 +10,6 @@ namespace RedChess.WebEngine.Repositories
         int LatestMoveInGame(int gameId);
         bool IsParticipant(string username, int gameId);
         void Add(HistoryEntry historyEntry);
+        void CloneGame(int newGameId, int oldGameId, int cloneUpToMove);
     }
 }

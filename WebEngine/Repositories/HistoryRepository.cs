@@ -50,5 +50,25 @@ namespace RedChess.WebEngine.Repositories
                 context.SaveChanges();
             }
         }
+
+        public void CloneGame(int newGameId, int oldGameId, int cloneUpToMove)
+        {
+            using (var context = new ChessContext())
+            {
+                foreach (var entry in context.HistoryEntries.Where(h => h.GameId == oldGameId && h.MoveNumber <= cloneUpToMove))
+                {
+                    var newEntry = new HistoryEntry()
+                    {
+                        MoveNumber = entry.MoveNumber,
+                        Fen = entry.Fen,
+                        Move = entry.Move,
+                        GameId = newGameId
+                    };
+                    context.HistoryEntries.Add(newEntry);
+                }
+
+                context.SaveChanges();
+            }
+        }
     }
 }

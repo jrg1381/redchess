@@ -50,7 +50,8 @@ namespace Chess.Controllers
             var newBoard = BoardFactory.CreateInstance();
             newBoard.FromFen(historyEntry.Fen);
 
-            int gameIdOfNewGame = m_gameManager.Add(newBoard, opponent, m_identityProvider.CurrentUser, playAsBlack, 0);
+            int gameIdOfNewGame = m_gameManager.CloneBoard(newBoard, opponent, m_identityProvider.CurrentUser, playAsBlack, game, historyEntry.MoveNumber);
+
             return RedirectToAction("Details", "Board", new { id = gameIdOfNewGame});
         }
 

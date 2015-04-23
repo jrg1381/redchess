@@ -43,6 +43,28 @@ namespace RedChess.WebEngine.Repositories
             return m_historyRepository.FindAllMoves(gameId);
         }
 
+        public int CloneBoard(IBoard newBoard, int opponentId, string currentUser, bool playAsBlack, int oldGameId, int cloneUpToMove)
+        {
+            var newGame = new GameDto { Fen = newBoard.ToFen() };
+            var currentUserId = (new UserProfileRepository()).UserId(currentUser);
+
+            if (playAsBlack)
+            {
+                newGame.UserIdBlack = currentUserId;
+                newGame.UserIdWhite = opponentId;
+            }
+            else
+            {
+                newGame.UserIdBlack = opponentId;
+                newGame.UserIdWhite = currentUserId;
+            }
+
+            m_repository.AddOrUpdate(newGame);
+            m_historyRepository.CloneGame(newGame.GameId, oldGameId, cloneUpToMove);
+
+            return newGame.GameId;
+        }
+
         public void TimeGameOut(int gameId, string message, string userName)
         {
             var game = m_repository.FindById(gameId);
