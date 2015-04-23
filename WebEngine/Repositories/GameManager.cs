@@ -164,6 +164,15 @@ namespace RedChess.WebEngine.Repositories
             m_board.PromotePiece(typeToPromoteTo);
             gameDto.LastMove = m_board.LastMove();
             gameDto.Fen = m_board.ToFen();
+
+            m_historyRepository.UpdateLastMove(
+                new HistoryEntry
+                {
+                    Fen = gameDto.Fen,
+                    GameId = gameDto.GameId,
+                    Move = gameDto.LastMove,
+                });
+
             m_repository.AddOrUpdate(gameDto);
         }
 
