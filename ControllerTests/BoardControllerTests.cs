@@ -26,6 +26,20 @@ namespace ControllerTests
             return fakeGame;
         }
 
+        private GameDto GetFakeGameAboutToPromote()
+        {
+            var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
+            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
+
+            var fakeGame = MockRepository.GenerateStub<GameDto>();
+            fakeGame.UserProfileBlack = myUserProfile;
+            fakeGame.UserProfileWhite = opponentUserProfile;
+            fakeGame.Fen = "k6K/8/8/8/8/8/7p/8 b - - 0";
+            fakeGame.GameId = 10;
+
+            return fakeGame;
+        }
+
         [Test]
         public void GetDetailsCallsFindById()
         {
@@ -182,6 +196,34 @@ namespace ControllerTests
             }
 
             fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void PlayMoveChangesBoardCorrectlyForPromotion()
+        {
+            var fakeGame = GetFakeGameAboutToPromote();
+
+            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
+            manager.Move(10, Location.H2, Location.H1);
+            manager.PromotePiece(10, "Q");
+
+            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
+            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.UpdateLastMove(null));
+
+            fakeRepo.VerifyAllExpectations();
+
+            var updatedDto = args[0][0] as GameDto;
+            var newHistoryEntry = historyArgs[0][0] as HistoryEntry;
+
+            Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", updatedDto.Fen, "Fen after move not as expected");
+            Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", newHistoryEntry.Fen, "Fen in history is wrong");
+            Assert.AreEqual("h1(=Q)+", newHistoryEntry.Move, "Expected move to be h1(=Q)+");
+            Assert.AreEqual(10, newHistoryEntry.GameId, "Expected history entry to refer to this game, 10");
         }
 
         [Test]
