@@ -39,7 +39,9 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.Database.SqlQuery<bool>("SELECT dbo.IsParticipant(@p0,@p1)", gameId, username).FirstOrDefault();
+                return
+                    context.Database.SqlQuery<bool>("SELECT dbo.IsParticipant(@p0,@p1)", gameId, username)
+                        .FirstOrDefault();
             }
         }
 
@@ -56,12 +58,38 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                var entryForLastMove = context.HistoryEntries.Where(x => x.GameId == historyEntry.GameId).OrderByDescending(x => x.MoveNumber).Take(1).Single();
+                var entryForLastMove =
+                    context.HistoryEntries.Where(x => x.GameId == historyEntry.GameId)
+                        .OrderByDescending(x => x.MoveNumber)
+                        .Take(1)
+                        .Single();
 
                 entryForLastMove.Fen = historyEntry.Fen;
                 entryForLastMove.Move = historyEntry.Move;
 
                 context.HistoryEntries.AddOrUpdate(entryForLastMove);
+                context.SaveChanges();
+            }
+        }
+
+        public void CloneGame(int newGameId, int oldGameId, int cloneUpToMove)
+        {
+            using (var context = new ChessContext())
+            {
+                foreach (
+                    var entry in
+                        context.HistoryEntries.Where(h => h.GameId == oldGameId && h.MoveNumber <= cloneUpToMove))
+                {
+                    var newEntry = new HistoryEntry()
+                    {
+                        MoveNumber = entry.MoveNumber,
+                        Fen = entry.Fen,
+                        Move = entry.Move,
+                        GameId = newGameId
+                    };
+                    context.HistoryEntries.Add(newEntry);
+                }
+
                 context.SaveChanges();
             }
         }

@@ -54,34 +54,37 @@
             }
         }
     </script>
-
-    <div id="main">
-        <p id="errors"></p>
-        <div class="left">
-            <p class="title">&nbsp;</p>
-            <div id="scrollbox">
-                <table id="moves"></table>
+    
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">@description</div>
+                <div id="scrollbox" class="panel-body">
+                    <table id="moves"></table>
+                </div>
             </div>
         </div>
-
-        <div class="left">
-            <p class="title" id="title"></p>
+        <div class="col-lg-7">
             <div id="board"></div>
-            <div class="navigation">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            
+        </div>
+        <div class="col-lg-7">
+            <div style="width: 512px">
                 <div class="wrapper"><span class="button" id="goStart"></span></div>
                 <div class="wrapper"><span class="button" id="goBack"></span></div>
+                <div class="wrapper"><span class="button" id="playFromHere" title="Play from here"></span></div>
                 <div class="wrapper"><span class="button" id="goFlip"></span></div>
                 <div class="wrapper"><span class="button" id="goEnd"></span></div>
                 <div class="wrapper"><span class="button" id="goForward"></span></div>
             </div>
         </div>
-    </div>
 
-    <div>
-        @if (Request.IsAuthenticated && isParticipant)
-        {
-            <a class="asbutton" href="javascript:playFromHere();">Play from here</a>
-        } |
-        @Html.ActionLink("Back to list of games", "Index", "Board")
     </div>
+</div>
+
 

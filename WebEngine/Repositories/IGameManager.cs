@@ -12,5 +12,7 @@ namespace RedChess.WebEngine.Repositories
         IClock Clock(int gameId);
         HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber);
         IEnumerable<HistoryEntry> FindAllMoves(int game);
+
+        int CloneBoard(IBoard newBoard, int opponent, string currentUser, bool playAsBlack, int oldGameId, int movesToClone);
     }
 }

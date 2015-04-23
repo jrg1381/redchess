@@ -92,4 +92,8 @@ function ConfigureActionButtons() {
     $("#goFlip").on("click", function () {
         board.flip();
     });
+
+    $("#playFromHere").on("click", function() {
+        playFromHere();
+    });
 };
