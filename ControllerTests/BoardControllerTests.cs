@@ -57,10 +57,16 @@ namespace ControllerTests
         [Test]
         public void DeleteConfirmedCallsDelete()
         {
+            var fakeIdProvider = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdProvider.Expect(x => x.CurrentUser).Return("james");
+
+            var fakeGame = GetFakeGame();
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(40)).Return(fakeGame);
             fakeRepo.Expect(x => x.Delete(40));
+
             var manager = new GameManager(fakeRepo);
-            var controller = new BoardController(manager);
+            var controller = new BoardController(manager, fakeIdProvider);
             controller.DeleteConfirmed(40);
 
             fakeRepo.VerifyAllExpectations();
