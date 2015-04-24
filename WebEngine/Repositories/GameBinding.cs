@@ -3,7 +3,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public class GameBinding : IGameBinding
+    internal class GameBinding : IGameBinding
     {
         private readonly GameDto m_gameDto;
         private readonly GameManager m_gameManager;

@@ -2,7 +2,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public interface IClockRepository
+    internal interface IClockRepository
     {
         IClock Clock(int gameId);
         void SaveClock(IClock clock);

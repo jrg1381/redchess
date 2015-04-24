@@ -15,7 +15,11 @@ namespace RedChess.WebEngine.Repositories
         private readonly IClockRepository m_clockRepository;
         private readonly IBoard m_board;
 
-        public GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null)
+        public GameManager() : this(null, null, null)
+        {
+        }
+
+        internal GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null)
         {
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();

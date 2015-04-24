@@ -24,7 +24,7 @@ namespace Chess.Controllers
 
     public class BoardController : Controller
     {
-        private readonly GameManager m_gameManager;
+        private readonly IGameManager m_gameManager;
         private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
 
@@ -33,7 +33,7 @@ namespace Chess.Controllers
             
         }
 
-        public BoardController(GameManager gameManager = null, ICurrentUser identityProvider = null)
+        public BoardController(IGameManager gameManager = null, ICurrentUser identityProvider = null)
         {
             m_gameManager = gameManager ?? new GameManager();
             m_identityProvider = identityProvider ?? new CurrentUserImpl();

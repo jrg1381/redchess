@@ -3,7 +3,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public interface IHistoryRepository
+    internal interface IHistoryRepository
     {
         HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber);
         IEnumerable<HistoryEntry> FindAllMoves(int gameId);

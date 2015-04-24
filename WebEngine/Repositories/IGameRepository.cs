@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public interface IGameRepository
+    internal interface IGameRepository
     {
         GameDto FindById(int id);
         void Delete(int id);
