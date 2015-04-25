@@ -19,5 +19,6 @@ namespace RedChess.WebEngine.Repositories
         string LastMove { get; }
         IClock Clock { get; }
         string CurrentPlayerColor(string userName);
+        UserProfile UserProfileWinner { get; }
     }
 }

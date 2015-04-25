@@ -82,10 +82,11 @@ function ClaimDraw() {
     }).done(ProcessServerResponse);
 }
 
-function TellServerGameIsTimedOut(message) {
+function TellServerGameIsTimedOut(message, timedOutColor) {
     $.post("/Board/TimedOut", {
         "id": gameId,
         "message": message,
+        "timedoutcolor" : timedOutColor,
         "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
     }).done(ProcessServerResponse);
 }

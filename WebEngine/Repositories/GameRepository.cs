@@ -11,7 +11,7 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                var game = context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Single(b => b.GameId == id);
+                var game = context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Include(b => b.UserProfileWinner).Single(b => b.GameId == id);
                 return game;
             }
         }
@@ -39,7 +39,7 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.Boards.ToList();
+                return context.Boards.Include(b => b.UserProfileWinner).ToList();
             }
         }
     }

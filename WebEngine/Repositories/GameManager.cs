@@ -69,7 +69,7 @@ namespace RedChess.WebEngine.Repositories
             return newGame.GameId;
         }
 
-        public void TimeGameOut(int gameId, string message, string userName)
+        public void TimeGameOut(int gameId, string message, string timedOutColor)
         {
             var game = m_repository.FindById(gameId);
 
@@ -81,17 +81,19 @@ namespace RedChess.WebEngine.Repositories
             var clock = m_clockRepository.Clock(gameId);
             var timeLimit = clock.TimeLimitMs;
 
-            if (userName == game.UserProfileWhite.UserName)
+            if (timedOutColor == "w")
             {
                 clock.TimeElapsedWhiteMs = timeLimit;
+                game.UserIdWinner = game.UserIdBlack;
             }
-            if (userName == game.UserProfileBlack.UserName)
+            if (timedOutColor == "b")
             {
                 clock.TimeElapsedBlackMs = timeLimit;
+                game.UserIdWinner = game.UserIdWhite;
             }
 
             m_clockRepository.SaveClock(clock);
-            EndGameWithMessage(gameId, message);
+            EndGameWithMessage(game, message);
         }
 
         public bool ShouldLockUi(int gameId)
@@ -212,7 +214,8 @@ namespace RedChess.WebEngine.Repositories
                 gameDto.Status = "Check";
                 if (m_board.IsCheckmate(true))
                 {
-                    EndGameWithMessage(gameDto, "Checkmate");
+                    var winner = m_board.CurrentTurn == PieceColor.White ? gameDto.UserIdBlack : gameDto.UserIdWhite;
+                    EndGameWithMessage(gameDto, "Checkmate", winner);
                     return;
                 }
             }
@@ -234,17 +237,19 @@ namespace RedChess.WebEngine.Repositories
             m_repository.AddOrUpdate(gameDto);
         }
 
-        public void EndGameWithMessage(int gameId, string message)
+        public void EndGameWithMessage(int gameId, string message, int? userIdWinner = null)
         {
             var gameDto = m_repository.FindById(gameId);
-            EndGameWithMessage(gameDto, message);
+            EndGameWithMessage(gameDto, message, userIdWinner);
         }
 
-        internal void EndGameWithMessage(GameDto gameDto, string message)
+        internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)
         {
             gameDto.Status = message;
             gameDto.CompletionDate = DateTime.UtcNow;
             gameDto.GameOver = true;
+            if(userIdWinner != null)
+                gameDto.UserIdWinner = userIdWinner;
             m_repository.AddOrUpdate(gameDto);
         }
 

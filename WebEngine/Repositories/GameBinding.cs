@@ -83,5 +83,10 @@ namespace RedChess.WebEngine.Repositories
         {
             return m_gameManager.CurrentPlayerColor(m_gameDto.GameId, userName);
         }
+
+        public UserProfile UserProfileWinner
+        {
+            get { return m_gameDto.UserProfileWinner; }
+        }
     }
 }

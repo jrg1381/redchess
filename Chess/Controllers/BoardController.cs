@@ -140,7 +140,7 @@ namespace Chess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult TimedOut(int id, string message)
+        public ActionResult TimedOut(int id, string message, string timedoutcolor)
         {
             var game = m_gameManager.FetchGame(id);
 
@@ -149,7 +149,7 @@ namespace Chess.Controllers
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
 
-            m_gameManager.TimeGameOut(id, message, m_identityProvider.CurrentUser);
+            m_gameManager.TimeGameOut(id, message, timedoutcolor);
             var jsonObject = new { fen = game.Fen, message = message, status = "TIME" };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
@@ -171,7 +171,12 @@ namespace Chess.Controllers
 
             var resignationMessage = String.Format("{0} resigned", m_identityProvider.CurrentUser);
 
-            m_gameManager.EndGameWithMessage(id, resignationMessage);
+            // If current player is white, and is resigning, then black wins
+            var winner = game.UserProfileWhite.UserName == m_identityProvider.CurrentUser
+                ? game.UserProfileBlack.UserId
+                : game.UserProfileWhite.UserId;
+
+            m_gameManager.EndGameWithMessage(id, resignationMessage, winner);
 
             var jsonObject = new { fen = game.Fen, message = resignationMessage, status = "RESIGN" };
 

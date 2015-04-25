@@ -120,8 +120,12 @@
 	                            var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
 	                        }
 	                        <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
-	                        <td>@Html.ActionLink("Delete", "Delete", new {id = item.GameId})</td>
-	                        <td>@Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
+                            <td>@if(item.UserProfileWinner != null)
+                                {
+                                    @item.UserProfileWinner.UserName;
+                                }</td>
+	                        <td>@Html.ActionLink("Delete", "Delete", new {id = item.GameId})
+	                        @Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
 	                    </tr>
 	                }
 	                @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))

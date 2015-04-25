@@ -18,7 +18,7 @@ namespace RedChess.WebEngine.Repositories
         void Delete(int gameId);
         bool IsUsersTurn(int gameId, string currentUser);
         void TimeGameOut(int id, string message, string currentUser);
-        void EndGameWithMessage(int id, string message);
+        void EndGameWithMessage(int id, string message, int? userIdWinner = null);
         bool Move(int id, Location startLocation, Location endLocation);
         void PromotePiece(int id, string promotionPiece);
         void UpdateMessage(int id);

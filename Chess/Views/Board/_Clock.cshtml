@@ -6,14 +6,6 @@
         border: 1px;
     }
 
-    table.clock
-    {
-        width: 200px;
-        border-collapse: collapse;
-        font-family: sans-serif;
-        padding: 15px;
-    }
-
     td.time
     {
         border-bottom: solid 1px;
@@ -36,7 +28,7 @@
     {
         background-color: black;
         color: white;
-        border-color: white;
+        border-color: black;
     }
 
     td.goindicator
@@ -57,19 +49,6 @@
     td.notready
     {
         background-color: lightcoral;
-    }
-
-    div.i_am_ready
-    {
-        text-align: center;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        padding: 5px;
-        background-color: #6E2E2D;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        cursor: pointer;
     }
 
     tr.clockheading
@@ -99,7 +78,7 @@
 	}
 }
         
-	<table class="clock">
+	<table class="table">
         <tr class="thinborder clockheading">
             <td class="white">White</td>
             <td class="black">Black</td>
@@ -114,7 +93,7 @@
         </tr>
         <tr>
             <td colspan="2" id="ready">
-                <div class="i_am_ready" id="readybutton">Start game</div>
+                <div class="btn btn-default col-sm-12" id="readybutton">Start game</div>
             </td>
         </tr>
     </table>

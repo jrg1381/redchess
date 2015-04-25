@@ -14,8 +14,8 @@
         $.cookie("PageLastSeen" + this.gameId, (new Date()).getTime());
     }
 
-    this.InitializeClockTimeLimits = function () {
-        $.post("/Clock/RefreshClock", { "id": gameId }).done(function (data) {
+    this.InitializeClockTimeLimits = function() {
+        $.post("/Clock/RefreshClock", { "id": gameId }).done(function(data) {
             this.lastServerBlackTimeRemaining = data.timeleftblack;
             this.lastServerWhiteTimeRemaining = data.timeleftwhite;
             $("#whitetime").text(new Date(this.lastServerWhiteTimeRemaining).toUTCString().substring(25, 17));
@@ -27,12 +27,12 @@
         // if we haven't already done so...
         UnlockBoard();
         // Now update the time
-        $.post("/Clock/RefreshClock", { "id": gameId }).done(function (data) {
+        $.post("/Clock/RefreshClock", { "id": gameId }).done(function(data) {
             this.lastServerBlackTimeRemaining = data.timeleftblack;
             this.lastServerWhiteTimeRemaining = data.timeleftwhite;
             if (!this.isTimerEnabled) {
                 this.LocalTimeCorrection();
-                this.timerId = setInterval(function () { this.LocalTimeCorrection(); }.bind(this), 1000);
+                this.timerId = setInterval(function() { this.LocalTimeCorrection(); }.bind(this), 1000);
                 this.isTimerEnabled = true;
             }
         }.bind(this));
@@ -56,7 +56,7 @@
                 $("#messages").text("Black is out of time");
                 $("#blacktime").text("--:--");
                 $("#turnindicator").text("GAME OVER");
-                TellServerGameIsTimedOut("Black is out of time","b");
+                TellServerGameIsTimedOut("Black is out of time", "b");
             }
         }
 
@@ -77,11 +77,11 @@
         }
     }
 
-    this.ClockDocumentReady = function () {
+    this.ClockDocumentReady = function() {
         //SignalR stuff
         var updater = $.connection.updateServer;
         // Define a client-side message which the server can call
-        updater.client.startClock = function (message) {
+        updater.client.startClock = function(message) {
             ReadyToPlay(message);
         };
 
@@ -102,8 +102,8 @@
             return;
         }
 
-        $("div#readybutton").click(function () {
-            $.post("/Clock/PlayerReady", { id: gameId }).done(function (data) {
+        $("div#readybutton").click(function() {
+            $.post("/Clock/PlayerReady", { id: gameId }).done(function(data) {
                 $("td#ready").hide();
                 if (this.currentPlayerColor == "w") {
                     $("td#whiteready").removeClass("notready");
@@ -116,13 +116,7 @@
                 }
             }.bind(this));
         });
-
-        $("div#readybutton").mouseenter(function () {
-            $("div#readybutton").css("background-color", "#8F514F");
-        }).mouseleave(function () {
-            $("div#readybutton").css("background-color", "#6E2E2D");
-        });
-    }
+    };
 }
 
 // Called when SignalR tells us that the other player is ready to play

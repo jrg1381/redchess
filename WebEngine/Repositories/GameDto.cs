@@ -19,6 +19,7 @@ namespace RedChess.WebEngine.Repositories
 
         public int UserIdWhite { get; set; }
         public int UserIdBlack { get; set; }
+        public int? UserIdWinner { get; set; }
         public string Status { get; set; }
         public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
         public string Fen { get; set; }
@@ -44,5 +45,7 @@ namespace RedChess.WebEngine.Repositories
         public virtual UserProfile UserProfileWhite { get; set; }
         [ForeignKey("UserIdBlack")]
         public virtual UserProfile UserProfileBlack { get; set; }
+        [ForeignKey("UserIdWinner")]
+        public virtual UserProfile UserProfileWinner { get; set; }
     }
 }
