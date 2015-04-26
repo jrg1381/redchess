@@ -1,4 +1,5 @@
 ﻿@using Chess.Models
+@using RedChess.WebEngine.Repositories
 @model IEnumerable<RedChess.WebEngine.Repositories.IGameBinding>
 
 @{
@@ -105,27 +106,30 @@
 	        </div>
 	    </div>
 
-
-
 	    <h3>My finished games</h3>
 	    <div class="container">
 	        <div class="col-md-10">
 	            <table class="table">
 	                @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
 	                {
+                        var iso8601Datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+	                    string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null).ToString();
+	                    if (item.UserProfileWinner != null)
+	                    {
+	                        descriptionLink = descriptionLink.Replace(item.UserProfileWinner.UserName, "<b>" + item.UserProfileWinner.UserName + "</b>");
+	                    }
+
 	                    <tr>
 	                        <td>
-	                        <td><div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.ActionLink(@item.Description, "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)</div></td>
-	                        @{
-	                            var iso8601datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-	                        }
-	                        <td>@item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time></td>
-                            <td>@if(item.UserProfileWinner != null)
-                                {
-                                    @item.UserProfileWinner.UserName;
-                                }</td>
-	                        <td>@Html.ActionLink("Delete", "Delete", new {id = item.GameId})
-	                        @Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})</td>
+	                            <div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.Raw(@descriptionLink)</div>
+	                        </td>
+	                        <td>
+	                            @item.Status<br/><time class="timeago" datetime="@iso8601Datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time>
+	                        </td>
+	                        <td>
+	                            @Html.ActionLink("Delete", "Delete", new {id = item.GameId})
+	                            @Html.CheckBox(@item.GameId.ToString(), false, null)
+	                        </td>
 	                    </tr>
 	                }
 	                @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
