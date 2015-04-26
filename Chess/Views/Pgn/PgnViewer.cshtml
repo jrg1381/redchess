@@ -83,23 +83,35 @@
     <div id="spinner-location" style="width:250px;height:50px;position:absolute"></div>
 </div>
        
-<div id="main">
     <p id="errors"></p>
-    <div class="left">
-        <p class="title">&nbsp;</p>
-        <div id="scrollbox"><table id="moves"></table></div>
-    </div>
-
-    <div class="left">
-        <p class="title" id="title"></p>
-        <div id="board"></div>
-        <div class="navigation">
-            <div class="wrapper"><span class="button" id="goStart"></span></div>
-            <div class="wrapper"><span class="button" id="goBack"></span></div>
-            <div class="wrapper"><span class="button" id="goFlip"></span></div> 
-            <div class="wrapper"><span class="button" id="goEnd"></span></div>
-            <div class="wrapper"><span class="button" id="goForward"></span></div>
+<div class="container" id="main">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-heading" id="title">-</div>
+                <div id="scrollbox" class="panel-body pre-scrollable" style="max-height: 465px">
+                    <table id="moves"></table>
+                </div>
+            </div>
         </div>
+        <div class="col-lg-7">
+            <div id="board"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            
+        </div>
+        <div class="col-lg-7">
+            <div style="width: 512px">
+                <div class="wrapper"><span class="button" id="goStart"></span></div>
+                <div class="wrapper"><span class="button" id="goBack"></span></div>
+                <div class="wrapper"><span class="button" id="goFlip"></span></div>
+                <div class="wrapper"><span class="button" id="goEnd"></span></div>
+                <div class="wrapper"><span class="button" id="goForward"></span></div>
+            </div>
+        </div>
+
     </div>
 </div>
 
