@@ -134,7 +134,7 @@
 	                }
 	                @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
 	                {
-	                    <tr><td colspan="4"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+	                    <tr><td colspan="2"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
 	                }
 	            </table>
 	        </div>
