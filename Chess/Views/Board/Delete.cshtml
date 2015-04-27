@@ -14,22 +14,27 @@
     $(document).ready(function () {
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '@shortFen', showNotation: false }
         board = new ChessBoard('board', cfg);
+        $("button#deleteButton").click(SubmitForm);
     });
     
     function GoToGame(id) {
         document.location.href = "/Board/Details/" + id;
     }
+
+    function SubmitForm() {
+        $("form#deleteForm").submit();
+    }
 </script>
 
 <h3>Are you sure you want to delete this game?</h3>
 
-<div style="width:300px" id="board" onclick="GoToGame(@Model.GameId)"></div>
+<div style="width:300px; padding-bottom: 24px" id="board" onclick="GoToGame(@Model.GameId)"></div>
 
 @using (Html.BeginForm("Delete", "Board", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "deleteForm" }))
 {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+        @Html.AntiForgeryToken()
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+        <button type="button" class="btn btn-default">@Html.ActionLink("Back to List", "Index")</button>
+    </div>
 }
