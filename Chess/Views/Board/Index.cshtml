@@ -120,21 +120,23 @@
 	                    }
 
 	                    <tr>
-	                        <td>
+	                        <td style="vertical-align:  middle">
 	                            <div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.Raw(@descriptionLink)</div>
 	                        </td>
 	                        <td>
 	                            @item.Status<br/><time class="timeago" datetime="@iso8601Datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time>
 	                        </td>
-	                        <td>
-	                            @Html.ActionLink("Delete", "Delete", new {id = item.GameId})
+	                        <td style="vertical-align : middle">
+	                            <a href="/Board/Delete/@item.GameId"><span class="glyphicon glyphicon-remove-circle" style="font-size : 24px"></span></a>
+	                        </td>
+	                        <td style="vertical-align : middle">
 	                            @Html.CheckBox(@item.GameId.ToString(), false, null)
 	                        </td>
 	                    </tr>
 	                }
 	                @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
 	                {
-	                    <tr><td colspan="2"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
+	                    <tr><td colspan="3"></td><td><a class="btn btn-default" href="javascript:DeleteMultiple()" title="foo">Delete selected games</a></td></tr>
 	                }
 	            </table>
 	        </div>

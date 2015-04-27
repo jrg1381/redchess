@@ -71,7 +71,7 @@
 
 <div>
     <div id="accordion">
-        <a href="#one" class="pgn-header" id="dropdown-header">Enter PGN<span class="buttonright"><input type="submit" value="Submit" id="submitbutton"/></span></a>
+        <a href="#one" id="dropdown-header"><span class="glyphicon glyphicon-menu-down"></span></a><input type="submit" value="Submit" id="submitbutton"/></a>
         <div id="one">
             @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new {id = "createForm"}))
             {
