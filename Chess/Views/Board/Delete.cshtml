@@ -12,8 +12,8 @@
 
 <script>
     $(document).ready(function () {
-        var cfg = { pieceTheme: '/Images/{piece}.png', position: '@shortFen', showNotation: false }
-        board = new ChessBoard('board', cfg);
+        var cfg = { pieceTheme: '/Images/{piece}.png', position: '@shortFen', showNotation: false };
+        var board = new ChessBoard('board', cfg);
         $("button#deleteButton").click(SubmitForm);
     });
     
