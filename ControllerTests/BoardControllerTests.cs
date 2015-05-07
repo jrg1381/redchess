@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using RedChess.WebEngine.Repositories;
 using RedChess.ChessCommon.Enumerations;
@@ -18,12 +19,33 @@ namespace ControllerTests
             var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
 
             var fakeGame = MockRepository.GenerateStub<GameDto>();
+
             fakeGame.UserProfileBlack = myUserProfile;
+            fakeGame.UserIdBlack = myUserProfile.UserId; 
             fakeGame.UserProfileWhite = opponentUserProfile;
+            fakeGame.UserIdWhite = opponentUserProfile.UserId;
+
             fakeGame.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
             fakeGame.GameId = 10;
 
             return fakeGame;
+        }
+
+        private BoardController GetControllerForFakeEndedGameAsUser(string userName, out IGameRepository repository)
+        {
+            var fakeGame = GetFakeGame();
+            fakeGame.GameOver = true;
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(10)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            return new BoardController(manager, fakeIdentity);
         }
 
         private GameDto GetFakeGameAboutToPromote()
@@ -131,6 +153,23 @@ namespace ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
+        private BoardController GetControllerForFakeGameAsUserWithClock(string userName, out IGameRepository repository)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(10)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            fakeClockRepo.Expect(x => x.Clock(10)).Return(new Clock());
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            return new BoardController(manager, fakeIdentity);
+        }
+
         [TestCase("james", true)]
         [TestCase("clive", true)]
         [TestCase("jason", false)]
@@ -195,10 +234,57 @@ namespace ControllerTests
             controller.Resign(10);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
+
+            if (allowed)
+            {
+                if (args.Count > 0)
+                {
+                    var dto = args[0][0] as GameDto;
+                    Assert.AreEqual(true, dto.GameOver, "Expected game over state to change correctly");
+                }
+                else
+                {
+                    Assert.Fail("AddOrUpdate was not called");
+                }
+            }
+
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void CannotPlayOnEndedGame()
+        {
+            IGameRepository fakeRepo;
+            var controller = GetControllerForFakeEndedGameAsUser("clive", out fakeRepo);
+            fakeRepo.Expect(x => x.AddOrUpdate(null)).Repeat.Never();
+            var result = controller.PlayMove(10, "E2", "E4", "");
+            dynamic res = ((System.Web.Mvc.JsonResult) (result)).Data;
+            Assert.AreEqual("{ fen = rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0, message = , status = FAIL }", res.ToString(), "Result was not as expected");
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [TestCase("Black is out of time", "b")]
+        [TestCase("White is out of time", "w")]
+        public void TimeoutEndsTheGame(string message, string timedOutColor)
+        {
+            IGameRepository fakeRepo;
+            var controller = GetControllerForFakeGameAsUserWithClock("james", out fakeRepo);
+            var g = fakeRepo.FindById(10);
+
+            controller.TimedOut(10, message, timedOutColor);
+
+            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
             if (args.Count > 0)
             {
                 var dto = args[0][0] as GameDto;
-                Assert.AreEqual(allowed, dto.GameOver, "Expected game over state to change correctly");
+                Assert.IsTrue(dto.GameOver, "Expected game to be over after timeout");
+                int expectedWinner = timedOutColor == "b" ? dto.UserIdWhite : dto.UserIdBlack;
+                Assert.AreEqual(expectedWinner, dto.UserIdWinner, "Winner user id is incorrect");
+                Assert.AreEqual(message, dto.Status, "Game status is incorrect");
+            }
+            else
+            {
+                Assert.Fail("AddOrUpdate was not called");
             }
 
             fakeRepo.VerifyAllExpectations();
