@@ -59,4 +59,5 @@
 
     $("#loginForm").submit(formSubmitHandler);
     $("#registerForm").submit(formSubmitHandler);
+    $("#changePasswordForm").submit(formSubmitHandler);
 });

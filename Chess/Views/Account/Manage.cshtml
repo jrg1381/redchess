@@ -3,14 +3,7 @@
     ViewBag.Title = "Change password";
 }
 
-<header>
-    <h1>@ViewBag.Title</h1>
-</header>
-
-<div>
-    <p class="message-success">@ViewBag.StatusMessage</p>
-
-  <section>
+<div id="main-content" class="container">  <section>
     @if (ViewBag.HasLocalPassword)
     {
         @Html.Partial("_ChangePasswordPartial")
@@ -21,8 +14,6 @@
     }
     </section>
 </div>
-
-<p>@Html.ActionLink("Back to main page", "Index", "Home")</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
