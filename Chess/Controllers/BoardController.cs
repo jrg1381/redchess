@@ -232,6 +232,11 @@ namespace Chess.Controllers
                 return Json(new {fen = "PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP/PpPpPpPp/pPpPpPpP", message = "This board no longer exists", status = "AUTH"});
             }
 
+            if (game.GameOver)
+            {
+                return Json(new {fen = game.Fen, message = game.Status, status = "FAIL"});
+            }
+
             if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
             {
                 return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
