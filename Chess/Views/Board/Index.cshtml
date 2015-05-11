@@ -1,6 +1,6 @@
 ﻿@using Chess.Models
 @using RedChess.WebEngine.Repositories
-@model IEnumerable<RedChess.WebEngine.Repositories.IGameBinding>
+@model IEnumerable<IGameBinding>
 
     @{
         ViewBag.Title = "Index of games";
@@ -10,7 +10,7 @@
     {
         <p>
             You need to be logged in to create new games.<br />
-            <a href="/">Login</a>
+            <a href="/">Log in</a>
         </p>
     }
 
