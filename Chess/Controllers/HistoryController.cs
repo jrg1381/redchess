@@ -86,10 +86,38 @@ namespace Chess.Controllers
                 return content;
             }
 
+            var result = "*";
+
+            if (gameDetails.GameOver)
+            {
+                if (gameDetails.UserProfileWinner == null)
+                {
+                    result = "1/2-1/2";
+                }
+                else
+                {
+                    if (gameDetails.UserProfileWhite.UserId == gameDetails.UserProfileWinner.UserId)
+                    {
+                        result= "1-0";
+                    }
+
+                    if (gameDetails.UserProfileBlack.UserId == gameDetails.UserProfileWinner.UserId)
+                    {
+                        result = "0-1";
+                    }
+                }
+            }
+
             var pgnBuilder = new StringBuilder();
             pgnBuilder.AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName);
             pgnBuilder.AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName);
-            // TODO: other PGN fields - timelimit, date, venue etc.
+            pgnBuilder.AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate);
+            pgnBuilder.AppendFormat("[Result \"{0}\"]\r\n", result);
+            if (gameDetails.Clock != null)
+            {
+                pgnBuilder.AppendFormat("[TimeControl \"{0}\"]\r\n", gameDetails.Clock.TimeLimitMs / 1000);
+            }
+
             pgnBuilder.AppendLine();
 
             var moveNumber = 1;
@@ -103,29 +131,7 @@ namespace Chess.Controllers
                 }
             }
 
-            if (gameDetails.GameOver)
-            {
-                if (gameDetails.UserProfileWinner == null)
-                {
-                    pgnBuilder.Append(" 1/2-1/2");
-                }
-                else
-                {
-                    if (gameDetails.UserProfileWhite.UserId == gameDetails.UserProfileWinner.UserId)
-                    {
-                        pgnBuilder.Append(" 1-0");
-                    }
-
-                    if (gameDetails.UserProfileBlack.UserId == gameDetails.UserProfileWinner.UserId)
-                    {
-                        pgnBuilder.Append(" 0-1");
-                    }
-                }
-            }
-            else
-            {
-                pgnBuilder.Append(" *");
-            }
+            pgnBuilder.AppendFormat(" {0}", result);
 
             content.Content = pgnBuilder.ToString();
             return content;
