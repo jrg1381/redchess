@@ -178,7 +178,6 @@ namespace Chess.Controllers
 		public ActionResult Manage(LocalPasswordModel model)
 		{
 			ViewBag.HasLocalPassword = true;
-			ViewBag.ReturnUrl = Url.Action("Manage");
 
 			if (ModelState.IsValid)
 			{
@@ -195,7 +194,7 @@ namespace Chess.Controllers
 
 				if (changePasswordSucceeded)
 				{
-					return RedirectToAction("Manage", new {Message = ManageMessageId.ChangePasswordSuccess});
+                    return Json(new { success = true, redirect = Url.Action("Index", "Board") });
 				}
 				else
 				{
@@ -203,8 +202,8 @@ namespace Chess.Controllers
 				}
 			}
 
-			// If we got this far, something failed, redisplay form
-			return View(model);
+            // If we got this far, something failed
+            return Json(new { errors = GetErrorsFromModelState() });
 		}
 
 	}
