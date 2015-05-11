@@ -120,9 +120,17 @@
 	                    }
 
 	                    <tr>
-	                        <td style="vertical-align:  middle">
+	                        <td style="vertical-align: middle">
 	                            <div id="f-@item.GameId" onclick=" GoToGame(@item.GameId) ">@Html.Raw(@descriptionLink)</div>
 	                        </td>
+                            <td style="vertical-align: middle">
+                                @if (item.Clock != null)
+                                {
+                                    var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs / (1000 * 60));
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    @iso8601GameTimeLimit;
+                                }
+                            </td>
 	                        <td>
 	                            @item.Status<br/><time class="timeago" datetime="@iso8601Datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time>
 	                        </td>
