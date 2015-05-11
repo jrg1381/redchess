@@ -16,25 +16,30 @@
         var isParticipant = currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name, currentHistoryEntry.GameId);
     }
 
-    <script>
-        $(document).ready(function () {
-            lastMove = @maxMoves;
-            var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
-            board = new ChessBoard('board', cfg);
-            renderMoves();
-            board.position(positions[0].fen);
+<script>
+    var positions;
 
-            if (location.hash.length != 0) {
-                updateBoard(parseInt(location.hash.substring(1)));
-            } else {
-                updateBoard(0);
-            }
+    $(document).ready(function () {
+        lastMove = @maxMoves;
+        var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
+        board = new ChessBoard('board', cfg);
+        @{
+            var positionsAsJson = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => new {Fen = x.Fen.Split(new[] {' '})[0], Move = x.Move}));
+        }
+        positions = @Html.Raw(positionsAsJson) ;
+        board.position(positions[0].fen);
 
-            $('#title').text('@description');
-            PopulateMovesBox();
-            ConfigureActionButtons();
-        });
-    </script>
+        if (location.hash.length != 0) {
+            updateBoard(parseInt(location.hash.substring(1)));
+        } else {
+            updateBoard(0);
+        }
+
+        $('#title').text('@description');
+        PopulateMovesBox();
+        ConfigureActionButtons();
+    });
+</script>
 
     <script>
         function playFromHere() {
@@ -42,19 +47,7 @@
         }
 
     </script>
-
-    <script>
-        var positions = new Array(@maxMoves);
-        var i = 0;
-
-        function renderMoves() {
-            @foreach (var data in @Model.Select(x => new {Fen = x.Fen.Split(new[] {' '})[0], Move = x.Move}))
-            {
-                <text>positions[i++] = { "Fen" : '@data.Fen', "Move" : '@data.Move'} ;</text>
-            }
-        }
-    </script>
-    
+   
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default">
