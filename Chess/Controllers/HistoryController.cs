@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using Chess.Models;
 using RedChess.WebEngine.Repositories;
@@ -70,5 +71,64 @@ namespace Chess.Controllers
             ViewBag.MoveNumber = move;
             return View("History", entries);
 		}
+
+        [HttpGet]
+        public ContentResult Pgn(int id)
+        {
+            var content = new ContentResult {ContentType = @"text\plain"};
+
+            var entries = m_gameManager.FindAllMoves(id).ToList();
+            var numberOfMoves = entries.Count;
+            var gameDetails = m_gameManager.FetchGame(id);
+            if (!entries.Any())
+            {
+                content.Content = "NOT FOUND";
+                return content;
+            }
+
+            var pgnBuilder = new StringBuilder();
+            pgnBuilder.AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName);
+            pgnBuilder.AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName);
+            // TODO: other PGN fields - timelimit, date, venue etc.
+            pgnBuilder.AppendLine();
+
+            var moveNumber = 1;
+            for (var i = 1; i < numberOfMoves; i += 2)
+            {
+                var nextMoveIndex = i + 1;
+                pgnBuilder.AppendFormat("{0}. {1}", moveNumber++, entries[i].Move);
+                if (nextMoveIndex < numberOfMoves)
+                {
+                    pgnBuilder.AppendFormat(" {0} ", entries[nextMoveIndex].Move);
+                }
+            }
+
+            if (gameDetails.GameOver)
+            {
+                if (gameDetails.UserProfileWinner == null)
+                {
+                    pgnBuilder.Append(" 1/2-1/2");
+                }
+                else
+                {
+                    if (gameDetails.UserProfileWhite.UserId == gameDetails.UserProfileWinner.UserId)
+                    {
+                        pgnBuilder.Append(" 1-0");
+                    }
+
+                    if (gameDetails.UserProfileBlack.UserId == gameDetails.UserProfileWinner.UserId)
+                    {
+                        pgnBuilder.Append(" 0-1");
+                    }
+                }
+            }
+            else
+            {
+                pgnBuilder.Append(" *");
+            }
+
+            content.Content = pgnBuilder.ToString();
+            return content;
+        }
     }
 }

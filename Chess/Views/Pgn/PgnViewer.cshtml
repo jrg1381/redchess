@@ -7,9 +7,9 @@
 <script src="/Scripts/app/chessboard-0.3.0.js"></script>
 <script src="/Scripts/app/spinner.js" type="text/javascript"></script>
 <script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
-<link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css"/>
-    
+<link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
+<link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css" />
+
 <script>
     function ProcessServerResponse(data) {
         spinner.stop();
@@ -26,21 +26,21 @@
         $('#title').text(data.Tags.White + " vs " + data.Tags.Black);
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         // display the first div by default.
         $("#accordion div").first().height($("#textarea").height());
 
-        $("#createForm").submit(function() {
+        $("#createForm").submit(function () {
             return ($("#textarea").val().length > 0);
         });
 
-        $("#submitbutton").click(function() {
+        $("#submitbutton").click(function () {
             spinner.spin(ParentOfSpinny()[0]);
 
             $.post("/Pgn/Create", {
-                    "pgnText": $("#textarea").val(),
-                    "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
-                }
+                "pgnText": $("#textarea").val(),
+                "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+            }
             ).done(ProcessServerResponse);
         });
 
@@ -48,7 +48,7 @@
         var link = $("#accordion a");
 
         // On clicking of the links do something.
-        link.on('click', function(e) {
+        link.on('click', function (e) {
             e.preventDefault();
 
             var a = $(this).attr("href");
@@ -69,21 +69,23 @@
     });
 </script>
 
-<div>
-    <div id="accordion">
-        <a href="#one" id="dropdown-header"><span class="glyphicon glyphicon-menu-down"></span></a><input type="submit" value="Submit" id="submitbutton"/></a>
+    <div>
+        <div id="accordion">
+            <a href="#one" id="dropdown-header"><span class="glyphicon glyphicon-menu-down"></span></a>
+            <input type="submit" value="Submit" id="submitbutton" /></a>
         <div id="one">
-            @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new {id = "createForm"}))
+            @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new { id = "createForm" }))
             {
                 @Html.AntiForgeryToken()
                 <textarea rows="12" id="textarea" name="pgnText"></textarea>
             }
         </div>
+        </div>
+        <div id="spinner-location" style="width: 250px; height: 50px; position: absolute"></div>
     </div>
-    <div id="spinner-location" style="width:250px;height:50px;position:absolute"></div>
-</div>
-       
-    <p id="errors"></p>
+
+<p id="errors"></p>
+<div id="main">
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default">
@@ -97,22 +99,21 @@
             <div id="board"></div>
         </div>
     </div>
-<div class="row">
-    <div class="col-lg-3">
-
-    </div>
-    <div class="col-lg-7">
-        <div style="width: 512px">
-            <div class="wrapper"><span class="button" id="goStart"></span></div>
-            <div class="wrapper"><span class="button" id="goBack"></span></div>
-            <div class="wrapper"><span class="button" id="goFlip"></span></div>
-            <div class="wrapper"><span class="button" id="goEnd"></span></div>
-            <div class="wrapper"><span class="button" id="goForward"></span></div>
+    <div class="row">
+        <div class="col-lg-3">
         </div>
+        <div class="col-lg-7">
+            <div style="width: 512px">
+                <div class="wrapper"><span class="button" id="goStart"></span></div>
+                <div class="wrapper"><span class="button" id="goBack"></span></div>
+                <div class="wrapper"><span class="button" id="goFlip"></span></div>
+                <div class="wrapper"><span class="button" id="goEnd"></span></div>
+                <div class="wrapper"><span class="button" id="goForward"></span></div>
+            </div>
+        </div>
+
     </div>
-
 </div>
-
 @section Scripts {
- @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
 }

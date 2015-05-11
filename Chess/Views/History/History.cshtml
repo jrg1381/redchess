@@ -19,14 +19,14 @@
 <script>
     var positions;
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         lastMove = @maxMoves;
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         board = new ChessBoard('board', cfg);
         @{
             var positionsAsJson = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => new {Fen = x.Fen.Split(new[] {' '})[0], Move = x.Move}));
         }
-        positions = @Html.Raw(positionsAsJson) ;
+        positions = @Html.Raw(positionsAsJson);
         board.position(positions[0].fen);
 
         if (location.hash.length != 0) {
@@ -38,6 +38,10 @@
         $('#title').text('@description');
         PopulateMovesBox();
         ConfigureActionButtons();
+
+        $("#pgn-button").click(function() {
+            location.href = "/History/Pgn/" + "@currentHistoryEntry.GameId";
+        });
     });
 </script>
 
@@ -51,7 +55,7 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default">
-                <div class="panel-heading">@description</div>
+                <div class="panel-heading">@description <div class="pull-right btn btn-sm btn-link" id="pgn-button">PGN</div></div>
                 <div id="scrollbox" class="panel-body pre-scrollable" style="max-height: 465px">
                     <table id="moves"></table>
                 </div>
