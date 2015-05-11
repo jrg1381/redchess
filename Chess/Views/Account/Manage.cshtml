@@ -3,7 +3,7 @@
     ViewBag.Title = "Change password";
 }
 
-<div id="main-content" class="container">  <section>
+  <section>
     @if (ViewBag.HasLocalPassword)
     {
         @Html.Partial("_ChangePasswordPartial")
@@ -13,7 +13,6 @@
         @Html.Partial("_SetPasswordPartial")
     }
     </section>
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

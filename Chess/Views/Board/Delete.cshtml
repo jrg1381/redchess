@@ -26,15 +26,15 @@
     }
 </script>
 
-<h3>Are you sure you want to delete this game?</h3>
+    <h3>Are you sure you want to delete this game?</h3>
+    <div style="width: 300px; padding-bottom: 24px" id="board" onclick=" GoToGame(@Model.GameId) "></div>
 
-<div style="width:300px; padding-bottom: 24px" id="board" onclick="GoToGame(@Model.GameId)"></div>
-
-@using (Html.BeginForm("Delete", "Board", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "deleteForm" }))
-{
+    @using (Html.BeginForm("Delete", "Board", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {id = "deleteForm"}))
+    {
         @Html.AntiForgeryToken()
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
-        <button type="button" class="btn btn-default">@Html.ActionLink("Back to List", "Index")</button>
-    </div>
-}
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+            <button type="button" class="btn btn-default">@Html.ActionLink("Back to List", "Index")</button>
+        </div>
+    }
+
