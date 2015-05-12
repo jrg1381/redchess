@@ -109,9 +109,12 @@ namespace Chess.Controllers
             }
 
             var pgnBuilder = new StringBuilder();
+            pgnBuilder.AppendLine("[Event \"Casual Game\"]");
+            pgnBuilder.AppendLine("[Site \"?\"]");
+            pgnBuilder.AppendLine("[Round \"?\"]");
+            pgnBuilder.AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate);
             pgnBuilder.AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName);
             pgnBuilder.AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName);
-            pgnBuilder.AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate);
             pgnBuilder.AppendFormat("[Result \"{0}\"]\r\n", result);
             if (gameDetails.Clock != null)
             {
