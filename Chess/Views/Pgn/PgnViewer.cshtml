@@ -29,7 +29,7 @@
     function ServerError(data) {
         spinner.stop();
         $("#main").hide();
-        $("#errors").text(data);
+        $("#errors").text(data.statusText);
     }
 
     $(document).ready(function () {
