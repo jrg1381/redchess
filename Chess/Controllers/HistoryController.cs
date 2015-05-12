@@ -78,13 +78,15 @@ namespace Chess.Controllers
             var content = new ContentResult {ContentType = @"text\plain"};
 
             var entries = m_gameManager.FindAllMoves(id).ToList();
-            var numberOfMoves = entries.Count;
-            var gameDetails = m_gameManager.FetchGame(id);
+
             if (!entries.Any())
             {
                 content.Content = "NOT FOUND";
                 return content;
             }
+            
+            var numberOfMoves = entries.Count;
+            var gameDetails = m_gameManager.FetchGame(id);
 
             var result = "*";
 
@@ -109,13 +111,15 @@ namespace Chess.Controllers
             }
 
             var pgnBuilder = new StringBuilder();
-            pgnBuilder.AppendLine("[Event \"Casual Game\"]");
-            pgnBuilder.AppendLine("[Site \"?\"]");
-            pgnBuilder.AppendLine("[Round \"?\"]");
-            pgnBuilder.AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate);
-            pgnBuilder.AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName);
-            pgnBuilder.AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName);
-            pgnBuilder.AppendFormat("[Result \"{0}\"]\r\n", result);
+
+            pgnBuilder.AppendLine("[Event \"Casual Game\"]")
+            .AppendLine("[Site \"?\"]")
+            .AppendLine("[Round \"?\"]")
+            .AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate)
+            .AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName)
+            .AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName)
+            .AppendFormat("[Result \"{0}\"]\r\n", result);
+
             if (gameDetails.Clock != null)
             {
                 pgnBuilder.AppendFormat("[TimeControl \"{0}\"]\r\n", gameDetails.Clock.TimeLimitMs / 1000);
