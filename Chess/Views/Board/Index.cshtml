@@ -5,8 +5,17 @@
     @{
         ViewBag.Title = "Index of games";
     }
+    
+<script src="/Scripts/jquery.signalR-2.1.0.min.js" type="text/javascript"></script>
+<script src="/signalr/hubs"></script>
+    
+<script>
+    function gameListUpdate(data) {
+        location.reload(true);
+    }
+</script>
 
-    @if (!Request.IsAuthenticated)
+@if (!Request.IsAuthenticated)
     {
         <p>
             You need to be logged in to create new games.<br />
@@ -19,6 +28,16 @@
 
     <script>
         $(document).ready(function () {
+            //SignalR stuff
+            var updater = $.connection.updateServer;
+            // Define a client-side message which the server can call
+            updater.client.gameListUpdate = gameListUpdate;
+
+            // Define a callback for when the connection is established. We join the client group for index page watchers
+            $.connection.hub.start(function () {
+                $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
+            });
+
             $("time.timeago").timeago();
 
             $("div.miniboard").each(function (index, element) {

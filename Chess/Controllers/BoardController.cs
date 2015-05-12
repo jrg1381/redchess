@@ -85,7 +85,15 @@ namespace Chess.Controllers
             var newBoard = BoardFactory.CreateInstance();
             var newGameId = m_gameManager.Add(newBoard, opponentId, m_identityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber * 60 * 1000);
 
+            RefreshIndexPage();
             return RedirectToAction("Details", "Board", new {id = newGameId});
+        }
+
+        private void RefreshIndexPage()
+        {
+            var jsonObject = Json(new {}); // TODO: Put useful information in here
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group("IndexWatchers").gameListUpdate(jsonObject);
         }
 
         //
@@ -130,6 +138,8 @@ namespace Chess.Controllers
                 return RedirectToAction("Index");
             }
             DestroyBoard(id);
+
+            RefreshIndexPage();
             return RedirectToAction("Index");
         }
 
@@ -285,6 +295,7 @@ namespace Chess.Controllers
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
             hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
+
             return Json(jsonObject);
         }
     }
