@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Chess.Models;
+using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.EngineFactory;
 
@@ -85,9 +88,15 @@ namespace Chess.Controllers
                 return content;
             }
             
-            var numberOfMoves = entries.Count;
-            var gameDetails = m_gameManager.FetchGame(id);
+           var gameDetails = m_gameManager.FetchGame(id);
 
+            content.Content = GeneratePgn(entries, gameDetails);
+            return content;
+        }
+
+        internal string GeneratePgn(IList<HistoryEntry> entries, IGameBinding gameDetails)
+        {
+            var numberOfMoves = entries.Count;
             var result = "*";
 
             if (gameDetails.GameOver)
@@ -100,7 +109,7 @@ namespace Chess.Controllers
                 {
                     if (gameDetails.UserProfileWhite.UserId == gameDetails.UserProfileWinner.UserId)
                     {
-                        result= "1-0";
+                        result = "1-0";
                     }
 
                     if (gameDetails.UserProfileBlack.UserId == gameDetails.UserProfileWinner.UserId)
@@ -139,9 +148,7 @@ namespace Chess.Controllers
             }
 
             pgnBuilder.AppendFormat(" {0}", result);
-
-            content.Content = pgnBuilder.ToString();
-            return content;
+            return pgnBuilder.ToString();
         }
     }
 }
