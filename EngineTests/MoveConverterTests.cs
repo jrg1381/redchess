@@ -62,7 +62,7 @@ namespace Redchess.EngineTests
             moveDefinition.BoardAfter = new InteractiveBoard(m_emptyBoard);
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
-            Assert.AreEqual("a8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen"); 
+            Assert.AreEqual("a8=Q", move, "Pawn on a7 moves to a8 and promotes to queen"); 
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Redchess.EngineTests
             moveDefinition.BoardAfter = new InteractiveBoard(m_emptyBoard);
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
-            Assert.AreEqual("axb8(=Q)", move, "Pawn on a7 moves to a8 and promotes to queen");
+            Assert.AreEqual("axb8=Q", move, "Pawn on a7 moves to a8 and promotes to queen");
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace Redchess.EngineTests
             moveDefinition.BoardAfter = new InteractiveBoard(m_emptyBoard);
             var converter = new MoveTextConverter(moveDefinition);
             string move = converter.MoveAsText();
-            Assert.AreEqual("axb8(=Q)+", move, "Pawn on a7 moves to a8 and promotes to queen");
+            Assert.AreEqual("axb8=Q+", move, "Pawn on a7 moves to a8 and promotes to queen");
         }
 
         [Test]

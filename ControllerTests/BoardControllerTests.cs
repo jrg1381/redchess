@@ -314,7 +314,7 @@ namespace ControllerTests
 
             Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", updatedDto.Fen, "Fen after move not as expected");
             Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", newHistoryEntry.Fen, "Fen in history is wrong");
-            Assert.AreEqual("h1(=Q)+", newHistoryEntry.Move, "Expected move to be h1(=Q)+");
+            Assert.AreEqual("h1=Q+", newHistoryEntry.Move, "Expected move to be h1=Q+");
             Assert.AreEqual(10, newHistoryEntry.GameId, "Expected history entry to refer to this game, 10");
         }
 
