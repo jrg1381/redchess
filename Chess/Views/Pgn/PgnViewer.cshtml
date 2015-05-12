@@ -26,6 +26,12 @@
         $('#title').text(data.Tags.White + " vs " + data.Tags.Black);
     }
 
+    function ServerError(data) {
+        spinner.stop();
+        $("#main").hide();
+        $("#errors").text(data);
+    }
+
     $(document).ready(function () {
         // display the first div by default.
         $("#accordion div").first().height($("#textarea").height());
@@ -38,10 +44,11 @@
             spinner.spin(ParentOfSpinny()[0]);
 
             $.post("/Pgn/Create", {
-                "pgnText": $("#textarea").val(),
-                "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
-            }
-            ).done(ProcessServerResponse);
+                        "pgnText": $("#textarea").val(),
+                        "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+                    }
+                ).done(ProcessServerResponse)
+                .error(ServerError);
         });
 
         // Get all the links.
