@@ -37,12 +37,12 @@ namespace ControllerTests
 [Black ""james""]
 [Result ""0-1""]
 
-1. e4 e5  0-1";
+1. e4 c6 2. d4 d5 3. e5 Bf5  0-1";
 
             var controller = new HistoryController();
             var fakeMoves = new List<HistoryEntry>();
 
-            var moves = new[] {"", "e4","e5"};
+            var moves = new[] {"", "e4","c6", "d4", "d5", "e5", "Bf5"};
             fakeMoves.AddRange(moves.Select(move => new HistoryEntry() {Move = move}));
 
             var fakeGame = GetFakeGame();
