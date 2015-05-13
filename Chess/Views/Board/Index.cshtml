@@ -26,60 +26,59 @@
     <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
     <script src="/Scripts/app/chessboard-0.3.0.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            //SignalR stuff
-            var updater = $.connection.updateServer;
-            // Define a client-side message which the server can call
-            updater.client.gameListUpdate = gameListUpdate;
+<script>
+    $(document).ready(function() {
+        //SignalR stuff
+        var updater = $.connection.updateServer;
+        // Define a client-side message which the server can call
+        updater.client.gameListUpdate = gameListUpdate;
 
-            // Define a callback for when the connection is established. We join the client group for index page watchers
-            $.connection.hub.start(function () {
-                $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
-            });
-
-            $("time.timeago").timeago();
-
-            $("div.miniboard").each(function (index, element) {
-                var originalText = element.innerText;
-                if (originalText == null) {
-                    originalText = element.innerHTML;
-                }
-
-                var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false };
-                var board = new ChessBoard(element, cfg);
-            });
-
-            $("h3#turnindicator-o,h3#turnindicator-m").each(function (index, element) {
-                var originalText = element.innerText;
-                if (originalText == null) {
-                    originalText = element.innerHTML;
-                    element.innerHTML = TurnIndicatorText(originalText);
-                }
-                else {
-                    element.innerText = TurnIndicatorText(originalText);
-                }
-            });
+        // Define a callback for when the connection is established. We join the client group for index page watchers
+        $.connection.hub.start(function() {
+            $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
         });
 
-        function DeleteMultiple() {
-            var ids = $(".deleteCheckbox:checked").toArray().map(function (x) { return x.name; }).join();
-            $.post("/Board/DeleteMultiple", { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() }, function () { location.reload(); });
-        }
+        $("time.timeago").timeago();
 
-        function GoToGame(id) {
-            document.location.href = "/Board/Details/" + id;
-        }
-
-        function TurnIndicatorText(fen) {
-            var f = fen.split(" ");
-            if (f[1] === "b") {
-                return "Black to play";
-            } else {
-                return "White to play";
+        $("div.miniboard").each(function(index, element) {
+            var originalText = element.innerText;
+            if (originalText == null) {
+                originalText = element.innerHTML;
             }
+
+            var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false };
+            var board = new ChessBoard(element, cfg);
+        });
+
+        $("h3#turnindicator-o,h3#turnindicator-m").each(function(index, element) {
+            var originalText = element.innerText;
+            if (originalText == null) {
+                originalText = element.innerHTML;
+                element.innerHTML = TurnIndicatorText(originalText);
+            } else {
+                element.innerText = TurnIndicatorText(originalText);
+            }
+        });
+    });
+
+    function DeleteMultiple() {
+        var ids = $(".deleteCheckbox:checked").toArray().map(function(x) { return x.name; }).join();
+        $.post("/Board/DeleteMultiple", { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() }, function() { location.reload(); });
+    }
+
+    function GoToGame(id) {
+        document.location.href = "/Board/Details/" + id;
+    }
+
+    function TurnIndicatorText(fen) {
+        var f = fen.split(" ");
+        if (f[1] === "b") {
+            return "Black to play";
+        } else {
+            return "White to play";
         }
-    </script>
+    }
+</script>
 
 
     @if (Request.IsAuthenticated)
