@@ -96,7 +96,7 @@
             <div id="messages" style="text-align: center">&nbsp;</div>
         </div>
         <div id="submitmove">
-            @using (Html.BeginForm("PlayMove", "Board", FormMethod.Post))
+            @using (Html.BeginForm("PlayMove", "Board", FormMethod.Post, new { @class = "form-inline"}))
             {
                 var items = new List<SelectListItem>
                 {
@@ -106,11 +106,16 @@
                     new SelectListItem {Value = "Bishop", Text = "Bishop"},
                 };
 
+                @Html.AntiForgeryToken()
                 @Html.Hidden("Start")
                 @Html.Hidden("End")
-                @Html.DropDownList("Promote", items, false)
-                @Html.AntiForgeryToken()
-                <input type="submit" value="Submit" id="submitbutton" class="buttonlink"/>
+
+                <div class="form-group" style="margin-bottom : 10px">
+                    <div class="input-group">
+                        @Html.DropDownList("Promote", items, new { @class = "form-control"})
+                    </div>
+                        <input type="submit" value="Submit" id="submitbutton" class="btn btn-primary"/>
+                </div>
             }
 
             @if (myClock != null)
