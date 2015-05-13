@@ -79,12 +79,12 @@
     <div>
         <div id="accordion">
             <a href="#one" id="dropdown-header"><span class="glyphicon glyphicon-menu-down"></span></a>
-            <input type="submit" value="Submit" id="submitbutton" /></a>
+                <input type="submit" value="Submit" id="submitbutton" class="btn btn-default" style="margin-bottom: 10px" />
         <div id="one">
             @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new { id = "createForm" }))
             {
                 @Html.AntiForgeryToken()
-                <textarea rows="12" id="textarea" name="pgnText"></textarea>
+                <textarea rows="12" id="textarea" name="pgnText" class="form-control">Enter PGN here...</textarea>
             }
         </div>
         </div>
