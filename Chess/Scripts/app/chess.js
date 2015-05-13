@@ -98,8 +98,8 @@ function EndGame() {
         $("div#readybutton").hide();
     }
     $("#turnindicator").text("GAME OVER");
-    $("#resign").hide();
-    $("#claim-draw").hide();
+    $("#resignbutton").hide();
+    $("#drawbutton").hide();
 }
 
 function UpdateUi(fen) {
@@ -130,7 +130,7 @@ function ProcessServerResponse(data) {
     }
    
     if (data.mayClaimDraw) {
-        $("#claim-draw").show();
+        $("#drawbutton").show();
     }
 
     if (data.status == "AUTH") {
@@ -246,7 +246,7 @@ function DocumentReady() {
     $("#Promote").val([]);
 
     // Hide the claim the draw button
-    $("#claim-draw").hide();
+    $("#drawbutton").hide();
 
     $("#submitmove form").submit(function () {
         PostMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());

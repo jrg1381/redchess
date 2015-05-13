@@ -59,7 +59,7 @@
         UpdateTakenPieces('@Model.Fen');
 
         @if (Model.MayClaimDraw) {
-            <text>$('#claim-draw').show()</text>
+            <text>$('#drawbutton').show()</text>
         }
 
         @if (Model.GameOver)
@@ -84,12 +84,10 @@
     <div class="col-md-7">
         <h2 id="title">@Model.Description</h2>
         <div style="width: 512px; margin-bottom: 10px" id="board"></div>
-
-        <div id="resign">
-            <a class="btn btn-default" id="resignbutton" onclick=" Resign(); ">Resign</a>
-        </div>
-        <div id="claim-draw" style="float: right">
-            <a class="btn btn-default" id="drawbutton" onclick=" ClaimDraw(); ">Claim draw</a>
+        
+        <div class="btn-group" role="group">
+                <a class="btn btn-default" id="resignbutton" onclick=" Resign(); ">Resign</a>
+                <a class="btn btn-default" id="drawbutton" onclick=" ClaimDraw(); ">Claim draw</a>
         </div>
     </div>
 
