@@ -95,7 +95,7 @@
 
                         <tr>
                             <td width="300px">
-                                <div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick=" gotogame(@item.GameId) ">@item.Fen</div>
+                                <div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
                             </td>
                             <td>
                                 <div class="panel panel-default">
@@ -140,7 +140,7 @@
 
                         <tr>
                             <td style="vertical-align: middle">
-                                <div id="f-@item.GameId" onclick=" gotogame(@item.GameId) ">@Html.Raw(@descriptionLink)</div>
+                                <div id="f-@item.GameId" onclick="GoToGame(@item.GameId);">@Html.Raw(@descriptionLink)</div>
                             </td>
                             <td style="vertical-align: middle">
                                 @if (item.Clock != null)
@@ -181,7 +181,7 @@
 
                 <tr>
                     <td width="300px">
-                        <div class="miniboard" id="o-@item.GameId" style="width: 300px" onclick=" gotogame(@item.GameId) ">@item.Fen</div>
+                        <div class="miniboard" id="o-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
                     </td>
                     <td>
                         <div class="panel panel-default">
