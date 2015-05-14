@@ -24,6 +24,7 @@
         PopulateMovesBox();
         $("#main").show();
         $('#title').text(data.Tags.White + " vs " + data.Tags.Black);
+        $("#accordion #one").slideUp();
     }
 
     function ServerError(data) {
@@ -79,14 +80,14 @@
     <div>
         <div id="accordion">
             <a href="#one" id="dropdown-header"><span class="glyphicon glyphicon-menu-down"></span></a>
-                <input type="submit" value="Submit" id="submitbutton" class="btn btn-default" style="margin-bottom: 10px" />
-        <div id="one">
-            @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new { id = "createForm" }))
-            {
-                @Html.AntiForgeryToken()
-                <textarea rows="12" id="textarea" name="pgnText" class="form-control">Enter PGN here...</textarea>
-            }
-        </div>
+            <input type="submit" value="Submit" id="submitbutton" class="btn btn-primary" style="margin-bottom: 10px" />
+            <div id="one">
+                @using (Html.BeginForm("Create", "Pgn", FormMethod.Post, new { id = "createForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <textarea rows="12" id="textarea" name="pgnText" class="form-control" placeholder="Enter PGN text here..."></textarea>
+                }
+            </div>
         </div>
         <div id="spinner-location" style="width: 250px; height: 50px; position: absolute"></div>
     </div>
