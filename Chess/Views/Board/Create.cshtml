@@ -10,7 +10,6 @@
 @using (Html.BeginForm("Create", "Board", FormMethod.Post, new { id = "createForm", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
 
     <div class="form-group">
         <div class="form-group">
