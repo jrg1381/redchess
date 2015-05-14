@@ -81,13 +81,13 @@ namespace Chess.Controllers
                 var validTime = Double.TryParse(timeLimit, out timeLimitAsNumber);
                 if (!validTime)
                 {
-                    return Json(new { success = false, errors = "Could not parse time limit" });
+                    return Json(new { success = false, errors = new [] {"Could not parse time limit"} });
                 }
                 else
                 {
                     if (timeLimitAsNumber < 1 || timeLimitAsNumber > 180)
                     {
-                        return Json(new { success = false, errors = "Time limit out of range" });
+                        return Json(new { success = false, errors = new [] {"Time limit out of range"} });
                     }
                 }
             }

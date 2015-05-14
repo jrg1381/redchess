@@ -24,9 +24,14 @@
         <div class="checkbox">
             <label><input id="UseClock" type="checkbox" name="UseClock" value="true"/>Use clock</label>
         </div>
-        <div class="form-group" id="TimeLimit" style="visibility: hidden">
+        <div class="form-group" id="TimeLimitGroup">
             <label for="TimeLimit">Time limit (minutes)</label>
-            <input type="text" class="form-control" id="TimeLimit" name="TimeLimit">
+            <input type="number" min="1" max="180" class="form-control" id="TimeLimit" name="TimeLimit" disabled>
+        </div>
+        <div data-valmsg-summary="true" class="validation-summary-valid">
+            <ul>
+                <li style="display: none"></li>
+            </ul>
         </div>
     </div>
 
@@ -40,10 +45,10 @@
     $(document).ready(function() {
         $("input#UseClock").change(function (data) {
             if (this.checked) {
-                $("div#TimeLimit").css("visibility", "");
+                $("input#TimeLimit").removeAttr("disabled");
             }
             else {
-                $("div#TimeLimit").css("visibility", "hidden");
+                $("input#TimeLimit").attr("disabled","");
             }
         });
         
