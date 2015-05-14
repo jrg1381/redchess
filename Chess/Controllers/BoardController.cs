@@ -72,13 +72,24 @@ namespace Chess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string opponent, bool useClock, string timeLimit, bool playAsBlack = false)
+        public JsonResult Create(string opponent, string timeLimit, bool useClock = false, bool playAsBlack = false)
         {
             double timeLimitAsNumber = 0;
 
             if (useClock)
             {
-                Double.TryParse(timeLimit, out timeLimitAsNumber);
+                var validTime = Double.TryParse(timeLimit, out timeLimitAsNumber);
+                if (!validTime)
+                {
+                    return Json(new { success = false, errors = "Could not parse time limit" });
+                }
+                else
+                {
+                    if (timeLimitAsNumber < 1 || timeLimitAsNumber > 180)
+                    {
+                        return Json(new { success = false, errors = "Time limit out of range" });
+                    }
+                }
             }
             int opponentId = Int32.Parse(opponent);
 
@@ -86,7 +97,8 @@ namespace Chess.Controllers
             var newGameId = m_gameManager.Add(newBoard, opponentId, m_identityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber * 60 * 1000);
 
             RefreshIndexPage();
-            return RedirectToAction("Details", "Board", new {id = newGameId});
+            return Json(new { success = true, redirect = "/Board/Details/" + newGameId });
+
         }
 
         private void RefreshIndexPage()

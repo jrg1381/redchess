@@ -7,45 +7,53 @@
 
 <h2>New game</h2>
 
-@using (Html.BeginForm("Create", "Board", FormMethod.Post, new { id = "createForm" }))
+@using (Html.BeginForm("Create", "Board", FormMethod.Post, new { id = "createForm", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-	<table>
-		<tr>
-			<td>Opponent</td>
-			<td>
-				@Html.DropDownList("Opponent", Model.Select(x => new SelectListItem {Text = x.UserName, Value = x.UserId.ToString()}))
-			</td>
-		</tr>
-        <tr><td>Play as black</td><td>@Html.CheckBox("PlayAsBlack")</td></tr>
-	<tr><td>Use clock</td><td>@Html.CheckBox("UseClock")</td></tr>
-<tr style="visibility: hidden" id="TimeLimit"><td>Time limit (minutes)</td><td>@Html.TextBox("TimeLimit","5", new { @class = "number", min = 1, max = 4320, required = true } )</td></tr>
-	</table>
-        <p>
-            <input type="submit" value="Create" id="submitbutton" />
-        </p>
+    <div class="form-group">
+        <div class="form-group">
+            <label for="Opponent">Opponent</label>
+            @Html.DropDownList("Opponent", Model.Select(x => new SelectListItem {Text = x.UserName, Value = x.UserId.ToString()}), new {@class = "form-control"})
+        </div>
+
+        <div class="checkbox">
+            <label><input type="checkbox" name="PlayAsBlack" value="true"/>Play as black</label>
+        </div>
+        <div class="checkbox">
+            <label><input id="UseClock" type="checkbox" name="UseClock" value="true"/>Use clock</label>
+        </div>
+        <div class="form-group" id="TimeLimit" style="visibility: hidden">
+            <label for="TimeLimit">Time limit (minutes)</label>
+            <input type="text" class="form-control" id="TimeLimit" name="TimeLimit">
+        </div>
+    </div>
+
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" id="submitbutton">Create</button>
+        <button type="button" class="btn btn-default">@Html.ActionLink("Back to List", "Index")</button>
+    </div>
 }
 
 <script>
     $(document).ready(function() {
         $("input#UseClock").change(function (data) {
             if (this.checked) {
-                $("tr#TimeLimit").css("visibility", "");
+                $("div#TimeLimit").css("visibility", "");
             }
             else {
-                $("tr#TimeLimit").css("visibility", "hidden");
+                $("div#TimeLimit").css("visibility", "hidden");
             }
         });
         
-        $("form#createForm").validate();
+        $("button#submitbutton").click(SubmitForm);
     });
-</script>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    function SubmitForm() {
+        $("form#createForm").submit();
+    }
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
