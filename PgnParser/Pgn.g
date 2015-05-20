@@ -144,7 +144,7 @@ leaveVariant : RIGHT_BRACKET
 	m_variantDepth--;
 };
 
-variantLine : enterVariant (moveList | variantLine)* WS* leaveVariant
+variantLine : enterVariant (moveList | variantLine | blockComment)* WS* leaveVariant
 {
 	// Console.WriteLine(actual_text.Text);
 };

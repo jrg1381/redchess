@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 17:21:42
+// $ANTLR 3.5.1 h:\\work\\redchess\\PgnParser\\Pgn.g 2015-05-20 11:48:44
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -91,7 +91,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	}
 
 	public override string[] TokenNames { get { return PgnParser.tokenNames; } }
-	public override string GrammarFileName { get { return "H:\\Work\\redchess\\PgnParser\\Pgn.g"; } }
+	public override string GrammarFileName { get { return "h:\\work\\redchess\\PgnParser\\Pgn.g"; } }
 
 
 		private int m_variantDepth = 0;
@@ -118,7 +118,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_parse();
 	partial void LeaveRule_parse();
 	// $ANTLR start "parse"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:99:8: public parse : document ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:99:8: public parse : document ;
 	[GrammarRule("parse")]
 	public void parse()
 	{
@@ -129,9 +129,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(99, 24);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:99:14: ( document )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:99:14: ( document )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:99:16: document
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:99:16: document
 			{
 			DebugLocation(99, 16);
 			PushFollow(Follow._document_in_parse660);
@@ -163,7 +163,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_parseTag();
 	partial void LeaveRule_parseTag();
 	// $ANTLR start "parseTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:100:8: public parseTag : ( compulsoryTag | optionalTag );
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:100:8: public parseTag : ( compulsoryTag | optionalTag );
 	[GrammarRule("parseTag")]
 	public void parseTag()
 	{
@@ -174,7 +174,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(100, 46);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:100:17: ( compulsoryTag | optionalTag )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:100:17: ( compulsoryTag | optionalTag )
 			int alt1=2;
 			try { DebugEnterDecision(1, false);
 			int LA1_1 = input.LA(1);
@@ -209,7 +209,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:100:19: compulsoryTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:100:19: compulsoryTag
 				{
 				DebugLocation(100, 19);
 				PushFollow(Follow._compulsoryTag_in_parseTag670);
@@ -221,7 +221,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:100:35: optionalTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:100:35: optionalTag
 				{
 				DebugLocation(100, 35);
 				PushFollow(Follow._optionalTag_in_parseTag674);
@@ -255,7 +255,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_document();
 	partial void LeaveRule_document();
 	// $ANTLR start "document"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:102:1: document : gameList EOF ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:102:1: document : gameList EOF ;
 	[GrammarRule("document")]
 	private void document()
 	{
@@ -266,9 +266,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(102, 24);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:102:10: ( gameList EOF )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:102:10: ( gameList EOF )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:102:12: gameList EOF
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:102:12: gameList EOF
 			{
 			DebugLocation(102, 12);
 			PushFollow(Follow._gameList_in_document683);
@@ -302,7 +302,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_gameList();
 	partial void LeaveRule_gameList();
 	// $ANTLR start "gameList"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:104:1: gameList : ( game )+ ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:104:1: gameList : ( game )+ ;
 	[GrammarRule("gameList")]
 	private void gameList()
 	{
@@ -313,12 +313,12 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(104, 17);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:104:10: ( ( game )+ )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:104:10: ( ( game )+ )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:104:12: ( game )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:104:12: ( game )+
 			{
 			DebugLocation(104, 12);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:104:12: ( game )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:104:12: ( game )+
 			int cnt2=0;
 			try { DebugEnterSubRule(2);
 			while (true)
@@ -338,7 +338,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:104:12: game
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:104:12: game
 					{
 					DebugLocation(104, 12);
 					PushFollow(Follow._game_in_gameList694);
@@ -389,7 +389,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_generalTagList();
 	partial void LeaveRule_generalTagList();
 	// $ANTLR start "generalTagList"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:1: generalTagList : ( optionalTag | compulsoryTag ) ( ( WS )* ( optionalTag | compulsoryTag ) )* ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:107:1: generalTagList : ( optionalTag | compulsoryTag ) ( ( WS )* ( optionalTag | compulsoryTag ) )* ;
 	[GrammarRule("generalTagList")]
 	private void generalTagList()
 	{
@@ -400,12 +400,12 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(107, 80);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:16: ( ( optionalTag | compulsoryTag ) ( ( WS )* ( optionalTag | compulsoryTag ) )* )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:107:16: ( ( optionalTag | compulsoryTag ) ( ( WS )* ( optionalTag | compulsoryTag ) )* )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:18: ( optionalTag | compulsoryTag ) ( ( WS )* ( optionalTag | compulsoryTag ) )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:107:18: ( optionalTag | compulsoryTag ) ( ( WS )* ( optionalTag | compulsoryTag ) )*
 			{
 			DebugLocation(107, 18);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:18: ( optionalTag | compulsoryTag )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:107:18: ( optionalTag | compulsoryTag )
 			int alt3=2;
 			try { DebugEnterSubRule(3);
 			try { DebugEnterDecision(3, false);
@@ -441,7 +441,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:19: optionalTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:107:19: optionalTag
 				{
 				DebugLocation(107, 19);
 				PushFollow(Follow._optionalTag_in_generalTagList706);
@@ -453,7 +453,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:31: compulsoryTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:107:31: compulsoryTag
 				{
 				DebugLocation(107, 31);
 				PushFollow(Follow._compulsoryTag_in_generalTagList708);
@@ -468,7 +468,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(3); }
 
 			DebugLocation(107, 46);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:46: ( ( WS )* ( optionalTag | compulsoryTag ) )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:107:46: ( ( WS )* ( optionalTag | compulsoryTag ) )*
 			try { DebugEnterSubRule(6);
 			while (true)
 			{
@@ -488,10 +488,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:47: ( WS )* ( optionalTag | compulsoryTag )
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:107:47: ( WS )* ( optionalTag | compulsoryTag )
 					{
 					DebugLocation(107, 47);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:47: ( WS )*
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:107:47: ( WS )*
 					try { DebugEnterSubRule(4);
 					while (true)
 					{
@@ -510,7 +510,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						{
 						case 1:
 							DebugEnterAlt(1);
-							// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:47: WS
+							// h:\\work\\redchess\\PgnParser\\Pgn.g:107:47: WS
 							{
 							DebugLocation(107, 47);
 							Match(input,WS,Follow._WS_in_generalTagList712); 
@@ -529,7 +529,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					} finally { DebugExitSubRule(4); }
 
 					DebugLocation(107, 51);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:51: ( optionalTag | compulsoryTag )
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:107:51: ( optionalTag | compulsoryTag )
 					int alt5=2;
 					try { DebugEnterSubRule(5);
 					try { DebugEnterDecision(5, false);
@@ -565,7 +565,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					{
 					case 1:
 						DebugEnterAlt(1);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:52: optionalTag
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:107:52: optionalTag
 						{
 						DebugLocation(107, 52);
 						PushFollow(Follow._optionalTag_in_generalTagList716);
@@ -577,7 +577,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						break;
 					case 2:
 						DebugEnterAlt(2);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:107:64: compulsoryTag
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:107:64: compulsoryTag
 						{
 						DebugLocation(107, 64);
 						PushFollow(Follow._compulsoryTag_in_generalTagList718);
@@ -630,7 +630,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_game();
 	partial void LeaveRule_game();
 	// $ANTLR start "game"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:1: game : generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )* ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:109:1: game : generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )* ;
 	[GrammarRule("game")]
 	private void game()
 	{
@@ -641,9 +641,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(109, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:6: ( generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )* )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:6: ( generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )* )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:8: generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:8: generalTagList ( WS )+ ( moveList )? ( WS )* ( GAME_RESULT_END_OF_MOVETEXT )? ( WS )*
 			{
 			DebugLocation(109, 8);
 			PushFollow(Follow._generalTagList_in_game730);
@@ -651,7 +651,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			PopFollow();
 
 			DebugLocation(109, 23);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:23: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:23: ( WS )+
 			int cnt7=0;
 			try { DebugEnterSubRule(7);
 			while (true)
@@ -671,7 +671,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:23: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:109:23: WS
 					{
 					DebugLocation(109, 23);
 					Match(input,WS,Follow._WS_in_game732); 
@@ -695,7 +695,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(7); }
 
 			DebugLocation(109, 27);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:27: ( moveList )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:27: ( moveList )?
 			int alt8=2;
 			try { DebugEnterSubRule(8);
 			try { DebugEnterDecision(8, false);
@@ -710,7 +710,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:28: moveList
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:109:28: moveList
 				{
 				DebugLocation(109, 28);
 				PushFollow(Follow._moveList_in_game736);
@@ -725,7 +725,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(8); }
 
 			DebugLocation(109, 39);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:39: ( WS )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:39: ( WS )*
 			try { DebugEnterSubRule(9);
 			while (true)
 			{
@@ -744,7 +744,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:39: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:109:39: WS
 					{
 					DebugLocation(109, 39);
 					Match(input,WS,Follow._WS_in_game740); 
@@ -763,7 +763,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(9); }
 
 			DebugLocation(109, 43);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:43: ( GAME_RESULT_END_OF_MOVETEXT )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:43: ( GAME_RESULT_END_OF_MOVETEXT )?
 			int alt10=2;
 			try { DebugEnterSubRule(10);
 			try { DebugEnterDecision(10, false);
@@ -778,7 +778,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:43: GAME_RESULT_END_OF_MOVETEXT
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:109:43: GAME_RESULT_END_OF_MOVETEXT
 				{
 				DebugLocation(109, 43);
 				Match(input,GAME_RESULT_END_OF_MOVETEXT,Follow._GAME_RESULT_END_OF_MOVETEXT_in_game743); 
@@ -790,7 +790,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(10); }
 
 			DebugLocation(109, 72);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:72: ( WS )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:109:72: ( WS )*
 			try { DebugEnterSubRule(11);
 			while (true)
 			{
@@ -809,7 +809,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:109:72: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:109:72: WS
 					{
 					DebugLocation(109, 72);
 					Match(input,WS,Follow._WS_in_game746); 
@@ -860,7 +860,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_annotation();
 	partial void LeaveRule_annotation();
 	// $ANTLR start "annotation"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:1: annotation : ( blockComment | variantLine ) ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:118:1: annotation : ( blockComment | variantLine ) ;
 	[GrammarRule("annotation")]
 	private void annotation()
 	{
@@ -871,12 +871,12 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(118, 42);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:12: ( ( blockComment | variantLine ) )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:118:12: ( ( blockComment | variantLine ) )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:14: ( blockComment | variantLine )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:118:14: ( blockComment | variantLine )
 			{
 			DebugLocation(118, 14);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:14: ( blockComment | variantLine )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:118:14: ( blockComment | variantLine )
 			int alt12=2;
 			try { DebugEnterSubRule(12);
 			try { DebugEnterDecision(12, false);
@@ -901,7 +901,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:15: blockComment
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:118:15: blockComment
 				{
 				DebugLocation(118, 15);
 				PushFollow(Follow._blockComment_in_annotation758);
@@ -913,7 +913,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:118:30: variantLine
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:118:30: variantLine
 				{
 				DebugLocation(118, 30);
 				PushFollow(Follow._variantLine_in_annotation762);
@@ -952,7 +952,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_annotationList();
 	partial void LeaveRule_annotationList();
 	// $ANTLR start "annotationList"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:1: annotationList : annotation ( ( WS )+ annotation )* ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:119:1: annotationList : annotation ( ( WS )+ annotation )* ;
 	[GrammarRule("annotationList")]
 	private void annotationList()
 	{
@@ -963,9 +963,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(119, 46);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:16: ( annotation ( ( WS )+ annotation )* )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:119:16: ( annotation ( ( WS )+ annotation )* )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:18: annotation ( ( WS )+ annotation )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:119:18: annotation ( ( WS )+ annotation )*
 			{
 			DebugLocation(119, 18);
 			PushFollow(Follow._annotation_in_annotationList771);
@@ -973,7 +973,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			PopFollow();
 
 			DebugLocation(119, 29);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:29: ( ( WS )+ annotation )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:119:29: ( ( WS )+ annotation )*
 			try { DebugEnterSubRule(14);
 			while (true)
 			{
@@ -993,10 +993,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:30: ( WS )+ annotation
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:119:30: ( WS )+ annotation
 					{
 					DebugLocation(119, 30);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:30: ( WS )+
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:119:30: ( WS )+
 					int cnt13=0;
 					try { DebugEnterSubRule(13);
 					while (true)
@@ -1016,7 +1016,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						{
 						case 1:
 							DebugEnterAlt(1);
-							// H:\\Work\\redchess\\PgnParser\\Pgn.g:119:30: WS
+							// h:\\work\\redchess\\PgnParser\\Pgn.g:119:30: WS
 							{
 							DebugLocation(119, 30);
 							Match(input,WS,Follow._WS_in_annotationList774); 
@@ -1083,7 +1083,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_individualMove();
 	partial void LeaveRule_individualMove();
 	// $ANTLR start "individualMove"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:1: individualMove : foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:120:1: individualMove : foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? ;
 	[GrammarRule("individualMove")]
 	private void individualMove()
 	{
@@ -1099,9 +1099,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(120, 2);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:16: (foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:16: (foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )? )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:18: foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:18: foo= ( PIECE_TO_SQUARE | CAPTURE | CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote= PROMOTES_TO_PIECE )? (checkormate= CHECK |checkormate= MATE )? ( MOVE_ANALYSIS )? ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )? ( ( WS )+ annotationList )?
 			{
 			DebugLocation(120, 21);
 
@@ -1119,7 +1119,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			}
 
 			DebugLocation(120, 84);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:84: (promote= PROMOTES_TO_PIECE )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:84: (promote= PROMOTES_TO_PIECE )?
 			int alt15=2;
 			try { DebugEnterSubRule(15);
 			try { DebugEnterDecision(15, false);
@@ -1134,7 +1134,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:85: promote= PROMOTES_TO_PIECE
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:85: promote= PROMOTES_TO_PIECE
 				{
 				DebugLocation(120, 92);
 				promote=(IToken)Match(input,PROMOTES_TO_PIECE,Follow._PROMOTES_TO_PIECE_in_individualMove805); 
@@ -1146,7 +1146,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(15); }
 
 			DebugLocation(120, 113);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:113: (checkormate= CHECK |checkormate= MATE )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:113: (checkormate= CHECK |checkormate= MATE )?
 			int alt16=3;
 			try { DebugEnterSubRule(16);
 			try { DebugEnterDecision(16, false);
@@ -1165,7 +1165,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:114: checkormate= CHECK
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:114: checkormate= CHECK
 				{
 				DebugLocation(120, 125);
 				checkormate=(IToken)Match(input,CHECK,Follow._CHECK_in_individualMove812); 
@@ -1174,7 +1174,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:132: checkormate= MATE
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:132: checkormate= MATE
 				{
 				DebugLocation(120, 143);
 				checkormate=(IToken)Match(input,MATE,Follow._MATE_in_individualMove816); 
@@ -1186,7 +1186,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(16); }
 
 			DebugLocation(120, 151);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:151: ( MOVE_ANALYSIS )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:151: ( MOVE_ANALYSIS )?
 			int alt17=2;
 			try { DebugEnterSubRule(17);
 			try { DebugEnterDecision(17, false);
@@ -1201,7 +1201,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:151: MOVE_ANALYSIS
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:151: MOVE_ANALYSIS
 				{
 				DebugLocation(120, 151);
 				Match(input,MOVE_ANALYSIS,Follow._MOVE_ANALYSIS_in_individualMove820); 
@@ -1213,7 +1213,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(17); }
 
 			DebugLocation(120, 166);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:166: ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:166: ( ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH )?
 			int alt19=2;
 			try { DebugEnterSubRule(19);
 			try { DebugEnterDecision(19, false);
@@ -1231,10 +1231,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:167: ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:167: ( WS )+ annotation_glyph= NUMERIC_ANNOTATION_GLYPH
 				{
 				DebugLocation(120, 167);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:167: ( WS )+
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:167: ( WS )+
 				int cnt18=0;
 				try { DebugEnterSubRule(18);
 				while (true)
@@ -1254,7 +1254,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					{
 					case 1:
 						DebugEnterAlt(1);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:167: WS
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:120:167: WS
 						{
 						DebugLocation(120, 167);
 						Match(input,WS,Follow._WS_in_individualMove824); 
@@ -1287,7 +1287,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(19); }
 
 			DebugLocation(120, 215);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:215: ( ( WS )+ annotationList )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:120:215: ( ( WS )+ annotationList )?
 			int alt21=2;
 			try { DebugEnterSubRule(21);
 			try { DebugEnterDecision(21, false);
@@ -1305,10 +1305,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:216: ( WS )+ annotationList
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:216: ( WS )+ annotationList
 				{
 				DebugLocation(120, 216);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:216: ( WS )+
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:120:216: ( WS )+
 				int cnt20=0;
 				try { DebugEnterSubRule(20);
 				while (true)
@@ -1328,7 +1328,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					{
 					case 1:
 						DebugEnterAlt(1);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:120:216: WS
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:120:216: WS
 						{
 						DebugLocation(120, 216);
 						Match(input,WS,Follow._WS_in_individualMove834); 
@@ -1393,7 +1393,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_moveList();
 	partial void LeaveRule_moveList();
 	// $ANTLR start "moveList"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:1: moveList : move ( ( WS )+ move )* ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:127:1: moveList : move ( ( WS )+ move )* ;
 	[GrammarRule("moveList")]
 	private void moveList()
 	{
@@ -1404,9 +1404,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(127, 28);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:10: ( move ( ( WS )+ move )* )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:127:10: ( move ( ( WS )+ move )* )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:12: move ( ( WS )+ move )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:127:12: move ( ( WS )+ move )*
 			{
 			DebugLocation(127, 12);
 			PushFollow(Follow._move_in_moveList851);
@@ -1414,7 +1414,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			PopFollow();
 
 			DebugLocation(127, 17);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:17: ( ( WS )+ move )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:127:17: ( ( WS )+ move )*
 			try { DebugEnterSubRule(23);
 			while (true)
 			{
@@ -1434,10 +1434,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:18: ( WS )+ move
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:127:18: ( WS )+ move
 					{
 					DebugLocation(127, 18);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:18: ( WS )+
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:127:18: ( WS )+
 					int cnt22=0;
 					try { DebugEnterSubRule(22);
 					while (true)
@@ -1457,7 +1457,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						{
 						case 1:
 							DebugEnterAlt(1);
-							// H:\\Work\\redchess\\PgnParser\\Pgn.g:127:18: WS
+							// h:\\work\\redchess\\PgnParser\\Pgn.g:127:18: WS
 							{
 							DebugLocation(127, 18);
 							Match(input,WS,Follow._WS_in_moveList854); 
@@ -1524,7 +1524,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_move();
 	partial void LeaveRule_move();
 	// $ANTLR start "move"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:1: move : MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )? ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:129:1: move : MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )? ;
 	[GrammarRule("move")]
 	private void move()
 	{
@@ -1535,14 +1535,14 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(129, 105);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:6: ( MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )? )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:129:6: ( MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )? )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:8: MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:129:8: MOVE_LABEL ( WS )* ( NO_MOVE ( WS )* )? individualMove ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )?
 			{
 			DebugLocation(129, 8);
 			Match(input,MOVE_LABEL,Follow._MOVE_LABEL_in_move868); 
 			DebugLocation(129, 19);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:19: ( WS )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:129:19: ( WS )*
 			try { DebugEnterSubRule(24);
 			while (true)
 			{
@@ -1561,7 +1561,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:19: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:129:19: WS
 					{
 					DebugLocation(129, 19);
 					Match(input,WS,Follow._WS_in_move870); 
@@ -1580,7 +1580,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(24); }
 
 			DebugLocation(129, 23);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:23: ( NO_MOVE ( WS )* )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:129:23: ( NO_MOVE ( WS )* )?
 			int alt26=2;
 			try { DebugEnterSubRule(26);
 			try { DebugEnterDecision(26, false);
@@ -1595,12 +1595,12 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:24: NO_MOVE ( WS )*
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:129:24: NO_MOVE ( WS )*
 				{
 				DebugLocation(129, 24);
 				Match(input,NO_MOVE,Follow._NO_MOVE_in_move874); 
 				DebugLocation(129, 32);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:32: ( WS )*
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:129:32: ( WS )*
 				try { DebugEnterSubRule(25);
 				while (true)
 				{
@@ -1619,7 +1619,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					{
 					case 1:
 						DebugEnterAlt(1);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:32: WS
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:129:32: WS
 						{
 						DebugLocation(129, 32);
 						Match(input,WS,Follow._WS_in_move876); 
@@ -1650,7 +1650,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			PopFollow();
 
 			DebugLocation(129, 53);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:53: ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )?
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:129:53: ( ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove )?
 			int alt32=2;
 			try { DebugEnterSubRule(32);
 			try { DebugEnterDecision(32, false);
@@ -1668,10 +1668,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:54: ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:129:54: ( WS )+ ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )? individualMove
 				{
 				DebugLocation(129, 54);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:54: ( WS )+
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:129:54: ( WS )+
 				int cnt27=0;
 				try { DebugEnterSubRule(27);
 				while (true)
@@ -1691,7 +1691,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					{
 					case 1:
 						DebugEnterAlt(1);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:54: WS
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:129:54: WS
 						{
 						DebugLocation(129, 54);
 						Match(input,WS,Follow._WS_in_move884); 
@@ -1715,7 +1715,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				} finally { DebugExitSubRule(27); }
 
 				DebugLocation(129, 58);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:58: ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )?
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:129:58: ( ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )* )?
 				int alt31=2;
 				try { DebugEnterSubRule(31);
 				try { DebugEnterDecision(31, false);
@@ -1730,10 +1730,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:59: ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )*
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:129:59: ( MOVE_LABEL )? ( WS )* NO_MOVE ( WS )*
 					{
 					DebugLocation(129, 59);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:59: ( MOVE_LABEL )?
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:129:59: ( MOVE_LABEL )?
 					int alt28=2;
 					try { DebugEnterSubRule(28);
 					try { DebugEnterDecision(28, false);
@@ -1748,7 +1748,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					{
 					case 1:
 						DebugEnterAlt(1);
-						// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:59: MOVE_LABEL
+						// h:\\work\\redchess\\PgnParser\\Pgn.g:129:59: MOVE_LABEL
 						{
 						DebugLocation(129, 59);
 						Match(input,MOVE_LABEL,Follow._MOVE_LABEL_in_move888); 
@@ -1760,7 +1760,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					} finally { DebugExitSubRule(28); }
 
 					DebugLocation(129, 71);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:71: ( WS )*
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:129:71: ( WS )*
 					try { DebugEnterSubRule(29);
 					while (true)
 					{
@@ -1779,7 +1779,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						{
 						case 1:
 							DebugEnterAlt(1);
-							// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:71: WS
+							// h:\\work\\redchess\\PgnParser\\Pgn.g:129:71: WS
 							{
 							DebugLocation(129, 71);
 							Match(input,WS,Follow._WS_in_move891); 
@@ -1800,7 +1800,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					DebugLocation(129, 75);
 					Match(input,NO_MOVE,Follow._NO_MOVE_in_move894); 
 					DebugLocation(129, 83);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:83: ( WS )*
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:129:83: ( WS )*
 					try { DebugEnterSubRule(30);
 					while (true)
 					{
@@ -1819,7 +1819,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 						{
 						case 1:
 							DebugEnterAlt(1);
-							// H:\\Work\\redchess\\PgnParser\\Pgn.g:129:83: WS
+							// h:\\work\\redchess\\PgnParser\\Pgn.g:129:83: WS
 							{
 							DebugLocation(129, 83);
 							Match(input,WS,Follow._WS_in_move896); 
@@ -1881,7 +1881,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_compulsoryTag();
 	partial void LeaveRule_compulsoryTag();
 	// $ANTLR start "compulsoryTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:1: compulsoryTag : ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag ) ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:130:1: compulsoryTag : ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag ) ;
 	[GrammarRule("compulsoryTag")]
 	private void compulsoryTag()
 	{
@@ -1892,12 +1892,12 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(130, 92);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:15: ( ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag ) )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:130:15: ( ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag ) )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:17: ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:130:17: ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag )
 			{
 			DebugLocation(130, 17);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:17: ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:130:17: ( eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag )
 			int alt33=7;
 			try { DebugEnterSubRule(33);
 			try { DebugEnterDecision(33, false);
@@ -1962,7 +1962,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:18: eventTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:18: eventTag
 				{
 				DebugLocation(130, 18);
 				PushFollow(Follow._eventTag_in_compulsoryTag912);
@@ -1974,7 +1974,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:29: siteTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:29: siteTag
 				{
 				DebugLocation(130, 29);
 				PushFollow(Follow._siteTag_in_compulsoryTag916);
@@ -1986,7 +1986,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:39: dateTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:39: dateTag
 				{
 				DebugLocation(130, 39);
 				PushFollow(Follow._dateTag_in_compulsoryTag920);
@@ -1998,7 +1998,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:49: roundTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:49: roundTag
 				{
 				DebugLocation(130, 49);
 				PushFollow(Follow._roundTag_in_compulsoryTag924);
@@ -2010,7 +2010,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 5:
 				DebugEnterAlt(5);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:60: blackTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:60: blackTag
 				{
 				DebugLocation(130, 60);
 				PushFollow(Follow._blackTag_in_compulsoryTag928);
@@ -2022,7 +2022,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 6:
 				DebugEnterAlt(6);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:71: whiteTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:71: whiteTag
 				{
 				DebugLocation(130, 71);
 				PushFollow(Follow._whiteTag_in_compulsoryTag932);
@@ -2034,7 +2034,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				break;
 			case 7:
 				DebugEnterAlt(7);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:130:82: resultTag
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:130:82: resultTag
 				{
 				DebugLocation(130, 82);
 				PushFollow(Follow._resultTag_in_compulsoryTag936);
@@ -2073,7 +2073,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_blockComment();
 	partial void LeaveRule_blockComment();
 	// $ANTLR start "blockComment"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:132:1: blockComment : comment= BLOCK_COMMENT ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:132:1: blockComment : comment= BLOCK_COMMENT ;
 	[GrammarRule("blockComment")]
 	private void blockComment()
 	{
@@ -2086,9 +2086,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(132, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:132:14: (comment= BLOCK_COMMENT )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:132:14: (comment= BLOCK_COMMENT )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:132:16: comment= BLOCK_COMMENT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:132:16: comment= BLOCK_COMMENT
 			{
 			DebugLocation(132, 23);
 			comment=(IToken)Match(input,BLOCK_COMMENT,Follow._BLOCK_COMMENT_in_blockComment948); 
@@ -2121,7 +2121,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_enterVariant();
 	partial void LeaveRule_enterVariant();
 	// $ANTLR start "enterVariant"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:137:1: enterVariant : LEFT_BRACKET ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:137:1: enterVariant : LEFT_BRACKET ;
 	[GrammarRule("enterVariant")]
 	private void enterVariant()
 	{
@@ -2132,9 +2132,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(137, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:137:14: ( LEFT_BRACKET )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:137:14: ( LEFT_BRACKET )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:137:16: LEFT_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:137:16: LEFT_BRACKET
 			{
 			DebugLocation(137, 16);
 			Match(input,LEFT_BRACKET,Follow._LEFT_BRACKET_in_enterVariant958); 
@@ -2167,7 +2167,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_leaveVariant();
 	partial void LeaveRule_leaveVariant();
 	// $ANTLR start "leaveVariant"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:142:1: leaveVariant : RIGHT_BRACKET ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:142:1: leaveVariant : RIGHT_BRACKET ;
 	[GrammarRule("leaveVariant")]
 	private void leaveVariant()
 	{
@@ -2178,9 +2178,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(142, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:142:14: ( RIGHT_BRACKET )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:142:14: ( RIGHT_BRACKET )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:142:16: RIGHT_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:142:16: RIGHT_BRACKET
 			{
 			DebugLocation(142, 16);
 			Match(input,RIGHT_BRACKET,Follow._RIGHT_BRACKET_in_leaveVariant968); 
@@ -2213,7 +2213,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_variantLine();
 	partial void LeaveRule_variantLine();
 	// $ANTLR start "variantLine"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:1: variantLine : enterVariant ( moveList | variantLine )* ( WS )* leaveVariant ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:147:1: variantLine : enterVariant ( moveList | variantLine | blockComment )* ( WS )* leaveVariant ;
 	[GrammarRule("variantLine")]
 	private void variantLine()
 	{
@@ -2224,9 +2224,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(147, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:13: ( enterVariant ( moveList | variantLine )* ( WS )* leaveVariant )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:147:13: ( enterVariant ( moveList | variantLine | blockComment )* ( WS )* leaveVariant )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:15: enterVariant ( moveList | variantLine )* ( WS )* leaveVariant
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:147:15: enterVariant ( moveList | variantLine | blockComment )* ( WS )* leaveVariant
 			{
 			DebugLocation(147, 15);
 			PushFollow(Follow._enterVariant_in_variantLine978);
@@ -2234,30 +2234,37 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			PopFollow();
 
 			DebugLocation(147, 28);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:28: ( moveList | variantLine )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:147:28: ( moveList | variantLine | blockComment )*
 			try { DebugEnterSubRule(34);
 			while (true)
 			{
-				int alt34=3;
+				int alt34=4;
 				try { DebugEnterDecision(34, false);
-				int LA34_1 = input.LA(1);
-
-				if ((LA34_1==MOVE_LABEL))
+				switch (input.LA(1))
 				{
+				case MOVE_LABEL:
+					{
 					alt34 = 1;
-				}
-				else if ((LA34_1==LEFT_BRACKET))
-				{
+					}
+					break;
+				case LEFT_BRACKET:
+					{
 					alt34 = 2;
+					}
+					break;
+				case BLOCK_COMMENT:
+					{
+					alt34 = 3;
+					}
+					break;
 				}
-
 
 				} finally { DebugExitDecision(34); }
 				switch ( alt34 )
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:29: moveList
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:147:29: moveList
 					{
 					DebugLocation(147, 29);
 					PushFollow(Follow._moveList_in_variantLine981);
@@ -2269,11 +2276,23 @@ public partial class PgnParser : Antlr.Runtime.Parser
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:40: variantLine
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:147:40: variantLine
 					{
 					DebugLocation(147, 40);
 					PushFollow(Follow._variantLine_in_variantLine985);
 					variantLine();
+					PopFollow();
+
+
+					}
+					break;
+				case 3:
+					DebugEnterAlt(3);
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:147:54: blockComment
+					{
+					DebugLocation(147, 54);
+					PushFollow(Follow._blockComment_in_variantLine989);
+					blockComment();
 					PopFollow();
 
 
@@ -2290,8 +2309,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 
 			} finally { DebugExitSubRule(34); }
 
-			DebugLocation(147, 54);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:54: ( WS )*
+			DebugLocation(147, 69);
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:147:69: ( WS )*
 			try { DebugEnterSubRule(35);
 			while (true)
 			{
@@ -2310,10 +2329,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:147:54: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:147:69: WS
 					{
-					DebugLocation(147, 54);
-					Match(input,WS,Follow._WS_in_variantLine989); 
+					DebugLocation(147, 69);
+					Match(input,WS,Follow._WS_in_variantLine993); 
 
 					}
 					break;
@@ -2328,8 +2347,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 
 			} finally { DebugExitSubRule(35); }
 
-			DebugLocation(147, 58);
-			PushFollow(Follow._leaveVariant_in_variantLine992);
+			DebugLocation(147, 73);
+			PushFollow(Follow._leaveVariant_in_variantLine996);
 			leaveVariant();
 			PopFollow();
 
@@ -2362,7 +2381,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_eventTag();
 	partial void LeaveRule_eventTag();
 	// $ANTLR start "eventTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:1: eventTag : LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:152:1: eventTag : LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("eventTag")]
 	private void eventTag()
 	{
@@ -2375,16 +2394,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(152, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:10: ( LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:152:10: ( LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:12: LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:152:12: LEFT_TAG EVENT ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(152, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_eventTag1002); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_eventTag1006); 
 			DebugLocation(152, 21);
-			Match(input,EVENT,Follow._EVENT_in_eventTag1004); 
+			Match(input,EVENT,Follow._EVENT_in_eventTag1008); 
 			DebugLocation(152, 27);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:27: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:152:27: ( WS )+
 			int cnt36=0;
 			try { DebugEnterSubRule(36);
 			while (true)
@@ -2404,10 +2423,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:152:27: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:152:27: WS
 					{
 					DebugLocation(152, 27);
-					Match(input,WS,Follow._WS_in_eventTag1006); 
+					Match(input,WS,Follow._WS_in_eventTag1010); 
 
 					}
 					break;
@@ -2428,9 +2447,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(36); }
 
 			DebugLocation(152, 34);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_eventTag1011); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_eventTag1015); 
 			DebugLocation(152, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_eventTag1013); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_eventTag1017); 
 			DebugLocation(153, 1);
 			 
 				Event = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2460,7 +2479,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_siteTag();
 	partial void LeaveRule_siteTag();
 	// $ANTLR start "siteTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:1: siteTag : LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:157:1: siteTag : LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("siteTag")]
 	private void siteTag()
 	{
@@ -2473,16 +2492,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(157, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:9: ( LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:157:9: ( LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:11: LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:157:11: LEFT_TAG SITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(157, 11);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_siteTag1024); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_siteTag1028); 
 			DebugLocation(157, 20);
-			Match(input,SITE,Follow._SITE_in_siteTag1026); 
+			Match(input,SITE,Follow._SITE_in_siteTag1030); 
 			DebugLocation(157, 25);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:25: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:157:25: ( WS )+
 			int cnt37=0;
 			try { DebugEnterSubRule(37);
 			while (true)
@@ -2502,10 +2521,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:157:25: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:157:25: WS
 					{
 					DebugLocation(157, 25);
-					Match(input,WS,Follow._WS_in_siteTag1028); 
+					Match(input,WS,Follow._WS_in_siteTag1032); 
 
 					}
 					break;
@@ -2526,9 +2545,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(37); }
 
 			DebugLocation(157, 32);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_siteTag1033); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_siteTag1037); 
 			DebugLocation(157, 47);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_siteTag1035); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_siteTag1039); 
 			DebugLocation(158, 1);
 			 
 				Site = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2558,7 +2577,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_dateTag();
 	partial void LeaveRule_dateTag();
 	// $ANTLR start "dateTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:1: dateTag : LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:162:1: dateTag : LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("dateTag")]
 	private void dateTag()
 	{
@@ -2571,16 +2590,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(162, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:9: ( LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:162:9: ( LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:11: LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:162:11: LEFT_TAG DATE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(162, 11);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_dateTag1046); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_dateTag1050); 
 			DebugLocation(162, 20);
-			Match(input,DATE,Follow._DATE_in_dateTag1048); 
+			Match(input,DATE,Follow._DATE_in_dateTag1052); 
 			DebugLocation(162, 25);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:25: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:162:25: ( WS )+
 			int cnt38=0;
 			try { DebugEnterSubRule(38);
 			while (true)
@@ -2600,10 +2619,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:162:25: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:162:25: WS
 					{
 					DebugLocation(162, 25);
-					Match(input,WS,Follow._WS_in_dateTag1050); 
+					Match(input,WS,Follow._WS_in_dateTag1054); 
 
 					}
 					break;
@@ -2624,9 +2643,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(38); }
 
 			DebugLocation(162, 32);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_dateTag1055); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_dateTag1059); 
 			DebugLocation(162, 47);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_dateTag1057); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_dateTag1061); 
 			DebugLocation(163, 1);
 			 
 				Date = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2656,7 +2675,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_roundTag();
 	partial void LeaveRule_roundTag();
 	// $ANTLR start "roundTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:1: roundTag : LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:167:1: roundTag : LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("roundTag")]
 	private void roundTag()
 	{
@@ -2669,16 +2688,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(167, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:10: ( LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:167:10: ( LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:12: LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:167:12: LEFT_TAG ROUND ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(167, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_roundTag1068); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_roundTag1072); 
 			DebugLocation(167, 21);
-			Match(input,ROUND,Follow._ROUND_in_roundTag1070); 
+			Match(input,ROUND,Follow._ROUND_in_roundTag1074); 
 			DebugLocation(167, 27);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:27: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:167:27: ( WS )+
 			int cnt39=0;
 			try { DebugEnterSubRule(39);
 			while (true)
@@ -2698,10 +2717,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:167:27: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:167:27: WS
 					{
 					DebugLocation(167, 27);
-					Match(input,WS,Follow._WS_in_roundTag1072); 
+					Match(input,WS,Follow._WS_in_roundTag1076); 
 
 					}
 					break;
@@ -2722,9 +2741,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(39); }
 
 			DebugLocation(167, 34);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_roundTag1077); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_roundTag1081); 
 			DebugLocation(167, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_roundTag1079); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_roundTag1083); 
 			DebugLocation(168, 1);
 			 
 				Round = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2754,7 +2773,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_blackTag();
 	partial void LeaveRule_blackTag();
 	// $ANTLR start "blackTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:1: blackTag : LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:172:1: blackTag : LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("blackTag")]
 	private void blackTag()
 	{
@@ -2767,16 +2786,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(172, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:10: ( LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:172:10: ( LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:12: LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:172:12: LEFT_TAG BLACK ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(172, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_blackTag1090); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_blackTag1094); 
 			DebugLocation(172, 22);
-			Match(input,BLACK,Follow._BLACK_in_blackTag1093); 
+			Match(input,BLACK,Follow._BLACK_in_blackTag1097); 
 			DebugLocation(172, 28);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:28: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:172:28: ( WS )+
 			int cnt40=0;
 			try { DebugEnterSubRule(40);
 			while (true)
@@ -2796,10 +2815,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:172:28: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:172:28: WS
 					{
 					DebugLocation(172, 28);
-					Match(input,WS,Follow._WS_in_blackTag1095); 
+					Match(input,WS,Follow._WS_in_blackTag1099); 
 
 					}
 					break;
@@ -2820,9 +2839,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(40); }
 
 			DebugLocation(172, 35);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_blackTag1100); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_blackTag1104); 
 			DebugLocation(172, 50);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_blackTag1102); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_blackTag1106); 
 			DebugLocation(173, 1);
 			 
 				Black = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2852,7 +2871,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_whiteTag();
 	partial void LeaveRule_whiteTag();
 	// $ANTLR start "whiteTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:1: whiteTag : LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:177:1: whiteTag : LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("whiteTag")]
 	private void whiteTag()
 	{
@@ -2865,16 +2884,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(177, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:10: ( LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:177:10: ( LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:12: LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:177:12: LEFT_TAG WHITE ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(177, 12);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_whiteTag1113); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_whiteTag1117); 
 			DebugLocation(177, 21);
-			Match(input,WHITE,Follow._WHITE_in_whiteTag1115); 
+			Match(input,WHITE,Follow._WHITE_in_whiteTag1119); 
 			DebugLocation(177, 27);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:27: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:177:27: ( WS )+
 			int cnt41=0;
 			try { DebugEnterSubRule(41);
 			while (true)
@@ -2894,10 +2913,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:177:27: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:177:27: WS
 					{
 					DebugLocation(177, 27);
-					Match(input,WS,Follow._WS_in_whiteTag1117); 
+					Match(input,WS,Follow._WS_in_whiteTag1121); 
 
 					}
 					break;
@@ -2918,9 +2937,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(41); }
 
 			DebugLocation(177, 34);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_whiteTag1122); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_whiteTag1126); 
 			DebugLocation(177, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_whiteTag1124); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_whiteTag1128); 
 			DebugLocation(178, 1);
 			 
 				White = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
@@ -2950,7 +2969,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_resultTag();
 	partial void LeaveRule_resultTag();
 	// $ANTLR start "resultTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:1: resultTag : LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:182:1: resultTag : LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG ;
 	[GrammarRule("resultTag")]
 	private void resultTag()
 	{
@@ -2963,16 +2982,16 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(182, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:11: ( LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:182:11: ( LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:13: LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:182:13: LEFT_TAG RESULT ( WS )+ bar= GAME_RESULT RIGHT_TAG
 			{
 			DebugLocation(182, 13);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_resultTag1135); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_resultTag1139); 
 			DebugLocation(182, 22);
-			Match(input,RESULT,Follow._RESULT_in_resultTag1137); 
+			Match(input,RESULT,Follow._RESULT_in_resultTag1141); 
 			DebugLocation(182, 29);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:29: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:182:29: ( WS )+
 			int cnt42=0;
 			try { DebugEnterSubRule(42);
 			while (true)
@@ -2992,10 +3011,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:182:29: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:182:29: WS
 					{
 					DebugLocation(182, 29);
-					Match(input,WS,Follow._WS_in_resultTag1139); 
+					Match(input,WS,Follow._WS_in_resultTag1143); 
 
 					}
 					break;
@@ -3016,9 +3035,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(42); }
 
 			DebugLocation(182, 36);
-			bar=(IToken)Match(input,GAME_RESULT,Follow._GAME_RESULT_in_resultTag1144); 
+			bar=(IToken)Match(input,GAME_RESULT,Follow._GAME_RESULT_in_resultTag1148); 
 			DebugLocation(182, 49);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_resultTag1146); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_resultTag1150); 
 			DebugLocation(183, 1);
 
 				Result = bar.Text.Trim(c_doubleQuote);
@@ -3048,7 +3067,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 	partial void EnterRule_optionalTag();
 	partial void LeaveRule_optionalTag();
 	// $ANTLR start "optionalTag"
-	// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:1: optionalTag : LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
+	// h:\\work\\redchess\\PgnParser\\Pgn.g:187:1: optionalTag : LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG ;
 	[GrammarRule("optionalTag")]
 	private void optionalTag()
 	{
@@ -3062,14 +3081,14 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		DebugLocation(187, 1);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:13: ( LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:187:13: ( LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:15: LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:187:15: LEFT_TAG (foo= TAG_NAME )+ ( WS )+ bar= QUOTED_STRING RIGHT_TAG
 			{
 			DebugLocation(187, 15);
-			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_optionalTag1156); 
+			Match(input,LEFT_TAG,Follow._LEFT_TAG_in_optionalTag1160); 
 			DebugLocation(187, 27);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:27: (foo= TAG_NAME )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:187:27: (foo= TAG_NAME )+
 			int cnt43=0;
 			try { DebugEnterSubRule(43);
 			while (true)
@@ -3089,10 +3108,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:27: foo= TAG_NAME
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:187:27: foo= TAG_NAME
 					{
 					DebugLocation(187, 27);
-					foo=(IToken)Match(input,TAG_NAME,Follow._TAG_NAME_in_optionalTag1160); 
+					foo=(IToken)Match(input,TAG_NAME,Follow._TAG_NAME_in_optionalTag1164); 
 
 					}
 					break;
@@ -3113,7 +3132,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(43); }
 
 			DebugLocation(187, 38);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:38: ( WS )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:187:38: ( WS )+
 			int cnt44=0;
 			try { DebugEnterSubRule(44);
 			while (true)
@@ -3133,10 +3152,10 @@ public partial class PgnParser : Antlr.Runtime.Parser
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:187:38: WS
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:187:38: WS
 					{
 					DebugLocation(187, 38);
-					Match(input,WS,Follow._WS_in_optionalTag1163); 
+					Match(input,WS,Follow._WS_in_optionalTag1167); 
 
 					}
 					break;
@@ -3157,9 +3176,9 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			} finally { DebugExitSubRule(44); }
 
 			DebugLocation(187, 45);
-			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_optionalTag1168); 
+			bar=(IToken)Match(input,QUOTED_STRING,Follow._QUOTED_STRING_in_optionalTag1172); 
 			DebugLocation(187, 60);
-			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_optionalTag1170); 
+			Match(input,RIGHT_TAG,Follow._RIGHT_TAG_in_optionalTag1174); 
 			DebugLocation(188, 1);
 
 				string trimmedText = bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\"");
@@ -3317,7 +3336,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		private const string DFA14_eofS =
 			"\x2\x2\x1\xFFFF\x1\x2\x1\xFFFF";
 		private const string DFA14_minS =
-			"\x1\xE\x1\x5\x1\xFFFF\x1\x5\x1\xFFFF";
+			"\x2\x5\x1\xFFFF\x1\x5\x1\xFFFF";
 		private const string DFA14_maxS =
 			"\x2\x2D\x1\xFFFF\x1\x2D\x1\xFFFF";
 		private const string DFA14_acceptS =
@@ -3326,8 +3345,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			"\x5\xFFFF}>";
 		private static readonly string[] DFA14_transitionS =
 			{
-				"\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9\xFFFF\x1\x2\xC"+
-				"\xFFFF\x1\x1",
+				"\x1\x2\x8\xFFFF\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9"+
+				"\xFFFF\x1\x2\xC\xFFFF\x1\x1",
 				"\x1\x4\x3\x2\x5\xFFFF\x1\x2\x1\xFFFF\x1\x4\x1\xFFFF\x1\x2\x3\xFFFF"+
 				"\x2\x2\x2\xFFFF\x1\x2\x5\xFFFF\x1\x2\xC\xFFFF\x1\x3",
 				"",
@@ -3382,7 +3401,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		private const string DFA19_eofS =
 			"\x2\x2\x2\xFFFF\x1\x2";
 		private const string DFA19_minS =
-			"\x1\xE\x1\x5\x2\xFFFF\x1\x5";
+			"\x2\x5\x2\xFFFF\x1\x5";
 		private const string DFA19_maxS =
 			"\x2\x2D\x2\xFFFF\x1\x2D";
 		private const string DFA19_acceptS =
@@ -3391,8 +3410,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			"\x5\xFFFF}>";
 		private static readonly string[] DFA19_transitionS =
 			{
-				"\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9\xFFFF\x1\x2\xC"+
-				"\xFFFF\x1\x1",
+				"\x1\x2\x8\xFFFF\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9"+
+				"\xFFFF\x1\x2\xC\xFFFF\x1\x1",
 				"\x4\x2\x5\xFFFF\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x2\x2"+
 				"\x1\x3\x1\xFFFF\x1\x2\x5\xFFFF\x1\x2\xC\xFFFF\x1\x4",
 				"",
@@ -3447,7 +3466,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		private const string DFA21_eofS =
 			"\x2\x2\x2\xFFFF\x1\x2";
 		private const string DFA21_minS =
-			"\x1\xE\x1\x5\x2\xFFFF\x1\x5";
+			"\x2\x5\x2\xFFFF\x1\x5";
 		private const string DFA21_maxS =
 			"\x2\x2D\x2\xFFFF\x1\x2D";
 		private const string DFA21_acceptS =
@@ -3456,8 +3475,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			"\x5\xFFFF}>";
 		private static readonly string[] DFA21_transitionS =
 			{
-				"\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9\xFFFF\x1\x2\xC"+
-				"\xFFFF\x1\x1",
+				"\x1\x2\x8\xFFFF\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9"+
+				"\xFFFF\x1\x2\xC\xFFFF\x1\x1",
 				"\x1\x3\x3\x2\x5\xFFFF\x1\x2\x1\xFFFF\x1\x3\x1\xFFFF\x1\x2\x3\xFFFF"+
 				"\x2\x2\x2\xFFFF\x1\x2\x5\xFFFF\x1\x2\xC\xFFFF\x1\x4",
 				"",
@@ -3512,7 +3531,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		private const string DFA23_eofS =
 			"\x2\x2\x2\xFFFF";
 		private const string DFA23_minS =
-			"\x2\xE\x2\xFFFF";
+			"\x1\x5\x1\xE\x2\xFFFF";
 		private const string DFA23_maxS =
 			"\x2\x2D\x2\xFFFF";
 		private const string DFA23_acceptS =
@@ -3521,8 +3540,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			"\x4\xFFFF}>";
 		private static readonly string[] DFA23_transitionS =
 			{
-				"\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9\xFFFF\x1\x2\xC"+
-				"\xFFFF\x1\x1",
+				"\x1\x2\x8\xFFFF\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9"+
+				"\xFFFF\x1\x2\xC\xFFFF\x1\x1",
 				"\x1\x2\x3\xFFFF\x1\x2\x3\xFFFF\x1\x3\x9\xFFFF\x1\x2\xC\xFFFF\x1\x1",
 				"",
 				""
@@ -3574,7 +3593,7 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		private const string DFA32_eofS =
 			"\x2\x2\x2\xFFFF\x1\x2\x5\xFFFF";
 		private const string DFA32_minS =
-			"\x1\xE\x1\x6\x1\xFFFF\x2\x6\x1\xFFFF\x3\x6\x1\xFFFF";
+			"\x1\x5\x1\x6\x1\xFFFF\x2\x6\x1\xFFFF\x3\x6\x1\xFFFF";
 		private const string DFA32_maxS =
 			"\x2\x2D\x1\xFFFF\x2\x2D\x1\xFFFF\x3\x2D\x1\xFFFF";
 		private const string DFA32_acceptS =
@@ -3583,8 +3602,8 @@ public partial class PgnParser : Antlr.Runtime.Parser
 			"\xA\xFFFF}>";
 		private static readonly string[] DFA32_transitionS =
 			{
-				"\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9\xFFFF\x1\x2\xC"+
-				"\xFFFF\x1\x1",
+				"\x1\x2\x8\xFFFF\x1\x2\x1\xFFFF\x1\x2\x1\xFFFF\x1\x2\x3\xFFFF\x1\x2\x9"+
+				"\xFFFF\x1\x2\xC\xFFFF\x1\x1",
 				"\x3\x5\x5\xFFFF\x1\x2\x3\xFFFF\x1\x2\x3\xFFFF\x1\x3\x1\x5\x2\xFFFF"+
 				"\x1\x5\x5\xFFFF\x1\x2\xC\xFFFF\x1\x4",
 				"",
@@ -3698,51 +3717,52 @@ public partial class PgnParser : Antlr.Runtime.Parser
 		public static readonly BitSet _BLOCK_COMMENT_in_blockComment948 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _LEFT_BRACKET_in_enterVariant958 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _RIGHT_BRACKET_in_leaveVariant968 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _enterVariant_in_variantLine978 = new BitSet(new ulong[]{0x200100410000UL});
-		public static readonly BitSet _moveList_in_variantLine981 = new BitSet(new ulong[]{0x200100410000UL});
-		public static readonly BitSet _variantLine_in_variantLine985 = new BitSet(new ulong[]{0x200100410000UL});
-		public static readonly BitSet _WS_in_variantLine989 = new BitSet(new ulong[]{0x200100000000UL});
-		public static readonly BitSet _leaveVariant_in_variantLine992 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_eventTag1002 = new BitSet(new ulong[]{0x1000UL});
-		public static readonly BitSet _EVENT_in_eventTag1004 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_eventTag1006 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_eventTag1011 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_eventTag1013 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_siteTag1024 = new BitSet(new ulong[]{0x2000000000UL});
-		public static readonly BitSet _SITE_in_siteTag1026 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_siteTag1028 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_siteTag1033 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_siteTag1035 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_dateTag1046 = new BitSet(new ulong[]{0x800UL});
-		public static readonly BitSet _DATE_in_dateTag1048 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_dateTag1050 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_dateTag1055 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_dateTag1057 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_roundTag1068 = new BitSet(new ulong[]{0x800000000UL});
-		public static readonly BitSet _ROUND_in_roundTag1070 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_roundTag1072 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_roundTag1077 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_roundTag1079 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_blackTag1090 = new BitSet(new ulong[]{0x10UL});
-		public static readonly BitSet _BLACK_in_blackTag1093 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_blackTag1095 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_blackTag1100 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_blackTag1102 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_whiteTag1113 = new BitSet(new ulong[]{0x100000000000UL});
-		public static readonly BitSet _WHITE_in_whiteTag1115 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_whiteTag1117 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_whiteTag1122 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_whiteTag1124 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_resultTag1135 = new BitSet(new ulong[]{0x80000000UL});
-		public static readonly BitSet _RESULT_in_resultTag1137 = new BitSet(new ulong[]{0x200000000000UL});
-		public static readonly BitSet _WS_in_resultTag1139 = new BitSet(new ulong[]{0x200000002000UL});
-		public static readonly BitSet _GAME_RESULT_in_resultTag1144 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_resultTag1146 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LEFT_TAG_in_optionalTag1156 = new BitSet(new ulong[]{0x8000000000UL});
-		public static readonly BitSet _TAG_NAME_in_optionalTag1160 = new BitSet(new ulong[]{0x208000000000UL});
-		public static readonly BitSet _WS_in_optionalTag1163 = new BitSet(new ulong[]{0x200040000000UL});
-		public static readonly BitSet _QUOTED_STRING_in_optionalTag1168 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _RIGHT_TAG_in_optionalTag1170 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _enterVariant_in_variantLine978 = new BitSet(new ulong[]{0x200100410020UL});
+		public static readonly BitSet _moveList_in_variantLine981 = new BitSet(new ulong[]{0x200100410020UL});
+		public static readonly BitSet _variantLine_in_variantLine985 = new BitSet(new ulong[]{0x200100410020UL});
+		public static readonly BitSet _blockComment_in_variantLine989 = new BitSet(new ulong[]{0x200100410020UL});
+		public static readonly BitSet _WS_in_variantLine993 = new BitSet(new ulong[]{0x200100000000UL});
+		public static readonly BitSet _leaveVariant_in_variantLine996 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_eventTag1006 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _EVENT_in_eventTag1008 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_eventTag1010 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_eventTag1015 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_eventTag1017 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_siteTag1028 = new BitSet(new ulong[]{0x2000000000UL});
+		public static readonly BitSet _SITE_in_siteTag1030 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_siteTag1032 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_siteTag1037 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_siteTag1039 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_dateTag1050 = new BitSet(new ulong[]{0x800UL});
+		public static readonly BitSet _DATE_in_dateTag1052 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_dateTag1054 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_dateTag1059 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_dateTag1061 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_roundTag1072 = new BitSet(new ulong[]{0x800000000UL});
+		public static readonly BitSet _ROUND_in_roundTag1074 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_roundTag1076 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_roundTag1081 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_roundTag1083 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_blackTag1094 = new BitSet(new ulong[]{0x10UL});
+		public static readonly BitSet _BLACK_in_blackTag1097 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_blackTag1099 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_blackTag1104 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_blackTag1106 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_whiteTag1117 = new BitSet(new ulong[]{0x100000000000UL});
+		public static readonly BitSet _WHITE_in_whiteTag1119 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_whiteTag1121 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_whiteTag1126 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_whiteTag1128 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_resultTag1139 = new BitSet(new ulong[]{0x80000000UL});
+		public static readonly BitSet _RESULT_in_resultTag1141 = new BitSet(new ulong[]{0x200000000000UL});
+		public static readonly BitSet _WS_in_resultTag1143 = new BitSet(new ulong[]{0x200000002000UL});
+		public static readonly BitSet _GAME_RESULT_in_resultTag1148 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_resultTag1150 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LEFT_TAG_in_optionalTag1160 = new BitSet(new ulong[]{0x8000000000UL});
+		public static readonly BitSet _TAG_NAME_in_optionalTag1164 = new BitSet(new ulong[]{0x208000000000UL});
+		public static readonly BitSet _WS_in_optionalTag1167 = new BitSet(new ulong[]{0x200040000000UL});
+		public static readonly BitSet _QUOTED_STRING_in_optionalTag1172 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _RIGHT_TAG_in_optionalTag1174 = new BitSet(new ulong[]{0x2UL});
 	}
 	#endregion Follow sets
 }

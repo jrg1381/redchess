@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// $ANTLR 3.5.1 H:\\Work\\redchess\\PgnParser\\Pgn.g 2015-03-02 17:21:42
+// $ANTLR 3.5.1 h:\\work\\redchess\\PgnParser\\Pgn.g 2015-05-20 11:48:45
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -93,7 +93,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 
 		OnCreated();
 	}
-	public override string GrammarFileName { get { return "H:\\Work\\redchess\\PgnParser\\Pgn.g"; } }
+	public override string GrammarFileName { get { return "h:\\work\\redchess\\PgnParser\\Pgn.g"; } }
 
 
 	partial void OnCreated();
@@ -114,9 +114,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = BLACK;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:9:7: ( 'Black' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:9:7: ( 'Black' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:9:9: 'Black'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:9:9: 'Black'
 			{
 			DebugLocation(9, 9);
 			Match("Black"); 
@@ -150,9 +150,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CASTLE_KINGSIDE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:10:17: ( 'O-O' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:10:17: ( 'O-O' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:10:19: 'O-O'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:10:19: 'O-O'
 			{
 			DebugLocation(10, 19);
 			Match("O-O"); 
@@ -186,9 +186,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CASTLE_QUEENSIDE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:11:18: ( 'O-O-O' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:11:18: ( 'O-O-O' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:11:20: 'O-O-O'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:11:20: 'O-O-O'
 			{
 			DebugLocation(11, 20);
 			Match("O-O-O"); 
@@ -222,9 +222,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CHECK;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:12:7: ( '+' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:12:7: ( '+' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:12:9: '+'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:12:9: '+'
 			{
 			DebugLocation(12, 9);
 			Match('+'); 
@@ -257,9 +257,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = DATE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:13:6: ( 'Date' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:13:6: ( 'Date' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:13:8: 'Date'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:13:8: 'Date'
 			{
 			DebugLocation(13, 8);
 			Match("Date"); 
@@ -293,9 +293,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = EVENT;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:14:7: ( 'Event' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:14:7: ( 'Event' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:14:9: 'Event'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:14:9: 'Event'
 			{
 			DebugLocation(14, 9);
 			Match("Event"); 
@@ -329,9 +329,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LEFT_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:15:14: ( '(' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:15:14: ( '(' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:15:16: '('
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:15:16: '('
 			{
 			DebugLocation(15, 16);
 			Match('('); 
@@ -364,9 +364,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LEFT_CURLY_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:16:20: ( '{' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:16:20: ( '{' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:16:22: '{'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:16:22: '{'
 			{
 			DebugLocation(16, 22);
 			Match('{'); 
@@ -399,9 +399,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LEFT_TAG;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:17:10: ( '[' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:17:10: ( '[' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:17:12: '['
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:17:12: '['
 			{
 			DebugLocation(17, 12);
 			Match('['); 
@@ -434,9 +434,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = MATE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:18:6: ( '#' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:18:6: ( '#' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:18:8: '#'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:18:8: '#'
 			{
 			DebugLocation(18, 8);
 			Match('#'); 
@@ -469,9 +469,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = PROMOTES_TO;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:19:13: ( '=' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:19:13: ( '=' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:19:15: '='
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:19:15: '='
 			{
 			DebugLocation(19, 15);
 			Match('='); 
@@ -504,9 +504,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = QUOTE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:20:7: ( '\"' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:20:7: ( '\"' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:20:9: '\"'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:20:9: '\"'
 			{
 			DebugLocation(20, 9);
 			Match('\"'); 
@@ -539,9 +539,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RESULT;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:21:8: ( 'Result' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:21:8: ( 'Result' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:21:10: 'Result'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:21:10: 'Result'
 			{
 			DebugLocation(21, 10);
 			Match("Result"); 
@@ -575,9 +575,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RIGHT_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:22:15: ( ')' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:22:15: ( ')' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:22:17: ')'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:22:17: ')'
 			{
 			DebugLocation(22, 17);
 			Match(')'); 
@@ -610,9 +610,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RIGHT_CURLY_BRACKET;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:23:21: ( '}' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:23:21: ( '}' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:23:23: '}'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:23:23: '}'
 			{
 			DebugLocation(23, 23);
 			Match('}'); 
@@ -645,9 +645,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = RIGHT_TAG;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:24:11: ( ']' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:24:11: ( ']' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:24:13: ']'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:24:13: ']'
 			{
 			DebugLocation(24, 13);
 			Match(']'); 
@@ -680,9 +680,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = ROUND;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:25:7: ( 'Round' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:25:7: ( 'Round' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:25:9: 'Round'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:25:9: 'Round'
 			{
 			DebugLocation(25, 9);
 			Match("Round"); 
@@ -716,9 +716,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = SITE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:26:6: ( 'Site' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:26:6: ( 'Site' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:26:8: 'Site'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:26:8: 'Site'
 			{
 			DebugLocation(26, 8);
 			Match("Site"); 
@@ -752,9 +752,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = TAKES;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:27:7: ( 'x' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:27:7: ( 'x' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:27:9: 'x'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:27:9: 'x'
 			{
 			DebugLocation(27, 9);
 			Match('x'); 
@@ -787,9 +787,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = WHITE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:28:7: ( 'White' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:28:7: ( 'White' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:28:9: 'White'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:28:9: 'White'
 			{
 			DebugLocation(28, 9);
 			Match("White"); 
@@ -821,9 +821,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("COLUMN", 21);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:58:17: ( 'a' .. 'h' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:58:17: ( 'a' .. 'h' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:
 			{
 			DebugLocation(58, 17);
 			if ((input.LA(1)>='a' && input.LA(1)<='h'))
@@ -863,9 +863,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("ROW", 22);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:59:14: ( '1' .. '8' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:59:14: ( '1' .. '8' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:
 			{
 			DebugLocation(59, 14);
 			if ((input.LA(1)>='1' && input.LA(1)<='8'))
@@ -905,9 +905,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("SQUARE", 23);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:60:17: ( COLUMN ROW )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:60:17: ( COLUMN ROW )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:60:19: COLUMN ROW
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:60:19: COLUMN ROW
 			{
 			DebugLocation(60, 19);
 			mCOLUMN(); 
@@ -938,9 +938,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("PIECE_SYMBOL", 24);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:61:23: ( 'K' | 'Q' | 'N' | 'P' | 'R' | 'B' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:61:23: ( 'K' | 'Q' | 'N' | 'P' | 'R' | 'B' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:
 			{
 			DebugLocation(61, 23);
 			if (input.LA(1)=='B'||input.LA(1)=='K'||input.LA(1)=='N'||(input.LA(1)>='P' && input.LA(1)<='R'))
@@ -980,9 +980,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("UNAMBIGUOUS_PIECE_WITH_COLUMN", 25);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:62:40: ( PIECE_SYMBOL COLUMN )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:62:40: ( PIECE_SYMBOL COLUMN )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:62:42: PIECE_SYMBOL COLUMN
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:62:42: PIECE_SYMBOL COLUMN
 			{
 			DebugLocation(62, 42);
 			mPIECE_SYMBOL(); 
@@ -1013,9 +1013,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("UNAMBIGUOUS_PIECE_WITH_ROW", 26);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:63:37: ( PIECE_SYMBOL ROW )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:63:37: ( PIECE_SYMBOL ROW )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:63:39: PIECE_SYMBOL ROW
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:63:39: PIECE_SYMBOL ROW
 			{
 			DebugLocation(63, 39);
 			mPIECE_SYMBOL(); 
@@ -1046,9 +1046,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		TraceIn("UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN", 27);
 		try
 		{
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:64:48: ( PIECE_SYMBOL SQUARE )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:64:48: ( PIECE_SYMBOL SQUARE )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:64:50: PIECE_SYMBOL SQUARE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:64:50: PIECE_SYMBOL SQUARE
 			{
 			DebugLocation(64, 50);
 			mPIECE_SYMBOL(); 
@@ -1081,12 +1081,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = WS;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:4: ( ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' ) )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:67:4: ( ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' ) )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
 			{
 			DebugLocation(67, 6);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:67:6: ( ' ' | ( '\\r\\n' | '\\n' ) | '\\t' )
 			int alt2=3;
 			try { DebugEnterSubRule(2);
 			try { DebugEnterDecision(2, false);
@@ -1121,7 +1121,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:8: ' '
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:67:8: ' '
 				{
 				DebugLocation(67, 8);
 				Match(' '); 
@@ -1130,10 +1130,10 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
 				{
 				DebugLocation(67, 14);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:67:14: ( '\\r\\n' | '\\n' )
 				int alt1=2;
 				try { DebugEnterSubRule(1);
 				try { DebugEnterDecision(1, false);
@@ -1158,7 +1158,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:16: '\\r\\n'
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:67:16: '\\r\\n'
 					{
 					DebugLocation(67, 16);
 					Match("\r\n"); 
@@ -1168,7 +1168,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:25: '\\n'
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:67:25: '\\n'
 					{
 					DebugLocation(67, 25);
 					Match('\n'); 
@@ -1184,7 +1184,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:67:34: '\\t'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:67:34: '\\t'
 				{
 				DebugLocation(67, 34);
 				Match('\t'); 
@@ -1224,14 +1224,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = LINE_COMMENT;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:14: ( ( ';' . '\\r\\n' ) )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:70:14: ( ( ';' . '\\r\\n' ) )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
 			{
 			DebugLocation(70, 16);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:70:16: ( ';' . '\\r\\n' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:70:17: ';' . '\\r\\n'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:70:17: ';' . '\\r\\n'
 			{
 			DebugLocation(70, 17);
 			Match(';'); 
@@ -1274,7 +1274,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = GAME_RESULT;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:13: ( '\"0-1\"' | '\"1-0\"' | '\"1/2-1/2\"' | '\"*\"' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:73:13: ( '\"0-1\"' | '\"1-0\"' | '\"1/2-1/2\"' | '\"*\"' )
 			int alt3=4;
 			try { DebugEnterDecision(3, false);
 			int LA3_1 = input.LA(1);
@@ -1333,7 +1333,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:15: '\"0-1\"'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:73:15: '\"0-1\"'
 				{
 				DebugLocation(73, 15);
 				Match("\"0-1\""); 
@@ -1343,7 +1343,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:25: '\"1-0\"'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:73:25: '\"1-0\"'
 				{
 				DebugLocation(73, 25);
 				Match("\"1-0\""); 
@@ -1353,7 +1353,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:35: '\"1/2-1/2\"'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:73:35: '\"1/2-1/2\"'
 				{
 				DebugLocation(73, 35);
 				Match("\"1/2-1/2\""); 
@@ -1363,7 +1363,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:73:49: '\"*\"'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:73:49: '\"*\"'
 				{
 				DebugLocation(73, 49);
 				Match("\"*\""); 
@@ -1399,7 +1399,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = GAME_RESULT_END_OF_MOVETEXT;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:29: ( '0-1' | '1-0' | '1/2-1/2' | '*' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:75:29: ( '0-1' | '1-0' | '1/2-1/2' | '*' )
 			int alt4=4;
 			try { DebugEnterDecision(4, false);
 			switch (input.LA(1))
@@ -1447,7 +1447,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:31: '0-1'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:75:31: '0-1'
 				{
 				DebugLocation(75, 31);
 				Match("0-1"); 
@@ -1457,7 +1457,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:39: '1-0'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:75:39: '1-0'
 				{
 				DebugLocation(75, 39);
 				Match("1-0"); 
@@ -1467,7 +1467,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:47: '1/2-1/2'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:75:47: '1/2-1/2'
 				{
 				DebugLocation(75, 47);
 				Match("1/2-1/2"); 
@@ -1477,7 +1477,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:75:59: '*'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:75:59: '*'
 				{
 				DebugLocation(75, 59);
 				Match('*'); 
@@ -1512,14 +1512,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = QUOTED_STRING;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:15: ( QUOTE ( '\"\"' |~ QUOTE )* QUOTE )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:77:15: ( QUOTE ( '\"\"' |~ QUOTE )* QUOTE )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:17: QUOTE ( '\"\"' |~ QUOTE )* QUOTE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:77:17: QUOTE ( '\"\"' |~ QUOTE )* QUOTE
 			{
 			DebugLocation(77, 17);
 			mQUOTE(); 
 			DebugLocation(77, 23);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:23: ( '\"\"' |~ QUOTE )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:77:23: ( '\"\"' |~ QUOTE )*
 			try { DebugEnterSubRule(5);
 			while (true)
 			{
@@ -1549,7 +1549,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:24: '\"\"'
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:77:24: '\"\"'
 					{
 					DebugLocation(77, 24);
 					Match("\"\""); 
@@ -1559,7 +1559,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:77:31: ~ QUOTE
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:77:31: ~ QUOTE
 					{
 					DebugLocation(77, 31);
 					input.Consume();
@@ -1609,7 +1609,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = PIECE_TO_SQUARE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:17: ( SQUARE | ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE ) )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:79:17: ( SQUARE | ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE ) )
 			int alt7=2;
 			try { DebugEnterDecision(7, false);
 			int LA7_1 = input.LA(1);
@@ -1633,7 +1633,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:19: SQUARE
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:79:19: SQUARE
 				{
 				DebugLocation(79, 19);
 				mSQUARE(); 
@@ -1642,15 +1642,15 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
 				{
 				DebugLocation(79, 28);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:79:28: ( ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE )
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) SQUARE
 				{
 				DebugLocation(79, 29);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:79:29: ( PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
 				int alt6=4;
 				try { DebugEnterSubRule(6);
 				try { DebugEnterDecision(6, false);
@@ -1710,7 +1710,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:30: PIECE_SYMBOL
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:79:30: PIECE_SYMBOL
 					{
 					DebugLocation(79, 30);
 					mPIECE_SYMBOL(); 
@@ -1719,7 +1719,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 2:
 					DebugEnterAlt(2);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:45: UNAMBIGUOUS_PIECE_WITH_COLUMN
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:79:45: UNAMBIGUOUS_PIECE_WITH_COLUMN
 					{
 					DebugLocation(79, 45);
 					mUNAMBIGUOUS_PIECE_WITH_COLUMN(); 
@@ -1728,7 +1728,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 3:
 					DebugEnterAlt(3);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:77: UNAMBIGUOUS_PIECE_WITH_ROW
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:79:77: UNAMBIGUOUS_PIECE_WITH_ROW
 					{
 					DebugLocation(79, 77);
 					mUNAMBIGUOUS_PIECE_WITH_ROW(); 
@@ -1737,7 +1737,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 					break;
 				case 4:
 					DebugEnterAlt(4);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:79:106: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:79:106: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
 					{
 					DebugLocation(79, 106);
 					mUNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN(); 
@@ -1784,12 +1784,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = CAPTURE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:9: ( ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:81:9: ( ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN ) TAKES SQUARE
 			{
 			DebugLocation(81, 11);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:81:11: ( COLUMN | PIECE_SYMBOL | UNAMBIGUOUS_PIECE_WITH_COLUMN | UNAMBIGUOUS_PIECE_WITH_ROW | UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN )
 			int alt8=5;
 			try { DebugEnterSubRule(8);
 			try { DebugEnterDecision(8, false);
@@ -1867,7 +1867,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:12: COLUMN
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:81:12: COLUMN
 				{
 				DebugLocation(81, 12);
 				mCOLUMN(); 
@@ -1876,7 +1876,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:21: PIECE_SYMBOL
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:81:21: PIECE_SYMBOL
 				{
 				DebugLocation(81, 21);
 				mPIECE_SYMBOL(); 
@@ -1885,7 +1885,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:36: UNAMBIGUOUS_PIECE_WITH_COLUMN
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:81:36: UNAMBIGUOUS_PIECE_WITH_COLUMN
 				{
 				DebugLocation(81, 36);
 				mUNAMBIGUOUS_PIECE_WITH_COLUMN(); 
@@ -1894,7 +1894,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:68: UNAMBIGUOUS_PIECE_WITH_ROW
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:81:68: UNAMBIGUOUS_PIECE_WITH_ROW
 				{
 				DebugLocation(81, 68);
 				mUNAMBIGUOUS_PIECE_WITH_ROW(); 
@@ -1903,7 +1903,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 5:
 				DebugEnterAlt(5);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:81:97: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:81:97: UNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN
 				{
 				DebugLocation(81, 97);
 				mUNAMBIGUOUS_PIECE_WITH_ROW_AND_COLUMN(); 
@@ -1949,9 +1949,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			int _channel = DefaultTokenChannel;
 			CommonToken symbol = default(CommonToken);
 
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:83:19: ( PROMOTES_TO symbol= PIECE_SYMBOL )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:83:19: ( PROMOTES_TO symbol= PIECE_SYMBOL )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:83:21: PROMOTES_TO symbol= PIECE_SYMBOL
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:83:21: PROMOTES_TO symbol= PIECE_SYMBOL
 			{
 			DebugLocation(83, 21);
 			mPROMOTES_TO(); 
@@ -1994,14 +1994,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = INTEGER;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:85:9: ( '1' .. '9' ( '0' .. '9' )* )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:85:9: ( '1' .. '9' ( '0' .. '9' )* )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:85:11: '1' .. '9' ( '0' .. '9' )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:85:11: '1' .. '9' ( '0' .. '9' )*
 			{
 			DebugLocation(85, 11);
 			MatchRange('1','9'); 
 			DebugLocation(85, 20);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:85:20: ( '0' .. '9' )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:85:20: ( '0' .. '9' )*
 			try { DebugEnterSubRule(9);
 			while (true)
 			{
@@ -2020,7 +2020,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:
 					{
 					DebugLocation(85, 20);
 					input.Consume();
@@ -2068,9 +2068,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = MOVE_LABEL;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:87:12: ( INTEGER '.' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:87:12: ( INTEGER '.' )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:87:14: INTEGER '.'
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:87:14: INTEGER '.'
 			{
 			DebugLocation(87, 14);
 			mINTEGER(); 
@@ -2105,14 +2105,14 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = BLOCK_COMMENT;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:89:15: ( LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:89:15: ( LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:89:17: LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:89:17: LEFT_CURLY_BRACKET (~ RIGHT_CURLY_BRACKET )* RIGHT_CURLY_BRACKET
 			{
 			DebugLocation(89, 17);
 			mLEFT_CURLY_BRACKET(); 
 			DebugLocation(89, 36);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:89:36: (~ RIGHT_CURLY_BRACKET )*
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:89:36: (~ RIGHT_CURLY_BRACKET )*
 			try { DebugEnterSubRule(10);
 			while (true)
 			{
@@ -2131,7 +2131,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:
 					{
 					DebugLocation(89, 36);
 					input.Consume();
@@ -2181,7 +2181,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = NO_MOVE;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:9: ( '...' | '..' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:91:9: ( '...' | '..' )
 			int alt11=2;
 			try { DebugEnterDecision(11, false);
 			int LA11_1 = input.LA(1);
@@ -2221,7 +2221,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:11: '...'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:91:11: '...'
 				{
 				DebugLocation(91, 11);
 				Match("..."); 
@@ -2231,7 +2231,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:91:17: '..'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:91:17: '..'
 				{
 				DebugLocation(91, 17);
 				Match(".."); 
@@ -2267,12 +2267,12 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = TAG_NAME;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:10: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+ )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:93:10: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+ )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
 			{
 			DebugLocation(93, 12);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:93:12: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' )+
 			int cnt12=0;
 			try { DebugEnterSubRule(12);
 			while (true)
@@ -2292,7 +2292,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				{
 				case 1:
 					DebugEnterAlt(1);
-					// H:\\Work\\redchess\\PgnParser\\Pgn.g:
+					// h:\\work\\redchess\\PgnParser\\Pgn.g:
 					{
 					DebugLocation(93, 12);
 					input.Consume();
@@ -2345,9 +2345,9 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = NUMERIC_ANNOTATION_GLYPH;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:95:26: ( '$' INTEGER )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:95:26: ( '$' INTEGER )
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:95:28: '$' INTEGER
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:95:28: '$' INTEGER
 			{
 			DebugLocation(95, 28);
 			Match('$'); 
@@ -2382,7 +2382,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 			int _type = MOVE_ANALYSIS;
 			int _channel = DefaultTokenChannel;
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:15: ( '?' | '!' | '?!' | '!?' | '!!' | '??' )
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:97:15: ( '?' | '!' | '?!' | '!?' | '!!' | '??' )
 			int alt13=6;
 			try { DebugEnterDecision(13, false);
 			int LA13_1 = input.LA(1);
@@ -2440,7 +2440,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			{
 			case 1:
 				DebugEnterAlt(1);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:17: '?'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:97:17: '?'
 				{
 				DebugLocation(97, 17);
 				Match('?'); 
@@ -2449,7 +2449,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 2:
 				DebugEnterAlt(2);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:23: '!'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:97:23: '!'
 				{
 				DebugLocation(97, 23);
 				Match('!'); 
@@ -2458,7 +2458,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 3:
 				DebugEnterAlt(3);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:29: '?!'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:97:29: '?!'
 				{
 				DebugLocation(97, 29);
 				Match("?!"); 
@@ -2468,7 +2468,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 4:
 				DebugEnterAlt(4);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:36: '!?'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:97:36: '!?'
 				{
 				DebugLocation(97, 36);
 				Match("!?"); 
@@ -2478,7 +2478,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 5:
 				DebugEnterAlt(5);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:43: '!!'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:97:43: '!!'
 				{
 				DebugLocation(97, 43);
 				Match("!!"); 
@@ -2488,7 +2488,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 				break;
 			case 6:
 				DebugEnterAlt(6);
-				// H:\\Work\\redchess\\PgnParser\\Pgn.g:97:50: '??'
+				// h:\\work\\redchess\\PgnParser\\Pgn.g:97:50: '??'
 				{
 				DebugLocation(97, 50);
 				Match("??"); 
@@ -2512,7 +2512,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 
 	public override void mTokens()
 	{
-		// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:8: ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH | MOVE_ANALYSIS )
+		// h:\\work\\redchess\\PgnParser\\Pgn.g:1:8: ( BLACK | CASTLE_KINGSIDE | CASTLE_QUEENSIDE | CHECK | DATE | EVENT | LEFT_BRACKET | LEFT_CURLY_BRACKET | LEFT_TAG | MATE | PROMOTES_TO | QUOTE | RESULT | RIGHT_BRACKET | RIGHT_CURLY_BRACKET | RIGHT_TAG | ROUND | SITE | TAKES | WHITE | WS | LINE_COMMENT | GAME_RESULT | GAME_RESULT_END_OF_MOVETEXT | QUOTED_STRING | PIECE_TO_SQUARE | CAPTURE | PROMOTES_TO_PIECE | INTEGER | MOVE_LABEL | BLOCK_COMMENT | NO_MOVE | TAG_NAME | NUMERIC_ANNOTATION_GLYPH | MOVE_ANALYSIS )
 		int alt14=35;
 		try { DebugEnterDecision(14, false);
 		try
@@ -2529,7 +2529,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 		{
 		case 1:
 			DebugEnterAlt(1);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:10: BLACK
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:10: BLACK
 			{
 			DebugLocation(1, 10);
 			mBLACK(); 
@@ -2538,7 +2538,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 2:
 			DebugEnterAlt(2);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:16: CASTLE_KINGSIDE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:16: CASTLE_KINGSIDE
 			{
 			DebugLocation(1, 16);
 			mCASTLE_KINGSIDE(); 
@@ -2547,7 +2547,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 3:
 			DebugEnterAlt(3);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:32: CASTLE_QUEENSIDE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:32: CASTLE_QUEENSIDE
 			{
 			DebugLocation(1, 32);
 			mCASTLE_QUEENSIDE(); 
@@ -2556,7 +2556,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 4:
 			DebugEnterAlt(4);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:49: CHECK
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:49: CHECK
 			{
 			DebugLocation(1, 49);
 			mCHECK(); 
@@ -2565,7 +2565,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 5:
 			DebugEnterAlt(5);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:55: DATE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:55: DATE
 			{
 			DebugLocation(1, 55);
 			mDATE(); 
@@ -2574,7 +2574,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 6:
 			DebugEnterAlt(6);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:60: EVENT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:60: EVENT
 			{
 			DebugLocation(1, 60);
 			mEVENT(); 
@@ -2583,7 +2583,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 7:
 			DebugEnterAlt(7);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:66: LEFT_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:66: LEFT_BRACKET
 			{
 			DebugLocation(1, 66);
 			mLEFT_BRACKET(); 
@@ -2592,7 +2592,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 8:
 			DebugEnterAlt(8);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:79: LEFT_CURLY_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:79: LEFT_CURLY_BRACKET
 			{
 			DebugLocation(1, 79);
 			mLEFT_CURLY_BRACKET(); 
@@ -2601,7 +2601,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 9:
 			DebugEnterAlt(9);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:98: LEFT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:98: LEFT_TAG
 			{
 			DebugLocation(1, 98);
 			mLEFT_TAG(); 
@@ -2610,7 +2610,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 10:
 			DebugEnterAlt(10);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:107: MATE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:107: MATE
 			{
 			DebugLocation(1, 107);
 			mMATE(); 
@@ -2619,7 +2619,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 11:
 			DebugEnterAlt(11);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:112: PROMOTES_TO
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:112: PROMOTES_TO
 			{
 			DebugLocation(1, 112);
 			mPROMOTES_TO(); 
@@ -2628,7 +2628,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 12:
 			DebugEnterAlt(12);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:124: QUOTE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:124: QUOTE
 			{
 			DebugLocation(1, 124);
 			mQUOTE(); 
@@ -2637,7 +2637,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 13:
 			DebugEnterAlt(13);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:130: RESULT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:130: RESULT
 			{
 			DebugLocation(1, 130);
 			mRESULT(); 
@@ -2646,7 +2646,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 14:
 			DebugEnterAlt(14);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:137: RIGHT_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:137: RIGHT_BRACKET
 			{
 			DebugLocation(1, 137);
 			mRIGHT_BRACKET(); 
@@ -2655,7 +2655,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 15:
 			DebugEnterAlt(15);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:151: RIGHT_CURLY_BRACKET
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:151: RIGHT_CURLY_BRACKET
 			{
 			DebugLocation(1, 151);
 			mRIGHT_CURLY_BRACKET(); 
@@ -2664,7 +2664,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 16:
 			DebugEnterAlt(16);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:171: RIGHT_TAG
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:171: RIGHT_TAG
 			{
 			DebugLocation(1, 171);
 			mRIGHT_TAG(); 
@@ -2673,7 +2673,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 17:
 			DebugEnterAlt(17);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:181: ROUND
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:181: ROUND
 			{
 			DebugLocation(1, 181);
 			mROUND(); 
@@ -2682,7 +2682,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 18:
 			DebugEnterAlt(18);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:187: SITE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:187: SITE
 			{
 			DebugLocation(1, 187);
 			mSITE(); 
@@ -2691,7 +2691,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 19:
 			DebugEnterAlt(19);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:192: TAKES
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:192: TAKES
 			{
 			DebugLocation(1, 192);
 			mTAKES(); 
@@ -2700,7 +2700,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 20:
 			DebugEnterAlt(20);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:198: WHITE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:198: WHITE
 			{
 			DebugLocation(1, 198);
 			mWHITE(); 
@@ -2709,7 +2709,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 21:
 			DebugEnterAlt(21);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:204: WS
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:204: WS
 			{
 			DebugLocation(1, 204);
 			mWS(); 
@@ -2718,7 +2718,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 22:
 			DebugEnterAlt(22);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:207: LINE_COMMENT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:207: LINE_COMMENT
 			{
 			DebugLocation(1, 207);
 			mLINE_COMMENT(); 
@@ -2727,7 +2727,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 23:
 			DebugEnterAlt(23);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:220: GAME_RESULT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:220: GAME_RESULT
 			{
 			DebugLocation(1, 220);
 			mGAME_RESULT(); 
@@ -2736,7 +2736,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 24:
 			DebugEnterAlt(24);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:232: GAME_RESULT_END_OF_MOVETEXT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:232: GAME_RESULT_END_OF_MOVETEXT
 			{
 			DebugLocation(1, 232);
 			mGAME_RESULT_END_OF_MOVETEXT(); 
@@ -2745,7 +2745,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 25:
 			DebugEnterAlt(25);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:260: QUOTED_STRING
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:260: QUOTED_STRING
 			{
 			DebugLocation(1, 260);
 			mQUOTED_STRING(); 
@@ -2754,7 +2754,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 26:
 			DebugEnterAlt(26);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:274: PIECE_TO_SQUARE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:274: PIECE_TO_SQUARE
 			{
 			DebugLocation(1, 274);
 			mPIECE_TO_SQUARE(); 
@@ -2763,7 +2763,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 27:
 			DebugEnterAlt(27);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:290: CAPTURE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:290: CAPTURE
 			{
 			DebugLocation(1, 290);
 			mCAPTURE(); 
@@ -2772,7 +2772,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 28:
 			DebugEnterAlt(28);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:298: PROMOTES_TO_PIECE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:298: PROMOTES_TO_PIECE
 			{
 			DebugLocation(1, 298);
 			mPROMOTES_TO_PIECE(); 
@@ -2781,7 +2781,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 29:
 			DebugEnterAlt(29);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:316: INTEGER
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:316: INTEGER
 			{
 			DebugLocation(1, 316);
 			mINTEGER(); 
@@ -2790,7 +2790,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 30:
 			DebugEnterAlt(30);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:324: MOVE_LABEL
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:324: MOVE_LABEL
 			{
 			DebugLocation(1, 324);
 			mMOVE_LABEL(); 
@@ -2799,7 +2799,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 31:
 			DebugEnterAlt(31);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:335: BLOCK_COMMENT
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:335: BLOCK_COMMENT
 			{
 			DebugLocation(1, 335);
 			mBLOCK_COMMENT(); 
@@ -2808,7 +2808,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 32:
 			DebugEnterAlt(32);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:349: NO_MOVE
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:349: NO_MOVE
 			{
 			DebugLocation(1, 349);
 			mNO_MOVE(); 
@@ -2817,7 +2817,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 33:
 			DebugEnterAlt(33);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:357: TAG_NAME
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:357: TAG_NAME
 			{
 			DebugLocation(1, 357);
 			mTAG_NAME(); 
@@ -2826,7 +2826,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 34:
 			DebugEnterAlt(34);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:366: NUMERIC_ANNOTATION_GLYPH
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:366: NUMERIC_ANNOTATION_GLYPH
 			{
 			DebugLocation(1, 366);
 			mNUMERIC_ANNOTATION_GLYPH(); 
@@ -2835,7 +2835,7 @@ public partial class PgnLexer : Antlr.Runtime.Lexer
 			break;
 		case 35:
 			DebugEnterAlt(35);
-			// H:\\Work\\redchess\\PgnParser\\Pgn.g:1:391: MOVE_ANALYSIS
+			// h:\\work\\redchess\\PgnParser\\Pgn.g:1:391: MOVE_ANALYSIS
 			{
 			DebugLocation(1, 391);
 			mMOVE_ANALYSIS(); 
