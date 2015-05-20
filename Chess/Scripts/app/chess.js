@@ -51,6 +51,10 @@ function PostMove(start, end, promote) {
 
     spinner.spin(ParentOfSpinny()[0]);
 
+    if (isTimedGame) {
+        myClock.PauseClock();
+    }
+
     $.post("/Board/PlayMove", {
         "id": gameId,
         "Start": start, 
@@ -120,6 +124,10 @@ function UpdateUi(fen) {
 
 function ProcessServerResponse(data) {
     UpdateUi(data.fen);
+
+    if (isTimedGame) {
+        myClock.startClock();
+    }
 
     if (data.message) {
         $("#messages").parent().css('visibility', 'visible');

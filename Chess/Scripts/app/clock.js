@@ -23,6 +23,15 @@
         }.bind(this));
     }
 
+    this.StartClock = function () {
+        clearInterval(this.timerId); // Don't run multiple clocks
+        this.timerId = setInterval(function () { this.LocalTimeCorrection(); }.bind(this), 1000);
+    }
+
+    this.PauseClock = function() {
+        clearInterval(this.timerId);
+    }
+
     this.SyncClockWithServer = function() {
         // if we haven't already done so...
         UnlockBoard();
