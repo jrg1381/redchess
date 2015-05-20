@@ -26,10 +26,12 @@
     this.StartClock = function () {
         clearInterval(this.timerId); // Don't run multiple clocks
         this.timerId = setInterval(function () { this.LocalTimeCorrection(); }.bind(this), 1000);
+        this.isTimerEnabled = true;
     }
 
     this.PauseClock = function() {
         clearInterval(this.timerId);
+        this.isTimerEnabled = false;
     }
 
     this.SyncClockWithServer = function() {
