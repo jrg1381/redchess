@@ -52,7 +52,7 @@ function PostMove(start, end, promote) {
     spinner.spin(ParentOfSpinny()[0]);
 
     if (isTimedGame) {
-        myClock.PauseClock();
+        myClock.pauseClock();
     }
 
     $.post("/Board/PlayMove", {
@@ -126,7 +126,7 @@ function ProcessServerResponse(data) {
     UpdateUi(data.fen);
 
     if (isTimedGame) {
-        myClock.startClock();
+        myClock.startClockTicking();
     }
 
     if (data.message) {

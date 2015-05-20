@@ -23,13 +23,13 @@
         }.bind(this));
     }
 
-    this.StartClock = function () {
+    this.startClockTicking = function () {
         clearInterval(this.timerId); // Don't run multiple clocks
         this.timerId = setInterval(function () { this.LocalTimeCorrection(); }.bind(this), 1000);
         this.isTimerEnabled = true;
     }
 
-    this.PauseClock = function() {
+    this.pauseClock = function() {
         clearInterval(this.timerId);
         this.isTimerEnabled = false;
     }
