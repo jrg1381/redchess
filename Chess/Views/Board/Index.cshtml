@@ -128,7 +128,7 @@
             <h3>My finished games</h3>
             <div class="col-md-10">
                 <table class="table">
-                    @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver).OrderByDescending(x => x.CompletionDate))
+                    @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate >= DateTime.UtcNow.AddMonths(-1)).OrderByDescending(x => x.CompletionDate))
                     {
                         var iso8601Datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
                         string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null).ToString();
