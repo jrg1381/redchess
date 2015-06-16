@@ -56,7 +56,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="BoardBitmap.cs" />
     <Compile Include="BoardStateTransition.cs" />
-    <Compile Include="Observers\CheckCacheOtherPlayer.cs" />
+    <Compile Include="Observers\CheckCacheOpposingPlayer.cs" />
     <Compile Include="Observers\CheckCacheCurrentPlayer.cs" />
     <Compile Include="Exceptions\CannotPromoteException.cs" />
     <Compile Include="Structures\CastlingOptions.cs" />
