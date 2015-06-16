@@ -2,9 +2,9 @@ using Redchess.Engine.Interfaces;
 
 namespace Redchess.Engine.Observers
 {
-    internal class CheckCacheOtherPlayer : AbstractBoardObserver<bool>
+    internal class CheckCacheOpposingPlayer : AbstractBoardObserver<bool>
     {
-        public CheckCacheOtherPlayer(IBoardExtended board) : base(board)
+        public CheckCacheOpposingPlayer(IBoardExtended board) : base(board)
         {
         }
 

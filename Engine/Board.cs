@@ -22,7 +22,7 @@ namespace Redchess.Engine
         private readonly Fen m_fen;
         private readonly MoveTranscriber m_transcriber;
         private readonly CheckCacheCurrentPlayer m_checkCacheCurrentPlayer;
-        private readonly CheckCacheOtherPlayer m_checkCacheOtherPlayer;
+        private readonly CheckCacheOpposingPlayer m_checkCacheOtherPlayer;
         private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
 
         private Location m_enPassantTarget;
@@ -56,7 +56,7 @@ namespace Redchess.Engine
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
             m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
-            m_checkCacheOtherPlayer = new CheckCacheOtherPlayer(this);
+            m_checkCacheOtherPlayer = new CheckCacheOpposingPlayer(this);
         }
 
         public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
@@ -72,7 +72,7 @@ namespace Redchess.Engine
             m_fen = new Fen(this);
             m_transcriber = new MoveTranscriber(this);
             m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
-            m_checkCacheOtherPlayer = new CheckCacheOtherPlayer(this);
+            m_checkCacheOtherPlayer = new CheckCacheOpposingPlayer(this);
         }
 
         public string LastMove()
