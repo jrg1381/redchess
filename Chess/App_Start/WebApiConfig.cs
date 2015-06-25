@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Newtonsoft.Json.Serialization;
+using System.Linq;
 
 namespace Chess
 {
@@ -24,6 +25,9 @@ namespace Chess
 
 			// Use camel case for JSON data.
 			config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
 		}
 	}
 }
