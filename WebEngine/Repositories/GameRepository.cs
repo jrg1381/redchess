@@ -39,7 +39,7 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.Boards.Include(b => b.UserProfileWinner).ToList();
+                return context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Include(b => b.UserProfileWinner).ToList();
             }
         }
     }
