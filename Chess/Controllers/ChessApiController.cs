@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using RedChess.WebEngine.Repositories;
@@ -31,7 +34,14 @@ namespace Chess.Controllers
         [System.Web.Http.HttpGet]
         public object Board(int id)
         {
-            return Json(GameBindingToGameData(m_gameManager.FetchGame(id)));
+            try
+            {
+                return Json(GameBindingToGameData(m_gameManager.FetchGame(id)));
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(HttpStatusCode.NotFound, this);
+            }
         }
 
         private static object GameBindingToGameData(IGameBinding game)
