@@ -37,7 +37,15 @@ namespace Chess.Controllers
         {
             try
             {
-                return Json(m_gameManager.FindAllMoves(id).Select<HistoryEntry, object>(m => new {m.Fen, m.Move}));
+                dynamic data = new ExpandoObject();
+                var allMoves = m_gameManager.FindAllMoves(id).ToList();
+                var firstMove = allMoves.First();
+
+                data.Moves = allMoves.Select<HistoryEntry, object>(m => new { m.Fen, m.Move });
+                data.Description = firstMove.Description();
+                data.IsParticipant = HistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name, firstMove.GameId);
+
+                return Json(data);
             }
             catch (Exception)
             {

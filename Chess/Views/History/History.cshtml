@@ -13,7 +13,7 @@
 
         var currentHistoryEntry = maxMoves == 1 ? @Model.First() : @Model.First(historyEntry => historyEntry.MoveNumber == Math.Max(1, Math.Min(maxMoves, ViewBag.MoveNumber)));
         var description = currentHistoryEntry.Description();
-        var isParticipant = currentHistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name, currentHistoryEntry.GameId);
+        var isParticipant = HistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name, currentHistoryEntry.GameId);
     }
 
 <script>

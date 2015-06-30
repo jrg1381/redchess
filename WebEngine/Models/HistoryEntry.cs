@@ -20,7 +20,7 @@ namespace RedChess.WebEngine.Models
             return manager.FetchGame(GameId).Description;
         }
 
-        public bool IsParticipant(string userName, int gameId)
+        public static bool IsParticipant(string userName, int gameId)
         {
             return (new HistoryRepository()).IsParticipant(userName, gameId);
         }
