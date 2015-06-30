@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 
 namespace Chess.Controllers
@@ -29,6 +30,19 @@ namespace Chess.Controllers
         public object Boards()
         {
             return Json(m_gameManager.FindAll().ToDictionary(game => game.GameId, GameBindingToGameData));
+        }
+
+        [System.Web.Http.HttpGet]
+        public object Moves(int id)
+        {
+            try
+            {
+                return Json(m_gameManager.FindAllMoves(id).Select<HistoryEntry, object>(m => new {m.Fen, m.Move}));
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(HttpStatusCode.NotFound, this);
+            }
         }
 
         [System.Web.Http.HttpGet]
