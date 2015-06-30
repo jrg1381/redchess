@@ -28,7 +28,7 @@ function updateBoard(newMove) {
         $("span#goForward").hide();
     }
 
-    board.position(positions[newMove].Fen);
+    board.position(positions.Moves[newMove].Fen);
 }
 
 function PopulateMovesBox() {
@@ -39,7 +39,7 @@ function PopulateMovesBox() {
         var originalI1 = i;
         var originalI2 = i + 1;
 
-        var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions[originalI1].Move + "</td> ";
+        var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions.Moves[originalI1].Move + "</td> ";
         if(originalI2 < lastMove) {
             text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].Move + "</td>";
         }

@@ -14,12 +14,12 @@
     function ProcessServerResponse(data) {
         spinner.stop();
 
-        positions = data.FenPositions;
-        lastMove = data.FenPositions.length;
+        positions = data;
+        lastMove = data.Moves.length;
         $("#errors").text(data.ErrorText.join(" "));
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         board = new ChessBoard('board', cfg);
-        board.position(positions[0].Fen);
+        board.position(positions.Moves[0].Fen);
         updateBoard(0);
         PopulateMovesBox();
         $("#main").show();

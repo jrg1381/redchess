@@ -22,5 +22,6 @@ namespace RedChess.WebEngine.Repositories
         bool Move(int id, Location startLocation, Location endLocation);
         void PromotePiece(int id, string promotionPiece);
         void UpdateMessage(int id);
+        bool IsParticipant(string name, int gameId);
     }
 }

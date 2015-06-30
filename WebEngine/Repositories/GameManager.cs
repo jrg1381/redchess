@@ -295,5 +295,12 @@ namespace RedChess.WebEngine.Repositories
 
             return newGame.GameId;
         }
+
+        public bool IsParticipant(string name, int gameId)
+        {
+            var game = m_repository.FindById(gameId);
+            var currentUserId = (new UserProfileRepository()).UserId(name);
+            return game.UserIdBlack == currentUserId || game.UserIdWhite == currentUserId;
+        }
     }
 }

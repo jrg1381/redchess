@@ -72,7 +72,7 @@ namespace Chess.Controllers
             }
 
             ViewBag.MoveNumber = move;
-            return View("History", entries);
+            return View("History", game);
 		}
 
         [HttpGet]

@@ -38,12 +38,12 @@ namespace Chess.Controllers
             try
             {
                 dynamic data = new ExpandoObject();
+                var game = m_gameManager.FetchGame(id);
                 var allMoves = m_gameManager.FindAllMoves(id).ToList();
-                var firstMove = allMoves.First();
 
                 data.Moves = allMoves.Select<HistoryEntry, object>(m => new { m.Fen, m.Move });
-                data.Description = firstMove.Description();
-                data.IsParticipant = HistoryEntry.IsParticipant(HttpContext.Current.User.Identity.Name, firstMove.GameId);
+                data.Description = game.Description;
+                data.IsParticipant = m_gameManager.IsParticipant(HttpContext.Current.User.Identity.Name, id);
 
                 return Json(data);
             }
