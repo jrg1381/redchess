@@ -298,9 +298,10 @@ namespace RedChess.WebEngine.Repositories
 
         public bool IsParticipant(string name, int gameId)
         {
+            if (String.IsNullOrEmpty(name))
+                return false;
             var game = m_repository.FindById(gameId);
-            var currentUserId = (new UserProfileRepository()).UserId(name);
-            return game.UserIdBlack == currentUserId || game.UserIdWhite == currentUserId;
+            return game.UserProfileBlack.UserName == name || game.UserProfileWhite.UserName == name;
         }
     }
 }
