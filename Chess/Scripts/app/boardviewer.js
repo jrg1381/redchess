@@ -41,7 +41,7 @@ function PopulateMovesBox() {
 
         var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions.Moves[originalI1].Move + "</td> ";
         if(originalI2 < lastMove) {
-            text += "<td id=\"m" + originalI2 + "\">" + positions[originalI2].Move + "</td>";
+            text += "<td id=\"m" + originalI2 + "\">" + positions.Moves[originalI2].Move + "</td>";
         }
         text += "</tr>";
 
