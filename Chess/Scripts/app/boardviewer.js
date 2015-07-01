@@ -1,99 +1,109 @@
-﻿var positions;
-var board;
-var lastMove = 0; // Total number of moves in the game
-var currentMove = 0;
+﻿function BoardViewer(positions, board) {
+    this.positions = positions;
+    this.board = board;
+    this.lastMove = positions.Moves.length;
+    this.currentMove = 0;
+    this.spinner = CreateSpinner();
 
-var spinner = CreateSpinner();
-
-function clickText() {
-    $("#m" + currentMove).removeClass("highlightText");
-    $(this).addClass("highlightText");
-    currentMove = parseInt(this.id.substr(1));
-    updateBoard(currentMove);
-}
-
-function ParentOfSpinny() {
-    return $('#spinner-location');
-}
-
-function updateBoard(newMove) {
-    $("span#goBack").show();
-    $("span#goForward").show();
-
-    if (newMove == 0) {
-        $("span#goBack").hide();
+    this.parentOfSpinny = function() {
+        return $('#spinner-location');
     }
 
-    if (newMove == lastMove - 1) {
-        $("span#goForward").hide();
-    }
+    this.updateBoard = function updateBoard(newMove) {
+        $("span#goBack").show();
+        $("span#goForward").show();
 
-    board.position(positions.Moves[newMove].Fen);
-}
-
-function PopulateMovesBox() {
-    var moveNumber = 1;
-    $('#moves').empty();
-
-    for (i = 1; i < lastMove; i+=2) {
-        var originalI1 = i;
-        var originalI2 = i + 1;
-
-        var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions.Moves[originalI1].Move + "</td> ";
-        if(originalI2 < lastMove) {
-            text += "<td id=\"m" + originalI2 + "\">" + positions.Moves[originalI2].Move + "</td>";
+        if (newMove === 0) {
+            $("span#goBack").hide();
         }
-        text += "</tr>";
 
-        $("#moves").append(text);
+        if (newMove === this.lastMove - 1) {
+            $("span#goForward").hide();
+        }
 
-        $("#m" + originalI1).on("click", clickText);
-        $("#m" + originalI2).on("click", clickText);
+        board.position(positions.Moves[newMove].Fen);
     }
+
+    this.populateMovesBox = function() {
+        var moveNumber = 1;
+        $('#moves').empty();
+
+        for (i = 1; i < this.lastMove; i += 2) {
+            var originalI1 = i;
+            var originalI2 = i + 1;
+
+            var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions.Moves[originalI1].Move + "</td> ";
+            if (originalI2 < this.lastMove) {
+                text += "<td id=\"m" + originalI2 + "\">" + positions.Moves[originalI2].Move + "</td>";
+            }
+            text += "</tr>";
+
+            $("#moves").append(text);
+
+            $("#m" + originalI1).on("click", this, this.clickText);
+            $("#m" + originalI2).on("click", this, this.clickText);
+        }
+    }
+
+    this.configureActionButtons = function() {
+        $("span.button").mouseover(function () {
+            $(this).parent().fadeTo(40, 1.0);
+        }).mouseout(function () {
+            $(this).parent().fadeTo(40, 0.7);
+        });
+
+        $("#goForward").on("click", this, function (event) {
+            if (event.data.currentMove == event.data.lastMove - 1) return;
+            event.data.updateBoard(event.data.currentMove + 1);
+            $("#m" + event.data.currentMove).removeClass("highlightText");
+            event.data.currentMove++;
+            $("#m" + event.data.currentMove).addClass("highlightText");
+        });
+
+        $("#goBack").on("click", this, function (event) {
+            if (event.data.currentMove === 0) return;
+            event.data.updateBoard(event.data.currentMove - 1);
+            $("#m" + event.data.currentMove).removeClass("highlightText");
+            event.data.currentMove--;
+            $("#m" + event.data.currentMove).addClass("highlightText");
+        });
+
+        $("#goStart").on("click", this, function (event) {
+            event.data.updateBoard(0);
+            $("#m" + event.data.currentMove).removeClass("highlightText");
+            event.datacurrentMove = 0;
+            $("#m" + event.data.currentMove).addClass("highlightText");
+        });
+
+        $("#goEnd").on("click", this, function (event) {
+            event.data.updateBoard(event.data.lastMove - 1);
+            $("#m" + event.data.currentMove).removeClass("highlightText");
+            event.data.currentMove = event.data.lastMove - 1;
+            $("#m" + event.data.currentMove).addClass("highlightText");
+        });
+
+        $("#goFlip").on("click", this, function (event) {
+            event.data.board.flip();
+        });
+
+        $("#playFromHere").on("click", this, function (event) {
+            var queryDict = {};
+            location.search.substr(1).split("&").forEach(function(item) { queryDict[item.split("=")[0]] = item.split("=")[1] });
+            window.location = "/History/PlayFromHere?move=" + event.data.currentMove + "&gameId=" + queryDict["gameId"];
+        });
+    };
+
+    this.clickText = function(event) {
+        $("#m" + event.data.currentMove).removeClass("highlightText");
+        $(this).addClass("highlightText");
+        event.data.currentMove = parseInt(this.id.substr(1));
+        event.data.updateBoard(event.data.currentMove);
+    }
+
+    this.populateMovesBox();
+    this.configureActionButtons();
+    board.position(this.positions.Moves[0].Fen);
+    this.updateBoard(0);
 }
 
-function ConfigureActionButtons() {
-    $("span.button").mouseover(function () {
-        $(this).parent().fadeTo(40, 1.0);
-    }).mouseout(function () {
-        $(this).parent().fadeTo(40, 0.7);
-    });
 
-    $("#goForward").on("click", function () {
-        if (currentMove == lastMove - 1) return;
-        updateBoard(currentMove + 1);
-        $("#m" + currentMove).removeClass("highlightText");
-        currentMove++;
-        $("#m" + currentMove).addClass("highlightText");
-    });
-
-    $("#goBack").on("click", function () {
-        if (currentMove == 0) return;
-        updateBoard(currentMove - 1);
-        $("#m" + currentMove).removeClass("highlightText");
-        currentMove--;
-        $("#m" + currentMove).addClass("highlightText");
-    });
-
-    $("#goStart").on("click", function () {
-        updateBoard(0);
-        $("#m" + currentMove).removeClass("highlightText");
-        currentMove = 0;
-        $("#m" + currentMove).addClass("highlightText");
-    });
-
-    $("#goEnd").on("click", function () {
-        updateBoard(lastMove - 1);
-        $("#m" + currentMove).removeClass("highlightText");
-        currentMove = lastMove - 1;
-        $("#m" + currentMove).addClass("highlightText");
-    });
-
-    $("#goFlip").on("click", function () {
-        board.flip();
-    });
-
-    $("#playFromHere").on("click", function() {
-        playFromHere();
-    });
-};

@@ -16,39 +16,21 @@
 
     $(document).ready(function() {
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
-        board = new ChessBoard('board', cfg);
+        var board = new ChessBoard('board', cfg);
 
         $.getJSON("/api/Moves/" + "@Model", function(data) {
             positions = data;
-            lastMove = positions.Moves.length;
-
-            board.position(positions.Moves[0].Fen);
-
-            if (location.hash.length != 0) {
-                updateBoard(parseInt(location.hash.substring(1)));
-            } else {
-                updateBoard(0);
-            }
-
+            var boardViewer = new BoardViewer(positions, board);
             $('#title').text(positions.Description);
             $('span#desc').text(positions.Description);
-            PopulateMovesBox();
-            ConfigureActionButtons();
 
-            $("#pgn-button").click(function () {
+            $("#pgn-button").click(function() {
                 location.href = "/History/Pgn/" + "@Model";
-        });
+            });
         });
     });
 </script>
-
-    <script>
-        function playFromHere() {
-            window.location = "/History/PlayFromHere?move=" + currentMove + "&gameId=" + "@Model";
-        }
-
-    </script>
-   
+  
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default">

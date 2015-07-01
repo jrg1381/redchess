@@ -11,24 +11,24 @@
 <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css" />
 
 <script>
-    function ProcessServerResponse(data) {
-        spinner.stop();
+    var boardViewer;
 
-        positions = data;
-        lastMove = data.Moves.length;
+    function ProcessServerResponse(data) {
+        boardViewer.spinner.stop();
+
         $("#errors").text(data.ErrorText.join(" "));
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
-        board = new ChessBoard('board', cfg);
-        board.position(positions.Moves[0].Fen);
-        updateBoard(0);
-        PopulateMovesBox();
+        var board = new ChessBoard('board', cfg);
+
         $("#main").show();
         $('#title').text(data.Tags.White + " vs " + data.Tags.Black);
         $("#accordion #one").slideUp();
+
+        boardViewer = new BoardViewer(data, board);
     }
 
     function ServerError(data) {
-        spinner.stop();
+        boardViewer.spinner.stop();
         $("#main").hide();
         $("#errors").text(data.statusText);
     }
@@ -42,7 +42,7 @@
         });
 
         $("#submitbutton").click(function () {
-            spinner.spin(ParentOfSpinny()[0]);
+            boardViewer.spinner.spin(boardViewer.parentOfSpinny()[0]);
 
             $.post("/Pgn/Create", {
                         "pgnText": $("#textarea").val(),
@@ -69,11 +69,11 @@
         });
 
         $("#main").hide();
+        var data = { Moves: [ { Fen : "", Move : "" }], Description: "", IsParticipant: false };
 
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
-        board = new ChessBoard('board', cfg);
-
-        ConfigureActionButtons();
+        var board = new ChessBoard('board', cfg);
+        boardViewer = new BoardViewer(data, board);
     });
 </script>
 
