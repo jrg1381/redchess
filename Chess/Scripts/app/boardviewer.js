@@ -24,7 +24,7 @@ function updateBoard(newMove) {
         $("span#goBack").hide();
     }
 
-    if (newMove == lastMove) {
+    if (newMove == lastMove - 1) {
         $("span#goForward").hide();
     }
 
