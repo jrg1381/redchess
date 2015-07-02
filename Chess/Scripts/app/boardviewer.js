@@ -9,7 +9,7 @@
         return $('#spinner-location');
     }
 
-    this.updateBoard = function updateBoard(newMove) {
+    this.updateBoard = function(newMove) {
         $("span#goBack").show();
         $("span#goForward").show();
 

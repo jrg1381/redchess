@@ -1,11 +1,14 @@
 ﻿@using RedChess.WebEngine.Models
 @model int
 
+@section head
+{
+    <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css"/>
+    <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
     <script src="/Scripts/app/spinner.js" type="text/javascript"></script>
     <script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css" />
     <script src="/Scripts/app/chessboard-0.3.0.js"></script>
-    <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
+}
 
     @{
         ViewBag.Title = "History";
