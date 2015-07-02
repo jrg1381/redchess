@@ -16,31 +16,31 @@
 </script>
 
 @if (!Request.IsAuthenticated)
-    {
+{
         <p>
             You need to be logged in to create new games.<br />
             <a href="/">Log in</a>
         </p>
-    }
+}
 
     <link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css" />
     <script src="/Scripts/app/chessboard-0.3.0.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         //SignalR stuff
         var updater = $.connection.updateServer;
         // Define a client-side message which the server can call
         updater.client.gameListUpdate = gameListUpdate;
 
         // Define a callback for when the connection is established. We join the client group for index page watchers
-        $.connection.hub.start(function() {
+        $.connection.hub.start(function () {
             $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
         });
 
         $("time.timeago").timeago();
 
-        $("div.miniboard").each(function(index, element) {
+        $("div.miniboard").each(function (index, element) {
             var originalText = element.innerText;
             if (originalText == null) {
                 originalText = element.innerHTML;
@@ -50,7 +50,7 @@
             var board = new ChessBoard(element, cfg);
         });
 
-        $("h3#turnindicator-o,h3#turnindicator-m").each(function(index, element) {
+        $("h3#turnindicator-o,h3#turnindicator-m").each(function (index, element) {
             var originalText = element.innerText;
             if (originalText == null) {
                 originalText = element.innerHTML;
@@ -62,8 +62,8 @@
     });
 
     function DeleteMultiple() {
-        var ids = $(".deleteCheckbox:checked").toArray().map(function(x) { return x.name; }).join();
-        $.post("/Board/DeleteMultiple", { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() }, function() { location.reload(); });
+        var ids = $(".deleteCheckbox:checked").toArray().map(function (x) { return x.name; }).join();
+        $.post("/Board/DeleteMultiple", { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() }, function () { location.reload(); });
     }
 
     function GoToGame(id) {
@@ -79,10 +79,15 @@
         }
     }
 </script>
+    
+ @{
+     var myCompletedGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver);
+     var oldGames = new Func<IGameBinding, bool>(x => x.CompletionDate < DateTime.UtcNow.AddMonths(-1));
+     var otherLiveGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver);
+ }
 
-
-    @if (Request.IsAuthenticated)
-    {
+@if (Request.IsAuthenticated)
+{
         <div class="row">
             <h3>My current games</h3>
             <div class="col-md-10">
@@ -125,14 +130,14 @@
         </div>
 
         <div class="row">
-            @{
-                var extraText = "";
-                var unshownGames = Model.Count(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate < DateTime.UtcNow.AddMonths(-1));
-                if (unshownGames > 0)
-                {
-                    extraText = String.Format("(not shown: {0} game{1} older than 30 days)", unshownGames, unshownGames > 1 ? "s" : "");
-                }
-            }
+@{
+                    var extraText = "";
+                    var unshownGames = Model.Count(x => myCompletedGames(x) && oldGames(x));
+                    if (unshownGames > 0)
+                    {
+                        extraText = String.Format("(not shown: {0} game{1} older than 30 days)", unshownGames, unshownGames > 1 ? "s" : "");
+                    }
+}
             <h3>My finished games</h3>
             @if (unshownGames >= 0)
             {
@@ -140,7 +145,7 @@
             }
             <div class="col-md-10">
                 <table class="table">
-                    @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate >= DateTime.UtcNow.AddMonths(-1)).OrderByDescending(x => x.CompletionDate))
+                    @foreach (var item in @Model.Where(x => myCompletedGames(x) && !oldGames(x)).OrderByDescending(x => x.CompletionDate))
                     {
                         var iso8601Datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
                         string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null).ToString();
@@ -169,24 +174,24 @@
                                 <a href="/Board/Delete/@item.GameId"><span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span></a>
                             </td>
                             <td style="vertical-align: middle">
-                                @Html.CheckBox(@item.GameId.ToString(), false, new { @class = "deleteCheckbox"})
+                                @Html.CheckBox(@item.GameId.ToString(), false, new { @class = "deleteCheckbox" })
                             </td>
                         </tr>
                     }
-                    @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate >= DateTime.UtcNow.AddMonths(-1)))
+                    @if (@Model.Any(x => myCompletedGames(x) && !oldGames(x)))
                     {
                         <tr><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
                     }
                 </table>
             </div>
         </div>
-    }
+}
 
 <div class="row">
     <h3>Other games</h3>
     <div class="col-md-10">
         <table class="table">
-            @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
+            @foreach (var item in @Model.Where(otherLiveGames).OrderByDescending(x => x.CreationDate))
             {
                 var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
 
@@ -211,7 +216,7 @@
                                 @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
                             </div>
                             <div class="panel-body">
-                                @Html.ActionLink("History", "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)
+                                @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)
                             </div>
                         </div>
                     </td>
@@ -220,4 +225,3 @@
         </table>
     </div>
 </div>
-
