@@ -17,7 +17,7 @@
     var boardViewer;
 
     function ProcessServerResponse(data) {
-        boardViewer.spinner.stop();
+        boardViewer.stopSpinning();
 
         $("#errors").text(data.ErrorText.join(" "));
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
@@ -31,7 +31,7 @@
     }
 
     function ServerError(data) {
-        boardViewer.spinner.stop();
+        boardViewer.stopSpinning();
         $("#main").hide();
         $("#errors").text(data.statusText);
     }
@@ -45,7 +45,7 @@
         });
 
         $("#submitbutton").click(function () {
-            boardViewer.spinner.spin(boardViewer.parentOfSpinny()[0]);
+            boardViewer.startSpinning();
 
             $.post("/Pgn/Create", {
                         "pgnText": $("#textarea").val(),
