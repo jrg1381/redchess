@@ -125,7 +125,19 @@
         </div>
 
         <div class="row">
+            @{
+                var extraText = "";
+                var unshownGames = Model.Count(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate < DateTime.UtcNow.AddMonths(-1));
+                if (unshownGames > 0)
+                {
+                    extraText = String.Format("(not shown: {0} game{1} older than 30 days)", unshownGames, unshownGames > 1 ? "s" : "");
+                }
+            }
             <h3>My finished games</h3>
+            @if (unshownGames >= 0)
+            {
+                <h5>@extraText</h5>;
+            }
             <div class="col-md-10">
                 <table class="table">
                     @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate >= DateTime.UtcNow.AddMonths(-1)).OrderByDescending(x => x.CompletionDate))
@@ -157,11 +169,11 @@
                                 <a href="/Board/Delete/@item.GameId"><span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span></a>
                             </td>
                             <td style="vertical-align: middle">
-                                @Html.CheckBox(@item.GameId.ToString(), false, null)
+                                @Html.CheckBox(@item.GameId.ToString(), false, new { @class = "deleteCheckbox"})
                             </td>
                         </tr>
                     }
-                    @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver))
+                    @if (@Model.Any(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver && x.CompletionDate >= DateTime.UtcNow.AddMonths(-1)))
                     {
                         <tr><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
                     }
