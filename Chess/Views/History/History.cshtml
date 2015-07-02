@@ -21,14 +21,14 @@
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         var board = new ChessBoard('board', cfg);
 
-        $.getJSON("/api/Moves/" + "@Model", function(data) {
+        $.getJSON("/api/Moves/@Model", function(data) {
             positions = data;
             var boardViewer = new BoardViewer(positions, board);
             $('#title').text(positions.Description);
             $('span#desc').text(positions.Description);
 
             $("#pgn-button").click(function() {
-                location.href = "/History/Pgn/" + "@Model";
+                location.href = "/History/Pgn/@Model";
             });
         });
     });
