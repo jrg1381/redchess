@@ -303,5 +303,10 @@ namespace RedChess.WebEngine.Repositories
             var game = m_repository.FindById(gameId);
             return game.UserProfileBlack.UserName == name || game.UserProfileWhite.UserName == name;
         }
+
+        public IEnumerable<IGameBinding> WithPlayer(string userName)
+        {
+            return m_repository.FindWithPlayer(userName).Select(x => new GameBinding(x, this)); ;
+        }
     }
 }

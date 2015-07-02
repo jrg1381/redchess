@@ -23,5 +23,6 @@ namespace RedChess.WebEngine.Repositories
         void PromotePiece(int id, string promotionPiece);
         void UpdateMessage(int id);
         bool IsParticipant(string name, int gameId);
+        IEnumerable<IGameBinding> WithPlayer(string userName);
     }
 }

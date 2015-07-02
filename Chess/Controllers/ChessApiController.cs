@@ -33,6 +33,12 @@ namespace Chess.Controllers
         }
 
         [System.Web.Http.HttpGet]
+        public object Boards(string id)
+        {
+            return Json(m_gameManager.WithPlayer(id).ToDictionary(game => game.GameId, GameBindingToGameData));
+        }
+
+        [System.Web.Http.HttpGet]
         public object Moves(int id)
         {
             try

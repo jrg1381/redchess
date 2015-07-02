@@ -42,5 +42,18 @@ namespace RedChess.WebEngine.Repositories
                 return context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Include(b => b.UserProfileWinner).ToList();
             }
         }
+
+        public IEnumerable<GameDto> FindWithPlayer(string userName)
+        {
+            using (var context = new ChessContext())
+            {
+                return
+                    context.Boards.Include(b => b.UserProfileBlack)
+                        .Include(b => b.UserProfileWhite)
+                        .Include(b => b.UserProfileWinner)
+                        .Where(b => b.UserProfileBlack.UserName == userName || b.UserProfileWhite.UserName == userName)
+                        .ToList();
+            }
+        }
     }
 }
