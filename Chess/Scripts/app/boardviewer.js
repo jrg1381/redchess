@@ -92,22 +92,22 @@
 
 BoardViewer.prototype.positions = null;
 
-BoardViewer.prototype.getSpinner = function () {
+BoardViewer.prototype.getSpinner = function() {
     if (this.spinner == null) {
         this.spinner = CreateSpinner();
     }
     return this.spinner;
-}
+};
 
-BoardViewer.prototype.startSpinning = function () {
+BoardViewer.prototype.startSpinning = function() {
     this.getSpinner().spin($("#spinner-location")[0]);
-}
+};
 
-BoardViewer.prototype.stopSpinning = function () {
+BoardViewer.prototype.stopSpinning = function() {
     this.getSpinner().stop();
-}
+};
 
-BoardViewer.prototype.updateBoard = function (newMove) {
+BoardViewer.prototype.updateBoard = function(newMove) {
     var lastMove = this.positions.Moves.length;
 
     $("span#goBack").show();
@@ -122,5 +122,5 @@ BoardViewer.prototype.updateBoard = function (newMove) {
     }
 
     this.board.position(this.positions.Moves[newMove].Fen);
-}
+};
 
