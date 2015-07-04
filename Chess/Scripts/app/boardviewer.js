@@ -4,38 +4,6 @@
     this.currentMove = 0;
 
     var that = this;
-    var spinner = CreateSpinner();
-
-    function getLastMove() {
-        return positions.Moves.length;
-    }
-
-    function getSpinner() {
-        return spinner;
-    }
-
-    this.startSpinning = function () {
-        getSpinner().spin($("#spinner-location")[0]);
-    }
-
-    this.stopSpinning = function () {
-        getSpinner().stop();
-    }
-
-    this.updateBoard = function (newMove) {
-        $("span#goBack").show();
-        $("span#goForward").show();
-
-        if (newMove === 0) {
-            $("span#goBack").hide();
-        }
-
-        if (newMove === getLastMove() - 1) {
-            $("span#goForward").hide();
-        }
-
-        board.position(positions.Moves[newMove].Fen);
-    }
 
     function clickText() {
         $("#m" + that.currentMove).removeClass("highlightText");
@@ -45,15 +13,16 @@
     }
 
     function populateMovesBox() {
+        var lastMove = positions.Moves.length;
         var moveNumber = 1;
         $("#moves").empty();
 
-        for (var i = 1; i < getLastMove(); i += 2) {
+        for (var i = 1; i < lastMove; i += 2) {
             var originalI1 = i;
             var originalI2 = i + 1;
 
             var text = "<tr><td class=\"movenumber\">" + moveNumber++ + ".</td><td id=\"m" + originalI1 + "\">" + positions.Moves[originalI1].Move + "</td> ";
-            if (originalI2 < getLastMove()) {
+            if (originalI2 < lastMove) {
                 text += "<td id=\"m" + originalI2 + "\">" + positions.Moves[originalI2].Move + "</td>";
             }
             text += "</tr>";
@@ -66,6 +35,8 @@
     }
 
     function configureActionButtons() {
+        var lastMove = positions.Moves.length;
+
         $("span.button").mouseover(function () {
             $(this).parent().fadeTo(40, 1.0);
         }).mouseout(function () {
@@ -73,7 +44,7 @@
         });
 
         $("#goForward").on("click", function () {
-            if (that.currentMove === getLastMove() - 1) return;
+            if (that.currentMove === lastMove - 1) return;
             that.updateBoard(that.currentMove + 1);
             $("#m" + that.currentMove).removeClass("highlightText");
             that.currentMove++;
@@ -96,9 +67,9 @@
         });
 
         $("#goEnd").on("click", function () {
-            that.updateBoard(getLastMove() - 1);
+            that.updateBoard(lastMove - 1);
             $("#m" + that.currentMove).removeClass("highlightText");
-            that.currentMove = getLastMove() - 1;
+            that.currentMove = lastMove - 1;
             $("#m" + that.currentMove).addClass("highlightText");
         });
 
@@ -119,4 +90,37 @@
     this.updateBoard(0);
 }
 
+BoardViewer.prototype.positions = null;
+
+BoardViewer.prototype.getSpinner = function () {
+    if (this.spinner == null) {
+        this.spinner = CreateSpinner();
+    }
+    return this.spinner;
+}
+
+BoardViewer.prototype.startSpinning = function () {
+    this.getSpinner().spin($("#spinner-location")[0]);
+}
+
+BoardViewer.prototype.stopSpinning = function () {
+    this.getSpinner().stop();
+}
+
+BoardViewer.prototype.updateBoard = function (newMove) {
+    var lastMove = this.positions.Moves.length;
+
+    $("span#goBack").show();
+    $("span#goForward").show();
+
+    if (newMove === 0) {
+        $("span#goBack").hide();
+    }
+
+    if (newMove === lastMove - 1) {
+        $("span#goForward").hide();
+    }
+
+    this.board.position(this.positions.Moves[newMove].Fen);
+}
 
