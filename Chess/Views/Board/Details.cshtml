@@ -28,16 +28,34 @@
 
 @{
     var shouldLock = @Model.ShouldLockUi;
-    var myClock = @Model.Clock;
+    var clockModel = @Model.Clock;
 }
 
 <script type="text/javascript">
     gameId = @Model.GameId;
     currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
+    var theChess;
 
     $(document).ready(function() {
-        DocumentReady();
-        UpdateUi('@Model.Fen');
+        var myClock = null;
+
+        @if (clockModel != null)
+        {
+            <text>
+                myClock = new Clock(gameId, @clockModel.TimeLimitMs);
+            </text>
+        }
+
+        theChess = new Chess(gameId, currentPlayerColor, myClock);
+
+        @if (clockModel != null)
+        {
+            <text>
+            myClock.theChess = theChess;
+            myClock.ClockDocumentReady();
+            </text>
+        }
+        theChess.updateUi('@Model.Fen');
 
         // Draw any user messages, and update the set of taken pieces
         @if (!String.IsNullOrEmpty(@Model.Status))
@@ -56,7 +74,7 @@
         }
 
         $("#lastmove").text('@Model.LastMove');
-        UpdateTakenPieces('@Model.Fen');
+        theChess.updateTakenPieces('@Model.Fen');
 
         @if (Model.MayClaimDraw) {
             <text>$('#drawbutton').show()</text>
@@ -64,13 +82,13 @@
 
         @if (Model.GameOver)
         {
-            <text>EndGame();</text>
+            <text>theChess.endGame();</text>
         }
         
 
         @if (shouldLock)
         {
-            <text>LockBoard();</text>
+            <text>theChess.lockBoard();</text>
         }
     });
 </script>  
@@ -86,8 +104,8 @@
         <div style="width: 512px; margin-bottom: 10px" id="board"></div>
         
         <div class="btn-group" role="group">
-                <a class="btn btn-default" id="resignbutton" onclick=" Resign(); ">Resign</a>
-                <a class="btn btn-default" id="drawbutton" onclick=" ClaimDraw(); ">Claim draw</a>
+                <a class="btn btn-default" id="resignbutton" onclick="theChess.resignGame(); ">Resign</a>
+                <a class="btn btn-default" id="drawbutton" onclick="theChess.claimDraw(); ">Claim draw</a>
         </div>
     </div>
 
@@ -107,6 +125,7 @@
                 };
 
                 @Html.AntiForgeryToken()
+                @Html.Hidden("Id", Model.GameId)
                 @Html.Hidden("Start")
                 @Html.Hidden("End")
 
@@ -118,19 +137,9 @@
                 </div>
             }
 
-            @if (myClock != null)
+            @if (clockModel != null)
             {
-                @Html.Partial("_Clock", myClock)
-                <text>
-                    <script src="/Scripts/app/clock.js" type="text/javascript"></script>
-                    <script>
-                        var myClock = new Clock(@Model.GameId, @myClock.TimeLimitMs, '@Model.CurrentPlayerColor(@User.Identity.Name)');
-                        isTimedGame = true;
-                        $(document).ready(function() {
-                            myClock.ClockDocumentReady();
-                        });
-                    </script>
-                </text>
+                @Html.Partial("_Clock", clockModel)
             }
 
             <div class="well">
