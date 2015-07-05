@@ -5,6 +5,7 @@
     this.isTimerEnabled = false;
     this.timerId = -1;
     this.theChess = null;
+    var that = this;
 
     this.GetLastSyncTime = function() {
         return $.cookie("PageLastSeen" + this.gameId);
@@ -16,16 +17,16 @@
 
     this.InitializeClockTimeLimits = function() {
         $.post("/Clock/RefreshClock", { "id": gameId }).done(function(data) {
-            this.lastServerBlackTimeRemaining = data.timeleftblack;
-            this.lastServerWhiteTimeRemaining = data.timeleftwhite;
-            $("#whitetime").text(new Date(this.lastServerWhiteTimeRemaining).toUTCString().substring(25, 17));
-            $("#blacktime").text(new Date(this.lastServerBlackTimeRemaining).toUTCString().substring(25, 17));
-        }.bind(this));
+            that.lastServerBlackTimeRemaining = data.timeleftblack;
+            that.lastServerWhiteTimeRemaining = data.timeleftwhite;
+            $("#whitetime").text(new Date(that.lastServerWhiteTimeRemaining).toUTCString().substring(25, 17));
+            $("#blacktime").text(new Date(that.lastServerBlackTimeRemaining).toUTCString().substring(25, 17));
+        });
     };
 
     this.startClockTicking = function() {
         clearInterval(this.timerId); // Don't run multiple clocks
-        this.timerId = setInterval(function() { this.LocalTimeCorrection(); }.bind(this), 1000);
+        this.timerId = setInterval(function () { that.LocalTimeCorrection(); }, 1000);
         this.isTimerEnabled = true;
     };
 
@@ -39,14 +40,14 @@
         this.theChess.unlockBoard();
         // Now update the time
         $.post("/Clock/RefreshClock", { "id": gameId }).done(function(data) {
-            this.lastServerBlackTimeRemaining = data.timeleftblack;
-            this.lastServerWhiteTimeRemaining = data.timeleftwhite;
-            if (!this.isTimerEnabled) {
-                this.LocalTimeCorrection();
-                this.timerId = setInterval(function() { this.LocalTimeCorrection(); }.bind(this), 1000);
-                this.isTimerEnabled = true;
+            that.lastServerBlackTimeRemaining = data.timeleftblack;
+            that.lastServerWhiteTimeRemaining = data.timeleftwhite;
+            if (!that.isTimerEnabled) {
+                that.LocalTimeCorrection();
+                that.timerId = setInterval(function () { that.LocalTimeCorrection(); }, 1000);
+                that.isTimerEnabled = true;
             }
-        }.bind(this));
+        });
     };
 
     // This updates the UI with the time elapsed for each player    
@@ -114,8 +115,8 @@
         var updater = $.connection.updateServer;
         // Define a client-side message which the server can call
         updater.client.startClock = function(message) {
-            this.ReadyToPlay(message);
-        }.bind(this);
+            that.ReadyToPlay(message);
+        };
 
         this.InitializeClockTimeLimits();
 
@@ -137,16 +138,16 @@
         $("div#readybutton").click(function() {
             $.post("/Clock/PlayerReady", { id: gameId }).done(function(data) {
                 $("td#ready").hide();
-                if (this.theChess.currentPlayerColor == "w") {
+                if (that.theChess.currentPlayerColor == "w") {
                     $("td#whiteready").removeClass("notready");
                     $("td#whiteready").addClass("ready");
                     $("td#whiteready").text("READY");
-                } else if (this.theChess.currentPlayerColor == "b") {
+                } else if (that.theChess.currentPlayerColor == "b") {
                     $("td#blackready").removeClass("notready");
                     $("td#blackready").addClass("ready");
                     $("td#blackready").text("READY");
                 }
-            }.bind(this));
-        }.bind(this));
+            });
+        });
     };
 }
