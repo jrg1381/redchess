@@ -58,6 +58,9 @@ function Chess(gameId, currentPlayerColor, clock) {
     this.spinner = null;
     this.isTimedGame = (clock != null);
     this.myClock = clock;
+    if (clock != null) {
+        clock.theChess = this;
+    }
 
     /* Unicode chess piece characters */
     this.pieceMapping = {
