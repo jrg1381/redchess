@@ -61,6 +61,7 @@ function Chess(gameId, currentPlayerColor, clock) {
     if (clock != null) {
         clock.theChess = this;
     }
+    var that = this;
 
     /* Unicode chess piece characters */
     this.pieceMapping = {
@@ -71,7 +72,7 @@ function Chess(gameId, currentPlayerColor, clock) {
     this.onDragStart = function (source, piece, position, orientation) {
         if ((orientation === 'white' && piece.search(/^w/) === -1) ||
             (orientation === 'black' && piece.search(/^b/) === -1) ||
-            !$("form").is(":hidden") || piece.search(this.currentPlayerColor) == -1 || this.currentTurn != this.currentPlayerColor || this.boardLocked) {
+            !$("form").is(":hidden") || piece.search(that.currentPlayerColor) == -1 || that.currentTurn != that.currentPlayerColor || that.boardLocked) {
             return false;
         }
         return true;
