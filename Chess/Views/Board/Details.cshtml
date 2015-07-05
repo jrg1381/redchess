@@ -27,13 +27,12 @@
 </style>
 
 @{
-    var shouldLock = @Model.ShouldLockUi;
     var clockModel = @Model.Clock;
 }
 
 <script type="text/javascript">
-    gameId = @Model.GameId;
-    currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
+    var gameId = @Model.GameId;
+    var currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
     var theChess;
 
     $(document).ready(function() {
@@ -51,10 +50,10 @@
         @if (clockModel != null)
         {
             <text>
-            myClock.theChess = theChess;
             myClock.ClockDocumentReady();
             </text>
         }
+
         theChess.updateUi('@Model.Fen');
 
         // Draw any user messages, and update the set of taken pieces
@@ -80,14 +79,12 @@
             <text>$('#drawbutton').show()</text>
         }
 
-        @if (Model.GameOver)
-        {
+        @if (Model.GameOver) {
             <text>theChess.endGame();</text>
         }
         
 
-        @if (shouldLock)
-        {
+        @if (@Model.ShouldLockUi) {
             <text>theChess.lockBoard();</text>
         }
     });
