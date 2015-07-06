@@ -7,9 +7,6 @@
     var shortFen = @Model.Fen.Split(breakCharacters)[0];
 }
 
-<link rel="stylesheet" type="text/css" href="/Scripts/app/chessboard-0.3.0.css"/>
-<script src="/Scripts/app/chessboard-0.3.0.js"></script>
-
 <script>
     $(document).ready(function () {
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '@shortFen', showNotation: false };

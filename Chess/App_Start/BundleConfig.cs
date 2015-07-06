@@ -23,13 +23,18 @@ namespace Chess
 			bundles.Add(new ScriptBundle("~/bundles/ajaxlogin").Include(
 				"~/Scripts/app/ajaxlogin.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/spin").Include("~/Scripts/spin.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/appscripts").Include(
+                "~/Scripts/spin.min.js",
+                "~/Scripts/app/spinner.js",
+                "~/Scripts/app/chessboard-0.3.0.js",
+                "~/Scripts/app/clock.js",
+                "~/Scripts/app/chess.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/timeago").Include("~/Scripts/jquery.timeago.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/Site.css",
-				"~/Content/TodoList.css"));
+				"~/Scripts/app/chessboard-0.3.0.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                 "~/Content/bootstrap.css",
