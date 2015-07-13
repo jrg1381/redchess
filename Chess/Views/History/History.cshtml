@@ -12,25 +12,36 @@
     }
 
 <script>
-    var positions;
-
-    $(document).ready(function() {
+    $(document).ready(function () {
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         var board = new ChessBoard('board', cfg);
+        var emptyData = { Moves: [{ Fen: "", Move: "" }], Description: "", IsParticipant: false };
+        var boardViewer = new BoardViewer(emptyData, board);
+        boardViewer.startSpinning();
 
-        $.getJSON("/api/Moves/@Model", function(data) {
-            positions = data;
-            var boardViewer = new BoardViewer(positions, board);
-            $('#title').text(positions.Description);
-            $('span#desc').text(positions.Description);
-
+        $.getJSON("/api/Moves/@Model")
+            .always(function() {
+                boardViewer.stopSpinning();
+            })
+        .done(function (data) {
+            boardViewer = new BoardViewer(data, board);
+            $('#title').text(data.Description);
+            $('span#desc').text(data.Description);
             $("#pgn-button").click(function() {
                 location.href = "/History/Pgn/@Model";
             });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            $('span#desc').text(jqXHR.status + " " + errorThrown);
+            $("table#moves").append("<tr><td>" + jqXHR.responseJSON.message + "</td></tr>");
+            $("table#moves").append("<tr><td>" + jqXHR.responseJSON.messageDetail + "</td></tr>");
+            $("#pgn-button").hide();
         });
     });
 </script>
-  
+<div class="row">
+    <div class="col-lg-3" id="spinner-location">
+    </div>
+</div>
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default">
