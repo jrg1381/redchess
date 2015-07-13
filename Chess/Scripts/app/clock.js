@@ -53,7 +53,6 @@
     // This updates the UI with the time elapsed for each player    
     this.LocalTimeCorrection = function() {
         var displayTimeWhite, displayTimeBlack;
-        var zeroEpoch = new Date(0);
         var diff = (new Date()).getTime() - this.GetLastSyncTime();
 
         if (this.theChess.currentTurn == "b") {
@@ -62,7 +61,7 @@
             $("#whitetime").text(displayTimeWhite);
             $("#blacktime").text(displayTimeBlack);
 
-            if ((new Date(this.lastServerBlackTimeRemaining - diff)) < zeroEpoch) {
+            if (diff > this.lastServerBlackTimeRemaining) {
                 this.SyncClockWithServer();
                 clearInterval(this.timerId);
                 $("#messages").text("Black is out of time");
@@ -78,7 +77,7 @@
             $("#whitetime").text(displayTimeWhite);
             $("#blacktime").text(displayTimeBlack);
 
-            if ((new Date(this.lastServerWhiteTimeRemaining - diff)) < zeroEpoch) {
+            if (diff > this.lastServerWhiteTimeRemaining) {
                 this.SyncClockWithServer();
                 clearInterval(this.timerId);
                 $("#messages").text("White is out of time");
