@@ -62,7 +62,7 @@ namespace Chess.Controllers
         public ActionResult ShowMove(string gameId, string moveNumber)
 		{
 			int game = Int32.Parse(gameId);
-			int move = Int32.Parse(moveNumber);
+			int move = Int32.Parse(moveNumber ?? "0");
 
             var entries = m_gameManager.FindAllMoves(game);
 
