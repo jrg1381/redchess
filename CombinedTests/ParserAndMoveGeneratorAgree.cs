@@ -38,6 +38,9 @@ namespace CombinedTests
 
         private void CheckIdentical(string text)
         {
+            if (text.Contains("[FEN"))
+                return;
+
             var parser = ParserFactory.GetParser();
             
             parser.Parse(text, (s, m, x) =>
