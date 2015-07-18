@@ -195,7 +195,7 @@ namespace RedChess.PgnProcessor
             if (m_board.IsAwaitingPromotionDecision())
             {
                 m_board.PromotePiece(promotedPiece);
-                tokenText += "(=" + promotedPiece + ")";
+                tokenText += "=" + promotedPiece;
             }
 
             tokenText += checkOrMate;
