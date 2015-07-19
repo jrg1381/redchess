@@ -1,3 +1,3 @@
 redchess
 ========
-<!-- bogus commit to trigger deployment -->
+<!-- commit to trigger deployment -->
