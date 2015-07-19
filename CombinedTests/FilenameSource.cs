@@ -9,7 +9,7 @@ namespace CombinedTests
         {
             get
             {
-                return Directory.GetFiles(@"..\..\..\ParserTests\PgnFiles", "*.pgn");
+                return Directory.GetFiles(@".\PgnFiles", "*.pgn");
             }
         }
     }

@@ -9,7 +9,7 @@ namespace RedChess.ParserTests
         {
             get 
             {
-                return Directory.GetFiles(@"..\..\PgnFiles","*.pgn");
+                return Directory.GetFiles(@".\PgnFiles","*.pgn");
             }
         }
     }
