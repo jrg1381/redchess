@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
