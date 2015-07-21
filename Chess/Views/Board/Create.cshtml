@@ -50,12 +50,54 @@
                 $("input#TimeLimit").attr("disabled","");
             }
         });
-        
+
+        $("#createForm").valid();
         $("button#submitbutton").click(SubmitForm);
     });
 
+    function markErrors(theForm) {
+        var errorSummaryAnyState = theForm.find('.validation-summary-errors, .validation-summary-valid');
+        var errorSummary = errorSummaryAnyState.removeClass('validation-summary-valid').addClass('validation-summary-errors');
+        return errorSummary;
+    }
+
     function SubmitForm() {
-        $("form#createForm").submit();
+        var theButton = $("button#submitbutton");
+        var theForm = $("#createForm");
+
+        if (!theForm.valid())
+            return false;
+
+        theButton.attr('disabled', true);
+
+        $.ajax({
+            type: "POST",
+            url: theForm.attr('action'),
+            data: theForm.serialize(), // serializes the form's elements.
+            success: function (data) {
+                if (!data.success) {
+                    var errorSummary = markErrors(theForm);
+
+                    var items = $.map(data.errors, function (error) {
+                        return '<li>' + error + '</li>';
+                    }).join('');
+
+                    errorSummary.find('ul').empty().append(items);
+                }
+                else {
+                    document.location = data.redirect;
+                }
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var errorSummary = markErrors(theForm);
+                errorSummary.find('ul').empty().append("<li>"+ textStatus + "</li>");
+            },
+            complete : function() {
+                theButton.removeAttr("disabled");
+            }
+        });
+        
+        return false; // avoid to execute the actual submit of the form.
     }
 </script>
 
