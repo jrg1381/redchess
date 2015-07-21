@@ -69,6 +69,7 @@
             return false;
 
         theButton.attr('disabled', true);
+        var spinner = StartLogoSpinner();
 
         $.ajax({
             type: "POST",
@@ -94,6 +95,7 @@
             },
             complete : function() {
                 theButton.removeAttr("disabled");
+                spinner.stop();
             }
         });
         
