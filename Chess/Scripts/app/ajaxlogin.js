@@ -21,8 +21,10 @@
 
         // We check if jQuery.validator exists on the form
         if (!$form.valid || $form.valid()) {
+            var spinner = StartLogoSpinner();
             $.post($form.attr('action'), $form.serializeArray())
                 .done(function (json) {
+                    spinner.stop();
                     json = json || {};
 
                     // In case of success, we redirect to the provided URL or the same page.
