@@ -19,6 +19,8 @@
     }
 
     function SubmitForm() {
+        getSpinController().startLogoSpinner();
+        $("button#deleteButton").attr("disabled", true);
         $("form#deleteForm").submit();
     }
 </script>
