@@ -69,7 +69,7 @@
             return false;
 
         theButton.attr('disabled', true);
-        var spinner = StartLogoSpinner();
+        getSpinController().startLogoSpinner();
 
         $.ajax({
             type: "POST",
@@ -91,11 +91,11 @@
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 var errorSummary = markErrors(theForm);
-                errorSummary.find('ul').empty().append("<li>"+ textStatus + "</li>");
+                errorSummary.find('ul').empty().append("<li>" + textStatus + "</li>");
+                getSpinController().stopLogoSpinner();
             },
             complete : function() {
                 theButton.removeAttr("disabled");
-                spinner.stop();
             }
         });
         
