@@ -35,14 +35,14 @@ namespace WebTests
             bool success = WaitHelper.WaitFor(TimeSpan.FromSeconds(5), () => turnIndicator.Text.Contains("GAME OVER"));
 
             Assert.True(success, "Waited for GAME OVER notification in messages but it never came - " + Color);
-            Assert.AreEqual("Checkmate!", messages.Text, "Expected checkmate message - " + Color);
+            Assert.AreEqual("Checkmate", messages.Text, "Expected checkmate message - " + Color);
         }
 
         public void Login(string baseUrl)
         {
             Driver.Navigate().GoToUrl(baseUrl);
             var loginField = Driver.FindElement(By.Id("loginName"));
-            var passwordField = Driver.FindElement(By.Id("Password"));
+            var passwordField = Driver.FindElement(By.Id("password"));
 
             loginField.Clear();
             loginField.Click();
@@ -71,11 +71,11 @@ namespace WebTests
             WaitForTurn();
 
             var builder = new Actions(Driver);
-            var canvas = Driver.FindElement(By.CssSelector("canvas#pieces"));
+            var board = Driver.FindElement(By.CssSelector("div.board-b72b1"));
             var startPosition = new Offset(start, Color);
             var endPosition = new Offset(end, Color);
 
-            IAction dragAndDrop = builder.MoveToElement(canvas, startPosition.X, startPosition.Y).
+            IAction dragAndDrop = builder.MoveToElement(board, startPosition.X, startPosition.Y).
                 ClickAndHold().
                 MoveByOffset(endPosition.X - startPosition.X, endPosition.Y - startPosition.Y).
                 Release().

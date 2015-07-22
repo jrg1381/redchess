@@ -6,8 +6,10 @@ using System.Net.Cache;
 using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using RedChess.ChessCommon.Enumerations;
@@ -40,15 +42,15 @@ namespace WebTests
         [SetUp]
         public void SetupTest()
         {
-            IWebDriver driverPlayerOne = new FirefoxDriver();
-            IWebDriver driverPlayerTwo = new FirefoxDriver();
+            IWebDriver driverPlayerOne = new ChromeDriver();
+            IWebDriver driverPlayerTwo = new ChromeDriver();
             driverPlayerOne.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(8));
             driverPlayerTwo.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(8));
             m_baseUrl = (new UriBuilder("http", "localhost", Port)).ToString();
 
             WarmTheWebServer(m_baseUrl);
 
-            m_clivePlayer = new Player(PieceColor.Black, "clive", "grandmaster", driverPlayerTwo);
+            m_clivePlayer = new Player(PieceColor.Black, "clivetong", "grandmaster", driverPlayerTwo);
             m_jamesPlayer = new Player(PieceColor.White, "james", "doomlord", driverPlayerOne);
 
             m_verificationErrors = new StringBuilder();
@@ -77,8 +79,10 @@ namespace WebTests
             m_jamesPlayer.Login(m_baseUrl);
             m_clivePlayer.Login(m_baseUrl);
 
-            m_jamesPlayer.Driver.FindElement(By.LinkText("New Game")).Click();
-            m_jamesPlayer.Driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
+            m_jamesPlayer.Driver.FindElement(By.LinkText("New game")).Click();
+            m_jamesPlayer.Driver.FindElement(By.CssSelector("button[id=\"submitbutton\"]")).Click();
+
+            Thread.Sleep(5000);
 
             var gameId = m_jamesPlayer.Driver.Url.Split(new[] { '/' }).Last();
 
