@@ -1,17 +1,10 @@
 using System;
-using System.CodeDom;
 using System.Linq;
 using System.Net;
-using System.Net.Cache;
-using System.Security.Permissions;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Support.UI;
 using RedChess.ChessCommon.Enumerations;
 
 namespace WebTests
