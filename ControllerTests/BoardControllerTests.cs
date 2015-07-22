@@ -1,5 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Chess.Filters;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using RedChess.WebEngine.Repositories;
@@ -82,9 +89,7 @@ namespace ControllerTests
             var fakeIdProvider = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdProvider.Expect(x => x.CurrentUser).Return("james");
 
-            var fakeGame = GetFakeGame();
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(40)).Return(fakeGame);
             fakeRepo.Expect(x => x.Delete(40));
 
             var manager = new GameManager(fakeRepo);
@@ -98,13 +103,6 @@ namespace ControllerTests
         public void DeleteMultipleCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
-
-            foreach(var x in new [] {10,20,30,40 })
-            {
-                var fakeGame = GetFakeGame(x);
-                var capture = x; // avoid closure problems
-                fakeRepo.Expect(y => y.FindById(capture)).Return(fakeGame);
-            }
 
             fakeRepo.Expect(x => x.Delete(10));
             fakeRepo.Expect(x => x.Delete(20));
@@ -129,8 +127,8 @@ namespace ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("captain_bogus");
             var controller = new BoardController(manager, fakeIdentity);
-            controller.DeleteMultiple("10");
-
+            var context = PerformParticipantFiltering(controller);
+            Assert.NotNull(context, "Filter should have denied us");
             fakeRepo.VerifyAllExpectations();
         }
 
@@ -138,7 +136,6 @@ namespace ControllerTests
         public void DeleteMultipleOneArgumentCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(GetFakeGame());
             fakeRepo.Expect(x => x.Delete(10));
             var manager = new GameManager(fakeRepo);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
@@ -205,18 +202,41 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var context = PerformParticipantFiltering(controller);
 
             if (allowed)
             {
+                Assert.Null(context.Result, "Filter should not have denied us");
                 fakeRepo.Expect(x => x.Delete(10)).Repeat.Once();
+                controller.DeleteConfirmed(10);
             }
             else
             {
-                fakeRepo.Expect(x => x.Delete(10)).Repeat.Never();
+                dynamic jsonDeny = ((JsonResult)context.Result).Data;
+                Assert.NotNull(jsonDeny, "Filter should have denied us");
             }
 
-            controller.DeleteConfirmed(10);
             fakeRepo.VerifyAllExpectations();
+        }
+
+        private static AuthorizationContext PerformParticipantFiltering(BoardController controller)
+        {
+            var httpContext = MockRepository.GenerateMock<HttpContextBase>();
+            var httpRequest = MockRepository.GenerateMock<HttpRequestBase>();
+            var theParams = new NameValueCollection();
+            theParams["id"] = "10";
+            httpRequest.Expect(x => x.Params).Return(theParams);
+            httpContext.Expect(x => x.Request).Return(httpRequest);
+
+            var context =
+                new AuthorizationContext(new ControllerContext(httpContext,
+                    new RouteData(),
+                    controller));
+
+
+            var authFilter = new VerifyIsParticipantAttribute();
+            authFilter.OnAuthorization(context);
+            return context;
         }
 
         [TestCase("james", false)]
@@ -248,15 +268,17 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var context = PerformParticipantFiltering(controller);
             var g = fakeRepo.FindById(10);
 
             if (allowed)
             {
                 fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Once();
+                Assert.Null(context.Result, "Filter should not have denied us");
             }
             else
             {
-                fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Never();
+                Assert.NotNull(context.Result, "Filter should have denied us");
             }
 
             controller.Resign(10);
