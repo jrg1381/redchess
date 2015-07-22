@@ -202,13 +202,13 @@ namespace Chess.Controllers
             return MayManipulateBoard(gameId, m_identityProvider.CurrentUser);
         }
 
-        public bool MayManipulateBoard(int gameId, string userName)
+        internal bool MayManipulateBoard(int gameId, string userName)
         {
             var game = m_gameManager.FetchGame(gameId);
             return MayManipulateBoard(game, userName);
         }
 
-        public bool MayManipulateBoard(IGameBinding game, string userName)
+        private bool MayManipulateBoard(IGameBinding game, string userName)
         {
             return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
         }
