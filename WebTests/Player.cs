@@ -57,7 +57,7 @@ namespace WebTests
             Driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
         }
 
-        private void WaitForTurn()
+        public void WaitForTurn()
         {
             var turnIndicator = Driver.FindElement(By.Id("turnindicator"));
             var expectedText = Color == PieceColor.Black ? "Black" : "White";

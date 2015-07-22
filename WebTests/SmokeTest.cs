@@ -82,7 +82,7 @@ namespace WebTests
             m_jamesPlayer.Driver.FindElement(By.LinkText("New game")).Click();
             m_jamesPlayer.Driver.FindElement(By.CssSelector("button[id=\"submitbutton\"]")).Click();
 
-            Thread.Sleep(5000);
+            m_jamesPlayer.WaitForTurn();
 
             var gameId = m_jamesPlayer.Driver.Url.Split(new[] { '/' }).Last();
 
