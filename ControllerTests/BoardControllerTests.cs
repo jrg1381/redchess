@@ -127,8 +127,8 @@ namespace ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("captain_bogus");
             var controller = new BoardController(manager, fakeIdentity);
-            var context = PerformParticipantFiltering(controller);
-            Assert.NotNull(context, "Filter should have denied us");
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteMultiple");
+            Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             fakeRepo.VerifyAllExpectations();
         }
 
@@ -202,24 +202,29 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var context = PerformParticipantFiltering(controller);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteConfirmed");
 
             if (allowed)
             {
-                Assert.Null(context.Result, "Filter should not have denied us");
+                Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
                 fakeRepo.Expect(x => x.Delete(10)).Repeat.Once();
                 controller.DeleteConfirmed(10);
             }
             else
             {
-                dynamic jsonDeny = ((JsonResult)context.Result).Data;
-                Assert.NotNull(jsonDeny, "Filter should have denied us");
+                Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             }
 
             fakeRepo.VerifyAllExpectations();
         }
 
-        private static AuthorizationContext PerformParticipantFiltering(BoardController controller)
+        /// <summary>
+        /// Return true if the action is allowed, false otherwise
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
+        private static bool PerformParticipantFiltering(BoardController controller, string actionName)
         {
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             var httpRequest = MockRepository.GenerateMock<HttpRequestBase>();
@@ -228,15 +233,19 @@ namespace ControllerTests
             httpRequest.Expect(x => x.Params).Return(theParams);
             httpContext.Expect(x => x.Request).Return(httpRequest);
 
+            // If the attribute is missing, the action must be allowed
+            var methodInfo = controller.GetType().GetMethod(actionName);
+            if (methodInfo.GetCustomAttributes(typeof(VerifyIsParticipantAttribute), true).Length == 0)
+                return true;
+
             var context =
                 new AuthorizationContext(new ControllerContext(httpContext,
                     new RouteData(),
-                    controller));
-
+                    controller), new ReflectedActionDescriptor(methodInfo, actionName, new ReflectedControllerDescriptor(controller.GetType())));
 
             var authFilter = new VerifyIsParticipantAttribute();
             authFilter.OnAuthorization(context);
-            return context;
+            return context.Result == null; // The result has not been set by the filter, so it passes
         }
 
         [TestCase("james", false)]
@@ -268,17 +277,17 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var context = PerformParticipantFiltering(controller);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, "Resign");
             var g = fakeRepo.FindById(10);
 
             if (allowed)
             {
                 fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Once();
-                Assert.Null(context.Result, "Filter should not have denied us");
+                Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
             }
             else
             {
-                Assert.NotNull(context.Result, "Filter should have denied us");
+                Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             }
 
             controller.Resign(10);
