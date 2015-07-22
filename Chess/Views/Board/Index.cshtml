@@ -60,7 +60,25 @@
 
     function DeleteMultiple() {
         var ids = $(".deleteCheckbox:checked").toArray().map(function (x) { return x.name; }).join();
-        $.post("/Board/DeleteMultiple", { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() }, function () { location.reload(); });
+        if (ids.length == 0) {
+            return false;
+        };
+
+        getSpinController().startLogoSpinner();
+        $.post("/Board/DeleteMultiple",
+            { ids: ids, "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() })
+            .done(function(json) {
+                json = json || {};
+
+                if (json.success) {
+                    window.location = json.redirect || location.href;
+                } else {
+                    getSpinController().stopLogoSpinner();
+                }
+            })
+            .error(function (jqXhr, textStatus, errorThrown) {
+                getSpinController().stopLogoSpinner();
+            });
     }
 
     function GoToGame(id) {

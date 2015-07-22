@@ -127,10 +127,14 @@ namespace Chess.Controllers
         {
             foreach (var id in ids.Split(',').Select(Int32.Parse))
             {
+                if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
+                {
+                    return Json(new { success = false, errors = new [] {"Attempted to delete board in which current user is not a participant"} });
+                }
                 DestroyBoard(id);
             }
 
-            return RedirectToAction("Index");
+            return Json(new { success = true, redirect = "/Board/Index" });
         }
 
         private void DestroyBoard(int id)

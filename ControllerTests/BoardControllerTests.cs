@@ -13,7 +13,7 @@ namespace ControllerTests
     [TestFixture]
     class BoardControllerTests
     {
-        private GameDto GetFakeGame()
+        private GameDto GetFakeGame(int id = 10)
         {
             var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
             var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
@@ -26,7 +26,7 @@ namespace ControllerTests
             fakeGame.UserIdWhite = opponentUserProfile.UserId;
 
             fakeGame.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
-            fakeGame.GameId = 10;
+            fakeGame.GameId = id;
 
             return fakeGame;
         }
@@ -98,13 +98,38 @@ namespace ControllerTests
         public void DeleteMultipleCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
+
+            foreach(var x in new [] {10,20,30,40 })
+            {
+                var fakeGame = GetFakeGame(x);
+                var capture = x; // avoid closure problems
+                fakeRepo.Expect(y => y.FindById(capture)).Return(fakeGame);
+            }
+
             fakeRepo.Expect(x => x.Delete(10));
             fakeRepo.Expect(x => x.Delete(20));
             fakeRepo.Expect(x => x.Delete(30));
             fakeRepo.Expect(x => x.Delete(40));
             var manager = new GameManager(fakeRepo);
-            var controller = new BoardController(manager);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("james");
+            var controller = new BoardController(manager, fakeIdentity);
             controller.DeleteMultiple("10,20,30,40");
+
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void DeleteMultipleCannotDeleteArbitraryGames()
+        {
+            var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(10)).Return(GetFakeGame());
+            fakeRepo.AssertWasNotCalled(x => x.Delete(10));
+            var manager = new GameManager(fakeRepo);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("captain_bogus");
+            var controller = new BoardController(manager, fakeIdentity);
+            controller.DeleteMultiple("10");
 
             fakeRepo.VerifyAllExpectations();
         }
@@ -113,9 +138,12 @@ namespace ControllerTests
         public void DeleteMultipleOneArgumentCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(10)).Return(GetFakeGame());
             fakeRepo.Expect(x => x.Delete(10));
             var manager = new GameManager(fakeRepo);
-            var controller = new BoardController(manager);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("james");
+            var controller = new BoardController(manager, fakeIdentity);
             controller.DeleteMultiple("10");
 
             fakeRepo.VerifyAllExpectations();
