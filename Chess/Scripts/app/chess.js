@@ -1,10 +1,4 @@
 ﻿Chess.prototype.processServerResponse = function (data) {
-    this.updateUi(data.fen);
-
-    if (this.isTimedGame) {
-        this.myClock.startClockTicking();
-    }
-
     if (data.message) {
         $("#messages").parent().css('visibility', 'visible');
         $("#messages").text(data.message);
@@ -13,12 +7,18 @@
         $("#messages").html('&nbsp;');
     }
 
-    if (data.mayClaimDraw) {
-        $("#drawbutton").show();
-    }
-
     if (data.status == "AUTH") {
         return; /* Not allowed to play on this board */
+    }
+
+    this.updateUi(data.fen);
+
+    if (this.isTimedGame) {
+        this.myClock.startClockTicking();
+    }
+
+    if (data.mayClaimDraw) {
+        $("#drawbutton").show();
     }
 
     if (data.status == "RESIGN" || data.status == "TIME" || data.status == "DRAW") {

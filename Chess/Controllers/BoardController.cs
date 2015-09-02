@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Chess.Models;
+using Chess.Filters;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;
@@ -123,14 +123,11 @@ namespace Chess.Controllers
 
         [HttpPost, ActionName("DeleteMultiple")]
         [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
         public ActionResult DeleteMultiple(string ids)
         {
             foreach (var id in ids.Split(',').Select(Int32.Parse))
             {
-                if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
-                {
-                    return Json(new { success = false, errors = new [] {"Attempted to delete board in which current user is not a participant"} });
-                }
                 DestroyBoard(id);
             }
 
@@ -147,12 +144,9 @@ namespace Chess.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
-            {
-                return RedirectToAction("Index");
-            }
             DestroyBoard(id);
 
             RefreshIndexPage();
@@ -166,14 +160,10 @@ namespace Chess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
         public ActionResult TimedOut(int id, string message, string timedoutcolor)
         {
             var game = m_gameManager.FetchGame(id);
-
-            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
-            {
-                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-            }
 
             m_gameManager.TimeGameOut(id, message, timedoutcolor);
             var jsonObject = new { fen = game.Fen, message = message, status = "TIME" };
@@ -186,15 +176,10 @@ namespace Chess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
         public ActionResult Resign(int id)
         {
             var game = m_gameManager.FetchGame(id);
-
-            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
-            {
-                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-            }
-
             var resignationMessage = String.Format("{0} resigned", m_identityProvider.CurrentUser);
 
             // If current player is white, and is resigning, then black wins
@@ -212,22 +197,28 @@ namespace Chess.Controllers
             return Json(jsonObject);
         }
 
-        public bool MayManipulateBoard(int gameId, string userName)
+        public bool MayManipulateBoard(int gameId)
+        {
+            return MayManipulateBoard(gameId, m_identityProvider.CurrentUser);
+        }
+
+        internal bool MayManipulateBoard(int gameId, string userName)
         {
             var game = m_gameManager.FetchGame(gameId);
+            return MayManipulateBoard(game, userName);
+        }
+
+        private bool MayManipulateBoard(IGameBinding game, string userName)
+        {
             return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
         public ActionResult ClaimDraw(int id)
         {
             var game = m_gameManager.FetchGame(id);
-
-            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
-            {
-                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
-            }
 
             if (!game.MayClaimDraw)
             {
@@ -249,6 +240,7 @@ namespace Chess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
         public ActionResult PlayMove(int id, string start, string end, string promote)
         {
             var game = m_gameManager.FetchGame(id);
@@ -261,11 +253,6 @@ namespace Chess.Controllers
             if (game.GameOver)
             {
                 return Json(new {fen = game.Fen, message = game.Status, status = "FAIL"});
-            }
-
-            if (!MayManipulateBoard(id, m_identityProvider.CurrentUser))
-            {
-                return Json(new {fen = game.Fen, message = "You are not allowed to play on this board", status = "AUTH"});
             }
 
             // This is also covered by client side validation

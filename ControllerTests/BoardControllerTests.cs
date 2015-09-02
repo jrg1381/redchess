@@ -1,5 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Chess.Filters;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using RedChess.WebEngine.Repositories;
@@ -13,7 +20,9 @@ namespace ControllerTests
     [TestFixture]
     class BoardControllerTests
     {
-        private GameDto GetFakeGame(int id = 10)
+        private const int c_fakeGameId = 10;
+
+        private GameDto GetFakeGame(int id = c_fakeGameId)
         {
             var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
             var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
@@ -40,7 +49,7 @@ namespace ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(10)).Return(fakeGame);
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
@@ -57,7 +66,7 @@ namespace ControllerTests
             fakeGame.UserProfileBlack = myUserProfile;
             fakeGame.UserProfileWhite = opponentUserProfile;
             fakeGame.Fen = "k6K/8/8/8/8/8/7p/8 b - - 0";
-            fakeGame.GameId = 10;
+            fakeGame.GameId = c_fakeGameId;
 
             return fakeGame;
         }
@@ -82,9 +91,7 @@ namespace ControllerTests
             var fakeIdProvider = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdProvider.Expect(x => x.CurrentUser).Return("james");
 
-            var fakeGame = GetFakeGame();
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(40)).Return(fakeGame);
             fakeRepo.Expect(x => x.Delete(40));
 
             var manager = new GameManager(fakeRepo);
@@ -99,14 +106,7 @@ namespace ControllerTests
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
 
-            foreach(var x in new [] {10,20,30,40 })
-            {
-                var fakeGame = GetFakeGame(x);
-                var capture = x; // avoid closure problems
-                fakeRepo.Expect(y => y.FindById(capture)).Return(fakeGame);
-            }
-
-            fakeRepo.Expect(x => x.Delete(10));
+            fakeRepo.Expect(x => x.Delete(c_fakeGameId));
             fakeRepo.Expect(x => x.Delete(20));
             fakeRepo.Expect(x => x.Delete(30));
             fakeRepo.Expect(x => x.Delete(40));
@@ -114,7 +114,7 @@ namespace ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("james");
             var controller = new BoardController(manager, fakeIdentity);
-            controller.DeleteMultiple("10,20,30,40");
+            controller.DeleteMultiple(c_fakeGameId + ",20,30,40");
 
             fakeRepo.VerifyAllExpectations();
         }
@@ -123,14 +123,14 @@ namespace ControllerTests
         public void DeleteMultipleCannotDeleteArbitraryGames()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(GetFakeGame());
-            fakeRepo.AssertWasNotCalled(x => x.Delete(10));
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(GetFakeGame());
+            fakeRepo.AssertWasNotCalled(x => x.Delete(c_fakeGameId));
             var manager = new GameManager(fakeRepo);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("captain_bogus");
             var controller = new BoardController(manager, fakeIdentity);
-            controller.DeleteMultiple("10");
-
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteMultiple");
+            Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             fakeRepo.VerifyAllExpectations();
         }
 
@@ -138,13 +138,12 @@ namespace ControllerTests
         public void DeleteMultipleOneArgumentCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(GetFakeGame());
-            fakeRepo.Expect(x => x.Delete(10));
+            fakeRepo.Expect(x => x.Delete(c_fakeGameId));
             var manager = new GameManager(fakeRepo);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("james");
             var controller = new BoardController(manager, fakeIdentity);
-            controller.DeleteMultiple("10");
+            controller.DeleteMultiple(c_fakeGameId.ToString());
 
             fakeRepo.VerifyAllExpectations();
         }
@@ -157,10 +156,10 @@ namespace ControllerTests
             var fakeGame = GetFakeGame();
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var manager = new GameManager(fakeRepo);
             var controller = new BoardController(manager);
-            bool ok = controller.MayManipulateBoard(10, userName);
+            bool ok = controller.MayManipulateBoard(c_fakeGameId, userName);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
         }
@@ -173,7 +172,7 @@ namespace ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(10)).Return(fakeGame);
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
@@ -189,10 +188,10 @@ namespace ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(10)).Return(fakeGame);
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
-            fakeClockRepo.Expect(x => x.Clock(10)).Return(new Clock());
+            fakeClockRepo.Expect(x => x.Clock(c_fakeGameId)).Return(new Clock());
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
             return new BoardController(manager, fakeIdentity);
@@ -205,18 +204,50 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteConfirmed");
 
             if (allowed)
             {
-                fakeRepo.Expect(x => x.Delete(10)).Repeat.Once();
+                Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
+                fakeRepo.Expect(x => x.Delete(c_fakeGameId)).Repeat.Once();
+                controller.DeleteConfirmed(c_fakeGameId);
             }
             else
             {
-                fakeRepo.Expect(x => x.Delete(10)).Repeat.Never();
+                Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             }
 
-            controller.DeleteConfirmed(10);
             fakeRepo.VerifyAllExpectations();
+        }
+
+        /// <summary>
+        /// Return true if the action is allowed, false otherwise
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
+        private static bool PerformParticipantFiltering(BoardController controller, string actionName)
+        {
+            var httpContext = MockRepository.GenerateMock<HttpContextBase>();
+            var httpRequest = MockRepository.GenerateMock<HttpRequestBase>();
+            var theParams = new NameValueCollection();
+            theParams["id"] = c_fakeGameId.ToString();
+            httpRequest.Expect(x => x.Params).Return(theParams);
+            httpContext.Expect(x => x.Request).Return(httpRequest);
+
+            // If the attribute is missing, the action must be allowed
+            var methodInfo = controller.GetType().GetMethod(actionName);
+            if (methodInfo.GetCustomAttributes(typeof(VerifyIsParticipantAttribute), true).Length == 0)
+                return true;
+
+            var context =
+                new AuthorizationContext(new ControllerContext(httpContext,
+                    new RouteData(),
+                    controller), new ReflectedActionDescriptor(methodInfo, actionName, new ReflectedControllerDescriptor(controller.GetType())));
+
+            var authFilter = new VerifyIsParticipantAttribute();
+            authFilter.OnAuthorization(context);
+            return context.Result == null; // The result has not been set by the filter, so it passes
         }
 
         [TestCase("james", false)]
@@ -226,7 +257,7 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var g = fakeRepo.FindById(10);
+            var g = fakeRepo.FindById(c_fakeGameId);
 
             if (allowed)
             {
@@ -237,7 +268,7 @@ namespace ControllerTests
                 fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Never();
             }
 
-            controller.PlayMove(10, "E2", "E4", "");
+            controller.PlayMove(c_fakeGameId, "E2", "E4", "");
             fakeRepo.VerifyAllExpectations();
         }
 
@@ -248,18 +279,20 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var g = fakeRepo.FindById(10);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, "Resign");
+            var g = fakeRepo.FindById(c_fakeGameId);
 
             if (allowed)
             {
                 fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Once();
+                Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
             }
             else
             {
-                fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Never();
+                Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             }
 
-            controller.Resign(10);
+            controller.Resign(c_fakeGameId);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
 
@@ -285,7 +318,7 @@ namespace ControllerTests
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeEndedGameAsUser("clive", out fakeRepo);
             fakeRepo.Expect(x => x.AddOrUpdate(null)).Repeat.Never();
-            var result = controller.PlayMove(10, "E2", "E4", "");
+            var result = controller.PlayMove(c_fakeGameId, "E2", "E4", "");
             dynamic res = ((System.Web.Mvc.JsonResult) (result)).Data;
             Assert.AreEqual("{ fen = rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0, message = , status = FAIL }", res.ToString(), "Result was not as expected");
             fakeRepo.VerifyAllExpectations();
@@ -297,9 +330,9 @@ namespace ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUserWithClock("james", out fakeRepo);
-            var g = fakeRepo.FindById(10);
+            var g = fakeRepo.FindById(c_fakeGameId);
 
-            controller.TimedOut(10, message, timedOutColor);
+            controller.TimedOut(c_fakeGameId, message, timedOutColor);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
             if (args.Count > 0)
@@ -324,13 +357,13 @@ namespace ControllerTests
             var fakeGame = GetFakeGameAboutToPromote();
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
-            manager.Move(10, Location.H2, Location.H1);
-            manager.PromotePiece(10, "Q");
+            manager.Move(c_fakeGameId, Location.H2, Location.H1);
+            manager.PromotePiece(c_fakeGameId, "Q");
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
             var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.UpdateLastMove(null));
@@ -343,7 +376,7 @@ namespace ControllerTests
             Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", updatedDto.Fen, "Fen after move not as expected");
             Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", newHistoryEntry.Fen, "Fen in history is wrong");
             Assert.AreEqual("h1=Q+", newHistoryEntry.Move, "Expected move to be h1=Q+");
-            Assert.AreEqual(10, newHistoryEntry.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(c_fakeGameId, newHistoryEntry.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
         }
 
         [Test]
@@ -352,12 +385,12 @@ namespace ControllerTests
             var fakeGame = GetFakeGame();
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
-            manager.Move(10, Location.E2, Location.E4);
+            manager.Move(c_fakeGameId, Location.E2, Location.E4);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
             var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(null));
@@ -370,7 +403,7 @@ namespace ControllerTests
             Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", updatedDto.Fen, "Fen after move not as expected");
             Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", newHistoryEntry.Fen, "Fen in history is wrong");
             Assert.AreEqual("e4", newHistoryEntry.Move, "Expected move to be e4");
-            Assert.AreEqual(10, newHistoryEntry.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(c_fakeGameId, newHistoryEntry.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
             Assert.AreEqual(1, newHistoryEntry.MoveNumber, "Expected this to be move 1");
         }
 
@@ -381,15 +414,15 @@ namespace ControllerTests
             int moveCount = 0;
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(10)).Return(fakeGame);
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            fakeHistoryRepo.Expect(x => x.LatestMoveInGame(10)).WhenCalled(y => { y.ReturnValue = moveCount++; }).Return(0);
+            fakeHistoryRepo.Expect(x => x.LatestMoveInGame(c_fakeGameId)).WhenCalled(y => { y.ReturnValue = moveCount++; }).Return(0);
             
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
-            manager.Move(10, Location.E2, Location.E4);
-            manager.Move(10, Location.E7, Location.E5);
+            manager.Move(c_fakeGameId, Location.E2, Location.E4);
+            manager.Move(c_fakeGameId, Location.E7, Location.E5);
 
             var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(null));
             fakeRepo.VerifyAllExpectations();
@@ -397,11 +430,11 @@ namespace ControllerTests
             var newHistoryEntryE5 = historyArgs[1][0] as HistoryEntry;
 
             Assert.AreEqual("e4", newHistoryEntryE4.Move, "Expected move to be e4");
-            Assert.AreEqual(10, newHistoryEntryE4.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(c_fakeGameId, newHistoryEntryE4.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
             Assert.AreEqual(1, newHistoryEntryE4.MoveNumber, "Expected this to be move 1");
 
             Assert.AreEqual("e5", newHistoryEntryE5.Move, "Expected move to be e5");
-            Assert.AreEqual(10, newHistoryEntryE5.GameId, "Expected history entry to refer to this game, 10");
+            Assert.AreEqual(c_fakeGameId, newHistoryEntryE5.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
             Assert.AreEqual(2, newHistoryEntryE5.MoveNumber, "Expected this to be move 2");
         }
     }
