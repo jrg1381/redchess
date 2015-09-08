@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using log4net.Core;
 using Redchess.Engine.Exceptions;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Observers;
@@ -15,7 +16,7 @@ namespace Redchess.Engine
     public class Board : IBoardExtended
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
-        
+        private static readonly Location[] s_emptyLocationArray = new Location[0];
         // Observers
         private readonly TransientCastlingRules m_transientCastlingRules;
         private readonly PermanentCastlingRules m_permanentCastlingRules;
@@ -347,7 +348,19 @@ namespace Redchess.Engine
 
         private bool ValidMovesExist()
         {
-            var friends = SimpleBoard.Pieces(CurrentTurn).OccupiedSquares().Select(GetContents).ToArray();
+            // Try the king first, because if we're doing a checkmate test, moving the king is the 
+            // most likely way to get out of it.
+            var king = (CurrentTurn == PieceColor.White ? PieceType.WhiteKing : PieceType.BlackKing);
+            if (GetContents(FindPieces(king).First()).ValidMoves(this).Any())
+                return true;
+
+            // We know the king _can't_ move now, so don't call ValidMoves again if the piece is a king.
+            var friends = SimpleBoard
+                .Pieces(CurrentTurn)
+                .OccupiedSquares()
+                .Select(GetContents)
+                .Where(p => !p.Type.IsOfType(PieceType.King))
+                .ToArray();
 
             return friends
                 .AsParallel()
