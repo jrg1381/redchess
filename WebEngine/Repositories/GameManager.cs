@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Models;
@@ -237,10 +238,16 @@ namespace RedChess.WebEngine.Repositories
             m_repository.AddOrUpdate(gameDto);
         }
 
-        public void EndGameWithMessage(int gameId, string message, int? userIdWinner = null)
+        public async void EndGameWithMessage(int gameId, string message, int? userIdWinner = null)
         {
             var gameDto = m_repository.FindById(gameId);
             EndGameWithMessage(gameDto, message, userIdWinner);
+            await PostGameToQueueForAnalysis(gameId);
+        }
+
+        private Task PostGameToQueueForAnalysis(int gameId)
+        {
+            return Task.Run(() => { });
         }
 
         internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)

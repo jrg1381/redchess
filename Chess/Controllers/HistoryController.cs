@@ -78,20 +78,26 @@ namespace Chess.Controllers
         [HttpGet]
         public ContentResult Pgn(int id)
         {
-            var content = new ContentResult {ContentType = @"text\plain"};
+            var content = new ContentResult
+            {
+                ContentType = @"text\plain",
+                Content = PgnText(id)
+            };
 
+            return content;
+        }
+
+        public string PgnText(int id)
+        {
             var entries = m_gameManager.FindAllMoves(id).ToList();
 
             if (!entries.Any())
             {
-                content.Content = "NOT FOUND";
-                return content;
+                return "NOT FOUND";
             }
-            
-           var gameDetails = m_gameManager.FetchGame(id);
 
-            content.Content = GeneratePgn(entries, gameDetails);
-            return content;
+            var gameDetails = m_gameManager.FetchGame(id);
+            return GeneratePgn(entries, gameDetails);
         }
 
         internal string GeneratePgn(IList<HistoryEntry> entries, IGameBinding gameDetails)
