@@ -20,5 +20,10 @@ namespace RedChess.MessageQueue
         {
             Debug.WriteLine("{0} {1}", gameId, pgnText);
         }
+
+        public object PeekQueue()
+        {
+            return new object();
+        }
     }
 }

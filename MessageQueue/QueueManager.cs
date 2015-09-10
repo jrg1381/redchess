@@ -27,6 +27,20 @@ namespace RedChess.MessageQueue
             queueClient.Close();
         }
 
+        public object PeekQueue()
+        {
+            var queueHolder = new {messages = new List<string>()};
+            var queueClient = QueueClient.CreateFromConnectionString(m_connectionString, c_queueName);
+
+            foreach (var message in queueClient.PeekBatch(5))
+            {
+                queueHolder.messages.Add(message.GetBody<string>());
+            }
+
+            queueClient.Close();
+            return queueHolder;
+        }
+
         public void PostGameEndedMessage(int gameId, string pgnText)
         {
             var obj = new {id = gameId, pgn = pgnText};

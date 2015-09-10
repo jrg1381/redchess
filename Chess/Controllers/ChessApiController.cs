@@ -27,6 +27,12 @@ namespace Chess.Controllers
         }
 
         [System.Web.Http.HttpGet]
+        public object Analysis()
+        {
+            return Json(m_gameManager.AnalysisQueue());
+        }
+
+        [System.Web.Http.HttpGet]
         public object Boards()
         {
             return Json(m_gameManager.FindAll().ToDictionary(game => game.GameId, GameBindingToGameData));
