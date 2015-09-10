@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
 
 namespace RedChess.MessageQueue
 {
@@ -14,27 +15,28 @@ namespace RedChess.MessageQueue
         private const string c_queueName = "engine";
         private readonly string m_connectionString;
 
-        public QueueManager()
+        internal QueueManager(string connectionString)
         {
-            m_connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+            m_connectionString = connectionString;
+            var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
-            var namespaceManager = NamespaceManager.CreateFromConnectionString(m_connectionString);
             if (!namespaceManager.QueueExists(c_queueName))
             {
                 namespaceManager.CreateQueue(c_queueName);
             }
         }
 
-        public void SendMessage()
+        private void SendMessage(string message)
         {
             var queueClient = QueueClient.CreateFromConnectionString(m_connectionString, "TestQueue");
-            queueClient.Send(new BrokeredMessage());
+            queueClient.Send(new BrokeredMessage(message));
             queueClient.Close();
         }
 
         public void PostGameEndedMessage(int gameId, string pgnText)
         {
-            throw new NotImplementedException();
+            var obj = new {id = gameId, pgn = pgnText};
+            SendMessage(JsonConvert.SerializeObject(obj));
         }
     }
 }
