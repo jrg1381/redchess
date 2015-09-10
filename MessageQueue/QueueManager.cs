@@ -22,7 +22,7 @@ namespace RedChess.MessageQueue
 
         private void SendMessage(string message)
         {
-            var queueClient = QueueClient.CreateFromConnectionString(m_connectionString, "TestQueue");
+            var queueClient = QueueClient.CreateFromConnectionString(m_connectionString, c_queueName);
             queueClient.Send(new BrokeredMessage(message));
             queueClient.Close();
         }
