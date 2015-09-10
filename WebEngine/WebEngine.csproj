@@ -90,6 +90,10 @@
       <Project>{abe7d544-9181-4ebc-a0cb-804385090acf}</Project>
       <Name>EngineFactory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MessageQueue\MessageQueue.csproj">
+      <Project>{AE33ADAD-C354-452B-B6E4-13F4EDACFF24}</Project>
+      <Name>MessageQueue</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
