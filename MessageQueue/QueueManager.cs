@@ -18,12 +18,6 @@ namespace RedChess.MessageQueue
         internal QueueManager(string connectionString)
         {
             m_connectionString = connectionString;
-            var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
-
-            if (!namespaceManager.QueueExists(c_queueName))
-            {
-                namespaceManager.CreateQueue(c_queueName);
-            }
         }
 
         private void SendMessage(string message)

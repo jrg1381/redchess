@@ -321,10 +321,7 @@ namespace RedChess.WebEngine.Repositories
 
         private void PostGameToQueueForAnalysis(int gameId)
         {
-            Task.Run(() =>
-            {
-                m_queueManager.PostGameEndedMessage(gameId, PgnText(gameId));
-            });
+            Task.Run(() => m_queueManager.PostGameEndedMessage(gameId, PgnText(gameId)));
         }
 
         internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)
