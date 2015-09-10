@@ -81,80 +81,10 @@ namespace Chess.Controllers
             var content = new ContentResult
             {
                 ContentType = @"text\plain",
-                Content = PgnText(id)
+                Content = m_gameManager.PgnText(id)
             };
 
             return content;
-        }
-
-        public string PgnText(int id)
-        {
-            var entries = m_gameManager.FindAllMoves(id).ToList();
-
-            if (!entries.Any())
-            {
-                return "NOT FOUND";
-            }
-
-            var gameDetails = m_gameManager.FetchGame(id);
-            return GeneratePgn(entries, gameDetails);
-        }
-
-        internal string GeneratePgn(IList<HistoryEntry> entries, IGameBinding gameDetails)
-        {
-            var numberOfMoves = entries.Count;
-            var result = "*";
-
-            if (gameDetails.GameOver)
-            {
-                if (gameDetails.UserProfileWinner == null)
-                {
-                    result = "1/2-1/2";
-                }
-                else
-                {
-                    if (gameDetails.UserProfileWhite.UserId == gameDetails.UserProfileWinner.UserId)
-                    {
-                        result = "1-0";
-                    }
-
-                    if (gameDetails.UserProfileBlack.UserId == gameDetails.UserProfileWinner.UserId)
-                    {
-                        result = "0-1";
-                    }
-                }
-            }
-
-            var pgnBuilder = new StringBuilder();
-
-            pgnBuilder.AppendLine("[Event \"Casual Game\"]")
-            .AppendLine("[Site \"?\"]")
-            .AppendLine("[Round \"?\"]")
-            .AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate)
-            .AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName)
-            .AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName)
-            .AppendFormat("[Result \"{0}\"]\r\n", result);
-
-            if (gameDetails.Clock != null)
-            {
-                pgnBuilder.AppendFormat("[TimeControl \"{0}\"]\r\n", gameDetails.Clock.TimeLimitMs / 1000);
-            }
-
-            pgnBuilder.AppendLine();
-
-            var moveNumber = 1;
-            for (var i = 1; i < numberOfMoves; i += 2)
-            {
-                var nextMoveIndex = i + 1;
-                pgnBuilder.AppendFormat("{0}. {1}", moveNumber++, entries[i].Move);
-                if (nextMoveIndex < numberOfMoves)
-                {
-                    pgnBuilder.AppendFormat(" {0} ", entries[nextMoveIndex].Move);
-                }
-            }
-
-            pgnBuilder.AppendFormat(" {0}", result);
-            return pgnBuilder.ToString();
         }
     }
 }

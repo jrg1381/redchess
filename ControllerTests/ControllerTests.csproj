@@ -98,6 +98,10 @@
       <Project>{6966dd3c-4e17-4cc1-a8e3-4390cc3a78e3}</Project>
       <Name>Chess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MessageQueue\MessageQueue.csproj">
+      <Project>{ae33adad-c354-452b-b6e4-13f4edacff24}</Project>
+      <Name>MessageQueue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebEngine\WebEngine.csproj">
       <Project>{694e0750-b7dd-4d92-a3e9-a627e82e6b64}</Project>
       <Name>WebEngine</Name>

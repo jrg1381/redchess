@@ -31,5 +31,10 @@ namespace RedChess.MessageQueue
             queueClient.Send(new BrokeredMessage());
             queueClient.Close();
         }
+
+        public void PostGameEndedMessage(int gameId, string pgnText)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

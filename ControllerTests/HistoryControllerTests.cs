@@ -25,33 +25,5 @@ namespace ControllerTests
             fakeGame.Expect(x => x.GameOver).Return(true);
             return fakeGame;
         }
-
-        [Test]
-        public void PgnGeneration()
-        {
-            const string expectedPgn = @"[Event ""Casual Game""]
-[Site ""?""]
-[Round ""?""]
-[Date ""0001.01.01""]
-[White ""clive""]
-[Black ""james""]
-[Result ""0-1""]
-
-1. e4 c6 2. d4 d5 3. e5 Bf5  0-1";
-
-            var controller = new HistoryController();
-            var fakeMoves = new List<HistoryEntry>();
-
-            var moves = new[] {"", "e4","c6", "d4", "d5", "e5", "Bf5"};
-            fakeMoves.AddRange(moves.Select(move => new HistoryEntry() {Move = move}));
-
-            var fakeGame = GetFakeGame();
-
-            var pgn = controller.GeneratePgn(fakeMoves, fakeGame);
-
-            fakeGame.VerifyAllExpectations();
-            Assert.AreEqual(expectedPgn, pgn, "PGN for short game not as expected");
-        }
-
     }
 }

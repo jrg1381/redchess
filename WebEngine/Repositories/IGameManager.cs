@@ -24,5 +24,6 @@ namespace RedChess.WebEngine.Repositories
         void UpdateMessage(int id);
         bool IsParticipant(string name, int gameId);
         IEnumerable<IGameBinding> WithPlayer(string userName);
+        string PgnText(int id);
     }
 }

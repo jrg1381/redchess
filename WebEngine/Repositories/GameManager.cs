@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
@@ -16,17 +17,89 @@ namespace RedChess.WebEngine.Repositories
         private readonly IHistoryRepository m_historyRepository;
         private readonly IClockRepository m_clockRepository;
         private readonly IBoard m_board;
+        private readonly IQueueManager m_queueManager;
 
-        public GameManager() : this(null, null, null)
+        public GameManager() : this(null, null, null, null)
         {
         }
 
-        internal GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null)
+        internal GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null, IQueueManager queueManager = null)
         {
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
             m_clockRepository = clockRepository ?? new ClockRepository();
+            m_queueManager = queueManager ?? QueueManagerFactory.Instance();
             m_board = BoardFactory.CreateInstance();
+        }
+
+        public string PgnText(int id)
+        {
+            var entries = FindAllMoves(id).ToList();
+
+            if (!entries.Any())
+            {
+                return "NOT FOUND";
+            }
+
+            var gameDetails = FetchGame(id);
+            return GeneratePgn(entries, gameDetails);
+        }
+
+        internal string GeneratePgn(IList<HistoryEntry> entries, IGameBinding gameDetails)
+        {
+            var numberOfMoves = entries.Count;
+            var result = "*";
+
+            if (gameDetails.GameOver)
+            {
+                if (gameDetails.UserProfileWinner == null)
+                {
+                    result = "1/2-1/2";
+                }
+                else
+                {
+                    if (gameDetails.UserProfileWhite.UserId == gameDetails.UserProfileWinner.UserId)
+                    {
+                        result = "1-0";
+                    }
+
+                    if (gameDetails.UserProfileBlack.UserId == gameDetails.UserProfileWinner.UserId)
+                    {
+                        result = "0-1";
+                    }
+                }
+            }
+
+            var pgnBuilder = new StringBuilder();
+
+            pgnBuilder.AppendLine("[Event \"Casual Game\"]")
+            .AppendLine("[Site \"?\"]")
+            .AppendLine("[Round \"?\"]")
+            .AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate)
+            .AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName)
+            .AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName)
+            .AppendFormat("[Result \"{0}\"]\r\n", result);
+
+            if (gameDetails.Clock != null)
+            {
+                pgnBuilder.AppendFormat("[TimeControl \"{0}\"]\r\n", gameDetails.Clock.TimeLimitMs / 1000);
+            }
+
+            pgnBuilder.AppendLine();
+
+            var moveNumber = 1;
+            for (var i = 1; i < numberOfMoves; i += 2)
+            {
+                var nextMoveIndex = i + 1;
+                pgnBuilder.AppendFormat("{0}. {1}", moveNumber++, entries[i].Move);
+                if (nextMoveIndex < numberOfMoves)
+                {
+                    pgnBuilder.AppendFormat(" {0} ", entries[nextMoveIndex].Move);
+                }
+            }
+
+            pgnBuilder.AppendFormat(" {0}", result);
+            return pgnBuilder.ToString();
         }
 
         public void SaveClock(IClock clock)
@@ -250,7 +323,7 @@ namespace RedChess.WebEngine.Repositories
         {
             Task.Run(() =>
             {
-                var queueManager = QueueManagerFactory.Instance();
+                m_queueManager.PostGameEndedMessage(gameId, PgnText(gameId));
             });
         }
 

@@ -2,5 +2,6 @@
 {
     public interface IQueueManager
     {
+        void PostGameEndedMessage(int gameId, string pgnText);
     }
 }
