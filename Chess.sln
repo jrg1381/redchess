@@ -47,6 +47,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebEngine", "WebEngine\WebE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue", "MessageQueue\MessageQueue.csproj", "{AE33ADAD-C354-452B-B6E4-13F4EDACFF24}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "RedchessService", "RedchessService\RedchessService.ccproj", "{7C8030D8-AC86-46FC-B865-67C43712E59E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalysisWorker", "AnalysisWorker\AnalysisWorker.csproj", "{5E6FAE64-996E-43B5-B407-38AA6C12E1FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +117,14 @@ Global
 		{AE33ADAD-C354-452B-B6E4-13F4EDACFF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE33ADAD-C354-452B-B6E4-13F4EDACFF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE33ADAD-C354-452B-B6E4-13F4EDACFF24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C8030D8-AC86-46FC-B865-67C43712E59E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8030D8-AC86-46FC-B865-67C43712E59E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8030D8-AC86-46FC-B865-67C43712E59E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8030D8-AC86-46FC-B865-67C43712E59E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E6FAE64-996E-43B5-B407-38AA6C12E1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E6FAE64-996E-43B5-B407-38AA6C12E1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E6FAE64-996E-43B5-B407-38AA6C12E1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E6FAE64-996E-43B5-B407-38AA6C12E1FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
