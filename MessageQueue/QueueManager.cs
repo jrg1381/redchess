@@ -7,6 +7,7 @@ using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
+using RedChess.MessageQueue.Messages;
 
 namespace RedChess.MessageQueue
 {
@@ -43,8 +44,8 @@ namespace RedChess.MessageQueue
 
         public void PostGameEndedMessage(int gameId, string pgnText)
         {
-            var obj = new {id = gameId, pgn = pgnText};
-            SendMessage(JsonConvert.SerializeObject(obj));
+            var message = new GameEndedMessage {GameId = gameId, Pgn = pgnText};
+            SendMessage(JsonConvert.SerializeObject(message));
         }
     }
 }
