@@ -14,14 +14,11 @@ namespace RedChess.MessageQueue
 {
     internal class QueueManager : IQueueManager, IDisposable
     {
-        private const string c_queueName = "engine";
-        private readonly string m_connectionString;
         private readonly QueueClient m_queueClient;
 
         internal QueueManager(string connectionString)
         {
-            m_connectionString = connectionString;
-            m_queueClient = QueueClient.CreateFromConnectionString(m_connectionString, c_queueName);
+            m_queueClient = QueueClient.CreateFromConnectionString(connectionString, QueueManagerFactory.QueueName);
         }
 
         private void SendMessage(object message)
@@ -32,14 +29,12 @@ namespace RedChess.MessageQueue
         public object PeekQueue()
         {
             var queueHolder = new {messages = new List<string>()};
-            var queueClient = QueueClient.CreateFromConnectionString(m_connectionString, c_queueName);
 
-            foreach (var message in queueClient.PeekBatch(5))
+            foreach (var message in m_queueClient.PeekBatch(5))
             {
                 queueHolder.messages.Add(message.GetBody<BasicMessage>().Json);
             }
 
-            queueClient.Close();
             return queueHolder;
         }
 

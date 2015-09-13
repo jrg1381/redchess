@@ -16,4 +16,14 @@ namespace RedChess.MessageQueue.Messages
         [JsonProperty(PropertyName = "pgn")]
         public string Pgn { get; set; }
     }
+
+    public class BestMoveRequestMessage
+    {
+        public const string MessageType = "BestMoveRequestMessage";
+
+        [JsonProperty(PropertyName = "id")]
+        public int GameId { get; set; }
+        [JsonProperty(PropertyName="fen")]
+        public string Fen { get; set; }
+    }
 }
