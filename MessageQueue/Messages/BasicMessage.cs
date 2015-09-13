@@ -6,7 +6,9 @@ namespace RedChess.MessageQueue.Messages
     [DataContract]
     public class BasicMessage
     {
+        [DataMember]
         public string MessageType { get; set; }
+        [DataMember]
         public string Json { get; set; }
 
         public BasicMessage(string messageType, object messageBody)
