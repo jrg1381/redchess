@@ -28,40 +28,41 @@ namespace AnalysisWorker
         public override void Run()
         {
             Trace.WriteLine("Starting processing of messages");
+            var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
 
             // Initiates the message pump and callback is invoked for each message that is received, calling close on the client will stop the pump.
             m_client.OnMessage((receivedMessage) =>
+            {
+                try
                 {
-                    try
+                    // Process the message
+                    Trace.WriteLine("Processing Service Bus message: " + receivedMessage.SequenceNumber.ToString());
+                    var body = receivedMessage.GetBody<BasicMessage>();
+                    switch (body.MessageType)
                     {
-                        // Process the message
-                        Trace.WriteLine("Processing Service Bus message: " + receivedMessage.SequenceNumber.ToString());
-                        var body = receivedMessage.GetBody<BasicMessage>();
-                        switch (body.MessageType)
+                        case GameEndedMessage.MessageType:
                         {
-                            case GameEndedMessage.MessageType:
-                            {
-                                var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
-                                break;
-                            }
-                            case BestMoveRequestMessage.MessageType:
-                            {
-                                var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
-                                break;
-                            }
-                            default:
-                            {
-                                break;
-                            }
+                            var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
+                            break;
                         }
+                        case BestMoveRequestMessage.MessageType:
+                        {
+                            var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
 
-                        receivedMessage.Complete();
-                    }
-                    catch(Exception e)
-                    {
-                        Trace.WriteLine("Error: " + e.Message);
-                    }
-                });
+                    receivedMessage.Complete();
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine("Error: " + e.Message);
+                }
+            }, messageOptions);
 
             m_completedEvent.WaitOne();
         }

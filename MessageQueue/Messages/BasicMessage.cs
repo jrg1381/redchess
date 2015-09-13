@@ -1,7 +1,9 @@
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace RedChess.MessageQueue.Messages
 {
+    [DataContract]
     public class BasicMessage
     {
         public string MessageType { get; set; }
