@@ -6,7 +6,7 @@ namespace RedChess.MessageQueue
 {
     public static class QueueManagerFactory
     {
-        public static IQueueManager Instance()
+        public static IQueueManager CreateInstance()
         {
             var connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
             if (String.IsNullOrEmpty(connectionString)) return new NullQueue();

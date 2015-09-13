@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IQueueManager.cs" />
+    <Compile Include="Messages\BasicMessage.cs" />
     <Compile Include="Messages\GameEndedMessage.cs" />
     <Compile Include="QueueManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

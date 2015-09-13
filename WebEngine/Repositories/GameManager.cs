@@ -28,7 +28,7 @@ namespace RedChess.WebEngine.Repositories
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
             m_clockRepository = clockRepository ?? new ClockRepository();
-            m_queueManager = queueManager ?? QueueManagerFactory.Instance();
+            m_queueManager = queueManager ?? QueueManagerFactory.CreateInstance();
             m_board = BoardFactory.CreateInstance();
         }
 

@@ -8,6 +8,8 @@ using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using Newtonsoft.Json;
+using RedChess.MessageQueue.Messages;
 
 namespace AnalysisWorker
 {
@@ -32,6 +34,8 @@ namespace AnalysisWorker
                     {
                         // Process the message
                         Trace.WriteLine("Processing Service Bus message: " + receivedMessage.SequenceNumber.ToString());
+                        var body = receivedMessage.GetBody<BasicMessage>();
+                        JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
                     }
                     catch
                     {
