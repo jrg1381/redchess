@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BidirectionalProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UciEngineWrapper.cs" />
     <Compile Include="WorkerRole.cs" />
