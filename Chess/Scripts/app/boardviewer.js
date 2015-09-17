@@ -37,6 +37,14 @@
     function configureActionButtons() {
         var lastMove = positions.Moves.length;
 
+        // Remove handlers, as this function can be called twice if two BoardViewers 
+        // are constructed and they point at the same underlying UI elements.
+        $("#goForward").off();
+        $("#goBack").off();
+        $("#goStart").off();
+        $("#goFlip").off();
+        $("#goEnd").off();
+
         $("span.button").mouseover(function () {
             $(this).parent().fadeTo(40, 1.0);
         }).mouseout(function () {
