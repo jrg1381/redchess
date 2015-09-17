@@ -44,6 +44,18 @@ namespace RedChess.MessageQueue
             SendMessage(new BasicMessage(GameEndedMessage.MessageType, message));
         }
 
+        public void PostRequestBestMoveMessage(int gameId, string fen)
+        {
+            var message = new BestMoveRequestMessage {GameId = gameId, Fen = fen};
+            SendMessage(new BasicMessage(BestMoveRequestMessage.MessageType, message));
+        }
+
+        public void PostBestMoveResponseMessage(int gameId, string bestMove)
+        {
+            var message = new BestMoveResponseMessage {GameId = gameId, BestMove = bestMove};
+            SendMessage(new BasicMessage(BestMoveResponseMessage.MessageType, message));
+        }
+
         public void Dispose()
         {
             m_queueClient.Close();

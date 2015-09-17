@@ -1,37 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Redchess.AnalysisWorker
 {
-    class UciEngineWrapper
+    internal class UciEngineWrapper : IDisposable
     {
-    }
+        private const string c_processReadyText = "Stockfish 6 64";
+        private const string c_exePath = @"C:\Users\james.gilmore\Desktop\stockfish-6-win\Windows\stockfish-6-64.exe";
+        private readonly BidirectionalProcess m_engine;
 
-    class BidirectionalProcess
-    {
-        private const string c_exePath = @"c:\windows\system32\cmd.exe";
-
-        public BidirectionalProcess()
+        internal UciEngineWrapper()
         {
-            
+            m_engine = new BidirectionalProcess(c_exePath, c_processReadyText);
+            m_engine.WaitForReady();
+            var options = m_engine.Write("uci", "uciok");
+            m_engine.Write("isready", "readyok");
+            SetOptions();
+            NewGame();
         }
 
-        public void Start()
+        internal void NewGame()
         {
-            
+            m_engine.Write("ucinewgame");
         }
 
-        public void Write(string s)
+        internal void SetOptions()
         {
-            
+            m_engine.Write("set option name Hash 32");
         }
 
-        public string Read()
+        internal string BestMove(string fen)
         {
-            return "";
+            var cmd = String.Format("position fen {0}\r\ngo", fen);
+            var analysis = m_engine.Write(cmd, "bestmove");
+            return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 4);
+        }
+
+        public void Dispose()
+        {
+            m_engine.Dispose();
         }
     }
 }

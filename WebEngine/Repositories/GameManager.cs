@@ -226,6 +226,7 @@ namespace RedChess.WebEngine.Repositories
         public bool Move(int gameId, Location start, Location end)
         {
             var gameDto = m_repository.FindById(gameId);
+            PostGameToQueueForBestMove(gameId, gameDto.Fen);
             m_board.FromFen(gameDto.Fen);
 
             var success = m_board.Move(start, end);
@@ -327,6 +328,11 @@ namespace RedChess.WebEngine.Repositories
         private void PostGameToQueueForAnalysis(int gameId)
         {
             Task.Run(() => m_queueManager.PostGameEndedMessage(gameId, PgnText(gameId)));
+        }
+
+        private void PostGameToQueueForBestMove(int gameId, string fen)
+        {
+            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, fen));
         }
 
         internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)

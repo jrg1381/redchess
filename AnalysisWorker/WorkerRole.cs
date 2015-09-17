@@ -10,6 +10,7 @@ using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Newtonsoft.Json;
+using Redchess.AnalysisWorker;
 using RedChess.MessageQueue;
 using RedChess.MessageQueue.Messages;
 
@@ -24,14 +25,16 @@ namespace AnalysisWorker
         // rather than recreating it on every request
         QueueClient m_client;
         readonly ManualResetEvent m_completedEvent = new ManualResetEvent(false);
+        private readonly IQueueManager m_queueManager = QueueManagerFactory.CreateInstance();
 
         public override void Run()
         {
+            var engineFarm = new UciEngineFarm();
             Trace.WriteLine("Starting processing of messages");
             var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
 
             // Initiates the message pump and callback is invoked for each message that is received, calling close on the client will stop the pump.
-            m_client.OnMessage((receivedMessage) =>
+            m_client.OnMessage(async (receivedMessage) =>
             {
                 try
                 {
@@ -48,6 +51,8 @@ namespace AnalysisWorker
                         case BestMoveRequestMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
+                            string bestMove = await engineFarm.BestMove(message.GameId, message.Fen);
+                            m_queueManager.PostBestMoveResponseMessage(message.GameId, bestMove);
                             break;
                         }
                         default:
@@ -61,6 +66,7 @@ namespace AnalysisWorker
                 catch (Exception e)
                 {
                     Trace.WriteLine("Error: " + e.Message);
+                    receivedMessage.Abandon();
                 }
             }, messageOptions);
 

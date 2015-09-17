@@ -7,13 +7,13 @@ using Newtonsoft.Json;
 
 namespace RedChess.MessageQueue.Messages
 {
-    public class GameEndedMessage
+    public class BestMoveResponseMessage
     {
-        public const string MessageType = "GameEndedMessage";
- 
+        public const string MessageType = "BestMoveResponseMessage";
+
         [JsonProperty(PropertyName = "id")]
         public int GameId { get; set; }
-        [JsonProperty(PropertyName = "pgn")]
-        public string Pgn { get; set; }
+        [JsonProperty(PropertyName = "bestmove")]
+        public string BestMove { get; set; }
     }
 }
