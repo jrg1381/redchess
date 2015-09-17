@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -7,9 +8,7 @@ namespace Redchess.AnalysisWorker
 {
     internal class BidirectionalProcess : IDisposable
     {
-        private const string c_exePath = @"c:\windows\system32\cmd.exe";
-        private const int c_processStartTimeoutInSeconds = 10;
-        private const string c_processReadyString = "reserved";
+        private const int c_processReadyTimeoutInSeconds = 10;
 
         private readonly StringBuilder m_builder;
         private readonly Process m_process;
@@ -17,16 +16,27 @@ namespace Redchess.AnalysisWorker
         private string m_triggerText;
         private bool m_isReady;
         private readonly object m_builderLock = new object();
+        private readonly TimeSpan m_processReadyTimeout;
+        private readonly string m_processReadyText;
 
-        public BidirectionalProcess()
+        internal BidirectionalProcess(string exePath, string processReadyText, int processReadyTimeoutSeconds = c_processReadyTimeoutInSeconds)
         {
+            m_processReadyTimeout = TimeSpan.FromSeconds(processReadyTimeoutSeconds);
+            m_processReadyText = processReadyText;
+
+            if (!File.Exists(exePath))
+            {
+                throw new FileNotFoundException("Executable not found " + exePath, Path.GetFullPath(exePath));
+            }
+
             var processStartInfo = new ProcessStartInfo
             {
-                FileName = c_exePath,
+                FileName = exePath,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
-                UseShellExecute = false
+                UseShellExecute = false,
+                CreateNoWindow = true
             };
 
             m_builder = new StringBuilder();
@@ -43,6 +53,8 @@ namespace Redchess.AnalysisWorker
             m_process.Exited += ProcessOnExited;
             m_process.Start();
             m_process.BeginOutputReadLine();
+
+            Debug.WriteLine("Started external process " + m_process.Id);
         }
 
         private void ProcessOnExited(object sender, EventArgs eventArgs)
@@ -52,16 +64,16 @@ namespace Redchess.AnalysisWorker
         }
 
         /// <summary>
-        /// Wait c_processStartTimeoutInSeconds seconds for the process to be ready. Readiness is indicated by
-        /// the presence of c_processReadyString in the output.
+        /// Wait m_processReadyTimeout seconds for the process to be ready. Readiness is indicated by
+        /// the presence of m_processReadyText in the output.
         /// <exception cref="TimeoutException"></exception>
         /// </summary>
-        public void WaitForReady()
+        internal void WaitForReady()
         {
             if (m_isReady) return;
 
-            var expiryTime = DateTime.UtcNow.AddSeconds(c_processStartTimeoutInSeconds);
-            while (!m_builder.ToString().Contains(c_processReadyString) && DateTime.UtcNow < expiryTime)
+            var expiryTime = DateTime.UtcNow + m_processReadyTimeout;
+            while (!m_builder.ToString().Contains(m_processReadyText) && DateTime.UtcNow < expiryTime)
             {
                 Thread.Sleep(100);
             }
@@ -89,7 +101,7 @@ namespace Redchess.AnalysisWorker
             }
         }
 
-        public string Write(string command, string completionTrigger = null)
+        internal string Write(string command, string completionTrigger = null)
         {
             if (!m_isReady)
             {
@@ -111,7 +123,7 @@ namespace Redchess.AnalysisWorker
             return result;
         }
 
-        public void Close()
+        internal void Close()
         {
             m_isReady = false;
             m_process.Kill();
