@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using Microsoft.Azure;
-using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Newtonsoft.Json;
-using Redchess.AnalysisWorker;
 using RedChess.MessageQueue;
 using RedChess.MessageQueue.Messages;
 
-namespace AnalysisWorker
+namespace Redchess.AnalysisWorker
 {
     public class WorkerRole : RoleEntryPoint
     {
@@ -53,6 +48,11 @@ namespace AnalysisWorker
                             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
                             string bestMove = engineFarm.BestMove(message.GameId, message.Fen);
                             m_queueManager.PostBestMoveResponseMessage(message.GameId, bestMove);
+                            break;
+                        }
+                        case BestMoveResponseMessage.MessageType:
+                        {
+                            receivedMessage.Abandon();
                             break;
                         }
                         default:

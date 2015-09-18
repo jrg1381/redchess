@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BidirectionalProcess.cs" />
+    <Compile Include="EngineDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UciEngineFarm.cs" />
     <Compile Include="UciEngine.cs" />
