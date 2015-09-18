@@ -34,7 +34,7 @@ namespace AnalysisWorker
             var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
 
             // Initiates the message pump and callback is invoked for each message that is received, calling close on the client will stop the pump.
-            m_client.OnMessage(async (receivedMessage) =>
+            m_client.OnMessage(receivedMessage =>
             {
                 try
                 {
@@ -51,7 +51,7 @@ namespace AnalysisWorker
                         case BestMoveRequestMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
-                            string bestMove = await engineFarm.BestMove(message.GameId, message.Fen);
+                            string bestMove = engineFarm.BestMove(message.GameId, message.Fen);
                             m_queueManager.PostBestMoveResponseMessage(message.GameId, bestMove);
                             break;
                         }
