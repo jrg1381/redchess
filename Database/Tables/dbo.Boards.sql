@@ -5,11 +5,11 @@ CREATE TABLE [dbo].[Boards]
 [UserIdBlack] [int] NOT NULL,
 [Status] [nvarchar] (max) NULL,
 [GameOver] [bit] NOT NULL,
-[Fen] [nvarchar] (max) NULL,
+[Fen] [nvarchar] (max) NOT NULL,
 [CreationDate] [datetime] NOT NULL DEFAULT (getutcdate()),
 [CompletionDate] [datetime] NOT NULL DEFAULT (getutcdate()),
-[LastMove] [nvarchar] (10) NULL,
 [MayClaimDraw] AS (case  when [GameOver]=(1) then CONVERT([bit],(0),(0)) else [dbo].[MayClaimDraw]([GameId]) end),
+[LastMove] [nvarchar] (10) NULL,
 [UserIdWinner] [int] NULL,
 [MoveNumber] [int] NOT NULL DEFAULT ((0))
 )

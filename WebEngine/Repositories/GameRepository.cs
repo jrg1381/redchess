@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Linq;
 using RedChess.WebEngine.Models;
 
@@ -21,7 +23,13 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                context.AnalysisEntries.AddOrUpdate(new AnalysisEntry() { GameId = id, MoveNumber = moveNumber, Analysis = analysisText});
+                context.AnalysisEntries.Add(new AnalysisEntry()
+                {
+                    GameId = id,
+                    MoveNumber = moveNumber,
+                    Analysis = analysisText
+                });
+                context.SaveChanges();
             }
         }
 
