@@ -25,7 +25,7 @@ namespace Redchess.AnalysisWorker
 
         private void ProcessQueue(BlockingCollection<WorkItem> workItemQueue, UciEngine engine)
         {
-            Debug.WriteLine("Starting queue processor thread " + Thread.CurrentThread.ManagedThreadId);
+            Trace.WriteLine("Starting queue processor thread " + Thread.CurrentThread.ManagedThreadId);
 
             try
             {
@@ -37,7 +37,7 @@ namespace Redchess.AnalysisWorker
                         lock (workItem)
                         {
                             workItem.Result = engine.BestMove(workItem.Fen);
-                            Debug.WriteLine("Pulsing caller from thread " + Thread.CurrentThread.ManagedThreadId);
+                            Trace.WriteLine("Pulsing caller from thread " + Thread.CurrentThread.ManagedThreadId);
                             Monitor.Pulse(workItem);
                         }
                     }
@@ -57,7 +57,7 @@ namespace Redchess.AnalysisWorker
         {
             lock (m_dictionaryLock)
             {
-                Debug.WriteLine("Telling queue for game " + gameId + " to CompleteAdding");
+                Trace.WriteLine("Telling queue for game " + gameId + " to CompleteAdding");
                 BlockingCollection<WorkItem> queue;
                 if (m_queueForGame.TryGetValue(gameId, out queue))
                 {
@@ -68,14 +68,14 @@ namespace Redchess.AnalysisWorker
 
         public string BestMove(int gameId, string fen)
         {
-            Debug.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
+            Trace.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
 
             lock (m_dictionaryLock)
             {
                 BlockingCollection<WorkItem> queue;
                 if (!m_queueForGame.TryGetValue(gameId, out queue))
                 {
-                    Debug.WriteLine("Queue not found for this game id, creating worker");
+                    Trace.WriteLine("Queue not found for this game id, creating worker");
                     queue = new BlockingCollection<WorkItem>();
                     m_queueForGame[gameId] = queue;
                     var engine = new UciEngine();
@@ -88,7 +88,7 @@ namespace Redchess.AnalysisWorker
             lock (workItem)
             {
                 m_queueForGame[gameId].Add(workItem);
-                Debug.WriteLine("Waiting for pulse from worker in thread " + Thread.CurrentThread.ManagedThreadId);
+                Trace.WriteLine("Waiting for pulse from worker in thread " + Thread.CurrentThread.ManagedThreadId);
                 Monitor.Wait(workItem);
                 return workItem.Result;
             }
