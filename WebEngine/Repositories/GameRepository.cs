@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Azure;
 using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
@@ -21,7 +22,8 @@ namespace RedChess.WebEngine.Repositories
 
         public void AddAnalysis(int id, int moveNumber, string analysisText)
         {
-            using (var context = new ChessContext())
+            var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
+            using (var context = new ChessContext(connectionString))
             {
                 context.AnalysisEntries.Add(new AnalysisEntry()
                 {
