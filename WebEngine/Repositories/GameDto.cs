@@ -24,6 +24,9 @@ namespace RedChess.WebEngine.Repositories
         public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
         public string Fen { get; set; }
         public string LastMove { get; set; }
+        
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)] // Not really computed, actually set by a trigger
+        public int MoveNumber { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public bool MayClaimDraw { get; set; }

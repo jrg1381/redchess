@@ -16,6 +16,19 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
+        public void AddAnalysis(int id, int moveNumber, string analysisText)
+        {
+            using (var context = new ChessContext())
+            {
+                var game = context.AnalysisEntries.FirstOrDefault(x => x.GameId == id && x.MoveNumber == moveNumber);
+                if (game != null)
+                {
+                    game.Analysis = analysisText;
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public void Delete(int id)
         {
             using (var dbContext = new ChessContext())

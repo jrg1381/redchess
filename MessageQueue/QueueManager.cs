@@ -38,21 +38,21 @@ namespace RedChess.MessageQueue
             return queueHolder;
         }
 
-        public void PostGameEndedMessage(int gameId, string pgnText)
+        public void PostGameEndedMessage(int gameId)
         {
-            var message = new GameEndedMessage {GameId = gameId, Pgn = pgnText};
+            var message = new GameEndedMessage {GameId = gameId};
             SendMessage(new BasicMessage(GameEndedMessage.MessageType, message));
         }
 
-        public void PostRequestBestMoveMessage(int gameId, string fen)
+        public void PostRequestBestMoveMessage(int gameId, int moveId, string fen)
         {
-            var message = new BestMoveRequestMessage {GameId = gameId, Fen = fen};
+            var message = new BestMoveRequestMessage {GameId = gameId, Fen = fen, MoveNumber = moveId};
             SendMessage(new BasicMessage(BestMoveRequestMessage.MessageType, message));
         }
 
-        public void PostBestMoveResponseMessage(int gameId, string bestMove)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove)
         {
-            var message = new BestMoveResponseMessage {GameId = gameId, BestMove = bestMove};
+            var message = new BestMoveResponseMessage {GameId = gameId, MoveNumber = moveNumber, BestMove = bestMove};
             SendMessage(new BasicMessage(BestMoveResponseMessage.MessageType, message));
         }
 

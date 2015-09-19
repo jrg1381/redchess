@@ -69,10 +69,10 @@ namespace Redchess.AnalysisWorker
         public string BestMove(int gameId, string fen)
         {
             Debug.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
-            BlockingCollection<WorkItem> queue;
 
             lock (m_dictionaryLock)
             {
+                BlockingCollection<WorkItem> queue;
                 if (!m_queueForGame.TryGetValue(gameId, out queue))
                 {
                     Debug.WriteLine("Queue not found for this game id, creating worker");

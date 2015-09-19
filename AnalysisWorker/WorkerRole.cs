@@ -8,6 +8,7 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using Newtonsoft.Json;
 using RedChess.MessageQueue;
 using RedChess.MessageQueue.Messages;
+using RedChess.WebEngine.Repositories;
 
 namespace Redchess.AnalysisWorker
 {
@@ -41,18 +42,21 @@ namespace Redchess.AnalysisWorker
                         case GameEndedMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
+                            engineFarm.GameOver(message.GameId);
                             break;
                         }
                         case BestMoveRequestMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
                             string bestMove = engineFarm.BestMove(message.GameId, message.Fen);
-                            m_queueManager.PostBestMoveResponseMessage(message.GameId, bestMove);
+                            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove);
                             break;
                         }
                         case BestMoveResponseMessage.MessageType:
                         {
-                            receivedMessage.Abandon();
+                            var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(body.Json);
+                            var gameManager = new GameManager();
+                            gameManager.AddAnalysis(message.GameId, message.MoveNumber, message.BestMove);
                             break;
                         }
                         default:

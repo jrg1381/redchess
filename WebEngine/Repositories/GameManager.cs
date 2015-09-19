@@ -32,6 +32,11 @@ namespace RedChess.WebEngine.Repositories
             m_board = BoardFactory.CreateInstance();
         }
 
+        public void AddAnalysis(int gameId, int moveNumber, string analysisText)
+        {
+            m_repository.AddAnalysis(gameId, moveNumber, analysisText);
+        }
+
         public string PgnText(int id)
         {
             var entries = FindAllMoves(id).ToList();
@@ -226,7 +231,7 @@ namespace RedChess.WebEngine.Repositories
         public bool Move(int gameId, Location start, Location end)
         {
             var gameDto = m_repository.FindById(gameId);
-            PostGameToQueueForBestMove(gameId, gameDto.Fen);
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen);
             m_board.FromFen(gameDto.Fen);
 
             var success = m_board.Move(start, end);
@@ -317,7 +322,7 @@ namespace RedChess.WebEngine.Repositories
         {
             var gameDto = m_repository.FindById(gameId);
             EndGameWithMessage(gameDto, message, userIdWinner);
-            PostGameToQueueForAnalysis(gameId);
+            PostGameEndedMessage(gameId);
         }
 
         public object AnalysisQueue()
@@ -325,14 +330,14 @@ namespace RedChess.WebEngine.Repositories
             return m_queueManager.PeekQueue();
         }
 
-        private void PostGameToQueueForAnalysis(int gameId)
+        private void PostGameEndedMessage(int gameId)
         {
-            Task.Run(() => m_queueManager.PostGameEndedMessage(gameId, PgnText(gameId)));
+            Task.Run(() => m_queueManager.PostGameEndedMessage(gameId));
         }
 
-        private void PostGameToQueueForBestMove(int gameId, string fen)
+        private void PostGameToQueueForBestMove(int gameId, int moveId, string fen)
         {
-            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, fen));
+            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, moveId, fen));
         }
 
         internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)
@@ -358,6 +363,7 @@ namespace RedChess.WebEngine.Repositories
         public void Delete(int gameId)
         {
             m_repository.Delete(gameId);
+            PostGameEndedMessage(gameId);
         }
 
         public int Add(IBoard board, int opponentId, string currentUser, bool playAsBlack, int timeLimitMs)
