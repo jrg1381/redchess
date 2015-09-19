@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
@@ -20,12 +21,7 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                var game = context.AnalysisEntries.FirstOrDefault(x => x.GameId == id && x.MoveNumber == moveNumber);
-                if (game != null)
-                {
-                    game.Analysis = analysisText;
-                    context.SaveChanges();
-                }
+                context.AnalysisEntries.AddOrUpdate(new AnalysisEntry() { GameId = id, MoveNumber = moveNumber, Analysis = analysisText});
             }
         }
 
