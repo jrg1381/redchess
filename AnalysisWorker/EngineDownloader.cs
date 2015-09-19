@@ -15,19 +15,19 @@ namespace Redchess.AnalysisWorker
 
         public static string DownloadEngine()
         {
-            Debug.WriteLine("Testing whether engine needs to be downloaded");
+            Trace.WriteLine("Testing whether engine needs to be downloaded");
             var targetFileName = new Uri(c_downloadUrl).GetComponents(UriComponents.Path, UriFormat.Unescaped);
             var targetDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string target = Path.Combine(targetDirectory, Path.GetFileName(targetFileName));
 
             if (!File.Exists(target))
             {
-                Debug.WriteLine("Downloading engine");
+                Trace.WriteLine("Downloading engine");
                 using (var client = new WebClient())
                 {
                     client.DownloadFile(c_downloadUrl, target);
                 }
-                Debug.WriteLine("Engine downloaded to " + target);
+                Trace.WriteLine("Engine downloaded to " + target);
 
                 byte[] engineHash;
                 using (var stream = new FileStream(target, FileMode.Open, FileAccess.Read))

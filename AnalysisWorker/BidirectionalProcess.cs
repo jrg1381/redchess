@@ -54,7 +54,7 @@ namespace Redchess.AnalysisWorker
             m_process.Start();
             m_process.BeginOutputReadLine();
 
-            Debug.WriteLine("Started external process " + m_process.Id);
+            Trace.WriteLine("Started external process " + m_process.Id);
         }
 
         private void ProcessOnExited(object sender, EventArgs eventArgs)
