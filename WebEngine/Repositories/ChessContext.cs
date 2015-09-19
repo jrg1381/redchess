@@ -14,6 +14,10 @@ namespace RedChess.WebEngine.Repositories
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Chess.Models.ChessContext>());
 
+	    public ChessContext(string connectionString) : base(connectionString)
+	    {
+	    }
+
         public ChessContext() : base("name=DefaultConnection")
         {
         }
