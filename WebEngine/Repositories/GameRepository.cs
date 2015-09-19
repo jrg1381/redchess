@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Linq;
+using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
@@ -13,6 +16,20 @@ namespace RedChess.WebEngine.Repositories
             {
                 var game = context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Include(b => b.UserProfileWinner).Single(b => b.GameId == id);
                 return game;
+            }
+        }
+
+        public void AddAnalysis(int id, int moveNumber, string analysisText)
+        {
+            using (var context = new ChessContext())
+            {
+                context.AnalysisEntries.Add(new AnalysisEntry()
+                {
+                    GameId = id,
+                    MoveNumber = moveNumber,
+                    Analysis = analysisText
+                });
+                context.SaveChanges();
             }
         }
 

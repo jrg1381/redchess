@@ -15,22 +15,24 @@ namespace Redchess.AnalysisWorker
             internal string Result { get; set; }
         }
 
-        private readonly Dictionary<int, BlockingCollection<WorkItem>> m_queueForGame; 
+        private readonly object m_dictionaryLock = new object();
+        private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame; 
 
         public UciEngineFarm()
         {
-            m_queueForGame = new Dictionary<int, BlockingCollection<WorkItem>>();
+            m_queueForGame = new ConcurrentDictionary<int, BlockingCollection<WorkItem>>();
         }
 
-        private void ProcessQueue(BlockingCollection<WorkItem> workItemQueue, UciEngineWrapper engine)
+        private void ProcessQueue(BlockingCollection<WorkItem> workItemQueue, UciEngine engine)
         {
             Debug.WriteLine("Starting queue processor thread " + Thread.CurrentThread.ManagedThreadId);
-            while (true)
+
+            try
             {
-                try
+                WorkItem workItem;
+                while (workItemQueue.TryTake(out workItem, Timeout.Infinite))
                 {
-                    WorkItem workItem = null;
-                    if (workItemQueue.TryTake(out workItem))
+                    try
                     {
                         lock (workItem)
                         {
@@ -39,46 +41,64 @@ namespace Redchess.AnalysisWorker
                             Monitor.Pulse(workItem);
                         }
                     }
+                    catch (InvalidOperationException)
+                    {
+                        break;
+                    }
                 }
-                catch (InvalidOperationException)
+            }
+            finally
+            {
+                engine.Dispose();
+            }
+        }
+
+        public void GameOver(int gameId)
+        {
+            lock (m_dictionaryLock)
+            {
+                Debug.WriteLine("Telling queue for game " + gameId + " to CompleteAdding");
+                BlockingCollection<WorkItem> queue;
+                if (m_queueForGame.TryGetValue(gameId, out queue))
                 {
-                    break;
+                    queue.CompleteAdding();
                 }
             }
         }
 
-        public Task<string> BestMove(int gameId, string fen)
+        public string BestMove(int gameId, string fen)
         {
             Debug.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
-            BlockingCollection<WorkItem> queue;
 
-            if (!m_queueForGame.TryGetValue(gameId, out queue))
+            lock (m_dictionaryLock)
             {
-                Debug.WriteLine("Queue not found for this game id, creating worker");
-                queue = new BlockingCollection<WorkItem>();
-                m_queueForGame[gameId] = queue;
-                var engine = new UciEngineWrapper();
-                Task.Factory.StartNew(() => ProcessQueue(queue, engine));
+                BlockingCollection<WorkItem> queue;
+                if (!m_queueForGame.TryGetValue(gameId, out queue))
+                {
+                    Debug.WriteLine("Queue not found for this game id, creating worker");
+                    queue = new BlockingCollection<WorkItem>();
+                    m_queueForGame[gameId] = queue;
+                    var engine = new UciEngine();
+                    Task.Factory.StartNew(() => ProcessQueue(queue, engine));
+                }
             }
 
-            var workItem = new WorkItem() {Fen = fen};
+            var workItem = new WorkItem {Fen = fen};
 
-            return Task.Factory.StartNew(() =>
+            lock (workItem)
             {
-                lock (workItem)
-                {
-                    m_queueForGame[gameId].Add(workItem);
-                    Debug.WriteLine("Waiting for pulse from worker in thread " + Thread.CurrentThread.ManagedThreadId);
-                    Monitor.Wait(workItem);
-                    return workItem.Result;
-                }
-            });
+                m_queueForGame[gameId].Add(workItem);
+                Debug.WriteLine("Waiting for pulse from worker in thread " + Thread.CurrentThread.ManagedThreadId);
+                Monitor.Wait(workItem);
+                return workItem.Result;
+            }
         }
 
         public void Dispose()
         {
             foreach (var worker in m_queueForGame.Values)
             {
+                worker.CompleteAdding();
                 worker.Dispose();
             }
         }

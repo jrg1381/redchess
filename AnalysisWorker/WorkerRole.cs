@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using Microsoft.Azure;
-using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Newtonsoft.Json;
-using Redchess.AnalysisWorker;
 using RedChess.MessageQueue;
 using RedChess.MessageQueue.Messages;
+using RedChess.WebEngine.Repositories;
 
-namespace AnalysisWorker
+namespace Redchess.AnalysisWorker
 {
     public class WorkerRole : RoleEntryPoint
     {
@@ -34,7 +30,7 @@ namespace AnalysisWorker
             var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
 
             // Initiates the message pump and callback is invoked for each message that is received, calling close on the client will stop the pump.
-            m_client.OnMessage(async (receivedMessage) =>
+            m_client.OnMessage(receivedMessage =>
             {
                 try
                 {
@@ -46,13 +42,21 @@ namespace AnalysisWorker
                         case GameEndedMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
+                            engineFarm.GameOver(message.GameId);
                             break;
                         }
                         case BestMoveRequestMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
-                            string bestMove = await engineFarm.BestMove(message.GameId, message.Fen);
-                            m_queueManager.PostBestMoveResponseMessage(message.GameId, bestMove);
+                            string bestMove = engineFarm.BestMove(message.GameId, message.Fen);
+                            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove);
+                            break;
+                        }
+                        case BestMoveResponseMessage.MessageType:
+                        {
+                            var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(body.Json);
+                            var gameManager = new GameManager();
+                            gameManager.AddAnalysis(message.GameId, message.MoveNumber, message.BestMove);
                             break;
                         }
                         default:

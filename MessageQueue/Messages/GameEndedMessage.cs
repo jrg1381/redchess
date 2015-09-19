@@ -13,7 +13,5 @@ namespace RedChess.MessageQueue.Messages
  
         [JsonProperty(PropertyName = "id")]
         public int GameId { get; set; }
-        [JsonProperty(PropertyName = "pgn")]
-        public string Pgn { get; set; }
     }
 }

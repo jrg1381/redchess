@@ -2,9 +2,9 @@
 {
     public interface IQueueManager
     {
-        void PostGameEndedMessage(int gameId, string pgnText);
+        void PostGameEndedMessage(int gameId);
         object PeekQueue();
-        void PostRequestBestMoveMessage(int gameId, string fen);
-        void PostBestMoveResponseMessage(int gameId, string bestMove);
+        void PostRequestBestMoveMessage(int gameId, int moveNumber, string fen);
+        void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove);
     }
 }

@@ -13,6 +13,8 @@ namespace RedChess.MessageQueue.Messages
 
         [JsonProperty(PropertyName = "id")]
         public int GameId { get; set; }
+        [JsonProperty(PropertyName = "movenumber")]
+        public int MoveNumber { get; set; }
         [JsonProperty(PropertyName = "bestmove")]
         public string BestMove { get; set; }
     }

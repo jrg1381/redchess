@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AnalysisEntry.cs" />
     <Compile Include="Models\Clock.cs" />
     <Compile Include="Models\HistoryEntry.cs" />
     <Compile Include="Models\IClock.cs" />

@@ -1,19 +1,17 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Redchess.AnalysisWorker
 {
-    internal class UciEngineWrapper : IDisposable
+    internal class UciEngine : IDisposable
     {
         private const string c_processReadyText = "Stockfish 6 64";
-        private const string c_exePath = @"C:\Users\james.gilmore\Desktop\stockfish-6-win\Windows\stockfish-6-64.exe";
         private readonly BidirectionalProcess m_engine;
 
-        internal UciEngineWrapper()
+        internal UciEngine()
         {
-            m_engine = new BidirectionalProcess(c_exePath, c_processReadyText);
+            var exePath = EngineDownloader.DownloadEngine();
+            m_engine = new BidirectionalProcess(exePath, c_processReadyText);
             m_engine.WaitForReady();
             var options = m_engine.Write("uci", "uciok");
             m_engine.Write("isready", "readyok");
@@ -40,7 +38,7 @@ namespace Redchess.AnalysisWorker
 
         public void Dispose()
         {
-            m_engine.Dispose();
+            m_engine.Close();
         }
     }
 }

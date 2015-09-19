@@ -18,9 +18,8 @@ namespace RedChess.MessageQueue
 
     internal class NullQueue : IQueueManager
     {
-        public void PostGameEndedMessage(int gameId, string pgnText)
+        public void PostGameEndedMessage(int gameId)
         {
-            Debug.WriteLine("{0} {1}", gameId, pgnText);
         }
 
         public object PeekQueue()
@@ -28,11 +27,11 @@ namespace RedChess.MessageQueue
             return new object();
         }
 
-        public void PostRequestBestMoveMessage(int gameId, string fen)
+        public void PostRequestBestMoveMessage(int gameId, int moveId, string fen)
         {        
         }
 
-        public void PostBestMoveResponseMessage(int gameId, string bestMove)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove)
         {
         }
     }
