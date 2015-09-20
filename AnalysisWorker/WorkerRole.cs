@@ -69,7 +69,14 @@ namespace Redchess.AnalysisWorker
                 }
                 catch (Exception e)
                 {
-                    Trace.WriteLine("Error: " + e.Message);
+                    var x = e;
+
+                    do
+                    {
+                        Trace.TraceError("Error: " + x.Message);
+                        x = x.InnerException;
+                    } while (x != null);
+
                     receivedMessage.Abandon();
                 }
             }, messageOptions);
