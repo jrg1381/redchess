@@ -36,15 +36,16 @@ namespace Redchess.AnalysisWorker
         internal void SetOptions()
         {
             Trace.WriteLine("Setting options");
-            m_engine.Write("set option name Hash 32");
+            m_engine.Write("setoption name Hash value 32");
+            m_engine.Write("setoption name Threads value 2");
             Trace.WriteLine("Setting options complete");
         }
 
         internal string BestMove(string fen)
         {
             Trace.WriteLine("Bestmove on "+ fen);
-            var cmd = String.Format("position fen {0}\r\ngo\r\nisready", fen);
-            var analysis = m_engine.Write(cmd, "readyok");
+            var cmd = String.Format("position fen {0}\r\ngo movetime 5000", fen);
+            var analysis = m_engine.Write(cmd, "ponder");
             return analysis;
             // return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 4);
         }
