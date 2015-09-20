@@ -79,6 +79,7 @@ namespace Redchess.AnalysisWorker
                     queue = new BlockingCollection<WorkItem>();
                     m_queueForGame[gameId] = queue;
                     var engine = new UciEngine();
+                    Trace.WriteLine("Worker created successfully");
                     Task.Factory.StartNew(() => ProcessQueue(queue, engine));
                 }
             }

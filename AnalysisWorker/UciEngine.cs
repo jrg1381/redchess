@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 
 namespace Redchess.AnalysisWorker
 {
@@ -12,28 +13,40 @@ namespace Redchess.AnalysisWorker
         {
             var exePath = EngineDownloader.DownloadEngine();
             m_engine = new BidirectionalProcess(exePath, c_processReadyText);
+            Trace.WriteLine("Waiting for engine to be ready");
             m_engine.WaitForReady();
+            Trace.WriteLine("Putting engine in UCI mode");
             var options = m_engine.Write("uci", "uciok");
+            Trace.WriteLine("Engine in UCI mode");
+            Trace.WriteLine("Firing 'isready'");
             m_engine.Write("isready", "readyok");
+            Trace.WriteLine("readyok");
             SetOptions();
             NewGame();
+            Trace.WriteLine("Started UciEngine");
         }
 
         internal void NewGame()
         {
+            Trace.WriteLine("ucinewgame");
             m_engine.Write("ucinewgame");
+            Trace.WriteLine("ucinewgame complete");
         }
 
         internal void SetOptions()
         {
+            Trace.WriteLine("Setting options");
             m_engine.Write("set option name Hash 32");
+            Trace.WriteLine("Setting options complete");
         }
 
         internal string BestMove(string fen)
         {
-            var cmd = String.Format("position fen {0}\r\ngo", fen);
-            var analysis = m_engine.Write(cmd, "bestmove");
-            return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 4);
+            Trace.WriteLine("Bestmove on "+ fen);
+            var cmd = String.Format("position fen {0}\r\ngo\r\nisready", fen);
+            var analysis = m_engine.Write(cmd, "readyok");
+            return analysis;
+            // return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 4);
         }
 
         public void Dispose()
