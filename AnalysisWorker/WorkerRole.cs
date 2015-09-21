@@ -22,10 +22,11 @@ namespace Redchess.AnalysisWorker
         QueueClient m_client;
         readonly ManualResetEvent m_completedEvent = new ManualResetEvent(false);
         private readonly IQueueManager m_queueManager = QueueManagerFactory.CreateInstance();
+        private UciEngineFarm m_engineFarm;
 
         public override void Run()
         {
-            var engineFarm = new UciEngineFarm();
+            m_engineFarm = new UciEngineFarm();
             Trace.WriteLine("Starting processing of messages");
             var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
 
@@ -42,13 +43,13 @@ namespace Redchess.AnalysisWorker
                         case GameEndedMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
-                            engineFarm.GameOver(message.GameId);
+                            m_engineFarm.GameOver(message.GameId);
                             break;
                         }
                         case BestMoveRequestMessage.MessageType:
                         {
                             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
-                            string bestMove = engineFarm.BestMove(message.GameId, message.Fen);
+                            string bestMove = m_engineFarm.BestMove(message.GameId, message.Fen);
                             m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove);
                             break;
                         }
@@ -90,6 +91,7 @@ namespace Redchess.AnalysisWorker
 
         public override void OnStop()
         {
+            m_engineFarm.Dispose();
             // Close the connection to Service Bus Queue
             m_client.Close();
             m_completedEvent.Set();
