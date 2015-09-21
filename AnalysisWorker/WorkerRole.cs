@@ -38,30 +38,27 @@ namespace Redchess.AnalysisWorker
                     // Process the message
                     Trace.WriteLine("Processing Service Bus message: " + receivedMessage.SequenceNumber.ToString());
                     var body = receivedMessage.GetBody<BasicMessage>();
+
                     switch (body.MessageType)
                     {
                         case GameEndedMessage.MessageType:
                         {
-                            var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
-                            m_engineFarm.GameOver(message.GameId);
+                            ProcessGameEndedMessage(body);
                             break;
                         }
                         case BestMoveRequestMessage.MessageType:
                         {
-                            var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
-                            string bestMove = m_engineFarm.BestMove(message.GameId, message.Fen);
-                            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove);
+                            ProcessBestMoveRequestMessage(body);
                             break;
                         }
                         case BestMoveResponseMessage.MessageType:
                         {
-                            var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(body.Json);
-                            var gameManager = new GameManager();
-                            gameManager.AddAnalysis(message.GameId, message.MoveNumber, message.BestMove);
+                            ProcessBestMoveResponseMessage(body);
                             break;
                         }
                         default:
                         {
+                            Trace.TraceError("Received unknown message type " + body.MessageType);
                             break;
                         }
                     }
@@ -76,6 +73,26 @@ namespace Redchess.AnalysisWorker
             }, messageOptions);
 
             m_completedEvent.WaitOne();
+        }
+
+        private static void ProcessBestMoveResponseMessage(BasicMessage body)
+        {
+            var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(body.Json);
+            var gameManager = new GameManager();
+            gameManager.AddAnalysis(message.GameId, message.MoveNumber, message.BestMove);
+        }
+
+        private void ProcessBestMoveRequestMessage(BasicMessage body)
+        {
+            var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
+            string bestMove = m_engineFarm.BestMove(message.GameId, message.Fen);
+            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove);
+        }
+
+        private void ProcessGameEndedMessage(BasicMessage body)
+        {
+            var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
+            m_engineFarm.GameOver(message.GameId);
         }
 
         public override bool OnStart()
