@@ -38,22 +38,23 @@ namespace Redchess.AnalysisWorker
                     // Process the message
                     Trace.WriteLine("Processing Service Bus message: " + receivedMessage.SequenceNumber.ToString());
                     var body = receivedMessage.GetBody<BasicMessage>();
+                    var json = body.Json;
 
                     switch (body.MessageType)
                     {
                         case GameEndedMessage.MessageType:
                         {
-                            ProcessGameEndedMessage(body);
+                            ProcessGameEndedMessage(json);
                             break;
                         }
                         case BestMoveRequestMessage.MessageType:
                         {
-                            ProcessBestMoveRequestMessage(body);
+                            ProcessBestMoveRequestMessage(json);
                             break;
                         }
                         case BestMoveResponseMessage.MessageType:
                         {
-                            ProcessBestMoveResponseMessage(body);
+                            ProcessBestMoveResponseMessage(json);
                             break;
                         }
                         default:
@@ -75,23 +76,23 @@ namespace Redchess.AnalysisWorker
             m_completedEvent.WaitOne();
         }
 
-        private static void ProcessBestMoveResponseMessage(BasicMessage body)
+        private static void ProcessBestMoveResponseMessage(string json)
         {
-            var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(body.Json);
+            var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(json);
             var gameManager = new GameManager();
             gameManager.AddAnalysis(message.GameId, message.MoveNumber, message.BestMove);
         }
 
-        private void ProcessBestMoveRequestMessage(BasicMessage body)
+        private void ProcessBestMoveRequestMessage(string json)
         {
-            var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(body.Json);
-            string bestMove = m_engineFarm.BestMove(message.GameId, message.Fen);
+            var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(json);
+            var bestMove = m_engineFarm.BestMove(message.GameId, message.Fen);
             m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove);
         }
 
-        private void ProcessGameEndedMessage(BasicMessage body)
+        private void ProcessGameEndedMessage(string json)
         {
-            var message = JsonConvert.DeserializeObject<GameEndedMessage>(body.Json);
+            var message = JsonConvert.DeserializeObject<GameEndedMessage>(json);
             m_engineFarm.GameOver(message.GameId);
         }
 
