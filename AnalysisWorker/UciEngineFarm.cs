@@ -49,6 +49,7 @@ namespace Redchess.AnalysisWorker
             }
             finally
             {
+                Trace.WriteLine("No more work");
                 engine.Dispose();
             }
         }
