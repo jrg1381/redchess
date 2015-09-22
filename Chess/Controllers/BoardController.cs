@@ -43,7 +43,7 @@ namespace Chess.Controllers
 
         public ActionResult Index()
         {
-            return View(m_gameManager.FindAll());
+            return View(m_gameManager.FindAll().ToList());
         }
 
         //
