@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
@@ -15,7 +16,13 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                var game = context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Include(b => b.UserProfileWinner).Single(b => b.GameId == id);
+                var game = context.Boards
+                    .Include(b => b.UserProfileBlack)
+                    .Include(b => b.UserProfileWhite)
+                    .Include(b => b.UserProfileWinner)
+                    .AsNoTracking()
+                    .Single(b => b.GameId == id);
+
                 return game;
             }
         }
@@ -39,9 +46,18 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var dbContext = new ChessContext())
             {
-                var game = dbContext.Boards.Find(id);
+                // Crazy 'best' way to remove an object by id in EF without requesting the object first
+                var game = new GameDto {GameId = id};
+                dbContext.Boards.Attach(game);
                 dbContext.Boards.Remove(game);
-                dbContext.SaveChanges();
+                try
+                {
+                    dbContext.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    // Can throw if the object isn't there
+                }
             }
         }
 
@@ -58,7 +74,12 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.Boards.Include(b => b.UserProfileBlack).Include(b => b.UserProfileWhite).Include(b => b.UserProfileWinner).ToList();
+                return context.Boards
+                    .Include(b => b.UserProfileBlack)
+                    .Include(b => b.UserProfileWhite)
+                    .Include(b => b.UserProfileWinner)
+                    .AsNoTracking()
+                    .ToList();
             }
         }
 
@@ -71,6 +92,7 @@ namespace RedChess.WebEngine.Repositories
                         .Include(b => b.UserProfileWhite)
                         .Include(b => b.UserProfileWinner)
                         .Where(b => b.UserProfileBlack.UserName == userName || b.UserProfileWhite.UserName == userName)
+                        .AsNoTracking()
                         .ToList();
             }
         }
