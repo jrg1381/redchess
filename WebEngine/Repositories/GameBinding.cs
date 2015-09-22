@@ -16,7 +16,10 @@ namespace RedChess.WebEngine.Repositories
 
         public string Description
         {
-            get { return m_gameManager.Description(m_gameDto.GameId); }
+            get
+            {
+                return String.Format("{0} vs {1}", m_gameDto.UserProfileWhite.UserName, m_gameDto.UserProfileBlack.UserName);
+            }
         }
 
         public bool ShouldLockUi
@@ -81,7 +84,12 @@ namespace RedChess.WebEngine.Repositories
 
         public string CurrentPlayerColor(string userName)
         {
-            return m_gameManager.CurrentPlayerColor(m_gameDto.GameId, userName);
+            if (m_gameDto.UserProfileBlack.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
+                return "b";
+            if (m_gameDto.UserProfileWhite.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
+                return "w";
+
+            return "";
         }
 
         public UserProfile UserProfileWinner

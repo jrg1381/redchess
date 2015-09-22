@@ -204,30 +204,6 @@ namespace RedChess.WebEngine.Repositories
                    (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
         }
 
-        /// <summary>
-        /// Return 'b' or 'w' or the empty string.
-        /// </summary>
-        /// <param name="gameId"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        public string CurrentPlayerColor(int gameId, string userName)
-        {
-            var gameDto = m_repository.FindById(gameId);
-
-            if (gameDto.UserProfileBlack.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
-                return "b";
-            if (gameDto.UserProfileWhite.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
-                return "w";
-
-            return "";
-        }
-
-        public string Description(int gameId)
-        {
-            var gameDto = m_repository.FindById(gameId);
-            return String.Format("{0} vs {1}", gameDto.UserProfileWhite.UserName, gameDto.UserProfileBlack.UserName);
-        }
-
         public bool Move(int gameId, Location start, Location end)
         {
             var gameDto = m_repository.FindById(gameId);
@@ -404,7 +380,7 @@ namespace RedChess.WebEngine.Repositories
 
         public IEnumerable<IGameBinding> WithPlayer(string userName)
         {
-            return m_repository.FindWithPlayer(userName).Select(x => new GameBinding(x, this)); ;
+            return m_repository.FindWithPlayer(userName).Select(x => new GameBinding(x, this));
         }
     }
 }
