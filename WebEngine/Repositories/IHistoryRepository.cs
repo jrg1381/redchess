@@ -7,7 +7,6 @@ namespace RedChess.WebEngine.Repositories
     {
         HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber);
         IEnumerable<HistoryEntry> FindAllMoves(int gameId);
-        int LatestMoveInGame(int gameId);
         bool IsParticipant(string username, int gameId);
         void Add(HistoryEntry historyEntry);
         void UpdateLastMove(HistoryEntry historyEntry);
