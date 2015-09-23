@@ -218,8 +218,7 @@ namespace RedChess.WebEngine.Repositories
 
             m_repository.AddOrUpdate(gameDto);
 
-            var moveNumber = m_historyRepository.LatestMoveInGame(gameId) + 1;
-            m_historyRepository.Add(new HistoryEntry {Fen = gameDto.Fen, GameId = gameDto.GameId, Move = gameDto.LastMove, MoveNumber = moveNumber});
+            m_historyRepository.Add(new HistoryEntry { Fen = gameDto.Fen, GameId = gameDto.GameId, Move = gameDto.LastMove, MoveNumber = gameDto.MoveNumber + 1});
 
             var clock = m_clockRepository.Clock(gameId);
 
