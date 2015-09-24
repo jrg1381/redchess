@@ -9,7 +9,6 @@ namespace RedChess.WebEngine.Repositories
         IEnumerable<HistoryEntry> FindAllMoves(int gameId);
         bool IsParticipant(string username, int gameId);
         void Add(HistoryEntry historyEntry);
-        void UpdateLastMove(HistoryEntry historyEntry);
         void CloneGame(int newGameId, int oldGameId, int cloneUpToMove);
     }
 }
