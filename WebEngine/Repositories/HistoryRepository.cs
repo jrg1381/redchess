@@ -23,16 +23,6 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public bool IsParticipant(string username, int gameId)
-        {
-            using (var context = new ChessContext())
-            {
-                return
-                    context.Database.SqlQuery<bool>("SELECT dbo.IsParticipant(@p0,@p1)", gameId, username)
-                        .FirstOrDefault();
-            }
-        }
-
         public void Add(HistoryEntry historyEntry)
         {
             using (var context = new ChessContext())
