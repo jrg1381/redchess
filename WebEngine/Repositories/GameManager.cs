@@ -297,11 +297,6 @@ namespace RedChess.WebEngine.Repositories
             PostGameEndedMessage(gameId);
         }
 
-        public object AnalysisQueue()
-        {
-            return m_queueManager.PeekQueue();
-        }
-
         private void PostGameEndedMessage(int gameId)
         {
             Task.Run(() => m_queueManager.PostGameEndedMessage(gameId));
