@@ -20,8 +20,9 @@ namespace RedChess.WebEngine.Repositories
         private readonly IBoard m_board;
         private readonly IQueueManager m_queueManager;
         private readonly IUserProfileRepository m_userRepository;
+        private readonly IAnalysisRepository m_analysisRepository;
 
-        public GameManager() : this(null, null, null, null, null)
+        public GameManager() : this(null, null, null, null, null, null)
         {
         }
 
@@ -29,14 +30,21 @@ namespace RedChess.WebEngine.Repositories
             IHistoryRepository historyRepository = null, 
             IClockRepository clockRepository = null, 
             IQueueManager queueManager = null,
-            IUserProfileRepository userProfileRepository = null)
+            IUserProfileRepository userProfileRepository = null,
+            IAnalysisRepository analysisRepository = null)
         {
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
             m_clockRepository = clockRepository ?? new ClockRepository();
             m_queueManager = queueManager ?? QueueManagerFactory.CreateInstance();
             m_userRepository = userProfileRepository ?? new UserProfileRepository();
+            m_analysisRepository = analysisRepository ?? new AnalysisRepository();
             m_board = BoardFactory.CreateInstance();
+        }
+
+        public string AnalysisForGameMove(int gameId, int moveNumber)
+        {
+            return m_analysisRepository.AnalysisForGameMove(gameId, moveNumber);
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()
