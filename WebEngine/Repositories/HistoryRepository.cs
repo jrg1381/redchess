@@ -42,24 +42,6 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public void UpdateLastMove(HistoryEntry historyEntry)
-        {
-            using (var context = new ChessContext())
-            {
-                var entryForLastMove =
-                    context.HistoryEntries.Where(x => x.GameId == historyEntry.GameId)
-                        .OrderByDescending(x => x.MoveNumber)
-                        .Take(1)
-                        .Single();
-
-                entryForLastMove.Fen = historyEntry.Fen;
-                entryForLastMove.Move = historyEntry.Move;
-
-                context.HistoryEntries.AddOrUpdate(entryForLastMove);
-                context.SaveChanges();
-            }
-        }
-
         public void CloneGame(int newGameId, int oldGameId, int cloneUpToMove)
         {
             using (var context = new ChessContext())

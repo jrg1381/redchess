@@ -19,8 +19,7 @@ namespace RedChess.WebEngine.Repositories
         bool IsUsersTurn(int gameId, string currentUser);
         void TimeGameOut(int id, string message, string currentUser);
         void EndGameWithMessage(int id, string message, int? userIdWinner = null);
-        bool Move(int id, Location startLocation, Location endLocation);
-        void PromotePiece(int id, string promotionPiece);
+        bool Move(int id, Location startLocation, Location endLocation, string promoteTo);
         void UpdateMessage(int id);
         bool IsParticipant(string name, int gameId);
         IEnumerable<IGameBinding> WithPlayer(string userName);
