@@ -26,5 +26,6 @@ namespace RedChess.WebEngine.Repositories
         IEnumerable<IGameBinding> WithPlayer(string userName);
         string PgnText(int id);
         object AnalysisQueue();
+        IEnumerable<UserProfile> AllUserProfiles();
     }
 }

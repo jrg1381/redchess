@@ -25,7 +25,6 @@ namespace Chess.Controllers
     public class BoardController : Controller
     {
         private readonly IGameManager m_gameManager;
-        private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
 
         public BoardController() : this(null, null)
@@ -64,7 +63,7 @@ namespace Chess.Controllers
 
         public ActionResult Create()
         {
-            return View(m_usersRepository.FindAll().Where(x => x.UserName != m_identityProvider.CurrentUser));
+            return View(m_gameManager.AllUserProfiles().Where(x => x.UserName != m_identityProvider.CurrentUser));
         }
 
         //

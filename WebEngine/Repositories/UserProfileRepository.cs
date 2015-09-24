@@ -4,7 +4,7 @@ using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-    public class UserProfileRepository
+    internal class UserProfileRepository : IUserProfileRepository
     {
         public IEnumerable<UserProfile> FindAll()
         {
@@ -14,7 +14,7 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        internal int UserId(string currentUser)
+        public int UserId(string currentUser)
         {
             using (var context = new ChessContext())
             {

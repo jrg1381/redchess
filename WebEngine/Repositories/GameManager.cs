@@ -18,18 +18,29 @@ namespace RedChess.WebEngine.Repositories
         private readonly IClockRepository m_clockRepository;
         private readonly IBoard m_board;
         private readonly IQueueManager m_queueManager;
+        private readonly IUserProfileRepository m_userRepository;
 
-        public GameManager() : this(null, null, null, null)
+        public GameManager() : this(null, null, null, null, null)
         {
         }
 
-        internal GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null, IQueueManager queueManager = null)
+        internal GameManager(IGameRepository gameRepository = null, 
+            IHistoryRepository historyRepository = null, 
+            IClockRepository clockRepository = null, 
+            IQueueManager queueManager = null,
+            IUserProfileRepository userProfileRepository = null)
         {
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
             m_clockRepository = clockRepository ?? new ClockRepository();
             m_queueManager = queueManager ?? QueueManagerFactory.CreateInstance();
+            m_userRepository = userProfileRepository ?? new UserProfileRepository();
             m_board = BoardFactory.CreateInstance();
+        }
+
+        public IEnumerable<UserProfile> AllUserProfiles()
+        {
+            return m_userRepository.FindAll();
         }
 
         public void AddAnalysis(int gameId, int moveNumber, string analysisText)
@@ -130,7 +141,7 @@ namespace RedChess.WebEngine.Repositories
         public int CloneBoard(IBoard newBoard, int opponentId, string currentUser, bool playAsBlack, int oldGameId, int cloneUpToMove)
         {
             var newGame = new GameDto { Fen = newBoard.ToFen() };
-            var currentUserId = (new UserProfileRepository()).UserId(currentUser);
+            var currentUserId = m_userRepository.UserId(currentUser);
 
             if (playAsBlack)
             {
@@ -344,7 +355,7 @@ namespace RedChess.WebEngine.Repositories
         public int Add(IBoard board, int opponentId, string currentUser, bool playAsBlack, int timeLimitMs)
         {
             var newGame = new GameDto {Fen = board.ToFen()};
-            var currentUserId = (new UserProfileRepository()).UserId(currentUser);
+            var currentUserId = m_userRepository.UserId(currentUser);
 
             if (playAsBlack)
             {
