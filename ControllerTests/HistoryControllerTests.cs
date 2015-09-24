@@ -5,6 +5,7 @@ using Chess.Controllers;
 using NUnit.Framework;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
 
 namespace ControllerTests

@@ -1,6 +1,7 @@
 using System.Data.Entity.Migrations;
 using System.Linq;
 using RedChess.WebEngine.Models;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
 {

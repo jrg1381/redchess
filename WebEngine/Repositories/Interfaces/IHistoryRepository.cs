@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using RedChess.WebEngine.Models;
 
-namespace RedChess.WebEngine.Repositories
+namespace RedChess.WebEngine.Repositories.Interfaces
 {
     internal interface IHistoryRepository
     {

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Chess.Models;
 using RedChess.WebEngine.Repositories;
 using Microsoft.AspNet.SignalR;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {

@@ -8,6 +8,7 @@ using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue;
 using RedChess.WebEngine.Models;
 using RedChess.EngineFactory;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
 {

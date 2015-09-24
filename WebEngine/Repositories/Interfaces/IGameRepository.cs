@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RedChess.WebEngine.Repositories
+namespace RedChess.WebEngine.Repositories.Interfaces
 {
     internal interface IGameRepository
     {

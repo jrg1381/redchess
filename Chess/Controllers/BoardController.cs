@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {

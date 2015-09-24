@@ -1,6 +1,6 @@
 using RedChess.WebEngine.Models;
 
-namespace RedChess.WebEngine.Repositories
+namespace RedChess.WebEngine.Repositories.Interfaces
 {
     internal interface IClockRepository
     {

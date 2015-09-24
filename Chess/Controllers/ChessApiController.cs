@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {

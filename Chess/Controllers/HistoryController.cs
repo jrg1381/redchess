@@ -8,6 +8,7 @@ using Chess.Models;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.EngineFactory;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {

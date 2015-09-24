@@ -13,6 +13,7 @@ using RedChess.WebEngine.Repositories;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.WebEngine.Models;
 using Chess.Controllers;
+using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
 
 namespace ControllerTests
