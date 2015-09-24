@@ -11,7 +11,9 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.HistoryEntries.FirstOrDefault(x => x.GameId == gameId && x.MoveNumber == moveNumber);
+                return context.HistoryEntries
+                    .AsNoTracking()
+                    .FirstOrDefault(x => x.GameId == gameId && x.MoveNumber == moveNumber);
             }
         }
 
@@ -19,7 +21,9 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                return context.HistoryEntries.Where(x => x.GameId == gameId).OrderBy(x => x.MoveNumber).ToList();
+                return context.HistoryEntries
+                    .AsNoTracking()
+                    .Where(x => x.GameId == gameId).OrderBy(x => x.MoveNumber).ToList();
             }
         }
 
