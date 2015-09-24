@@ -362,21 +362,15 @@ namespace ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
-            manager.Move(c_fakeGameId, Location.H2, Location.H1);
-            manager.PromotePiece(c_fakeGameId, "Q");
+            manager.Move(c_fakeGameId, Location.H2, Location.H1, "Q");
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
-            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.UpdateLastMove(null));
 
             fakeRepo.VerifyAllExpectations();
 
             var updatedDto = args[0][0] as GameDto;
-            var newHistoryEntry = historyArgs[0][0] as HistoryEntry;
 
             Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", updatedDto.Fen, "Fen after move not as expected");
-            Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", newHistoryEntry.Fen, "Fen in history is wrong");
-            Assert.AreEqual("h1=Q+", newHistoryEntry.Move, "Expected move to be h1=Q+");
-            Assert.AreEqual(c_fakeGameId, newHistoryEntry.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
         }
 
         [Test]
@@ -411,12 +405,10 @@ namespace ControllerTests
         public void MoveNumberIncrementsInHistory()
         {
             var fakeGame = GetFakeGame();
-            int moveCount = 0;
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            fakeHistoryRepo.Expect(x => x.LatestMoveInGame(c_fakeGameId)).WhenCalled(y => { y.ReturnValue = moveCount++; }).Return(0);
             
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 

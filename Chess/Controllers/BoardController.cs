@@ -269,7 +269,7 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = "Invalid move", status = "FAIL" });
             }
 
-            bool success = m_gameManager.Move(id, startLocation, endLocation);
+            bool success = m_gameManager.Move(id, startLocation, endLocation, promote);
 
             if (!success)
             {
@@ -281,11 +281,6 @@ namespace Chess.Controllers
                 }
 
                 return Json(new { fen = game.Fen, message = errorMessage, status = "FAIL" });
-            }
-
-            if (!String.IsNullOrEmpty(promote))
-            {
-                m_gameManager.PromotePiece(id, promote);
             }
 
             m_gameManager.UpdateMessage(id);

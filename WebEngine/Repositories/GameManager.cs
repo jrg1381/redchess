@@ -204,7 +204,7 @@ namespace RedChess.WebEngine.Repositories
                    (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
         }
 
-        public bool Move(int gameId, Location start, Location end)
+        public bool Move(int gameId, Location start, Location end, string promote = null)
         {
             var gameDto = m_repository.FindById(gameId);
             PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen);
@@ -212,6 +212,11 @@ namespace RedChess.WebEngine.Repositories
 
             var success = m_board.Move(start, end);
             if (!success) return false;
+
+            if (promote != null)
+            {
+                m_board.PromotePiece(promote);
+            }
 
             gameDto.LastMove = m_board.LastMove();
             gameDto.Fen = m_board.ToFen();
@@ -239,25 +244,6 @@ namespace RedChess.WebEngine.Repositories
             }
 
             return true;
-        }
-
-        public void PromotePiece(int gameId, string typeToPromoteTo)
-        {
-            var gameDto = m_repository.FindById(gameId);
-            m_board.FromFen(gameDto.Fen);
-            m_board.PromotePiece(typeToPromoteTo);
-            gameDto.LastMove = m_board.LastMove();
-            gameDto.Fen = m_board.ToFen();
-
-            m_historyRepository.UpdateLastMove(
-                new HistoryEntry
-                {
-                    Fen = gameDto.Fen,
-                    GameId = gameDto.GameId,
-                    Move = gameDto.LastMove,
-                });
-
-            m_repository.AddOrUpdate(gameDto);
         }
 
         public void UpdateMessage(int gameId)
