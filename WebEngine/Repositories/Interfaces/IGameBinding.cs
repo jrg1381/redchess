@@ -1,7 +1,7 @@
 using System;
 using RedChess.WebEngine.Models;
 
-namespace RedChess.WebEngine.Repositories
+namespace RedChess.WebEngine.Repositories.Interfaces
 {
     public interface IGameBinding
     {

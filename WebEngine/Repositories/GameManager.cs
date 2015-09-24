@@ -8,6 +8,7 @@ using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue;
 using RedChess.WebEngine.Models;
 using RedChess.EngineFactory;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
 {
@@ -18,18 +19,37 @@ namespace RedChess.WebEngine.Repositories
         private readonly IClockRepository m_clockRepository;
         private readonly IBoard m_board;
         private readonly IQueueManager m_queueManager;
+        private readonly IUserProfileRepository m_userRepository;
+        private readonly IAnalysisRepository m_analysisRepository;
 
-        public GameManager() : this(null, null, null, null)
+        public GameManager() : this(null, null, null, null, null, null)
         {
         }
 
-        internal GameManager(IGameRepository gameRepository = null, IHistoryRepository historyRepository = null, IClockRepository clockRepository = null, IQueueManager queueManager = null)
+        internal GameManager(IGameRepository gameRepository = null, 
+            IHistoryRepository historyRepository = null, 
+            IClockRepository clockRepository = null, 
+            IQueueManager queueManager = null,
+            IUserProfileRepository userProfileRepository = null,
+            IAnalysisRepository analysisRepository = null)
         {
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
             m_clockRepository = clockRepository ?? new ClockRepository();
             m_queueManager = queueManager ?? QueueManagerFactory.CreateInstance();
+            m_userRepository = userProfileRepository ?? new UserProfileRepository();
+            m_analysisRepository = analysisRepository ?? new AnalysisRepository();
             m_board = BoardFactory.CreateInstance();
+        }
+
+        public string AnalysisForGameMove(int gameId, int moveNumber)
+        {
+            return m_analysisRepository.AnalysisForGameMove(gameId, moveNumber);
+        }
+
+        public IEnumerable<UserProfile> AllUserProfiles()
+        {
+            return m_userRepository.FindAll();
         }
 
         public void AddAnalysis(int gameId, int moveNumber, string analysisText)
@@ -130,7 +150,7 @@ namespace RedChess.WebEngine.Repositories
         public int CloneBoard(IBoard newBoard, int opponentId, string currentUser, bool playAsBlack, int oldGameId, int cloneUpToMove)
         {
             var newGame = new GameDto { Fen = newBoard.ToFen() };
-            var currentUserId = (new UserProfileRepository()).UserId(currentUser);
+            var currentUserId = m_userRepository.UserId(currentUser);
 
             if (playAsBlack)
             {
@@ -204,7 +224,7 @@ namespace RedChess.WebEngine.Repositories
                    (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
         }
 
-        public bool Move(int gameId, Location start, Location end)
+        public bool Move(int gameId, Location start, Location end, string promote = null)
         {
             var gameDto = m_repository.FindById(gameId);
             PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen);
@@ -212,6 +232,11 @@ namespace RedChess.WebEngine.Repositories
 
             var success = m_board.Move(start, end);
             if (!success) return false;
+
+            if (promote != "") // UI passes this from form
+            {
+                m_board.PromotePiece(promote);
+            }
 
             gameDto.LastMove = m_board.LastMove();
             gameDto.Fen = m_board.ToFen();
@@ -239,25 +264,6 @@ namespace RedChess.WebEngine.Repositories
             }
 
             return true;
-        }
-
-        public void PromotePiece(int gameId, string typeToPromoteTo)
-        {
-            var gameDto = m_repository.FindById(gameId);
-            m_board.FromFen(gameDto.Fen);
-            m_board.PromotePiece(typeToPromoteTo);
-            gameDto.LastMove = m_board.LastMove();
-            gameDto.Fen = m_board.ToFen();
-
-            m_historyRepository.UpdateLastMove(
-                new HistoryEntry
-                {
-                    Fen = gameDto.Fen,
-                    GameId = gameDto.GameId,
-                    Move = gameDto.LastMove,
-                });
-
-            m_repository.AddOrUpdate(gameDto);
         }
 
         public void UpdateMessage(int gameId)
@@ -300,11 +306,6 @@ namespace RedChess.WebEngine.Repositories
             PostGameEndedMessage(gameId);
         }
 
-        public object AnalysisQueue()
-        {
-            return m_queueManager.PeekQueue();
-        }
-
         private void PostGameEndedMessage(int gameId)
         {
             Task.Run(() => m_queueManager.PostGameEndedMessage(gameId));
@@ -344,7 +345,7 @@ namespace RedChess.WebEngine.Repositories
         public int Add(IBoard board, int opponentId, string currentUser, bool playAsBlack, int timeLimitMs)
         {
             var newGame = new GameDto {Fen = board.ToFen()};
-            var currentUserId = (new UserProfileRepository()).UserId(currentUser);
+            var currentUserId = m_userRepository.UserId(currentUser);
 
             if (playAsBlack)
             {

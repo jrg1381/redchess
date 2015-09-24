@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Azure;
 using RedChess.WebEngine.Models;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
 {

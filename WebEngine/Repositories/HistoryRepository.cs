@@ -2,6 +2,7 @@
 using System.Data.Entity.Migrations;
 using System.Linq;
 using RedChess.WebEngine.Models;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
 {
@@ -27,39 +28,11 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public bool IsParticipant(string username, int gameId)
-        {
-            using (var context = new ChessContext())
-            {
-                return
-                    context.Database.SqlQuery<bool>("SELECT dbo.IsParticipant(@p0,@p1)", gameId, username)
-                        .FirstOrDefault();
-            }
-        }
-
         public void Add(HistoryEntry historyEntry)
         {
             using (var context = new ChessContext())
             {
                 context.HistoryEntries.Add(historyEntry);
-                context.SaveChanges();
-            }
-        }
-
-        public void UpdateLastMove(HistoryEntry historyEntry)
-        {
-            using (var context = new ChessContext())
-            {
-                var entryForLastMove =
-                    context.HistoryEntries.Where(x => x.GameId == historyEntry.GameId)
-                        .OrderByDescending(x => x.MoveNumber)
-                        .Take(1)
-                        .Single();
-
-                entryForLastMove.Fen = historyEntry.Fen;
-                entryForLastMove.Move = historyEntry.Move;
-
-                context.HistoryEntries.AddOrUpdate(entryForLastMove);
                 context.SaveChanges();
             }
         }

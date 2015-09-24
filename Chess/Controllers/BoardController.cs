@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {
@@ -25,7 +26,6 @@ namespace Chess.Controllers
     public class BoardController : Controller
     {
         private readonly IGameManager m_gameManager;
-        private readonly UserProfileRepository m_usersRepository = new UserProfileRepository();
         private readonly ICurrentUser m_identityProvider;
 
         public BoardController() : this(null, null)
@@ -64,7 +64,7 @@ namespace Chess.Controllers
 
         public ActionResult Create()
         {
-            return View(m_usersRepository.FindAll().Where(x => x.UserName != m_identityProvider.CurrentUser));
+            return View(m_gameManager.AllUserProfiles().Where(x => x.UserName != m_identityProvider.CurrentUser));
         }
 
         //
@@ -269,7 +269,7 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = "Invalid move", status = "FAIL" });
             }
 
-            bool success = m_gameManager.Move(id, startLocation, endLocation);
+            bool success = m_gameManager.Move(id, startLocation, endLocation, promote);
 
             if (!success)
             {
@@ -281,11 +281,6 @@ namespace Chess.Controllers
                 }
 
                 return Json(new { fen = game.Fen, message = errorMessage, status = "FAIL" });
-            }
-
-            if (!String.IsNullOrEmpty(promote))
-            {
-                m_gameManager.PromotePiece(id, promote);
             }
 
             m_gameManager.UpdateMessage(id);

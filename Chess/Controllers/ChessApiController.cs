@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {
@@ -24,12 +25,6 @@ namespace Chess.Controllers
         public ChessApiController(IGameManager manager = null)
         {
             m_gameManager = manager ?? new GameManager();
-        }
-
-        [System.Web.Http.HttpGet]
-        public object Analysis()
-        {
-            return Json(m_gameManager.AnalysisQueue());
         }
 
         [System.Web.Http.HttpGet]
@@ -56,6 +51,15 @@ namespace Chess.Controllers
                 data.Moves = allMoves.Select<HistoryEntry, object>(m => new { m.Fen, m.Move });
                 data.Description = game.Description;
                 data.IsParticipant = m_gameManager.IsParticipant(HttpContext.Current.User.Identity.Name, id);
+                data.Analysis = new List<string>();
+
+                // TODO: Inefficient to get the analysis for every move one by one
+                for (int moveNumber = 0; moveNumber < allMoves.Count; moveNumber++)
+                {
+                    var analysis = m_gameManager.AnalysisForGameMove(id, moveNumber);
+                    if (!String.IsNullOrEmpty(analysis))
+                        data.Analysis.Add(analysis);
+                }
 
                 return Json(data);
             }

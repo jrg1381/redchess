@@ -1,6 +1,7 @@
 ﻿@using Chess.Models
 @using RedChess.WebEngine.Repositories
-@model IEnumerable<IGameBinding>
+@using RedChess.WebEngine.Repositories.Interfaces
+@model IEnumerable<RedChess.WebEngine.Repositories.Interfaces.IGameBinding>
 
     @{
         ViewBag.Title = "Index of games";
