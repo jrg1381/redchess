@@ -120,6 +120,12 @@ namespace Redchess.AnalysisWorker
             m_triggerText = completionTrigger;
             m_waitForEvent.Reset();
 
+            lock (m_builderLock)
+            {
+                // Clear anything that came after the last interaction
+                m_builder.Clear();
+            }
+
             Trace.WriteLine("Writing "+ command + " to the process");
             m_process.StandardInput.WriteLine(command);
             m_process.StandardInput.Flush();

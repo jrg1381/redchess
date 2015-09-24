@@ -50,9 +50,9 @@ namespace RedChess.MessageQueue
             SendMessage(new BasicMessage(BestMoveRequestMessage.MessageType, message));
         }
 
-        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove, int boardEvaluation)
         {
-            var message = new BestMoveResponseMessage {GameId = gameId, MoveNumber = moveNumber, BestMove = bestMove};
+            var message = new BestMoveResponseMessage {GameId = gameId, MoveNumber = moveNumber, BestMove = bestMove, Evaluation = boardEvaluation};
             SendMessage(new BasicMessage(BestMoveResponseMessage.MessageType, message));
         }
 

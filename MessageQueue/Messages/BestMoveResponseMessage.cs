@@ -17,5 +17,7 @@ namespace RedChess.MessageQueue.Messages
         public int MoveNumber { get; set; }
         [JsonProperty(PropertyName = "bestmove")]
         public string BestMove { get; set; }
+        [JsonProperty(PropertyName = "evaluation")]
+        public int Evaluation { get; set; }
     }
 }

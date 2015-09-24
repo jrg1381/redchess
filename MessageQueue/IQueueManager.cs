@@ -5,6 +5,6 @@
         void PostGameEndedMessage(int gameId);
         object PeekQueue();
         void PostRequestBestMoveMessage(int gameId, int moveNumber, string fen);
-        void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove);
+        void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove, int boardEvaluation);
     }
 }

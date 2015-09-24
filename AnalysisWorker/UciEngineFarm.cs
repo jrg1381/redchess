@@ -7,14 +7,21 @@ using System.Threading.Tasks;
 
 namespace Redchess.AnalysisWorker
 {
+    class WorkItem
+    {
+        internal string Fen { get; set; }
+        internal string Move { get; set; }
+        internal WorkItemResponse Result { get; set; }
+    }
+
+    public class WorkItemResponse
+    {
+        internal string Analysis { get; set; }
+        internal int BoardEvaluation { get; set; }
+    }
+
     public class UciEngineFarm : IDisposable
     {
-        class WorkItem
-        {
-            internal string Fen { get; set; }
-            internal string Result { get; set; }
-        }
-
         private readonly object m_dictionaryLock = new object();
         private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame; 
 
@@ -36,7 +43,7 @@ namespace Redchess.AnalysisWorker
                     {
                         lock (workItem)
                         {
-                            workItem.Result = engine.BestMove(workItem.Fen);
+                            workItem.Result = engine.Evaluate(workItem);
                             Trace.WriteLine("Pulsing caller from thread " + Thread.CurrentThread.ManagedThreadId);
                             Monitor.Pulse(workItem);
                         }
@@ -67,7 +74,7 @@ namespace Redchess.AnalysisWorker
             }
         }
 
-        public string BestMove(int gameId, string fen)
+        public WorkItemResponse EvaluateMove(int gameId, string fen, string move)
         {
             Trace.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
 
@@ -85,7 +92,7 @@ namespace Redchess.AnalysisWorker
                 }
             }
 
-            var workItem = new WorkItem {Fen = fen};
+            var workItem = new WorkItem {Fen = fen, Move = move};
 
             lock (workItem)
             {

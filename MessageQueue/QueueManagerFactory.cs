@@ -45,7 +45,7 @@ namespace RedChess.MessageQueue
         {        
         }
 
-        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove, int evaluation)
         {
         }
     }

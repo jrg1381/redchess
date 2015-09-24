@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Redchess.AnalysisWorker
 {
@@ -8,9 +9,11 @@ namespace Redchess.AnalysisWorker
     {
         private const string c_processReadyText = "Stockfish 6 64";
         private readonly BidirectionalProcess m_engine;
+        private static Regex s_centipawnScoreRegex;
 
         internal UciEngine()
         {
+            s_centipawnScoreRegex = new Regex(@"score cp (-?\d+)");
             var exePath = EngineDownloader.DownloadEngine();
             m_engine = new BidirectionalProcess(exePath, c_processReadyText);
             Trace.WriteLine("Waiting for engine to be ready");
@@ -41,13 +44,38 @@ namespace Redchess.AnalysisWorker
             Trace.WriteLine("Setting options complete");
         }
 
-        internal string BestMove(string fen)
+        internal WorkItemResponse Evaluate(WorkItem workItem)
         {
-            Trace.WriteLine("Bestmove on "+ fen);
-            var cmd = String.Format("position fen {0}\r\ngo movetime 5000", fen);
+            return new WorkItemResponse
+            {
+                Analysis = BestMove(workItem),
+                BoardEvaluation = ScoreForGivenMove(workItem)
+            };
+        }
+
+        internal string BestMove(WorkItem workItem)
+        {
+            Trace.WriteLine("Bestmove on "+ workItem.Fen);
+            var cmd = String.Format("position fen {0}\r\ngo movetime 5000", workItem.Fen);
             var analysis = m_engine.Write(cmd, "ponder");
             return analysis;
-            // return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 4);
+            return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 5).TrimEnd(new []{' '});
+        }
+
+        internal int ScoreForGivenMove(WorkItem workItem)
+        {
+            Trace.WriteLine("ScoreForGivenMove on " + workItem.Fen + " " + workItem.Move);
+            var cmd = String.Format("position fen {0}\r\ngo searchmoves {1} movetime 5000", workItem.Fen, workItem.Move);
+            var analysis = m_engine.Write(cmd, "ponder");
+            var matches = s_centipawnScoreRegex.Match(analysis);
+            
+            if (matches.Success && matches.Captures.Count == 1)
+            {
+                Trace.WriteLine("Score for move is " + matches.Captures[0].Value);
+                return Int32.Parse(matches.Captures[0].Value);
+            }
+
+            return Int32.MaxValue;
         }
 
         public void Dispose()

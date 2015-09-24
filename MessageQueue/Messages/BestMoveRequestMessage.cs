@@ -11,6 +11,8 @@ namespace RedChess.MessageQueue.Messages
         [JsonProperty(PropertyName="fen")]
         public string Fen { get; set; }
         [JsonProperty(PropertyName = "move")]
+        public string Move { get; set; }
+        [JsonProperty(PropertyName = "movenumber")]
         public int MoveNumber { get; set; }
     }
 }
