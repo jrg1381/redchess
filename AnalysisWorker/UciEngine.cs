@@ -68,11 +68,11 @@ namespace Redchess.AnalysisWorker
             var cmd = String.Format("position fen {0}\r\ngo searchmoves {1} movetime 5000", workItem.Fen, workItem.Move);
             var analysis = m_engine.Write(cmd, "ponder");
             var matches = s_centipawnScoreRegex.Match(analysis);
-            
-            if (matches.Success && matches.Captures.Count == 1)
+
+            if (matches.Success && matches.Groups.Count == 2)
             {
                 Trace.WriteLine("Score for move is " + matches.Captures[0].Value);
-                return Int32.Parse(matches.Captures[0].Value);
+                return Int32.Parse(matches.Groups[1].Value);
             }
 
             return Int32.MaxValue;
