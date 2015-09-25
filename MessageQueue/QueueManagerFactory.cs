@@ -41,7 +41,7 @@ namespace RedChess.MessageQueue
             return new object();
         }
 
-        public void PostRequestBestMoveMessage(int gameId, int moveId, string fen)
+        public void PostRequestBestMoveMessage(int gameId, int moveId, string fen, string move)
         {        
         }
 

@@ -54,6 +54,10 @@ namespace Redchess.AnalysisWorker
                     }
                 }
             }
+            catch (Exception unexpectedException)
+            {
+                Trace.TraceError(unexpectedException.Message);
+            }
             finally
             {
                 Trace.WriteLine("No more work");
@@ -70,6 +74,7 @@ namespace Redchess.AnalysisWorker
                 if (m_queueForGame.TryGetValue(gameId, out queue))
                 {
                     queue.CompleteAdding();
+                    m_queueForGame.TryRemove(gameId, out queue);
                 }
             }
         }

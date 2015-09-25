@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using RedChess.ChessCommon.Enumerations;
@@ -224,10 +225,14 @@ namespace RedChess.WebEngine.Repositories
                    (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
         }
 
+        private string LongAlgebraicMove(Location start, Location end, string promote)
+        {
+            return String.Format("{0}{1}{2}", start, end, promote ?? "").ToLower();
+        }
+
         public bool Move(int gameId, Location start, Location end, string promote = null)
         {
             var gameDto = m_repository.FindById(gameId);
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen);
             m_board.FromFen(gameDto.Fen);
 
             var success = m_board.Move(start, end);
@@ -237,6 +242,8 @@ namespace RedChess.WebEngine.Repositories
             {
                 m_board.PromotePiece(promote);
             }
+
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(start, end, promote));
 
             gameDto.LastMove = m_board.LastMove();
             gameDto.Fen = m_board.ToFen();
@@ -311,9 +318,9 @@ namespace RedChess.WebEngine.Repositories
             Task.Run(() => m_queueManager.PostGameEndedMessage(gameId));
         }
 
-        private void PostGameToQueueForBestMove(int gameId, int moveId, string fen)
+        private void PostGameToQueueForBestMove(int gameId, int moveId, string fen, string move)
         {
-            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, moveId, fen));
+            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, moveId, fen, move));
         }
 
         internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)
