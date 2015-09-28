@@ -10,12 +10,14 @@ namespace RedChess.WebEngine.Repositories
 {
     internal class AnalysisRepository : IAnalysisRepository
     {
-        public string AnalysisForGameMove(int gameId, int moveId)
+        public IAnalysisBinding AnalysisForGameMove(int gameId, int moveId)
         {
             using (var context = new ChessContext())
             {
                 var entry = context.AnalysisEntries.FirstOrDefault(x => x.GameId == gameId && x.MoveNumber == moveId);
-                return entry == null ? String.Empty : entry.Analysis;
+                return entry == null ? 
+                    AnalysisBinding.Empty : 
+                    new AnalysisBinding() {AnalysisText = entry.Analysis, Evaluation = entry.Evaluation};
             }
         }
     }

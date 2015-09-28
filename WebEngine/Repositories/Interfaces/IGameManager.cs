@@ -25,6 +25,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         IEnumerable<IGameBinding> WithPlayer(string userName);
         string PgnText(int id);
         IEnumerable<UserProfile> AllUserProfiles();
-        string AnalysisForGameMove(int gameId, int moveNumber);
+        IAnalysisBinding AnalysisForGameMove(int gameId, int moveNumber);
     }
 }

@@ -43,7 +43,7 @@ namespace RedChess.WebEngine.Repositories
             m_board = BoardFactory.CreateInstance();
         }
 
-        public string AnalysisForGameMove(int gameId, int moveNumber)
+        public IAnalysisBinding AnalysisForGameMove(int gameId, int moveNumber)
         {
             return m_analysisRepository.AnalysisForGameMove(gameId, moveNumber);
         }
