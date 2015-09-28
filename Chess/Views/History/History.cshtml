@@ -25,6 +25,9 @@
             })
         .done(function (data) {
             boardViewer = new BoardViewer(data, board);
+
+            var evaluationData = data.Analysis.map(function(x) { return x.Evaluation; });
+
             $('#title').text(data.Description);
             $('span#desc').text(data.Description);
             $("#pgn-button").click(function() {
