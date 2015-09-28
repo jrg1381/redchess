@@ -72,7 +72,7 @@ namespace Redchess.AnalysisWorker
 
                     do
                     {
-                        Trace.TraceError("Error: " + x.Message);
+                        Trace.TraceError("Error: " + x.Message + x.StackTrace);
                         x = x.InnerException;
                     } while (x != null);
 

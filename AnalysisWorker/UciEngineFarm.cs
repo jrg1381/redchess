@@ -57,6 +57,7 @@ namespace Redchess.AnalysisWorker
             catch (Exception unexpectedException)
             {
                 Trace.TraceError(unexpectedException.Message);
+                Trace.TraceError(unexpectedException.StackTrace);
             }
             finally
             {

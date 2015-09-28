@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Redchess.AnalysisWorker
@@ -46,28 +47,28 @@ namespace Redchess.AnalysisWorker
 
         internal WorkItemResponse Evaluate(WorkItem workItem)
         {
+            var analysis = BestMove(workItem);
+
             return new WorkItemResponse
             {
-                Analysis = BestMove(workItem),
-                BoardEvaluation = ScoreForGivenMove(workItem)
+                Analysis = analysis,
+                BoardEvaluation = Score(analysis)
             };
         }
 
         internal string BestMove(WorkItem workItem)
         {
             Trace.WriteLine("Bestmove on "+ workItem.Fen);
-            var cmd = String.Format("position fen {0}\r\ngo movetime 5000", workItem.Fen);
+            var cmd = String.Format("position fen {0} {1}\r\ngo movetime 5000", workItem.Fen, workItem.Move);
             var analysis = m_engine.Write(cmd, "ponder");
             return analysis;
-            return analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 5).TrimEnd(new []{' '});
         }
 
-        internal int ScoreForGivenMove(WorkItem workItem)
+        private int Score(string analysis)
         {
-            Trace.WriteLine("ScoreForGivenMove on " + workItem.Fen + " " + workItem.Move);
-            var cmd = String.Format("position fen {0}\r\ngo searchmoves {1} movetime 5000", workItem.Fen, workItem.Move);
-            var analysis = m_engine.Write(cmd, "ponder");
-            var matches = s_centipawnScoreRegex.Match(analysis);
+            var bestMove = analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 5).TrimEnd(new[] { ' ' });
+            var lastLine = analysis.Split(new[] {"\r\n"},StringSplitOptions.None).Last(x => x.Contains("pv " + bestMove));
+            var matches = s_centipawnScoreRegex.Match(lastLine);
 
             if (matches.Success && matches.Groups.Count == 2)
             {
