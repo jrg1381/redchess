@@ -25,7 +25,7 @@
         var svg = d3.select("#svg").append("svg").attr("width", width).attr("height", height).append("g").data(evaluationData);
         var x = d3.scale.linear().domain([0, evaluationData.length]).range([0, width]);
         var y = d3.scale.linear().domain([-d3.max(evaluationData), d3.max(evaluationData)]).range([height, 0]);
-        var xAxis = d3.svg.axis().scale(x).orient("bottom");
+        var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format("d"));
         var line = d3.svg.line().x(function (d,i) { return x(i); }).y(function (d,i) { return y(d); });
 
         svg.append("g").attr("class", "x-axis").attr("transform","translate(0,32)").call(xAxis);
@@ -51,6 +51,8 @@
                 if (evaluationData.length === 0) {
                     showGraph([1, 2, 3, 0, -6, 3, 2, 9, 0]);
                 } else {
+                    // Start data at zero
+                    evaluationData.unshift(0);
                     showGraph(evaluationData);
                 }
 
