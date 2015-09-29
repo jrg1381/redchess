@@ -8,13 +8,26 @@ namespace Redchess.AnalysisWorker
 {
     internal class UciEngine : IDisposable
     {
+        public const int NoScoreParsed = 0x0feefeef;
+        public const int IsMateFlag = 0x10000000;
         private const string c_processReadyText = "Stockfish 6 64";
         private readonly BidirectionalProcess m_engine;
-        private static Regex s_centipawnScoreRegex;
+        private static readonly Regex s_centipawnScoreRegex;
+        private static readonly Regex s_mateInNMovesRegex;
+        private static readonly Regex s_bestMoveRegex;
+
+        static UciEngine()
+        {
+            // Looks like info depth 7 seldepth 7 multipv 1 score cp 57 nodes 633
+            s_centipawnScoreRegex = new Regex(@"score cp (-?\d+)");
+            // Looks like info depth 1 seldepth 2 multipv 1 score mate 1 nodes 32
+            s_mateInNMovesRegex = new Regex(@"score mate (-?\d+)");
+            // Looks like bestmove e4e5 or bestmove e7e8q
+            s_bestMoveRegex = new Regex(@"bestmove ([a-h][1-8][a-h][1-8][rnqb]?)");
+        }
 
         internal UciEngine()
         {
-            s_centipawnScoreRegex = new Regex(@"score cp (-?\d+)");
             var exePath = EngineDownloader.DownloadEngine();
             m_engine = new BidirectionalProcess(exePath, c_processReadyText);
             Trace.WriteLine("Waiting for engine to be ready");
@@ -48,35 +61,52 @@ namespace Redchess.AnalysisWorker
         internal WorkItemResponse Evaluate(WorkItem workItem)
         {
             var analysis = BestMove(workItem);
+            var score = Score(analysis);
+
+            // Split into two strings, take the first character of the 2nd string. This shows whose turn it is.
+            if (((score & IsMateFlag) != 0) && workItem.Fen.Split(new[] {' '},2)[1][0] == 'b')
+                score = -score;
 
             return new WorkItemResponse
             {
                 Analysis = analysis,
-                BoardEvaluation = Score(analysis)
+                BoardEvaluation = score
             };
         }
 
-        internal string BestMove(WorkItem workItem)
+        private string BestMove(WorkItem workItem)
         {
             Trace.WriteLine("Bestmove on "+ workItem.Fen);
             var cmd = String.Format("position fen {0} {1}\r\ngo movetime 5000", workItem.Fen, workItem.Move);
-            var analysis = m_engine.Write(cmd, "ponder");
+            var analysis = m_engine.Write(cmd, "bestmove");
             return analysis;
         }
 
         private int Score(string analysis)
         {
-            var bestMove = analysis.Substring(analysis.LastIndexOf("bestmove", StringComparison.Ordinal) + 9, 5).TrimEnd(new[] { ' ' });
-            var lastLine = analysis.Split(new[] {"\r\n"},StringSplitOptions.None).Last(x => x.Contains("pv " + bestMove));
-            var matches = s_centipawnScoreRegex.Match(lastLine);
-
-            if (matches.Success && matches.Groups.Count == 2)
+            var bestMoveMatch = s_bestMoveRegex.Match(analysis);
+            if (!bestMoveMatch.Success)
             {
-                Trace.WriteLine("Score for move is " + matches.Captures[0].Value);
-                return Int32.Parse(matches.Groups[1].Value);
+                throw new ArgumentException("Analysis data did not contain a bestmove");
+            }
+            var bestMove = bestMoveMatch.Groups[1].Value;
+            var lastLine = analysis.Split(new[] {"\r\n"},StringSplitOptions.None).Last(x => x.Contains("pv " + bestMove));
+
+            var centipawnScoreMatch = s_centipawnScoreRegex.Match(lastLine);
+            if (centipawnScoreMatch.Success)
+            {
+                Trace.WriteLine("Score for move is " + centipawnScoreMatch.Captures[0].Value);
+                return Int32.Parse(centipawnScoreMatch.Groups[1].Value);
             }
 
-            return Int32.MaxValue;
+            var mateInN = s_mateInNMovesRegex.Match(lastLine);
+            if (mateInN.Success)
+            {
+                Trace.WriteLine("Score for move is " + mateInN.Captures[0].Value);
+                return Int32.Parse(mateInN.Groups[1].Value) | IsMateFlag;
+            }
+
+            return NoScoreParsed;
         }
 
         public void Dispose()

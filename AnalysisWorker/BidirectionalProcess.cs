@@ -66,9 +66,10 @@ namespace Redchess.AnalysisWorker
                         lock (m_builderLock)
                         {
                             m_builder.Append(buffer, 0, 1);
-                            if (m_triggerText != null && m_builder.ToString().Contains(m_triggerText))
+                            var searchString = m_builder.ToString();
+                            if (MatchText(searchString))
                             {
-                                m_capturedText = m_builder.ToString();
+                                m_capturedText = searchString;
                                 m_builder.Clear();
                                 m_waitForEvent.Set();
                             }
@@ -80,6 +81,21 @@ namespace Redchess.AnalysisWorker
                     //Process has gone away
                 }
             });
+        }
+
+        private bool MatchText(string textToSearch)
+        {
+            if (m_triggerText == null)
+                return true;
+
+            var indexOfSearchText = textToSearch.IndexOf(m_triggerText);
+
+            if (indexOfSearchText == -1)
+                return false;
+
+            var indexOfNewlineAfterSearchText = textToSearch.IndexOf("\r\n", indexOfSearchText);
+
+            return (indexOfNewlineAfterSearchText != -1);
         }
 
         private void ProcessOnExited(object sender, EventArgs eventArgs)

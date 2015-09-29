@@ -23,18 +23,31 @@ namespace Redchess.AnalysisEngineTests
         }
 
         [Test]
-        public void LaunchStockfish2()
+        public void DetectMateInOneForBlack()
         {
-            var bestmove = m_engineWrapper.EvaluateMove(10, "r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1 b - c3 0 19", "d5c7");
-            //Assert.AreEqual("d5c7", bestmove, "Expected bestmove incorrect");
-            var bestmove2 = m_engineWrapper.EvaluateMove(10, "r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1 b - c3 0 19", "d5c7");
-            m_engineWrapper.GameOver(10);
-            //Assert.AreEqual("d5c7", bestmove2, "Expected bestmove incorrect");
-            var bestmove3 = m_engineWrapper.EvaluateMove(23, "r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1 b - c3 0 19", "d5c7");
-            //Assert.AreEqual("d5c7", bestmove, "Expected bestmove incorrect");
-            var bestmove4 = m_engineWrapper.EvaluateMove(23, "r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1 b - c3 0 19", "d5c7");
+            var bestmove = m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            Assert.AreEqual(-1, bestmove.BoardEvaluation^UciEngine.IsMateFlag, "Expected bestmove to detect mate in 1 for black");
         }
 
+        [Test]
+        public void DetectMateInOneForWhite()
+        {
+            var bestmove = m_engineWrapper.EvaluateMove(10, "7k/5ppp/8/8/8/8/8/KQ6 w - - 0 2", "b1b8");
+            Assert.AreEqual(1, bestmove.BoardEvaluation^UciEngine.IsMateFlag, "Expected bestmove to detect mate in 1 for white");
+        }
 
+        [Test]
+        public void DetectAdvantageForWhite()
+        {
+            var bestmove = m_engineWrapper.EvaluateMove(10, "7k/6q1/8/8/8/8/8/KQR4 w - - 0 2", "b1b2");
+            Assert.Greater(bestmove.BoardEvaluation, 0, "Expected bestmove to detect advantage for white");
+        }
+
+        [Test]
+        public void DetectAdvantageForBlack()
+        {
+            var bestmove = m_engineWrapper.EvaluateMove(10, "7k/5ppp/8/8/8/8/8/K7 b - - 0 2", "h7h5");
+            Assert.Less(bestmove.BoardEvaluation, 0, "Expected bestmove to detect advantage for black");
+        }
     }
 }

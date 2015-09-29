@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Redchess.AnalysisWorker
     public class UciEngineFarm : IDisposable
     {
         private readonly object m_dictionaryLock = new object();
-        private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame; 
+        private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame;
 
         public UciEngineFarm()
         {
@@ -114,6 +115,15 @@ namespace Redchess.AnalysisWorker
             foreach (var worker in m_queueForGame.Values)
             {
                 worker.CompleteAdding();
+                var timeOut = DateTime.UtcNow.AddSeconds(5);
+                while (!worker.IsCompleted && DateTime.UtcNow < timeOut)
+                {
+                    Thread.Sleep(250);
+                }
+            }
+
+            foreach (var worker in m_queueForGame.Values)
+            {
                 worker.Dispose();
             }
         }
