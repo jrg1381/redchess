@@ -62,7 +62,7 @@ namespace Redchess.AnalysisWorker
             }
             finally
             {
-                Trace.WriteLine("No more work");
+                Trace.WriteLine("No more work for thread " + Thread.CurrentThread.ManagedThreadId);
                 engine.Dispose();
             }
         }
