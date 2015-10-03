@@ -16,6 +16,8 @@ namespace Redchess.AnalysisWorker
         private static readonly Regex s_mateInNMovesRegex;
         private static readonly Regex s_bestMoveRegex;
 
+        internal int GameId { get; private set; }
+
         static UciEngine()
         {
             // Looks like info depth 7 seldepth 7 multipv 1 score cp 57 nodes 633
@@ -26,8 +28,10 @@ namespace Redchess.AnalysisWorker
             s_bestMoveRegex = new Regex(@"bestmove ([a-h][1-8][a-h][1-8][rnqb]?)");
         }
 
-        internal UciEngine()
+        internal UciEngine(int gameId)
         {
+            GameId = gameId;
+
             var exePath = EngineDownloader.DownloadEngine();
             m_engine = new BidirectionalProcess(exePath, c_processReadyText);
             Trace.WriteLine("Waiting for engine to be ready");
@@ -64,8 +68,8 @@ namespace Redchess.AnalysisWorker
             var score = Score(analysis);
 
             // Split into two strings, take the first character of the 2nd string. This shows whose turn it is.
-            if (((score & IsMateFlag) != 0) && workItem.Fen.Split(new[] {' '},2)[1][0] == 'b')
-                score = -score;
+            if (workItem.Fen.Split(new[] {' '},2)[1][0] == 'b')
+                score = -score; // The score is given from the engine's point of view,so this means black scores should be negated
 
             return new WorkItemResponse
             {

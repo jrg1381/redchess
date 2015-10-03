@@ -63,6 +63,11 @@ namespace Redchess.AnalysisWorker
             finally
             {
                 Trace.WriteLine("No more work for thread " + Thread.CurrentThread.ManagedThreadId);
+                lock (m_dictionaryLock)
+                {
+                    BlockingCollection<WorkItem> self;
+                    m_queueForGame.TryRemove(engine.GameId, out self);
+                }
                 engine.Dispose();
             }
         }
@@ -93,7 +98,7 @@ namespace Redchess.AnalysisWorker
                     Trace.WriteLine("Queue not found for this game id, creating worker");
                     queue = new BlockingCollection<WorkItem>();
                     m_queueForGame[gameId] = queue;
-                    var engine = new UciEngine();
+                    var engine = new UciEngine(gameId);
                     Trace.WriteLine("Worker created successfully");
                     Task.Factory.StartNew(() => ProcessQueue(queue, engine));
                 }
