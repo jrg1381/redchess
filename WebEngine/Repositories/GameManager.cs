@@ -166,6 +166,7 @@ namespace RedChess.WebEngine.Repositories
 
             m_repository.AddOrUpdate(newGame);
             m_historyRepository.CloneGame(newGame.GameId, oldGameId, cloneUpToMove);
+            m_analysisRepository.CloneGame(newGame.GameId, oldGameId, cloneUpToMove);
 
             return newGame.GameId;
         }
