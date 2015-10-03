@@ -16,10 +16,11 @@
     path { fill : none; stroke: steelblue; }
     .x-axis line { fill: none; stroke: #000; stroke-width: 1.5px}
     .x-axis path { fill: none; stroke: #000; stroke-width: 1.5px}
+    .blob { fill: steelblue; }
 </style>
 
 <script>
-    function showGraph(evaluationData) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
+    function showGraph(boardViewer, evaluationData) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
         var width = 512;
         var height = 64;
 
@@ -34,7 +35,17 @@
 
         svg.append("g").attr("class", "x-axis").attr("transform","translate(0,32)").call(xAxis);
         svg.append("path").attr("d", line(evaluationData));
+        var x0 = x(0);
+        var y0 = y(evaluationData[0]);
+        svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
+        boardViewer.onMoveSelected(function (moveNumber) {
+            var svgElement = d3.select("svg");
+            svgElement.selectAll("circle").remove();
+            var xPosition = x(moveNumber);
+            var yPosition = y(evaluationData[moveNumber]);
+            svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
+        });
     }
 
     $(document).ready(function () {
@@ -53,11 +64,11 @@
 
                 var evaluationData = data.Analysis.map(function (x) { return x.Evaluation; });
                 if (evaluationData.length === 0) {
-                    showGraph([1, 2, 3, 0, -6, 3, 2, 9, 0]);
+                    showGraph(boardViewer, [1, 2, 3, 0, -6, 3, 2, 9, 0]);
                 } else {
                     // Start data at zero
                     evaluationData.unshift(0);
-                    showGraph(evaluationData);
+                    showGraph(boardViewer, evaluationData);
                 }
 
                 $('#title').text(data.Description);

@@ -99,6 +99,7 @@
 }
 
 BoardViewer.prototype.positions = null;
+BoardViewer.prototype.callbacks = [];
 
 BoardViewer.prototype.getSpinner = function() {
     if (this.spinner == null) {
@@ -106,6 +107,20 @@ BoardViewer.prototype.getSpinner = function() {
     }
     return this.spinner;
 };
+
+BoardViewer.prototype.onMoveSelected = function (c) {
+    if (!$.isFunction(c)) {
+        console.error("Attempt to add callback object which wasn't a function.");
+        return;
+    }
+    this.callbacks.push(c);
+}
+
+BoardViewer.prototype.fireCallbacks = function(moveNumber) {
+    for (var i = 0; i < this.callbacks.length; i++) {
+        this.callbacks[i](moveNumber);
+    }
+}
 
 BoardViewer.prototype.startSpinning = function() {
     this.getSpinner().spin($("#spinner-location")[0]);
@@ -129,6 +144,7 @@ BoardViewer.prototype.updateBoard = function(newMove) {
         $("span#goForward").hide();
     }
 
+    this.fireCallbacks(newMove);
     this.board.position(this.positions.Moves[newMove].Fen);
 };
 
