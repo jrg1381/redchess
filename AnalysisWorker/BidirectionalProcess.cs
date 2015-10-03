@@ -122,6 +122,7 @@ namespace Redchess.AnalysisWorker
             }
 
             Trace.TraceError("TimeoutException waiting for external process");
+            Trace.TraceInformation("Data captured so far = " + m_builder);
             throw new TimeoutException("Process was not ready for communication");
         }
 
@@ -153,6 +154,7 @@ namespace Redchess.AnalysisWorker
                 if (!success)
                 {
                     Trace.TraceError("Timed out waiting for response from engine");
+                    Trace.TraceInformation("Data captured so far = " + m_builder);
                     throw new TimeoutException("Timed out on external process");
                 }
             }
