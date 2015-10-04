@@ -11,17 +11,6 @@ namespace RedChess.WebEngine.Repositories
 {
     internal class AnalysisRepository : IAnalysisRepository
     {
-        public IAnalysisBinding AnalysisForGameMove(int gameId, int moveId)
-        {
-            using (var context = new ChessContext())
-            {
-                var entry = context.AnalysisEntries.FirstOrDefault(x => x.GameId == gameId && x.MoveNumber == moveId);
-                return entry == null ? 
-                    AnalysisBinding.Empty : 
-                    new AnalysisBinding() {AnalysisText = entry.Analysis, Evaluation = entry.Evaluation};
-            }
-        }
-
         public void CloneGame(int newGameId, int oldGameId, int cloneUpToMove)
         {
             using (var context = new ChessContext())
@@ -41,6 +30,15 @@ namespace RedChess.WebEngine.Repositories
                 }
 
                 context.SaveChanges();
+            }
+        }
+
+        public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId, int minMoveNumber, int maxMoveNumber)
+        {
+            using (var context = new ChessContext())
+            {
+                var entries = context.AnalysisEntries.Where(x => x.GameId == gameId && x.MoveNumber >= minMoveNumber && x.MoveNumber <= maxMoveNumber).ToList();
+                return entries.Select(x => new AnalysisBinding() {AnalysisText = x.Analysis, Evaluation = x.Evaluation});
             }
         }
     }

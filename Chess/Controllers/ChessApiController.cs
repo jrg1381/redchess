@@ -51,15 +51,7 @@ namespace Chess.Controllers
                 data.Moves = allMoves.Select<HistoryEntry, object>(m => new { m.Fen, m.Move });
                 data.Description = game.Description;
                 data.IsParticipant = m_gameManager.IsParticipant(HttpContext.Current.User.Identity.Name, id);
-                data.Analysis = new List<object>();
-
-                // TODO: Inefficient to get the analysis for every move one by one
-                for (int moveNumber = 0; moveNumber < allMoves.Count; moveNumber++)
-                {
-                    var analysis = m_gameManager.AnalysisForGameMove(id, moveNumber);
-                    if (!analysis.IsEmpty())
-                        data.Analysis.Add(new {AnalysisText = analysis.AnalysisText, Evaluation = analysis.Evaluation});
-                }
+                data.Analysis = m_gameManager.AnalysisForGameMoves(id, 0, allMoves.Count);
 
                 return Json(data);
             }
