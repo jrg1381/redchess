@@ -8,6 +8,7 @@ using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
+using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue.Messages;
 
@@ -57,7 +58,7 @@ namespace RedChess.MessageQueue
             {
                 GameId = gameId,
                 MoveNumber = moveNumber,
-                Analysis = bestMove
+                Analysis = new WorkItemResponse(bestMove)
             };
 
             SendMessage(new BasicMessage(BestMoveResponseMessage.MessageType, message));

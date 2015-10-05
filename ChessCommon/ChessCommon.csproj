@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\IParse.cs" />
     <Compile Include="Interfaces\IWorkItemResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkItemResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Chess.snk">

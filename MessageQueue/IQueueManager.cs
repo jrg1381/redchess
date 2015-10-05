@@ -1,4 +1,5 @@
-﻿using RedChess.ChessCommon.Interfaces;
+﻿using RedChess.ChessCommon;
+using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.MessageQueue
 {

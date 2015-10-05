@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.AnalysisWorker

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
@@ -15,13 +16,6 @@ namespace Redchess.AnalysisWorker
         internal string Fen { get; set; }
         internal string Move { get; set; }
         internal WorkItemResponse Result { get; set; }
-    }
-
-    public class WorkItemResponse : IWorkItemResponse
-    {
-        public string Analysis { get; set; }
-        public int BoardEvaluation { get; set; }
-        public EvaluationType BoardEvaluationType { get; set; }
     }
 
     public class UciEngineFarm : IDisposable
