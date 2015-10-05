@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RedChess.ChessCommon.Enumerations;
 
 namespace RedChess.WebEngine.Models
 {
@@ -14,5 +15,6 @@ namespace RedChess.WebEngine.Models
         public int MoveNumber { get; set; }
         public string Analysis { get; set; }
         public int Evaluation { get; set; }
+        public EvaluationType EvaluationType { get; set; }
     }
 }

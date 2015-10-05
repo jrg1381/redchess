@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RedChess.ChessCommon.Enumerations;
+using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.MessageQueue.Messages
 {
@@ -15,9 +17,7 @@ namespace RedChess.MessageQueue.Messages
         public int GameId { get; set; }
         [JsonProperty(PropertyName = "movenumber")]
         public int MoveNumber { get; set; }
-        [JsonProperty(PropertyName = "bestmove")]
-        public string BestMove { get; set; }
-        [JsonProperty(PropertyName = "evaluation")]
-        public int Evaluation { get; set; }
+        [JsonProperty(PropertyName = "analysis")]
+        public IWorkItemResponse Analysis { get; set; }
     }
 }

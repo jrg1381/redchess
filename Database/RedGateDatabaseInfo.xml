@@ -55,6 +55,7 @@
     <DataWriteAllFilesInOneDirectory>True</DataWriteAllFilesInOneDirectory>
   </WriteToFileOptions>
   <ServerVersion>11.0.9216</ServerVersion>
+  <IsAzure>False</IsAzure>
   <DataFileSet>
     <Count>0</Count>
   </DataFileSet>

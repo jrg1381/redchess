@@ -114,6 +114,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChessCommon\ChessCommon.csproj">
+      <Project>{72C3C717-AEFC-4AA3-8E1F-C26058DC34A3}</Project>
+      <Name>ChessCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MessageQueue\MessageQueue.csproj">
       <Project>{ae33adad-c354-452b-b6e4-13f4edacff24}</Project>
       <Name>MessageQueue</Name>

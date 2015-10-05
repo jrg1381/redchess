@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.WebEngine.Repositories.Interfaces
 {
@@ -9,6 +10,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         IEnumerable<GameDto> FindAll();
         void AddOrUpdate(GameDto data);
         IEnumerable<GameDto> FindWithPlayer(string userName);
-        void AddAnalysis(int id, int moveNumber, string analysisText, int boardEvaluation);
+        void AddAnalysis(int id, int moveNumber, IWorkItemResponse boardAnalysis);
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
+using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue.Messages;
 
 namespace RedChess.MessageQueue
@@ -50,9 +51,15 @@ namespace RedChess.MessageQueue
             SendMessage(new BasicMessage(BestMoveRequestMessage.MessageType, message));
         }
 
-        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove, int boardEvaluation)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, IWorkItemResponse bestMove)
         {
-            var message = new BestMoveResponseMessage {GameId = gameId, MoveNumber = moveNumber, BestMove = bestMove, Evaluation = boardEvaluation};
+            var message = new BestMoveResponseMessage
+            {
+                GameId = gameId,
+                MoveNumber = moveNumber,
+                Analysis = bestMove
+            };
+
             SendMessage(new BasicMessage(BestMoveResponseMessage.MessageType, message));
         }
 

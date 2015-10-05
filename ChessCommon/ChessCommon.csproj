@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChessMove.cs" />
+    <Compile Include="Enumerations\BoardEvaluationType.cs" />
     <Compile Include="Enumerations\Location.cs" />
     <Compile Include="Enumerations\PieceColor.cs" />
     <Compile Include="Enumerations\PieceType.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
     <Compile Include="Interfaces\IParse.cs" />
+    <Compile Include="Interfaces\IWorkItemResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

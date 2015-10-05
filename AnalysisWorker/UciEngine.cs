@@ -3,13 +3,13 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.AnalysisWorker
 {
     internal class UciEngine : IDisposable
     {
         public const int NoScoreParsed = 0x0feefeef;
-        public const int IsMateFlag = 0x10000000;
         private const string c_processReadyText = "Stockfish 6 64";
         private readonly BidirectionalProcess m_engine;
         private static readonly Regex s_centipawnScoreRegex;
@@ -62,55 +62,54 @@ namespace Redchess.AnalysisWorker
             Trace.WriteLine("Setting options complete");
         }
 
-        internal WorkItemResponse Evaluate(WorkItem workItem)
+        internal void Evaluate(WorkItem workItem)
         {
-            var analysis = BestMove(workItem);
-            var score = Score(analysis);
+            workItem.Result = new WorkItemResponse();
+            BestMove(workItem);
+            Score(workItem);
 
             // Split into two strings, take the first character of the 2nd string. This shows whose turn it is.
             if (workItem.Fen.Split(new[] {' '},2)[1][0] == 'b')
-                score = -score; // The score is given from the engine's point of view,so this means black scores should be negated
-
-            return new WorkItemResponse
-            {
-                Analysis = analysis,
-                BoardEvaluation = score
-            };
+                workItem.Result.BoardEvaluation = -workItem.Result.BoardEvaluation; // The score is given from the engine's point of view,so this means black scores should be negated
         }
 
-        private string BestMove(WorkItem workItem)
+        private void BestMove(WorkItem workItem)
         {
             Trace.WriteLine("Bestmove on "+ workItem.Fen);
             var cmd = String.Format("position fen {0} {1}\r\ngo movetime 5000", workItem.Fen, workItem.Move);
             var analysis = m_engine.Write(cmd, "bestmove");
-            return analysis;
+            workItem.Result.Analysis = analysis;
         }
 
-        private int Score(string analysis)
+        private void Score(WorkItem workItem)
         {
-            var bestMoveMatch = s_bestMoveRegex.Match(analysis);
+            var bestMoveMatch = s_bestMoveRegex.Match(workItem.Result.Analysis);
             if (!bestMoveMatch.Success)
             {
                 throw new ArgumentException("Analysis data did not contain a bestmove");
             }
             var bestMove = bestMoveMatch.Groups[1].Value;
-            var lastLine = analysis.Split(new[] {"\r\n"},StringSplitOptions.None).Last(x => x.Contains("pv " + bestMove));
+            var lastLine = workItem.Result.Analysis.Split(new[] { "\r\n" }, StringSplitOptions.None).Last(x => x.Contains("pv " + bestMove));
 
             var centipawnScoreMatch = s_centipawnScoreRegex.Match(lastLine);
             if (centipawnScoreMatch.Success)
             {
                 Trace.WriteLine("Score for move is " + centipawnScoreMatch.Captures[0].Value);
-                return Int32.Parse(centipawnScoreMatch.Groups[1].Value);
+                workItem.Result.BoardEvaluation = Int32.Parse(centipawnScoreMatch.Groups[1].Value);
+                workItem.Result.BoardEvaluationType = EvaluationType.Centipawn;
+                return;
             }
 
             var mateInN = s_mateInNMovesRegex.Match(lastLine);
             if (mateInN.Success)
             {
                 Trace.WriteLine("Score for move is " + mateInN.Captures[0].Value);
-                return Int32.Parse(mateInN.Groups[1].Value) | IsMateFlag;
+                workItem.Result.BoardEvaluation = Int32.Parse(mateInN.Groups[1].Value);
+                workItem.Result.BoardEvaluationType = EvaluationType.MateInN;
+                return;
             }
 
-            return NoScoreParsed;
+            throw new ArgumentException("No score parsed");
         }
 
         public void Dispose()

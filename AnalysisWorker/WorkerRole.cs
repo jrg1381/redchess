@@ -86,15 +86,16 @@ namespace Redchess.AnalysisWorker
         private static void ProcessBestMoveResponseMessage(string json)
         {
             var message = JsonConvert.DeserializeObject<BestMoveResponseMessage>(json);
+            var boardAnalysis = message.Analysis;
             var gameManager = new GameManager();
-            gameManager.AddAnalysis(message.GameId, message.MoveNumber, message.BestMove, message.Evaluation);
+            gameManager.AddAnalysis(message.GameId, message.MoveNumber, boardAnalysis);
         }
 
         private void ProcessBestMoveRequestMessage(string json)
         {
             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(json);
-            var bestMove = m_engineFarm.EvaluateMove(message.GameId, message.Fen, message.Move);
-            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, bestMove.Analysis, bestMove.BoardEvaluation);
+            var boardAnalysis = m_engineFarm.EvaluateMove(message.GameId, message.Fen, message.Move);
+            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, boardAnalysis);
         }
 
         private void ProcessGameEndedMessage(string json)

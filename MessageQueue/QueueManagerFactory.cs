@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Azure;
+using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.MessageQueue
 {
@@ -45,7 +46,7 @@ namespace RedChess.MessageQueue
         {        
         }
 
-        public void PostBestMoveResponseMessage(int gameId, int moveNumber, string bestMove, int evaluation)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, IWorkItemResponse foo)
         {
         }
     }

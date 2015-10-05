@@ -6,6 +6,7 @@ using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Azure;
+using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -28,7 +29,7 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public void AddAnalysis(int id, int moveNumber, string analysisText, int boardEvaluation)
+        public void AddAnalysis(int id, int moveNumber, IWorkItemResponse boardAnalysis)
         {
             var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
             using (var context = new ChessContext(connectionString))
@@ -37,8 +38,9 @@ namespace RedChess.WebEngine.Repositories
                 {
                     GameId = id,
                     MoveNumber = moveNumber,
-                    Analysis = analysisText,
-                    Evaluation = boardEvaluation
+                    Analysis = boardAnalysis.Analysis,
+                    Evaluation = boardAnalysis.BoardEvaluation,
+                    EvaluationType = boardAnalysis.BoardEvaluationType
                 });
                 context.SaveChanges();
             }

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using Redchess.AnalysisWorker;
+using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.AnalysisEngineTests
 {
@@ -26,14 +27,16 @@ namespace Redchess.AnalysisEngineTests
         public void DetectMateInOneForBlack()
         {
             var bestmove = m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
-            Assert.AreEqual(-1, bestmove.BoardEvaluation^UciEngine.IsMateFlag, "Expected bestmove to detect mate in 1 for black");
+            Assert.AreEqual(-1, bestmove.BoardEvaluation, "Expected bestmove to detect mate in 1 for black");
+            Assert.AreEqual(EvaluationType.MateInN, bestmove.BoardEvaluationType, "Expected bestmove to detect mate in 1 for black");
         }
 
         [Test]
         public void DetectMateInOneForWhite()
         {
             var bestmove = m_engineWrapper.EvaluateMove(10, "7k/5ppp/8/8/8/8/8/KQ6 w - - 0 2", "b1b8");
-            Assert.AreEqual(1, bestmove.BoardEvaluation^UciEngine.IsMateFlag, "Expected bestmove to detect mate in 1 for white");
+            Assert.AreEqual(1, bestmove.BoardEvaluation, "Expected bestmove to detect mate in 1 for white");
+            Assert.AreEqual(EvaluationType.MateInN, bestmove.BoardEvaluationType, "Expected bestmove to detect mate in 1 for white");
         }
 
         [Test]

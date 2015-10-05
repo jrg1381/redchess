@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using RedChess.ChessCommon.Enumerations;
+using RedChess.ChessCommon.Interfaces;
 
 namespace Redchess.AnalysisWorker
 {
@@ -15,10 +17,11 @@ namespace Redchess.AnalysisWorker
         internal WorkItemResponse Result { get; set; }
     }
 
-    public class WorkItemResponse
+    public class WorkItemResponse : IWorkItemResponse
     {
-        internal string Analysis { get; set; }
-        internal int BoardEvaluation { get; set; }
+        public string Analysis { get; set; }
+        public int BoardEvaluation { get; set; }
+        public EvaluationType BoardEvaluationType { get; set; }
     }
 
     public class UciEngineFarm : IDisposable
@@ -44,7 +47,7 @@ namespace Redchess.AnalysisWorker
                     {
                         lock (workItem)
                         {
-                            workItem.Result = engine.Evaluate(workItem);
+                            engine.Evaluate(workItem); // Modifies workItem
                             Trace.WriteLine("Pulsing caller from thread " + Thread.CurrentThread.ManagedThreadId);
                             Monitor.Pulse(workItem);
                         }
@@ -86,7 +89,7 @@ namespace Redchess.AnalysisWorker
             }
         }
 
-        public WorkItemResponse EvaluateMove(int gameId, string fen, string move)
+        public IWorkItemResponse EvaluateMove(int gameId, string fen, string move)
         {
             Trace.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
 
