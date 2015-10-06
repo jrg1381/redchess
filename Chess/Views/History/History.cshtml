@@ -17,6 +17,7 @@
     .x-axis line { fill: none; stroke: #000; stroke-width: 1.5px}
     .x-axis path { fill: none; stroke: #000; stroke-width: 1.5px}
     .blob { fill: steelblue; }
+    .mate { fill: darkred }
 </style>
 
 <script>
@@ -25,7 +26,7 @@
         var height = 64;
 
         // Because it might come out of the database in any order
-        evaluationData = evaluationData.sort(function(a, b) { return (a.move < b.move) ? -1 : (a.move > b.move) ? 1 : 0 });
+        evaluationData.sort(function(a, b) { return (a.move < b.move) ? -1 : (a.move > b.move) ? 1 : 0; });
 
         // Scale off anything above 2000 because Stockfish uses maxint to show mate
         var absoluteMax = Math.min(2000, d3.max(evaluationData, function(p) { return Math.abs(p.score); }));
@@ -43,11 +44,19 @@
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
         boardViewer.onMoveSelected(function (moveNumber) {
+            var yPosition;
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
             var xPosition = x(moveNumber);
-            var yPosition = y(evaluationData[moveNumber]);
-            svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
+            if (evaluationData[moveNumber].scoreType == 1) {
+                yPosition = y(0);
+                svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "mate");
+
+            }
+            else {
+                yPosition = y(evaluationData[moveNumber].score);
+                svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
+            };
         });
     }
 
