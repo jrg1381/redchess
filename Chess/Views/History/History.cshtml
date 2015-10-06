@@ -24,6 +24,9 @@
         var width = 512;
         var height = 64;
 
+        // Because it might come out of the database in any order
+        evaluationData = evaluationData.sort(function(a, b) { return (a.move < b.move) ? -1 : (a.move > b.move) ? 1 : 0 });
+
         // Scale off anything above 2000 because Stockfish uses maxint to show mate
         var absoluteMax = Math.min(2000, d3.max(evaluationData, function(p) { return Math.abs(p.score); }));
 
