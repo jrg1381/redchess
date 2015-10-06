@@ -47,14 +47,14 @@
             var yPosition;
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
-            var xPosition = x(moveNumber);
-            if (evaluationData[moveNumber].scoreType == 1) {
+            var xPosition = x(moveNumber-1);
+            if (evaluationData[moveNumber-1].scoreType == 1) {
                 yPosition = y(0);
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "mate");
 
             }
             else {
-                yPosition = y(evaluationData[moveNumber].score);
+                yPosition = y(evaluationData[moveNumber-1].score);
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
             };
         });
@@ -83,7 +83,7 @@
                         { move: 3, score: 8, scoreType: 0 }]);
                 } else {
                     // Start data at zero
-                    evaluationData.unshift({ move: 0, score: 0 });
+                    evaluationData.unshift({ move: 0, score: 0, scoreType: 0 });
                     showGraph(boardViewer, evaluationData);
                 }
 
