@@ -10,6 +10,7 @@ namespace RedChess.WebEngine.Repositories
         public string AnalysisText { get; set; }
         public int Evaluation { get; set; }
         public EvaluationType BoardEvaluationType { get; set; }
+        public int MoveNumber { get; set; }
 
         public bool IsEmpty()
         {

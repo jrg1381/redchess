@@ -46,7 +46,8 @@ namespace RedChess.WebEngine.Repositories
                 {
                     AnalysisText = x.Analysis,
                     Evaluation = x.Evaluation,
-                    BoardEvaluationType = x.EvaluationType
+                    BoardEvaluationType = x.EvaluationType,
+                    MoveNumber = x.MoveNumber
                 });
             }
         }
