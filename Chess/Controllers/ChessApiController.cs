@@ -50,7 +50,8 @@ namespace Chess.Controllers
 
                 data.Moves = allMoves.Select<HistoryEntry, object>(m => new { m.Fen, m.Move });
                 data.Description = game.Description;
-                data.IsParticipant = m_gameManager.IsParticipant(HttpContext.Current.User.Identity.Name, id);
+                data.IsParticipant = game.UserProfileBlack.UserName == HttpContext.Current.User.Identity.Name ||
+                                     game.UserProfileWhite.UserName == HttpContext.Current.User.Identity.Name;
                 data.Analysis = m_gameManager.AnalysisForGameMoves(id, 0, allMoves.Count);
 
                 return Json(data);
