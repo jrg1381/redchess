@@ -37,8 +37,17 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                var entries = context.AnalysisEntries.Where(x => x.GameId == gameId && x.MoveNumber >= minMoveNumber && x.MoveNumber <= maxMoveNumber).ToList();
-                return entries.Select(x => new AnalysisBinding() {AnalysisText = x.Analysis, Evaluation = x.Evaluation});
+                var entries = context.AnalysisEntries.Where(
+                    x => x.GameId == gameId &&
+                         x.MoveNumber >= minMoveNumber &&
+                         x.MoveNumber <= maxMoveNumber).ToList();
+
+                return entries.Select(x => new AnalysisBinding()
+                {
+                    AnalysisText = x.Analysis,
+                    Evaluation = x.Evaluation,
+                    BoardEvaluationType = x.EvaluationType
+                });
             }
         }
     }

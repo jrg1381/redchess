@@ -1,4 +1,5 @@
 ﻿using System;
+using RedChess.ChessCommon.Enumerations;
 
 namespace RedChess.WebEngine.Repositories
 {
@@ -8,6 +9,7 @@ namespace RedChess.WebEngine.Repositories
 
         public string AnalysisText { get; set; }
         public int Evaluation { get; set; }
+        public EvaluationType BoardEvaluationType { get; set; }
 
         public bool IsEmpty()
         {
