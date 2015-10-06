@@ -2,7 +2,7 @@
 
 namespace RedChess.ChessCommon.Interfaces
 {
-    public interface IWorkItemResponse
+    public interface IBoardAnalysis
     {
         string Analysis { get; set; }
         int BoardEvaluation { get; set; }

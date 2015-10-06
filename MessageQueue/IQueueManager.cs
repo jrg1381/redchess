@@ -7,6 +7,6 @@ namespace RedChess.MessageQueue
     {
         void PostGameEndedMessage(int gameId);
         void PostRequestBestMoveMessage(int gameId, int moveNumber, string fen, string move);
-        void PostBestMoveResponseMessage(int gameId, int moveNumber, IWorkItemResponse bestMove);
+        void PostBestMoveResponseMessage(int gameId, int moveNumber, IBoardAnalysis bestMove);
     }
 }

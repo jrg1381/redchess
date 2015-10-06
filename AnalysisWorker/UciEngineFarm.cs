@@ -15,7 +15,7 @@ namespace Redchess.AnalysisWorker
     {
         internal string Fen { get; set; }
         internal string Move { get; set; }
-        internal WorkItemResponse Result { get; set; }
+        internal BoardAnalysis Result { get; set; }
     }
 
     public class UciEngineFarm : IDisposable
@@ -83,7 +83,7 @@ namespace Redchess.AnalysisWorker
             }
         }
 
-        public IWorkItemResponse EvaluateMove(int gameId, string fen, string move)
+        public IBoardAnalysis EvaluateMove(int gameId, string fen, string move)
         {
             Trace.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
 

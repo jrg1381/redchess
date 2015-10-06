@@ -19,6 +19,6 @@ namespace RedChess.MessageQueue.Messages
         [JsonProperty(PropertyName = "movenumber")]
         public int MoveNumber { get; set; }
         [JsonProperty(PropertyName = "analysis")]
-        public WorkItemResponse Analysis { get; set; }
+        public BoardAnalysis Analysis { get; set; }
     }
 }

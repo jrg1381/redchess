@@ -65,7 +65,7 @@ namespace Redchess.AnalysisWorker
 
         internal void Evaluate(WorkItem workItem)
         {
-            workItem.Result = new WorkItemResponse();
+            workItem.Result = new BoardAnalysis();
             BestMove(workItem);
             Score(workItem);
 

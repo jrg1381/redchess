@@ -3,16 +3,16 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.ChessCommon
 {
-    public class WorkItemResponse : IWorkItemResponse
+    public class BoardAnalysis : IBoardAnalysis
     {
-        public WorkItemResponse(IWorkItemResponse bestMove)
+        public BoardAnalysis(IBoardAnalysis bestMove)
         {
             Analysis = bestMove.Analysis;
             BoardEvaluation = bestMove.BoardEvaluation;
             BoardEvaluationType = bestMove.BoardEvaluationType;
         }
 
-        public WorkItemResponse()
+        public BoardAnalysis()
         {
         }
 

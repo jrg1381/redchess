@@ -10,6 +10,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         IEnumerable<GameDto> FindAll();
         void AddOrUpdate(GameDto data);
         IEnumerable<GameDto> FindWithPlayer(string userName);
-        void AddAnalysis(int id, int moveNumber, IWorkItemResponse boardAnalysis);
+        void AddAnalysis(int id, int moveNumber, IBoardAnalysis boardAnalysis);
     }
 }

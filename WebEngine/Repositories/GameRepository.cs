@@ -29,7 +29,7 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public void AddAnalysis(int id, int moveNumber, IWorkItemResponse boardAnalysis)
+        public void AddAnalysis(int id, int moveNumber, IBoardAnalysis boardAnalysis)
         {
             var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
             using (var context = new ChessContext(connectionString))

@@ -40,13 +40,13 @@ namespace RedChess.MessageQueue
             SendMessage(new BasicMessage(BestMoveRequestMessage.MessageType, message));
         }
 
-        public void PostBestMoveResponseMessage(int gameId, int moveNumber, IWorkItemResponse bestMove)
+        public void PostBestMoveResponseMessage(int gameId, int moveNumber, IBoardAnalysis bestMove)
         {
             var message = new BestMoveResponseMessage
             {
                 GameId = gameId,
                 MoveNumber = moveNumber,
-                Analysis = new WorkItemResponse(bestMove)
+                Analysis = new BoardAnalysis(bestMove)
             };
 
             SendMessage(new BasicMessage(BestMoveResponseMessage.MessageType, message));

@@ -53,7 +53,7 @@ namespace RedChess.WebEngine.Repositories
             return m_userRepository.FindAll();
         }
 
-        public void AddAnalysis(int gameId, int moveNumber, IWorkItemResponse boardAnalysis)
+        public void AddAnalysis(int gameId, int moveNumber, IBoardAnalysis boardAnalysis)
         {
             m_repository.AddAnalysis(gameId, moveNumber, boardAnalysis);
         }
