@@ -28,18 +28,6 @@ namespace RedChess.MessageQueue
             m_queueClient.Send(new BrokeredMessage(message));
         }
 
-        public object PeekQueue()
-        {
-            var queueHolder = new {messages = new List<string>()};
-
-            foreach (var message in m_queueClient.PeekBatch(5))
-            {
-                queueHolder.messages.Add(message.GetBody<BasicMessage>().Json);
-            }
-
-            return queueHolder;
-        }
-
         public void PostGameEndedMessage(int gameId)
         {
             var message = new GameEndedMessage {GameId = gameId};

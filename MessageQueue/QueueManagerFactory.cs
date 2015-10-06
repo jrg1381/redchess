@@ -38,11 +38,6 @@ namespace RedChess.MessageQueue
         {
         }
 
-        public object PeekQueue()
-        {
-            return new object();
-        }
-
         public void PostRequestBestMoveMessage(int gameId, int moveId, string fen, string move)
         {        
         }
