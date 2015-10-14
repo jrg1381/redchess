@@ -11,7 +11,7 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace Redchess.AnalysisWorker
 {
-    class WorkItem
+    public class WorkItem
     {
         internal string Fen { get; set; }
         internal string Move { get; set; }
@@ -22,13 +22,15 @@ namespace Redchess.AnalysisWorker
     {
         private readonly object m_dictionaryLock = new object();
         private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame;
+        private Func<int, IUciEngine> m_engineCreator;
 
-        public UciEngineFarm()
+        public UciEngineFarm(Func<int, IUciEngine> engineCreator = null)
         {
+            m_engineCreator = engineCreator ?? (i => new UciEngine(i));
             m_queueForGame = new ConcurrentDictionary<int, BlockingCollection<WorkItem>>();
         }
 
-        private void ProcessQueue(BlockingCollection<WorkItem> workItemQueue, UciEngine engine)
+        private void ProcessQueue(BlockingCollection<WorkItem> workItemQueue, IUciEngine engine)
         {
             Trace.WriteLine("Starting queue processor thread " + Thread.CurrentThread.ManagedThreadId);
 
@@ -95,7 +97,7 @@ namespace Redchess.AnalysisWorker
                     Trace.WriteLine("Queue not found for this game id, creating worker");
                     queue = new BlockingCollection<WorkItem>();
                     m_queueForGame[gameId] = queue;
-                    var engine = new UciEngine(gameId);
+                    var engine = m_engineCreator(gameId);
                     Trace.WriteLine("Worker created successfully");
                     Task.Factory.StartNew(() => ProcessQueue(queue, engine));
                 }

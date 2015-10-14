@@ -8,7 +8,7 @@ using RedChess.ChessCommon.Enumerations;
 
 namespace Redchess.AnalysisWorker
 {
-    internal class UciEngine : IDisposable
+    internal class UciEngine : IUciEngine
     {
         public const int NoScoreParsed = 0x0feefeef;
         private const string c_processReadyText = "Stockfish 6 64";
@@ -17,7 +17,7 @@ namespace Redchess.AnalysisWorker
         private static readonly Regex s_mateInNMovesRegex;
         private static readonly Regex s_bestMoveRegex;
 
-        internal int GameId { get; private set; }
+        public int GameId { get; private set; }
 
         static UciEngine()
         {
@@ -48,14 +48,14 @@ namespace Redchess.AnalysisWorker
             Trace.WriteLine("Started UciEngine");
         }
 
-        internal void NewGame()
+        private void NewGame()
         {
             Trace.WriteLine("ucinewgame");
             m_engine.Write("ucinewgame");
             Trace.WriteLine("ucinewgame complete");
         }
 
-        internal void SetOptions()
+        private void SetOptions()
         {
             Trace.WriteLine("Setting options");
             m_engine.Write("setoption name Hash value 32");
@@ -63,7 +63,7 @@ namespace Redchess.AnalysisWorker
             Trace.WriteLine("Setting options complete");
         }
 
-        internal void Evaluate(WorkItem workItem)
+        public void Evaluate(WorkItem workItem)
         {
             workItem.Result = new BoardAnalysis();
             BestMove(workItem);

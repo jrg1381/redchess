@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using NUnit.Framework;
-using System;
 using Redchess.AnalysisWorker;
 using RedChess.ChessCommon.Enumerations;
 
