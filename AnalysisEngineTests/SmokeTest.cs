@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using NUnit.Framework;
 using Redchess.AnalysisWorker;
 using RedChess.ChessCommon.Enumerations;
@@ -14,12 +16,40 @@ namespace Redchess.AnalysisEngineTests
         public void CreateBidiProcess()
         {
             m_engineWrapper = new UciEngineFarm();
+            Array.ForEach(StockfishProcesses(), p => p.Kill());
         }
 
         [TearDown]
         public void Teardown()
         {
             m_engineWrapper.Dispose();
+        }
+
+        [Test]
+        public void NoStockfishInstancesRunningAfterDisposal()
+        {
+            for (int i = 1; i < 5; i++)
+            {
+                var bestmove = m_engineWrapper.EvaluateMove(i,
+                    "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            }
+
+            m_engineWrapper.Dispose();
+
+            int count;
+            var expiry = DateTime.UtcNow.AddSeconds(30);
+            while ((count = StockfishProcesses().Length) > 0 && DateTime.UtcNow < expiry)
+            {
+                Thread.Sleep(250);
+                Console.WriteLine("Stockfish processes : {0}", count);
+            }
+
+            CollectionAssert.IsEmpty(Process.GetProcessesByName("stockfish-6-64"), "Expected no stockfish64 processes to be running");
+        }
+
+        private static Process[] StockfishProcesses()
+        {
+            return Process.GetProcessesByName("stockfish-6-64");
         }
 
         [Test]

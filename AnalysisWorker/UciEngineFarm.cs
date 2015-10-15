@@ -130,6 +130,8 @@ namespace Redchess.AnalysisWorker
             {
                 worker.Dispose();
             }
+
+            m_queueForGame.Clear();
         }
     }
 }
