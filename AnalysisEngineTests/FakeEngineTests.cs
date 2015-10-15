@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Redchess.AnalysisWorker;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 
 namespace Redchess.AnalysisEngineTests
 {
@@ -17,7 +18,6 @@ namespace Redchess.AnalysisEngineTests
         private UciEngineFarm m_engineWrapper;
         private List<IUciEngine> m_fakeEngines;
         private HashSet<int> m_engineCreationCount;
-        private readonly object m_engineCreationLock = new object();
 
         private IUciEngine FakeEngineForGame(int gameId, BoardAnalysis expectedBoardAnalysis)
         {
@@ -57,14 +57,11 @@ namespace Redchess.AnalysisEngineTests
 
             Func<int, IUciEngine> engineCreator = i =>
             {
-                lock (m_engineCreationLock)
+                if (m_engineCreationCount.Contains(i))
                 {
-                    if (m_engineCreationCount.Contains(i))
-                    {
-                        throw new InvalidOperationException("Should not create a new engine");
-                    }
-                    m_engineCreationCount.Add(i);
+                    throw new InvalidOperationException("Should not create a new engine");
                 }
+                m_engineCreationCount.Add(i);
 
                 var fake = FakeEngineForGame(i, answer);
                 m_fakeEngines.Add(fake);
@@ -91,6 +88,7 @@ namespace Redchess.AnalysisEngineTests
         {
             m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
             m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            ExpectNoDispose(10);
             foreach (var fake in m_fakeEngines)
             {
                 fake.VerifyAllExpectations();
@@ -102,7 +100,9 @@ namespace Redchess.AnalysisEngineTests
         public void MultipleMovesInNGamesGeneratesNWorkers()
         {
             m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            ExpectNoDispose(10);
             m_engineWrapper.EvaluateMove(11, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            ExpectNoDispose(11);
             foreach (var fake in m_fakeEngines)
             {
                 fake.VerifyAllExpectations();
@@ -114,17 +114,14 @@ namespace Redchess.AnalysisEngineTests
         [Test]
         public void GameOverDisposesAndRecreatesWorker()
         {
+            var signal = new object();
             m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
-
-            m_fakeEngines.First().Expect(x => x.Dispose()).WhenCalled(mi =>
+            ExpectDispose(10, signal);
+            lock (signal)
             {
-                lock (m_engineCreationLock)
-                {
-                    m_engineCreationCount.Remove(10);
-                }
-            }).Repeat.Once();
-
-            m_engineWrapper.GameOver(10); // Expect this to call Dispose
+                m_engineWrapper.GameOver(10); // Expect this to call Dispose
+                Monitor.Wait(signal);
+            }
             m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
             foreach (var fake in m_fakeEngines)
             {
@@ -132,6 +129,30 @@ namespace Redchess.AnalysisEngineTests
             }
 
             Assert.AreEqual(1, m_engineCreationCount.Count);
+        }
+
+        private void ExpectDispose(int gameId, object signal)
+        {
+            DisposeReplacement(gameId, signal).Repeat.Once();
+        }
+
+        private void ExpectNoDispose(int gameId)
+        {
+            DisposeReplacement(gameId, new object()).Repeat.Never();
+        }
+
+        private IMethodOptions<RhinoMocksExtensions.VoidType> DisposeReplacement(int gameId, object signal)
+        {
+            return m_fakeEngines.
+                First(engine => engine.GameId == gameId).
+                Expect(x => x.Dispose()).WhenCalled(mi =>
+                {
+                    lock (signal)
+                    {
+                        m_engineCreationCount.Remove(gameId);
+                        Monitor.Pulse(signal);
+                    }
+                });
         }
 
         [Test]
