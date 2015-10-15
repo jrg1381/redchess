@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using Redchess.AnalysisWorker;
@@ -16,7 +18,15 @@ namespace Redchess.AnalysisEngineTests
         public void CreateBidiProcess()
         {
             m_engineWrapper = new UciEngineFarm();
-            Array.ForEach(StockfishProcesses(), p => p.Kill());
+            try
+            {
+                Array.ForEach(StockfishProcesses(), p => p.Kill());
+            }
+            catch (Win32Exception e)
+            {
+                // Might get process denied
+                Console.WriteLine(e);
+            }
         }
 
         [TearDown]
