@@ -11,6 +11,7 @@ namespace Redchess.AnalysisWorker
     internal class UciEngine : IUciEngine
     {
         public const int NoScoreParsed = 0x0feefeef;
+        public const int MaxAnalysisTimeSeconds = 5;
         private const string c_processReadyText = "Stockfish 6 64";
         private readonly BidirectionalProcess m_engine;
         private static readonly Regex s_centipawnScoreRegex;
@@ -77,7 +78,7 @@ namespace Redchess.AnalysisWorker
         private void BestMove(WorkItem workItem)
         {
             Trace.WriteLine("Bestmove on "+ workItem.Fen);
-            var cmd = String.Format("position fen {0} {1}\r\ngo movetime 5000", workItem.Fen, workItem.Move);
+            var cmd = String.Format("position fen {0} {1}\r\ngo movetime {2}", workItem.Fen, workItem.Move, MaxAnalysisTimeSeconds * 1000);
             var analysis = m_engine.Write(cmd, "bestmove");
             workItem.Result.Analysis = analysis;
         }

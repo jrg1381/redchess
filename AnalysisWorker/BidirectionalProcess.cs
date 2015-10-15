@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Redchess.AnalysisWorker
 {
+    /// <summary>
+    /// Class representing a process which we can read and write to
+    /// </summary>
     internal class BidirectionalProcess : IDisposable
     {
         private const int c_processReadyTimeoutInSeconds = 10;
@@ -58,6 +61,7 @@ namespace Redchess.AnalysisWorker
 
             Task.Run(() =>
             {
+                // Not trying to be efficient here. Read characters one by one to avoid problems with buffering.
                 var buffer = new char[1];
                 try
                 {
@@ -69,8 +73,10 @@ namespace Redchess.AnalysisWorker
                             var searchString = m_builder.ToString();
                             if (MatchText(searchString))
                             {
+                                // Once we see what we're looking for, stash it in m_capturedText
                                 m_capturedText = searchString;
                                 m_builder.Clear();
+                                // And tell the thread which is waiting for us
                                 m_waitForEvent.Set();
                             }
                         }
@@ -85,15 +91,17 @@ namespace Redchess.AnalysisWorker
 
         private bool MatchText(string textToSearch)
         {
+            // We consider it a match when we've seen a line containing m_triggerText and that line has been terminated with \r\n
+
             if (m_triggerText == null)
                 return true;
 
-            var indexOfSearchText = textToSearch.IndexOf(m_triggerText);
+            var indexOfSearchText = textToSearch.IndexOf(m_triggerText, StringComparison.Ordinal);
 
             if (indexOfSearchText == -1)
                 return false;
 
-            var indexOfNewlineAfterSearchText = textToSearch.IndexOf("\r\n", indexOfSearchText);
+            var indexOfNewlineAfterSearchText = textToSearch.IndexOf("\r\n", indexOfSearchText, StringComparison.Ordinal);
 
             return (indexOfNewlineAfterSearchText != -1);
         }

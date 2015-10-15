@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using RedChess.ChessCommon;
-using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
 namespace Redchess.AnalysisWorker
@@ -22,7 +19,7 @@ namespace Redchess.AnalysisWorker
     {
         private readonly object m_dictionaryLock = new object();
         private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame;
-        private Func<int, IUciEngine> m_engineCreator;
+        private readonly Func<int, IUciEngine> m_engineCreator;
 
         public UciEngineFarm(Func<int, IUciEngine> engineCreator = null)
         {
@@ -119,7 +116,8 @@ namespace Redchess.AnalysisWorker
             foreach (var worker in m_queueForGame.Values)
             {
                 worker.CompleteAdding();
-                var timeOut = DateTime.UtcNow.AddSeconds(5);
+                // Give a safety margin to clear the queue (likely it will only have 0 or 1 entries in it) 
+                var timeOut = DateTime.UtcNow.AddSeconds(UciEngine.MaxAnalysisTimeSeconds * 25); 
                 while (!worker.IsCompleted && DateTime.UtcNow < timeOut)
                 {
                     Thread.Sleep(250);
