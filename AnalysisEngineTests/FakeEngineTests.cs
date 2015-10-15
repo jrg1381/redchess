@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -16,6 +17,7 @@ namespace Redchess.AnalysisEngineTests
         private UciEngineFarm m_engineWrapper;
         private List<IUciEngine> m_fakeEngines;
         private HashSet<int> m_engineCreationCount;
+        private readonly object m_engineCreationLock = new object();
 
         private IUciEngine FakeEngineForGame(int gameId, BoardAnalysis expectedBoardAnalysis)
         {
@@ -55,12 +57,15 @@ namespace Redchess.AnalysisEngineTests
 
             Func<int, IUciEngine> engineCreator = i =>
             {
-                if (m_engineCreationCount.Contains(i))
+                lock (m_engineCreationLock)
                 {
-                    throw new InvalidOperationException("Should not create a new engine");
+                    if (m_engineCreationCount.Contains(i))
+                    {
+                        throw new InvalidOperationException("Should not create a new engine");
+                    }
+                    m_engineCreationCount.Add(i);
                 }
 
-                m_engineCreationCount.Add(i);
                 var fake = FakeEngineForGame(i, answer);
                 m_fakeEngines.Add(fake);
                 return fake;
@@ -104,6 +109,29 @@ namespace Redchess.AnalysisEngineTests
             }
 
             Assert.AreEqual(2, m_engineCreationCount.Count);
+        }
+
+        [Test]
+        public void GameOverDisposesAndRecreatesWorker()
+        {
+            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+
+            m_fakeEngines.First().Expect(x => x.Dispose()).WhenCalled(mi =>
+            {
+                lock (m_engineCreationLock)
+                {
+                    m_engineCreationCount.Remove(10);
+                }
+            }).Repeat.Once();
+
+            m_engineWrapper.GameOver(10); // Expect this to call Dispose
+            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            foreach (var fake in m_fakeEngines)
+            {
+                fake.VerifyAllExpectations();
+            }
+
+            Assert.AreEqual(1, m_engineCreationCount.Count);
         }
 
         [Test]
