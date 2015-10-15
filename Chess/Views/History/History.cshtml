@@ -17,7 +17,8 @@
     .x-axis line { fill: none; stroke: #000; stroke-width: 1.5px}
     .x-axis path { fill: none; stroke: #000; stroke-width: 1.5px}
     .blob { fill: steelblue; }
-    .mate { fill: darkred }
+    .mateblack { fill: #2f2f2f }
+    .matewhite { fill: white; stroke: black; stroke-width: 1px}
 </style>
 
 <script>
@@ -44,15 +45,16 @@
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
         boardViewer.onMoveSelected(function (moveNumber) {
-            alert(moveNumber);
             var yPosition;
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
             var xPosition = x(moveNumber);
             if (evaluationData[moveNumber].scoreType === 1) {
+                var score = evaluationData[moveNumber].score;
+                var mateClass = Math.sign(score) == 1 ? "matewhite" : "mateblack";
                 yPosition = y0;
-                svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "mate");
-
+                svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", mateClass);
+                svgElement.append("text").attr("fill", "red").attr("x", xPosition).attr("y", yPosition - 10).text(Math.abs(score));
             }
             else {
                 yPosition = y(evaluationData[moveNumber].score);
@@ -79,7 +81,7 @@
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
                         { move: 0, score: 0, scoreType: 0 },
-                        { move: 1, score: 4, scoreType: 0 },
+                        { move: 1, score: -4, scoreType: 1 },
                         { move: 2, score: 3, scoreType: 1 },
                         { move: 3, score: 8, scoreType: 0 }]);
                 } else {
