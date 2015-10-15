@@ -44,12 +44,13 @@
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
         boardViewer.onMoveSelected(function (moveNumber) {
+            alert(moveNumber);
             var yPosition;
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
             var xPosition = x(moveNumber);
             if (evaluationData[moveNumber].scoreType === 1) {
-                yPosition = y(0);
+                yPosition = y0;
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "mate");
 
             }
@@ -74,7 +75,7 @@
             .done(function (data) {
                 boardViewer = new BoardViewer(data, board);
 
-                var evaluationData = data.Analysis.map(function (x) { return {move: x.MoveNumber, score: x.Evaluation, scoreType: x.BoardEvaluationType}; });
+                var evaluationData = data.Analysis.map(function (x) { return {move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType}; });
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
                         { move: 0, score: 0, scoreType: 0 },
