@@ -12,7 +12,7 @@ using RedChess.WebEngine.Repositories;
 
 namespace Redchess.AnalysisWorker
 {
-    public class WorkerRole : RoleEntryPoint
+    public sealed class WorkerRole : RoleEntryPoint, IDisposable
     {
         // The name of your queue
         private const string c_queueName = QueueManagerFactory.QueueName;
@@ -122,6 +122,12 @@ namespace Redchess.AnalysisWorker
             m_client.Close();
             m_completedEvent.Set();
             base.OnStop();
+        }
+
+        public void Dispose()
+        {
+            m_engineFarm.Dispose();
+            m_completedEvent.Dispose();
         }
     }
 }

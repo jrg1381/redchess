@@ -15,7 +15,7 @@ namespace Redchess.AnalysisWorker
         internal BoardAnalysis Result { get; set; }
     }
 
-    public class UciEngineFarm : IDisposable
+    public sealed class UciEngineFarm : IDisposable
     {
         private readonly object m_dictionaryLock = new object();
         private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame;
@@ -112,6 +112,12 @@ namespace Redchess.AnalysisWorker
         }
 
         public void Dispose()
+        {
+            // There are no native resources
+            Dispose(true);
+        }
+
+        private void Dispose(bool isDisposing)
         {
             foreach (var worker in m_queueForGame.Values)
             {
