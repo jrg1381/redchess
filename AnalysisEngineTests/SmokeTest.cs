@@ -10,7 +10,7 @@ using RedChess.ChessCommon.Enumerations;
 namespace Redchess.AnalysisEngineTests
 {
     [TestFixture]
-    public class SmokeTest : IDisposable
+    public sealed class SmokeTest : IDisposable
     {
         private UciEngineFarm m_engineWrapper;
 
@@ -105,6 +105,11 @@ namespace Redchess.AnalysisEngineTests
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        private void Dispose(bool isDisposing)
         {
             m_engineWrapper.Dispose();
         }

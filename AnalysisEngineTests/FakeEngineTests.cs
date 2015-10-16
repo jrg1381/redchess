@@ -13,7 +13,7 @@ using Rhino.Mocks.Interfaces;
 namespace Redchess.AnalysisEngineTests
 {
     [TestFixture]
-    public class FakeEngineTests : IDisposable
+    public sealed class FakeEngineTests : IDisposable
     {
         private UciEngineFarm m_engineWrapper;
         private List<IUciEngine> m_fakeEngines;
@@ -186,7 +186,13 @@ namespace Redchess.AnalysisEngineTests
 
         public void Dispose()
         {
+            Dispose(true);
+        }
+
+        private void Dispose(bool isDisposing)
+        {
             m_engineWrapper.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
