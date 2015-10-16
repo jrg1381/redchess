@@ -48,10 +48,11 @@
             var yPosition;
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
+            svgElement.selectAll("text").remove();
             var xPosition = x(moveNumber);
-            if (evaluationData[moveNumber].scoreType === 1) {
+            if (evaluationData[moveNumber].scoreType === 1) { // corresponds to enum MateInN
                 var score = evaluationData[moveNumber].score;
-                var mateClass = Math.sign(score) == 1 ? "matewhite" : "mateblack";
+                var mateClass = Math.sign(score) === 1 ? "matewhite" : "mateblack";
                 yPosition = y0;
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", mateClass);
                 svgElement.append("text").attr("fill", "red").attr("x", xPosition).attr("y", yPosition - 10).text(Math.abs(score));
@@ -76,7 +77,7 @@
             })
             .done(function (data) {
                 boardViewer = new BoardViewer(data, board);
-
+                // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
                 var evaluationData = data.Analysis.map(function (x) { return {move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType}; });
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
