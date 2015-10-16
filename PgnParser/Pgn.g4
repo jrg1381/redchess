@@ -87,7 +87,7 @@ INTEGER : '1'..'9' ('0'..'9')* ;
 // Integer followed by a mixture of periods and spaces (covers ... for incomplete black moves)
 MOVE_LABEL : INTEGER '.' ;
 // Keep block comments because they relate to a particular move
-BLOCK_COMMENT : LEFT_CURLY_BRACKET (~')')* RIGHT_CURLY_BRACKET ;
+BLOCK_COMMENT : LEFT_CURLY_BRACKET (~'}')* RIGHT_CURLY_BRACKET ;
 // placeholder move
 NO_MOVE : '...'|'..' ;
 // User defined tags must look like this
