@@ -800,7 +800,7 @@ public partial class PgnParser : Parser {
 			}
 
 				if(PlayGame && m_variantDepth == 0)
-					m_processor.ProcessMove(_localctx.foo, _localctx.promote == null ? "" : _localctx.promote.Text, _localctx.checkormate == null ? "" : _localctx.checkormate.Text, _localctx.annotation_glyph == null ? "" : _localctx.annotation_glyph.Text);
+					m_processor.ProcessMove(_localctx.foo, _localctx.promote == null ? "" : _localctx.promote.Text.TrimStart(new [] {'='}), _localctx.checkormate == null ? "" : _localctx.checkormate.Text, _localctx.annotation_glyph == null ? "" : _localctx.annotation_glyph.Text);
 
 			}
 		}
