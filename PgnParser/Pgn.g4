@@ -121,7 +121,7 @@ annotationList : annotation (WS+ annotation)* ;
 individualMove : foo=(PIECE_TO_SQUARE|CAPTURE|CASTLE_KINGSIDE | CASTLE_QUEENSIDE ) (promote=PROMOTES_TO_PIECE)? (checkormate=CHECK|checkormate=MATE)? MOVE_ANALYSIS? (WS+ annotation_glyph=NUMERIC_ANNOTATION_GLYPH)? (WS+ annotationList)?
 {
 	if(PlayGame && m_variantDepth == 0)
-		m_processor.ProcessMove(_localctx.foo, _localctx.promote == null ? "" : _localctx.promote.Text, _localctx.checkormate == null ? "" : _localctx.checkormate.Text, _localctx.annotation_glyph == null ? "" : _localctx.annotation_glyph.Text);
+		m_processor.ProcessMove(_localctx.foo, _localctx.promote == null ? "" : _localctx.promote.Text.TrimStart(new [] {'='}), _localctx.checkormate == null ? "" : _localctx.checkormate.Text, _localctx.annotation_glyph == null ? "" : _localctx.annotation_glyph.Text);
 } ;
 
 // Note that black's move is optional because White might have just won!
@@ -130,7 +130,7 @@ moveList : move (WS+ move)* ;
 move : MOVE_LABEL WS* (NO_MOVE WS*)? individualMove (WS+ (MOVE_LABEL? WS* NO_MOVE WS*)? individualMove)? ;
 compulsoryTag : (eventTag | siteTag | dateTag | roundTag | blackTag | whiteTag | resultTag) ;
 
-blockComment : comment=BLOCK_COMMENT
+blockComment : comment=BLOCK_COMMENT WS*
 {
 	// Console.WriteLine(comment.Text);
 };
