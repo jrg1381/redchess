@@ -79,7 +79,8 @@ namespace WebTests
 
             var gameId = m_jamesPlayer.Driver.Url.Split(new[] { '/' }).Last();
 
-            m_clivePlayer.Driver.Navigate().GoToUrl(m_baseUrl + "/Board/Details/" + gameId);
+            var gameDetailsUri = new Uri(m_baseUrl + "/Board/Details/" + gameId);
+            m_clivePlayer.Driver.Navigate().GoToUrl(gameDetailsUri);
 
             m_jamesPlayer.PerformDragAndDrop(Location.E2, Location.E4); // e4
             m_clivePlayer.PerformDragAndDrop(Location.E7, Location.E5); // e5

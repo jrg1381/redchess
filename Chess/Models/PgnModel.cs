@@ -15,8 +15,8 @@ namespace Chess.Models
 
     public class PgnModel
     {
-        public List<string> ErrorText { get; set; }
-        public List<FenWithMove> Moves { get; set; } 
+        public List<string> ErrorText { get; private set; }
+        public List<FenWithMove> Moves { get; private set; } 
         public Dictionary<string, string> Tags { get; private set; }
 
         public PgnModel()

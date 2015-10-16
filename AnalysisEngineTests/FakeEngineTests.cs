@@ -192,7 +192,6 @@ namespace Redchess.AnalysisEngineTests
         private void Dispose(bool isDisposing)
         {
             m_engineWrapper.Dispose();
-            GC.SuppressFinalize(this);
         }
     }
 }

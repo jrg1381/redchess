@@ -239,7 +239,7 @@ namespace RedChess.WebEngine.Repositories
             var success = m_board.Move(start, end);
             if (!success) return false;
 
-            if (promote != "") // UI passes this from form
+            if (String.IsNullOrEmpty(promote)) // UI passes this from form
             {
                 m_board.PromotePiece(promote);
             }
