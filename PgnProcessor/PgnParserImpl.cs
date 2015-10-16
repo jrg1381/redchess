@@ -25,7 +25,7 @@ namespace RedChess.PgnProcessor
             };
             var tree = parser.parse();
 
-            Console.WriteLine(tree.ToStringTree(parser));
+          //  Console.WriteLine(tree.ToStringTree(parser));
 
             foreach (var kvp in parser.OptionalTags)
             {
