@@ -13,7 +13,7 @@ using Rhino.Mocks.Interfaces;
 namespace Redchess.AnalysisEngineTests
 {
     [TestFixture]
-    public class FakeEngineTests
+    public class FakeEngineTests : IDisposable
     {
         private UciEngineFarm m_engineWrapper;
         private List<IUciEngine> m_fakeEngines;
@@ -182,6 +182,11 @@ namespace Redchess.AnalysisEngineTests
             {
                 fake.VerifyAllExpectations();
             }
+        }
+
+        public void Dispose()
+        {
+            m_engineWrapper.Dispose();
         }
     }
 }

@@ -10,7 +10,7 @@ using RedChess.ChessCommon.Enumerations;
 namespace Redchess.AnalysisEngineTests
 {
     [TestFixture]
-    public class SmokeTest
+    public class SmokeTest : IDisposable
     {
         private UciEngineFarm m_engineWrapper;
 
@@ -102,6 +102,11 @@ namespace Redchess.AnalysisEngineTests
             m_engineWrapper.GameOver(11);
             var bestmove3 = m_engineWrapper.EvaluateMove(12, "7k/5ppp/8/8/8/8/8/K7 b - - 0 2", "h7h5");
             Assert.Less(bestmove3.BoardEvaluation, 0, "Expected bestmove to detect advantage for black");
+        }
+
+        public void Dispose()
+        {
+            m_engineWrapper.Dispose();
         }
     }
 }

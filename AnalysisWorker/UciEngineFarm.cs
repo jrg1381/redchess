@@ -122,11 +122,11 @@ namespace Redchess.AnalysisWorker
             foreach (var worker in m_queueForGame.Values)
             {
                 worker.CompleteAdding();
-                // Give a safety margin to clear the queue (likely it will only have 0 or 1 entries in it) 
+                // Give a safety margin to clear the queue (likely it will only have 0 or 1 entries in it, but allow for more) 
                 var timeOut = DateTime.UtcNow.AddSeconds(UciEngine.MaxAnalysisTimeSeconds * 25); 
                 while (!worker.IsCompleted && DateTime.UtcNow < timeOut)
                 {
-                    Thread.Sleep(250);
+                    Thread.Sleep(50);
                 }
             }
 
