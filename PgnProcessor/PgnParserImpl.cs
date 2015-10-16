@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Antlr.Runtime;
+using System.IO;
+using Antlr4.Runtime;
 using RedChess.ChessCommon.Interfaces;
-using Redchess.Pgn;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 
@@ -16,10 +16,16 @@ namespace RedChess.PgnProcessor
         {
             m_tags = new Dictionary<string, string>();
             var processor = new PgnProcessor(onMoveAction, onGameOverAction);
-            var lexer = new PgnLexer(new ANTLRStringStream(text), onErrorAction);
+            var lexer = new PgnLexer(new AntlrInputStream(text), onErrorAction);
             var tokenStream = new CommonTokenStream(lexer);
-            var parser = new PgnParser(tokenStream, processor, onErrorAction) {PlayGame = playGame};
-            parser.parse();
+            var parser = new PgnParser(tokenStream, processor, onErrorAction)
+            {
+                PlayGame = playGame,
+                BuildParseTree = true,
+            };
+            var tree = parser.parse();
+
+            Console.WriteLine(tree.ToStringTree(parser));
 
             foreach (var kvp in parser.OptionalTags)
             {

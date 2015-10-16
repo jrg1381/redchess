@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Antlr.Runtime;
+using Antlr4.Runtime;
+using Antlr4.Runtime.Atn;
+using Redchess.Pgn;
 
 namespace Redchess.Pgn
 {
@@ -11,43 +13,59 @@ namespace Redchess.Pgn
         void ProcessMove(IToken token, string promotedPiece, string checkOrMate, string annotationGlyph);
         void DoFen(string fen);
     }
+}
 
-    partial class PgnParser
+public class ParserErrorListener : IAntlrErrorListener<IToken>
+{
+    private readonly Action<string> m_onErrorAction;
+
+    public ParserErrorListener(Action<string> onErrorAction)
     {
-        private readonly IPgnProcessor m_processor;
-        private readonly Action<string> m_onErrorAction;
-
-        public PgnParser(ITokenStream tokenStream, IPgnProcessor processor, Action<string> onErrorAction)
-            : base(tokenStream)
-        {
-            m_onErrorAction = onErrorAction;
-            m_processor = processor;
-            TraceDestination = Console.Out;
-        }
-
-        public override void ReportError(RecognitionException e)
-        {
-            base.ReportError(e);
-            m_onErrorAction("Error in parser at line " + e.Line + ":" + e.CharPositionInLine + "[" + e.Token + "]");
-        }
+        m_onErrorAction = onErrorAction;
     }
 
-    partial class PgnLexer
+    public void SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
     {
-        private readonly Action<string> m_onErrorAction;
+        m_onErrorAction("Error in parser at line " + line + ":" + charPositionInLine + "[" + offendingSymbol.Text + "]");
+    }
+}
 
-        public PgnLexer(ICharStream stream, Action<string> onErrorAction) : base(stream)
-        {
-            m_onErrorAction = onErrorAction;
-        }
+public class LexerErrorListener : IAntlrErrorListener<int>
+{
+    private readonly Action<string> m_onErrorAction;
 
-        public override void ReportError(RecognitionException e)
-        {
-            base.ReportError(e);
-            m_onErrorAction(String.Format("Error in lexer at line {0} : {1} : '{2}'",
-                e.Line,
-                e.CharPositionInLine,
-                (char) e.Character));
-        }
+    public LexerErrorListener(Action<string> onErrorAction)
+    {
+        m_onErrorAction = onErrorAction;
+    }
+
+    public void SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+    {
+        m_onErrorAction("Error in parser at line " + line + ":" + charPositionInLine + "[" + offendingSymbol + "]");
+    }
+}
+
+public partial class PgnParser
+{
+    private readonly IPgnProcessor m_processor;
+
+    public PgnParser(ITokenStream tokenStream, IPgnProcessor processor, Action<string> onErrorAction)
+        : base(tokenStream)
+    {
+        m_processor = processor;
+        // https://groups.google.com/forum/#!topic/antlr-discussion/8T6qaANpi94
+        base.Interpreter = new ParserATNSimulator(this, _ATN);
+        base.AddErrorListener(new ParserErrorListener(onErrorAction));
+    }
+}
+
+partial class PgnLexer
+{
+    public PgnLexer(ICharStream stream, Action<string> onErrorAction)
+        : base(stream)
+    {
+        // https://groups.google.com/forum/#!topic/antlr-discussion/8T6qaANpi94
+        base.Interpreter = new LexerATNSimulator(this, _ATN);
+        base.AddErrorListener(new LexerErrorListener(onErrorAction));
     }
 }

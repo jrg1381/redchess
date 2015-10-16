@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Antlr.Runtime;
+using Antlr4.Runtime;
 using NUnit.Framework;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.ParserFactory;
@@ -26,7 +26,7 @@ namespace Redchess.ParserTests
         [TestCase(@"[Event           ""World Championship""]")]
         public void TestIndividualTags(string text)
         {
-            var lexer = new PgnLexer(new ANTLRStringStream(text));
+            var lexer = new PgnLexer(new AntlrInputStream(text));
             var tokenStream = new CommonTokenStream(lexer);
             var parser = new PgnParser(tokenStream);
             parser.parseTag();

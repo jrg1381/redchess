@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Antlr.Runtime;
+using Antlr4.Runtime;
+using Redchess.Pgn;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.EngineFactory;
-using Redchess.Pgn;
 
 namespace RedChess.PgnProcessor
 {
@@ -188,7 +188,7 @@ namespace RedChess.PgnProcessor
                 }
             }
 
-            string debugMessage = String.Format("Line {0} Position {1} : {2}", token.Line, token.CharPositionInLine, tokenText);
+            string debugMessage = String.Format("Line {0} Position {1} : {2}", token.Line, token.Column, tokenText);
 
             var moveMade = MakePieceMove(movingPiece, targetLocation, disambiguationToken, debugMessage);
 
