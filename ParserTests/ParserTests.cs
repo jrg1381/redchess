@@ -22,21 +22,12 @@ namespace Redchess.ParserTests
             return parser;
         }
 
-        [TestCase(@"[Event ""World Championship""]")]
-        [TestCase(@"[Event           ""World Championship""]")]
-        public void TestIndividualTags(string text)
-        {
-            var lexer = new PgnLexer(new AntlrInputStream(text));
-            var tokenStream = new CommonTokenStream(lexer);
-            var parser = new PgnParser(tokenStream);
-            parser.parseTag();
-            Assert.AreEqual(0, parser.NumberOfSyntaxErrors, "Syntax error count was non-zero");
-            Assert.AreEqual("World Championship", parser.Event);
-        }
-
         [TestCase(
             @"[Event ""World Championship""][Site ""helloworld""][Date ""helloworld""][Round ""helloworld""][White ""helloworld""][Black ""helloworld""][Result ""1-0""] 1. e4 e5 1-0"
             )]
+        [TestCase(
+    @"[Event          ""World Championship""][Site ""helloworld""][Date ""helloworld""][Round ""helloworld""][White ""helloworld""][Black ""helloworld""][Result ""1-0""] 1. e4 e5 1-0"
+    )]
         public void TestCompulsoryTags(string text)
         {
             var parser = ParseText(text);

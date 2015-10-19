@@ -418,13 +418,6 @@ public partial class PgnParser : Parser {
 				}
 			}
 
-
-				if(PlayGame)
-				{
-					m_processor.ResetGame();
-					m_optionalTags.Clear();
-				}
-
 			}
 		}
 		catch (RecognitionException re) {
@@ -467,16 +460,16 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 84;
+			State = 82;
 			switch (TokenStream.La(1)) {
 			case BLOCK_COMMENT:
 				{
-				State = 82; blockComment();
+				State = 80; blockComment();
 				}
 				break;
 			case LEFT_BRACKET:
 				{
-				State = 83; variantLine();
+				State = 81; variantLine();
 				}
 				break;
 			default:
@@ -525,19 +518,19 @@ public partial class PgnParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 86; annotation();
-			State = 90;
+			State = 84; annotation();
+			State = 88;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.InvalidAltNumber ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 87; annotation();
+					State = 85; annotation();
 					}
 					} 
 				}
-				State = 92;
+				State = 90;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 			}
@@ -594,7 +587,7 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 93;
+			State = 91;
 			_localctx.foo = TokenStream.Lt(1);
 			_la = TokenStream.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << CASTLE_KINGSIDE) | (1L << CASTLE_QUEENSIDE) | (1L << PIECE_TO_SQUARE) | (1L << CAPTURE))) != 0)) ) {
@@ -603,24 +596,24 @@ public partial class PgnParser : Parser {
 			else {
 			    Consume();
 			}
-			State = 95;
+			State = 93;
 			_la = TokenStream.La(1);
 			if (_la==PROMOTES_TO_PIECE) {
 				{
-				State = 94; _localctx.promote = Match(PROMOTES_TO_PIECE);
+				State = 92; _localctx.promote = Match(PROMOTES_TO_PIECE);
 				}
 			}
 
-			State = 99;
+			State = 97;
 			switch (TokenStream.La(1)) {
 			case CHECK:
 				{
-				State = 97; _localctx.checkormate = Match(CHECK);
+				State = 95; _localctx.checkormate = Match(CHECK);
 				}
 				break;
 			case MATE:
 				{
-				State = 98; _localctx.checkormate = Match(MATE);
+				State = 96; _localctx.checkormate = Match(MATE);
 				}
 				break;
 			case Eof:
@@ -641,34 +634,30 @@ public partial class PgnParser : Parser {
 			default:
 				throw new NoViableAltException(this);
 			}
-			State = 102;
+			State = 100;
 			_la = TokenStream.La(1);
 			if (_la==MOVE_ANALYSIS) {
 				{
-				State = 101; Match(MOVE_ANALYSIS);
+				State = 99; Match(MOVE_ANALYSIS);
 				}
 			}
 
-			State = 105;
+			State = 103;
 			_la = TokenStream.La(1);
 			if (_la==NUMERIC_ANNOTATION_GLYPH) {
 				{
-				State = 104; _localctx.annotation_glyph = Match(NUMERIC_ANNOTATION_GLYPH);
+				State = 102; _localctx.annotation_glyph = Match(NUMERIC_ANNOTATION_GLYPH);
 				}
 			}
 
-			State = 108;
+			State = 106;
 			switch ( Interpreter.AdaptivePredict(TokenStream,13,Context) ) {
 			case 1:
 				{
-				State = 107; annotationList();
+				State = 105; annotationList();
 				}
 				break;
 			}
-
-				if(PlayGame && m_variantDepth == 0)
-					m_processor.ProcessMove(_localctx.foo, _localctx.promote == null ? "" : _localctx.promote.Text.TrimStart(new [] {'='}), _localctx.checkormate == null ? "" : _localctx.checkormate.Text, _localctx.annotation_glyph == null ? "" : _localctx.annotation_glyph.Text);
-
 			}
 		}
 		catch (RecognitionException re) {
@@ -712,19 +701,19 @@ public partial class PgnParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 112; move();
-			State = 116;
+			State = 108; move();
+			State = 112;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,14,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.InvalidAltNumber ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 113; move();
+					State = 109; move();
 					}
 					} 
 				}
-				State = 118;
+				State = 114;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,14,Context);
 			}
@@ -779,37 +768,37 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 119; Match(MOVE_LABEL);
-			State = 121;
+			State = 115; Match(MOVE_LABEL);
+			State = 117;
 			_la = TokenStream.La(1);
 			if (_la==NO_MOVE) {
 				{
-				State = 120; Match(NO_MOVE);
+				State = 116; Match(NO_MOVE);
 				}
 			}
 
-			State = 123; individualMove();
-			State = 131;
+			State = 119; individualMove();
+			State = 127;
 			switch ( Interpreter.AdaptivePredict(TokenStream,18,Context) ) {
 			case 1:
 				{
-				State = 128;
+				State = 124;
 				_la = TokenStream.La(1);
 				if (_la==MOVE_LABEL || _la==NO_MOVE) {
 					{
-					State = 125;
+					State = 121;
 					_la = TokenStream.La(1);
 					if (_la==MOVE_LABEL) {
 						{
-						State = 124; Match(MOVE_LABEL);
+						State = 120; Match(MOVE_LABEL);
 						}
 					}
 
-					State = 127; Match(NO_MOVE);
+					State = 123; Match(NO_MOVE);
 					}
 				}
 
-				State = 130; individualMove();
+				State = 126; individualMove();
 				}
 				break;
 			}
@@ -870,41 +859,41 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 140;
+			State = 136;
 			switch ( Interpreter.AdaptivePredict(TokenStream,19,Context) ) {
 			case 1:
 				{
-				State = 133; eventTag();
+				State = 129; eventTag();
 				}
 				break;
 			case 2:
 				{
-				State = 134; siteTag();
+				State = 130; siteTag();
 				}
 				break;
 			case 3:
 				{
-				State = 135; dateTag();
+				State = 131; dateTag();
 				}
 				break;
 			case 4:
 				{
-				State = 136; roundTag();
+				State = 132; roundTag();
 				}
 				break;
 			case 5:
 				{
-				State = 137; blackTag();
+				State = 133; blackTag();
 				}
 				break;
 			case 6:
 				{
-				State = 138; whiteTag();
+				State = 134; whiteTag();
 				}
 				break;
 			case 7:
 				{
-				State = 139; resultTag();
+				State = 135; resultTag();
 				}
 				break;
 			}
@@ -946,10 +935,7 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 142; _localctx.comment = Match(BLOCK_COMMENT);
-
-				// Console.WriteLine(comment.Text);
-
+			State = 138; _localctx.comment = Match(BLOCK_COMMENT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -987,10 +973,7 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 145; Match(LEFT_BRACKET);
-
-				m_variantDepth++;
-
+			State = 140; Match(LEFT_BRACKET);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1028,10 +1011,7 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 148; Match(RIGHT_BRACKET);
-
-				m_variantDepth--;
-
+			State = 142; Match(RIGHT_BRACKET);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1093,41 +1073,38 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 151; enterVariant();
-			State = 157;
+			State = 144; enterVariant();
+			State = 150;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LEFT_BRACKET) | (1L << MOVE_LABEL) | (1L << BLOCK_COMMENT))) != 0)) {
 				{
-				State = 155;
+				State = 148;
 				switch (TokenStream.La(1)) {
 				case MOVE_LABEL:
 					{
-					State = 152; moveList();
+					State = 145; moveList();
 					}
 					break;
 				case LEFT_BRACKET:
 					{
-					State = 153; variantLine();
+					State = 146; variantLine();
 					}
 					break;
 				case BLOCK_COMMENT:
 					{
-					State = 154; blockComment();
+					State = 147; blockComment();
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 159;
+				State = 152;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 160; leaveVariant();
-
-				// Console.WriteLine(actual_text.Text);
-
+			State = 153; leaveVariant();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1142,7 +1119,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class EventTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode EVENT() { return GetToken(PgnParser.EVENT, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1169,13 +1146,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 163; Match(LEFT_TAG);
-			State = 164; Match(EVENT);
-			State = 165; _localctx.bar = Match(QUOTED_STRING);
-			State = 166; Match(RIGHT_TAG);
-			 
-				Event = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
-
+			State = 155; Match(LEFT_TAG);
+			State = 156; Match(EVENT);
+			State = 157; _localctx.tag = Match(QUOTED_STRING);
+			State = 158; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1190,7 +1164,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class SiteTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode SITE() { return GetToken(PgnParser.SITE, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1217,13 +1191,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 169; Match(LEFT_TAG);
-			State = 170; Match(SITE);
-			State = 171; _localctx.bar = Match(QUOTED_STRING);
-			State = 172; Match(RIGHT_TAG);
-			 
-				Site = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
-
+			State = 160; Match(LEFT_TAG);
+			State = 161; Match(SITE);
+			State = 162; _localctx.tag = Match(QUOTED_STRING);
+			State = 163; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1238,7 +1209,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class DateTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode DATE() { return GetToken(PgnParser.DATE, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1265,13 +1236,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 175; Match(LEFT_TAG);
-			State = 176; Match(DATE);
-			State = 177; _localctx.bar = Match(QUOTED_STRING);
-			State = 178; Match(RIGHT_TAG);
-			 
-				Date = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
-
+			State = 165; Match(LEFT_TAG);
+			State = 166; Match(DATE);
+			State = 167; _localctx.tag = Match(QUOTED_STRING);
+			State = 168; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1286,7 +1254,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class RoundTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode ROUND() { return GetToken(PgnParser.ROUND, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1313,13 +1281,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 181; Match(LEFT_TAG);
-			State = 182; Match(ROUND);
-			State = 183; _localctx.bar = Match(QUOTED_STRING);
-			State = 184; Match(RIGHT_TAG);
-			 
-				Round = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
-
+			State = 170; Match(LEFT_TAG);
+			State = 171; Match(ROUND);
+			State = 172; _localctx.tag = Match(QUOTED_STRING);
+			State = 173; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1334,7 +1299,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class BlackTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode BLACK() { return GetToken(PgnParser.BLACK, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1361,13 +1326,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 187; Match(LEFT_TAG);
-			State = 188; Match(BLACK);
-			State = 189; _localctx.bar = Match(QUOTED_STRING);
-			State = 190; Match(RIGHT_TAG);
-			 
-				Black = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
-
+			State = 175; Match(LEFT_TAG);
+			State = 176; Match(BLACK);
+			State = 177; _localctx.tag = Match(QUOTED_STRING);
+			State = 178; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1382,7 +1344,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class WhiteTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode WHITE() { return GetToken(PgnParser.WHITE, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1409,13 +1371,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 193; Match(LEFT_TAG);
-			State = 194; Match(WHITE);
-			State = 195; _localctx.bar = Match(QUOTED_STRING);
-			State = 196; Match(RIGHT_TAG);
-			 
-				White = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\""); 
-
+			State = 180; Match(LEFT_TAG);
+			State = 181; Match(WHITE);
+			State = 182; _localctx.tag = Match(QUOTED_STRING);
+			State = 183; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1430,7 +1389,7 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class ResultTagContext : ParserRuleContext {
-		public IToken bar;
+		public IToken tag;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode RESULT() { return GetToken(PgnParser.RESULT, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
@@ -1457,13 +1416,10 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 199; Match(LEFT_TAG);
-			State = 200; Match(RESULT);
-			State = 201; _localctx.bar = Match(GAME_RESULT);
-			State = 202; Match(RIGHT_TAG);
-
-				Result = _localctx.bar.Text.Trim(c_doubleQuote);
-
+			State = 185; Match(LEFT_TAG);
+			State = 186; Match(RESULT);
+			State = 187; _localctx.tag = Match(GAME_RESULT);
+			State = 188; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1478,8 +1434,8 @@ public partial class PgnParser : Parser {
 	}
 
 	public partial class OptionalTagContext : ParserRuleContext {
-		public IToken foo;
-		public IToken bar;
+		public IToken tag;
+		public IToken tagValue;
 		public ITerminalNode LEFT_TAG() { return GetToken(PgnParser.LEFT_TAG, 0); }
 		public ITerminalNode RIGHT_TAG() { return GetToken(PgnParser.RIGHT_TAG, 0); }
 		public ITerminalNode QUOTED_STRING() { return GetToken(PgnParser.QUOTED_STRING, 0); }
@@ -1510,31 +1466,22 @@ public partial class PgnParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 205; Match(LEFT_TAG);
-			State = 207;
+			State = 190; Match(LEFT_TAG);
+			State = 192;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 206; _localctx.foo = Match(TAG_NAME);
+				State = 191; _localctx.tag = Match(TAG_NAME);
 				}
 				}
-				State = 209;
+				State = 194;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==TAG_NAME );
-			State = 211; _localctx.bar = Match(QUOTED_STRING);
-			State = 212; Match(RIGHT_TAG);
-
-				string trimmedText = _localctx.bar.Text.Trim(c_doubleQuote).Replace("\"\"", "\"");
-			    m_optionalTags.Add(_localctx.foo.Text, trimmedText); 
-				if(_localctx.foo.Text == "FEN")
-				{
-				    // rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
-					m_processor.DoFen(trimmedText);
-				}
-
+			State = 196; _localctx.tagValue = Match(QUOTED_STRING);
+			State = 197; Match(RIGHT_TAG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1549,84 +1496,78 @@ public partial class PgnParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3%\xDA\x4\x2\t\x2"+
+		"\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3%\xCA\x4\x2\t\x2"+
 		"\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t\t"+
 		"\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10\t"+
 		"\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
 		"\x4\x16\t\x16\x4\x17\t\x17\x4\x18\t\x18\x4\x19\t\x19\x3\x2\x3\x2\x3\x3"+
 		"\x3\x3\x5\x3\x37\n\x3\x3\x4\x3\x4\x3\x4\x3\x5\x6\x5=\n\x5\r\x5\xE\x5>"+
 		"\x3\x6\x3\x6\x5\x6\x43\n\x6\x3\x6\x3\x6\a\x6G\n\x6\f\x6\xE\x6J\v\x6\x3"+
-		"\a\x3\a\x5\aN\n\a\x3\a\x5\aQ\n\a\x3\a\x3\a\x3\b\x3\b\x5\bW\n\b\x3\t\x3"+
-		"\t\a\t[\n\t\f\t\xE\t^\v\t\x3\n\x3\n\x5\n\x62\n\n\x3\n\x3\n\x5\n\x66\n"+
-		"\n\x3\n\x5\ni\n\n\x3\n\x5\nl\n\n\x3\n\x5\no\n\n\x3\n\x3\n\x3\v\x3\v\a"+
-		"\vu\n\v\f\v\xE\vx\v\v\x3\f\x3\f\x5\f|\n\f\x3\f\x3\f\x5\f\x80\n\f\x3\f"+
-		"\x5\f\x83\n\f\x3\f\x5\f\x86\n\f\x3\r\x3\r\x3\r\x3\r\x3\r\x3\r\x3\r\x5"+
-		"\r\x8F\n\r\x3\xE\x3\xE\x3\xE\x3\xF\x3\xF\x3\xF\x3\x10\x3\x10\x3\x10\x3"+
-		"\x11\x3\x11\x3\x11\x3\x11\a\x11\x9E\n\x11\f\x11\xE\x11\xA1\v\x11\x3\x11"+
-		"\x3\x11\x3\x11\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3\x13\x3\x13"+
-		"\x3\x13\x3\x13\x3\x13\x3\x13\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14"+
-		"\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x16\x3\x16\x3\x16\x3\x16"+
-		"\x3\x16\x3\x16\x3\x17\x3\x17\x3\x17\x3\x17\x3\x17\x3\x17\x3\x18\x3\x18"+
-		"\x3\x18\x3\x18\x3\x18\x3\x18\x3\x19\x3\x19\x6\x19\xD2\n\x19\r\x19\xE\x19"+
-		"\xD3\x3\x19\x3\x19\x3\x19\x3\x19\x3\x19\x2\x2\x1A\x2\x4\x6\b\n\f\xE\x10"+
-		"\x12\x14\x16\x18\x1A\x1C\x1E \"$&(*,.\x30\x2\x3\x4\x2\x13\x14\x1C\x1D"+
-		"\xDF\x2\x32\x3\x2\x2\x2\x4\x36\x3\x2\x2\x2\x6\x38\x3\x2\x2\x2\b<\x3\x2"+
-		"\x2\x2\n\x42\x3\x2\x2\x2\fK\x3\x2\x2\x2\xEV\x3\x2\x2\x2\x10X\x3\x2\x2"+
-		"\x2\x12_\x3\x2\x2\x2\x14r\x3\x2\x2\x2\x16y\x3\x2\x2\x2\x18\x8E\x3\x2\x2"+
-		"\x2\x1A\x90\x3\x2\x2\x2\x1C\x93\x3\x2\x2\x2\x1E\x96\x3\x2\x2\x2 \x99\x3"+
-		"\x2\x2\x2\"\xA5\x3\x2\x2\x2$\xAB\x3\x2\x2\x2&\xB1\x3\x2\x2\x2(\xB7\x3"+
-		"\x2\x2\x2*\xBD\x3\x2\x2\x2,\xC3\x3\x2\x2\x2.\xC9\x3\x2\x2\x2\x30\xCF\x3"+
-		"\x2\x2\x2\x32\x33\x5\x6\x4\x2\x33\x3\x3\x2\x2\x2\x34\x37\x5\x18\r\x2\x35"+
-		"\x37\x5\x30\x19\x2\x36\x34\x3\x2\x2\x2\x36\x35\x3\x2\x2\x2\x37\x5\x3\x2"+
-		"\x2\x2\x38\x39\x5\b\x5\x2\x39:\a\x2\x2\x3:\a\x3\x2\x2\x2;=\x5\f\a\x2<"+
-		";\x3\x2\x2\x2=>\x3\x2\x2\x2><\x3\x2\x2\x2>?\x3\x2\x2\x2?\t\x3\x2\x2\x2"+
-		"@\x43\x5\x30\x19\x2\x41\x43\x5\x18\r\x2\x42@\x3\x2\x2\x2\x42\x41\x3\x2"+
-		"\x2\x2\x43H\x3\x2\x2\x2\x44G\x5\x30\x19\x2\x45G\x5\x18\r\x2\x46\x44\x3"+
-		"\x2\x2\x2\x46\x45\x3\x2\x2\x2GJ\x3\x2\x2\x2H\x46\x3\x2\x2\x2HI\x3\x2\x2"+
-		"\x2I\v\x3\x2\x2\x2JH\x3\x2\x2\x2KM\x5\n\x6\x2LN\x5\x14\v\x2ML\x3\x2\x2"+
-		"\x2MN\x3\x2\x2\x2NP\x3\x2\x2\x2OQ\a\x1A\x2\x2PO\x3\x2\x2\x2PQ\x3\x2\x2"+
-		"\x2QR\x3\x2\x2\x2RS\b\a\x1\x2S\r\x3\x2\x2\x2TW\x5\x1A\xE\x2UW\x5 \x11"+
-		"\x2VT\x3\x2\x2\x2VU\x3\x2\x2\x2W\xF\x3\x2\x2\x2X\\\x5\xE\b\x2Y[\x5\xE"+
-		"\b\x2ZY\x3\x2\x2\x2[^\x3\x2\x2\x2\\Z\x3\x2\x2\x2\\]\x3\x2\x2\x2]\x11\x3"+
-		"\x2\x2\x2^\\\x3\x2\x2\x2_\x61\t\x2\x2\x2`\x62\a\x1E\x2\x2\x61`\x3\x2\x2"+
-		"\x2\x61\x62\x3\x2\x2\x2\x62\x65\x3\x2\x2\x2\x63\x66\a\x12\x2\x2\x64\x66"+
-		"\a\x11\x2\x2\x65\x63\x3\x2\x2\x2\x65\x64\x3\x2\x2\x2\x65\x66\x3\x2\x2"+
-		"\x2\x66h\x3\x2\x2\x2gi\a%\x2\x2hg\x3\x2\x2\x2hi\x3\x2\x2\x2ik\x3\x2\x2"+
-		"\x2jl\a$\x2\x2kj\x3\x2\x2\x2kl\x3\x2\x2\x2ln\x3\x2\x2\x2mo\x5\x10\t\x2"+
-		"nm\x3\x2\x2\x2no\x3\x2\x2\x2op\x3\x2\x2\x2pq\b\n\x1\x2q\x13\x3\x2\x2\x2"+
-		"rv\x5\x16\f\x2su\x5\x16\f\x2ts\x3\x2\x2\x2ux\x3\x2\x2\x2vt\x3\x2\x2\x2"+
-		"vw\x3\x2\x2\x2w\x15\x3\x2\x2\x2xv\x3\x2\x2\x2y{\a \x2\x2z|\a\"\x2\x2{"+
-		"z\x3\x2\x2\x2{|\x3\x2\x2\x2|}\x3\x2\x2\x2}\x85\x5\x12\n\x2~\x80\a \x2"+
-		"\x2\x7F~\x3\x2\x2\x2\x7F\x80\x3\x2\x2\x2\x80\x81\x3\x2\x2\x2\x81\x83\a"+
-		"\"\x2\x2\x82\x7F\x3\x2\x2\x2\x82\x83\x3\x2\x2\x2\x83\x84\x3\x2\x2\x2\x84"+
-		"\x86\x5\x12\n\x2\x85\x82\x3\x2\x2\x2\x85\x86\x3\x2\x2\x2\x86\x17\x3\x2"+
-		"\x2\x2\x87\x8F\x5\"\x12\x2\x88\x8F\x5$\x13\x2\x89\x8F\x5&\x14\x2\x8A\x8F"+
-		"\x5(\x15\x2\x8B\x8F\x5*\x16\x2\x8C\x8F\x5,\x17\x2\x8D\x8F\x5.\x18\x2\x8E"+
-		"\x87\x3\x2\x2\x2\x8E\x88\x3\x2\x2\x2\x8E\x89\x3\x2\x2\x2\x8E\x8A\x3\x2"+
-		"\x2\x2\x8E\x8B\x3\x2\x2\x2\x8E\x8C\x3\x2\x2\x2\x8E\x8D\x3\x2\x2\x2\x8F"+
-		"\x19\x3\x2\x2\x2\x90\x91\a!\x2\x2\x91\x92\b\xE\x1\x2\x92\x1B\x3\x2\x2"+
-		"\x2\x93\x94\a\a\x2\x2\x94\x95\b\xF\x1\x2\x95\x1D\x3\x2\x2\x2\x96\x97\a"+
-		"\b\x2\x2\x97\x98\b\x10\x1\x2\x98\x1F\x3\x2\x2\x2\x99\x9F\x5\x1C\xF\x2"+
-		"\x9A\x9E\x5\x14\v\x2\x9B\x9E\x5 \x11\x2\x9C\x9E\x5\x1A\xE\x2\x9D\x9A\x3"+
-		"\x2\x2\x2\x9D\x9B\x3\x2\x2\x2\x9D\x9C\x3\x2\x2\x2\x9E\xA1\x3\x2\x2\x2"+
-		"\x9F\x9D\x3\x2\x2\x2\x9F\xA0\x3\x2\x2\x2\xA0\xA2\x3\x2\x2\x2\xA1\x9F\x3"+
-		"\x2\x2\x2\xA2\xA3\x5\x1E\x10\x2\xA3\xA4\b\x11\x1\x2\xA4!\x3\x2\x2\x2\xA5"+
-		"\xA6\a\x3\x2\x2\xA6\xA7\a\n\x2\x2\xA7\xA8\a\x1B\x2\x2\xA8\xA9\a\x4\x2"+
-		"\x2\xA9\xAA\b\x12\x1\x2\xAA#\x3\x2\x2\x2\xAB\xAC\a\x3\x2\x2\xAC\xAD\a"+
-		"\v\x2\x2\xAD\xAE\a\x1B\x2\x2\xAE\xAF\a\x4\x2\x2\xAF\xB0\b\x13\x1\x2\xB0"+
-		"%\x3\x2\x2\x2\xB1\xB2\a\x3\x2\x2\xB2\xB3\a\f\x2\x2\xB3\xB4\a\x1B\x2\x2"+
-		"\xB4\xB5\a\x4\x2\x2\xB5\xB6\b\x14\x1\x2\xB6\'\x3\x2\x2\x2\xB7\xB8\a\x3"+
-		"\x2\x2\xB8\xB9\a\r\x2\x2\xB9\xBA\a\x1B\x2\x2\xBA\xBB\a\x4\x2\x2\xBB\xBC"+
-		"\b\x15\x1\x2\xBC)\x3\x2\x2\x2\xBD\xBE\a\x3\x2\x2\xBE\xBF\a\xF\x2\x2\xBF"+
-		"\xC0\a\x1B\x2\x2\xC0\xC1\a\x4\x2\x2\xC1\xC2\b\x16\x1\x2\xC2+\x3\x2\x2"+
-		"\x2\xC3\xC4\a\x3\x2\x2\xC4\xC5\a\xE\x2\x2\xC5\xC6\a\x1B\x2\x2\xC6\xC7"+
-		"\a\x4\x2\x2\xC7\xC8\b\x17\x1\x2\xC8-\x3\x2\x2\x2\xC9\xCA\a\x3\x2\x2\xCA"+
-		"\xCB\a\x10\x2\x2\xCB\xCC\a\x19\x2\x2\xCC\xCD\a\x4\x2\x2\xCD\xCE\b\x18"+
-		"\x1\x2\xCE/\x3\x2\x2\x2\xCF\xD1\a\x3\x2\x2\xD0\xD2\a#\x2\x2\xD1\xD0\x3"+
-		"\x2\x2\x2\xD2\xD3\x3\x2\x2\x2\xD3\xD1\x3\x2\x2\x2\xD3\xD4\x3\x2\x2\x2"+
-		"\xD4\xD5\x3\x2\x2\x2\xD5\xD6\a\x1B\x2\x2\xD6\xD7\a\x4\x2\x2\xD7\xD8\b"+
-		"\x19\x1\x2\xD8\x31\x3\x2\x2\x2\x19\x36>\x42\x46HMPV\\\x61\x65hknv{\x7F"+
-		"\x82\x85\x8E\x9D\x9F\xD3";
+		"\a\x3\a\x5\aN\n\a\x3\a\x5\aQ\n\a\x3\b\x3\b\x5\bU\n\b\x3\t\x3\t\a\tY\n"+
+		"\t\f\t\xE\t\\\v\t\x3\n\x3\n\x5\n`\n\n\x3\n\x3\n\x5\n\x64\n\n\x3\n\x5\n"+
+		"g\n\n\x3\n\x5\nj\n\n\x3\n\x5\nm\n\n\x3\v\x3\v\a\vq\n\v\f\v\xE\vt\v\v\x3"+
+		"\f\x3\f\x5\fx\n\f\x3\f\x3\f\x5\f|\n\f\x3\f\x5\f\x7F\n\f\x3\f\x5\f\x82"+
+		"\n\f\x3\r\x3\r\x3\r\x3\r\x3\r\x3\r\x3\r\x5\r\x8B\n\r\x3\xE\x3\xE\x3\xF"+
+		"\x3\xF\x3\x10\x3\x10\x3\x11\x3\x11\x3\x11\x3\x11\a\x11\x97\n\x11\f\x11"+
+		"\xE\x11\x9A\v\x11\x3\x11\x3\x11\x3\x12\x3\x12\x3\x12\x3\x12\x3\x12\x3"+
+		"\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x14\x3\x14\x3\x14\x3\x14\x3\x14\x3"+
+		"\x15\x3\x15\x3\x15\x3\x15\x3\x15\x3\x16\x3\x16\x3\x16\x3\x16\x3\x16\x3"+
+		"\x17\x3\x17\x3\x17\x3\x17\x3\x17\x3\x18\x3\x18\x3\x18\x3\x18\x3\x18\x3"+
+		"\x19\x3\x19\x6\x19\xC3\n\x19\r\x19\xE\x19\xC4\x3\x19\x3\x19\x3\x19\x3"+
+		"\x19\x2\x2\x1A\x2\x4\x6\b\n\f\xE\x10\x12\x14\x16\x18\x1A\x1C\x1E \"$&"+
+		"(*,.\x30\x2\x3\x4\x2\x13\x14\x1C\x1D\xCF\x2\x32\x3\x2\x2\x2\x4\x36\x3"+
+		"\x2\x2\x2\x6\x38\x3\x2\x2\x2\b<\x3\x2\x2\x2\n\x42\x3\x2\x2\x2\fK\x3\x2"+
+		"\x2\x2\xET\x3\x2\x2\x2\x10V\x3\x2\x2\x2\x12]\x3\x2\x2\x2\x14n\x3\x2\x2"+
+		"\x2\x16u\x3\x2\x2\x2\x18\x8A\x3\x2\x2\x2\x1A\x8C\x3\x2\x2\x2\x1C\x8E\x3"+
+		"\x2\x2\x2\x1E\x90\x3\x2\x2\x2 \x92\x3\x2\x2\x2\"\x9D\x3\x2\x2\x2$\xA2"+
+		"\x3\x2\x2\x2&\xA7\x3\x2\x2\x2(\xAC\x3\x2\x2\x2*\xB1\x3\x2\x2\x2,\xB6\x3"+
+		"\x2\x2\x2.\xBB\x3\x2\x2\x2\x30\xC0\x3\x2\x2\x2\x32\x33\x5\x6\x4\x2\x33"+
+		"\x3\x3\x2\x2\x2\x34\x37\x5\x18\r\x2\x35\x37\x5\x30\x19\x2\x36\x34\x3\x2"+
+		"\x2\x2\x36\x35\x3\x2\x2\x2\x37\x5\x3\x2\x2\x2\x38\x39\x5\b\x5\x2\x39:"+
+		"\a\x2\x2\x3:\a\x3\x2\x2\x2;=\x5\f\a\x2<;\x3\x2\x2\x2=>\x3\x2\x2\x2><\x3"+
+		"\x2\x2\x2>?\x3\x2\x2\x2?\t\x3\x2\x2\x2@\x43\x5\x30\x19\x2\x41\x43\x5\x18"+
+		"\r\x2\x42@\x3\x2\x2\x2\x42\x41\x3\x2\x2\x2\x43H\x3\x2\x2\x2\x44G\x5\x30"+
+		"\x19\x2\x45G\x5\x18\r\x2\x46\x44\x3\x2\x2\x2\x46\x45\x3\x2\x2\x2GJ\x3"+
+		"\x2\x2\x2H\x46\x3\x2\x2\x2HI\x3\x2\x2\x2I\v\x3\x2\x2\x2JH\x3\x2\x2\x2"+
+		"KM\x5\n\x6\x2LN\x5\x14\v\x2ML\x3\x2\x2\x2MN\x3\x2\x2\x2NP\x3\x2\x2\x2"+
+		"OQ\a\x1A\x2\x2PO\x3\x2\x2\x2PQ\x3\x2\x2\x2Q\r\x3\x2\x2\x2RU\x5\x1A\xE"+
+		"\x2SU\x5 \x11\x2TR\x3\x2\x2\x2TS\x3\x2\x2\x2U\xF\x3\x2\x2\x2VZ\x5\xE\b"+
+		"\x2WY\x5\xE\b\x2XW\x3\x2\x2\x2Y\\\x3\x2\x2\x2ZX\x3\x2\x2\x2Z[\x3\x2\x2"+
+		"\x2[\x11\x3\x2\x2\x2\\Z\x3\x2\x2\x2]_\t\x2\x2\x2^`\a\x1E\x2\x2_^\x3\x2"+
+		"\x2\x2_`\x3\x2\x2\x2`\x63\x3\x2\x2\x2\x61\x64\a\x12\x2\x2\x62\x64\a\x11"+
+		"\x2\x2\x63\x61\x3\x2\x2\x2\x63\x62\x3\x2\x2\x2\x63\x64\x3\x2\x2\x2\x64"+
+		"\x66\x3\x2\x2\x2\x65g\a%\x2\x2\x66\x65\x3\x2\x2\x2\x66g\x3\x2\x2\x2gi"+
+		"\x3\x2\x2\x2hj\a$\x2\x2ih\x3\x2\x2\x2ij\x3\x2\x2\x2jl\x3\x2\x2\x2km\x5"+
+		"\x10\t\x2lk\x3\x2\x2\x2lm\x3\x2\x2\x2m\x13\x3\x2\x2\x2nr\x5\x16\f\x2o"+
+		"q\x5\x16\f\x2po\x3\x2\x2\x2qt\x3\x2\x2\x2rp\x3\x2\x2\x2rs\x3\x2\x2\x2"+
+		"s\x15\x3\x2\x2\x2tr\x3\x2\x2\x2uw\a \x2\x2vx\a\"\x2\x2wv\x3\x2\x2\x2w"+
+		"x\x3\x2\x2\x2xy\x3\x2\x2\x2y\x81\x5\x12\n\x2z|\a \x2\x2{z\x3\x2\x2\x2"+
+		"{|\x3\x2\x2\x2|}\x3\x2\x2\x2}\x7F\a\"\x2\x2~{\x3\x2\x2\x2~\x7F\x3\x2\x2"+
+		"\x2\x7F\x80\x3\x2\x2\x2\x80\x82\x5\x12\n\x2\x81~\x3\x2\x2\x2\x81\x82\x3"+
+		"\x2\x2\x2\x82\x17\x3\x2\x2\x2\x83\x8B\x5\"\x12\x2\x84\x8B\x5$\x13\x2\x85"+
+		"\x8B\x5&\x14\x2\x86\x8B\x5(\x15\x2\x87\x8B\x5*\x16\x2\x88\x8B\x5,\x17"+
+		"\x2\x89\x8B\x5.\x18\x2\x8A\x83\x3\x2\x2\x2\x8A\x84\x3\x2\x2\x2\x8A\x85"+
+		"\x3\x2\x2\x2\x8A\x86\x3\x2\x2\x2\x8A\x87\x3\x2\x2\x2\x8A\x88\x3\x2\x2"+
+		"\x2\x8A\x89\x3\x2\x2\x2\x8B\x19\x3\x2\x2\x2\x8C\x8D\a!\x2\x2\x8D\x1B\x3"+
+		"\x2\x2\x2\x8E\x8F\a\a\x2\x2\x8F\x1D\x3\x2\x2\x2\x90\x91\a\b\x2\x2\x91"+
+		"\x1F\x3\x2\x2\x2\x92\x98\x5\x1C\xF\x2\x93\x97\x5\x14\v\x2\x94\x97\x5 "+
+		"\x11\x2\x95\x97\x5\x1A\xE\x2\x96\x93\x3\x2\x2\x2\x96\x94\x3\x2\x2\x2\x96"+
+		"\x95\x3\x2\x2\x2\x97\x9A\x3\x2\x2\x2\x98\x96\x3\x2\x2\x2\x98\x99\x3\x2"+
+		"\x2\x2\x99\x9B\x3\x2\x2\x2\x9A\x98\x3\x2\x2\x2\x9B\x9C\x5\x1E\x10\x2\x9C"+
+		"!\x3\x2\x2\x2\x9D\x9E\a\x3\x2\x2\x9E\x9F\a\n\x2\x2\x9F\xA0\a\x1B\x2\x2"+
+		"\xA0\xA1\a\x4\x2\x2\xA1#\x3\x2\x2\x2\xA2\xA3\a\x3\x2\x2\xA3\xA4\a\v\x2"+
+		"\x2\xA4\xA5\a\x1B\x2\x2\xA5\xA6\a\x4\x2\x2\xA6%\x3\x2\x2\x2\xA7\xA8\a"+
+		"\x3\x2\x2\xA8\xA9\a\f\x2\x2\xA9\xAA\a\x1B\x2\x2\xAA\xAB\a\x4\x2\x2\xAB"+
+		"\'\x3\x2\x2\x2\xAC\xAD\a\x3\x2\x2\xAD\xAE\a\r\x2\x2\xAE\xAF\a\x1B\x2\x2"+
+		"\xAF\xB0\a\x4\x2\x2\xB0)\x3\x2\x2\x2\xB1\xB2\a\x3\x2\x2\xB2\xB3\a\xF\x2"+
+		"\x2\xB3\xB4\a\x1B\x2\x2\xB4\xB5\a\x4\x2\x2\xB5+\x3\x2\x2\x2\xB6\xB7\a"+
+		"\x3\x2\x2\xB7\xB8\a\xE\x2\x2\xB8\xB9\a\x1B\x2\x2\xB9\xBA\a\x4\x2\x2\xBA"+
+		"-\x3\x2\x2\x2\xBB\xBC\a\x3\x2\x2\xBC\xBD\a\x10\x2\x2\xBD\xBE\a\x19\x2"+
+		"\x2\xBE\xBF\a\x4\x2\x2\xBF/\x3\x2\x2\x2\xC0\xC2\a\x3\x2\x2\xC1\xC3\a#"+
+		"\x2\x2\xC2\xC1\x3\x2\x2\x2\xC3\xC4\x3\x2\x2\x2\xC4\xC2\x3\x2\x2\x2\xC4"+
+		"\xC5\x3\x2\x2\x2\xC5\xC6\x3\x2\x2\x2\xC6\xC7\a\x1B\x2\x2\xC7\xC8\a\x4"+
+		"\x2\x2\xC8\x31\x3\x2\x2\x2\x19\x36>\x42\x46HMPTZ_\x63\x66ilrw{~\x81\x8A"+
+		"\x96\x98\xC4";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
