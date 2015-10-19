@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PgnListenerImpl.cs" />
     <Compile Include="PgnParserImpl.cs" />
     <Compile Include="PgnProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
