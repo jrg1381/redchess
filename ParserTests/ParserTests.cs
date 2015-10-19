@@ -156,6 +156,28 @@ b6 9.b3 Nc5 10.Ba3 Nbd7 11.Bb5 a6 12.Bc6 Nd3+ 13.Kf1 g6) 8. ... g6";
         }
 
         [Test]
+        public void ParserErrorHandlerIsCalled()
+        {
+            string errorMsg = "";
+            // Expect error handler to detect extra c5 move
+            var text = c_standardTags + @" 1. c4 c5 c5 1-0";
+            var parser = ParserFactory.GetParser();
+            parser.Parse(text, null, s => errorMsg = s, null, playGame: false);
+            Assert.AreEqual("Error in parser at line 1:142[c5]", errorMsg, "Error message not as expected");
+        }
+
+        [Test]
+        public void LexerErrorHandlerIsCalled()
+        {
+            string errorMsg = "";
+            // Expect error handler to detect extra c5 move
+            var text = c_standardTags + @" 1. c4 c5 ^^^^";
+            var parser = ParserFactory.GetParser();
+            parser.Parse(text, null, s => errorMsg = s, null, playGame: false);
+            Assert.AreEqual("Error in lexer at line 1:145[0]", errorMsg, "Error message not as expected");
+        }
+
+        [Test]
         public void LichessPgnOutput2()
         {
             var text = @"1. c4 c5 2. Nf3 Nc6 3. e3 e6 4. Nc3 Nf6 5. d4 a6?! (5... d5 6. cxd5) 6. Bd3?!";
