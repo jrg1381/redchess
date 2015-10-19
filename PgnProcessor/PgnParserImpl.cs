@@ -21,9 +21,8 @@ namespace RedChess.PgnProcessor
             var processor = new PgnProcessor(onMoveAction, onGameOverAction);
             var lexer = new PgnLexer(new AntlrInputStream(text), onErrorAction);
             var tokenStream = new CommonTokenStream(lexer);
-            var parser = new PgnParser(tokenStream, processor, onErrorAction)
+            var parser = new PgnParser(tokenStream, onErrorAction)
             {
-                PlayGame = playGame,
                 BuildParseTree = true,
             };
             var tree = parser.parse();
