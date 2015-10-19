@@ -17,9 +17,7 @@
 // Missing XML comment for publicly visible type or member '...'
 #pragma warning disable 1591
 
-
-using System.Collections.Generic;
-
+namespace Redchess.Pgn {
 using System;
 using System.Text;
 using System.Diagnostics;
@@ -1648,3 +1646,4 @@ public partial class PgnParser : Parser {
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
+} // namespace Redchess.Pgn

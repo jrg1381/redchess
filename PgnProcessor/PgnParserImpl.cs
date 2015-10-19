@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Antlr4.Runtime;
+using Redchess.Pgn;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;

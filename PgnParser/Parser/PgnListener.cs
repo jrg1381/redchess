@@ -17,9 +17,7 @@
 // Missing XML comment for publicly visible type or member '...'
 #pragma warning disable 1591
 
-
-using System.Collections.Generic;
-
+namespace Redchess.Pgn {
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -272,3 +270,4 @@ public interface IPgnListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitOptionalTag([NotNull] PgnParser.OptionalTagContext context);
 }
+} // namespace Redchess.Pgn

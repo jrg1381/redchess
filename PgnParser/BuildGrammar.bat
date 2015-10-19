@@ -6,7 +6,7 @@ SET SOLUTION=%~2
 echo %JAVA%
 
 rem del /s/q "%PROJECT%Parser\*"
-%JAVA% -jar "%SOLUTION%antlr\antlr-4.5.1-complete.jar" -o "%PROJECT%Parser" "%PROJECT%Pgn.g4" 2>errors.txt
+%JAVA% -jar "%SOLUTION%antlr\antlr-4.5.1-complete.jar" -namespace Redchess.Pgn -o "%PROJECT%Parser" "%PROJECT%Pgn.g4" 2>errors.txt
 type errors.txt | find /v "warning"
 EXIT /B 0
 

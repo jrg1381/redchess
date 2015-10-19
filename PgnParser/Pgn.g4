@@ -7,11 +7,6 @@ options
 
 import PgnLexer;
 
-@header
-{
-using System.Collections.Generic;
-}
-
 @parser::namespace { Redchess.Pgn }
 
 @parser::members
