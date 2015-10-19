@@ -65,6 +65,7 @@
     <None Include="BuildGrammar.bat" />
     <None Include="packages.config" />
     <None Include="Pgn.g4" />
+    <None Include="PgnLexer.g4" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
