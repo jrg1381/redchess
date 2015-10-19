@@ -14,7 +14,7 @@ namespace Redchess.Pgn
 
         public void SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            m_onErrorAction("Error in lexer at line " + line + ":" + charPositionInLine + "[" + offendingSymbol + "]");
+            m_onErrorAction(msg);
         }
     }
 }

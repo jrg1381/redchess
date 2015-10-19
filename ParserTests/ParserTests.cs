@@ -174,7 +174,7 @@ b6 9.b3 Nc5 10.Ba3 Nbd7 11.Bb5 a6 12.Bc6 Nd3+ 13.Kf1 g6) 8. ... g6";
             var text = c_standardTags + @" 1. c4 c5 ^^^^";
             var parser = ParserFactory.GetParser();
             parser.Parse(text, null, s => errorMsg = s, null, playGame: false);
-            Assert.AreEqual("Error in lexer at line 1:145[0]", errorMsg, "Error message not as expected");
+            Assert.AreEqual("token recognition error at: '^'", errorMsg, "Error message not as expected");
         }
 
         [Test]
