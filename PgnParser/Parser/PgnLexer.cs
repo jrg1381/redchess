@@ -54,22 +54,6 @@ public partial class PgnLexer : Lexer {
 	};
 
 
-		private int m_variantDepth = 0;
-		public bool PlayGame;
-	    private static char[] c_doubleQuote = new [] { '"' }; 
-
-		private Dictionary<string,string> m_optionalTags = new Dictionary<string,string>();
-		public IDictionary<string,string> OptionalTags { get { return m_optionalTags; } }
-
-		public string Event { get; private set; }
-		public string Site { get; private set; }
-		public string Date { get; private set; }
-		public string Round { get; private set; }
-		public string Black { get; private set; }
-		public string White { get; private set; }
-		public string Result { get; private set; }
-
-
 	public PgnLexer(ICharStream input)
 		: base(input)
 	{

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 @parser::namespace { Redchess.Pgn }
 
-@members
+@parser::members
 {
 	private int m_variantDepth = 0;
 	public bool PlayGame;
