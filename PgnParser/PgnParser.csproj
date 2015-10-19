@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPgnProcessor.cs" />
     <Compile Include="LexerErrorListener.cs" />
     <Compile Include="LexerParserOverrides.cs" />
     <Compile Include="ParserErrorListener.cs" />
