@@ -36,7 +36,7 @@ PROMOTES_TO : '=' ;
 TAKES : 'x' ;
 
 // Recognise whitespace. 
-WS : ( ' ' | ( '\r\n' | '\n' ) | '\t' ) ;
+WS : ( ' ' | ( '\r\n' | '\n' ) | '\t' ) -> skip;
 
 // Throw away line comments
 LINE_COMMENT : (';' ~['\r\n']*) -> channel(HIDDEN) ;
