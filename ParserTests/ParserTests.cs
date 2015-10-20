@@ -31,7 +31,7 @@ namespace Redchess.ParserTests
         public void TestCompulsoryTags(string text)
         {
             var parser = ParseText(text);
-            Assert.AreEqual("World Championship", parser.Event);
+            Assert.AreEqual("World Championship", parser.Tag("Event"));
         }
 
         [TestCase(
@@ -191,7 +191,7 @@ b6 9.b3 Nc5 10.Ba3 Nbd7 11.Bb5 a6 12.Bc6 Nd3+ 13.Kf1 g6) 8. ... g6";
         public void ResultTags(string text, string expectedResult)
         {
             var parser = ParseText(text);
-            Assert.AreEqual(expectedResult, parser.Result, "Failed to extract game result");
+            Assert.AreEqual(expectedResult, parser.Tag("Result"), "Failed to extract game result");
         }
 
         [TestCaseSource(typeof (FilenameSource), "PgnFile")]

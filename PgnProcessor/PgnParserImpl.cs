@@ -13,32 +13,30 @@ namespace RedChess.PgnProcessor
 {
     public class PgnParserImpl : IParse
     {
-        private Dictionary<string, string> m_tags;
+        private readonly Dictionary<string, string> m_tags;
+
+        public PgnParserImpl()
+        {
+            m_tags = new Dictionary<string, string>();
+        }
 
         public void Parse(string text, Action<string, string, ChessMove> onMoveAction, Action<string> onErrorAction, Action onGameOverAction, bool playGame = true)
         {
-            m_tags = new Dictionary<string, string>();
+            m_tags.Clear(); // In case method is called multiple times
             var processor = new PgnProcessor(onMoveAction, onGameOverAction);
             var lexer = new PgnLexer(new AntlrInputStream(text), onErrorAction);
             var tokenStream = new CommonTokenStream(lexer);
-            var parser = new PgnParser(tokenStream, onErrorAction)
-            {
-                BuildParseTree = true,
-            };
+            var parser = new PgnParser(tokenStream, onErrorAction);
             var tree = parser.parse();
             var walker = new ParseTreeWalker();
             var listener = new PgnListenerImpl(m_tags, processor, playGame);
+            // Will populate m_tags and validate the moves by playing them
             walker.Walk(listener, tree);
         }
 
-        public string Event
+        public string Tag(string key)
         {
-            get { return m_tags["Event"]; }
-        }
-
-        public string Result
-        {
-            get { return m_tags["Result"]; }
+            return m_tags[key];
         }
 
         public IDictionary<string, string> Tags

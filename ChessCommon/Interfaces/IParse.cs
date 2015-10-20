@@ -7,8 +7,7 @@ namespace RedChess.ChessCommon.Interfaces
     public interface IParse
     {
         void Parse(string text, Action<string, string, ChessMove> onMoveAction, Action<string> onErrorAction, Action onGameOverAction, bool playGame = true);
-        string Event { get; }
-        string Result { get; }
+        string Tag(string key);
         IDictionary<string, string> Tags { get; }
     }
 }
