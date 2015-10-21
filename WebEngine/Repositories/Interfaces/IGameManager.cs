@@ -21,7 +21,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void EndGameWithMessage(int id, string message, int? userIdWinner = null);
         bool Move(int id, Location startLocation, Location endLocation, string promoteTo);
         void UpdateMessage(int id);
-        bool IsParticipant(string name, int gameId);
         IEnumerable<IGameBinding> WithPlayer(string userName);
         string PgnText(int id);
         IEnumerable<UserProfile> AllUserProfiles();

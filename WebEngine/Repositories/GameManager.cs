@@ -213,8 +213,8 @@ namespace RedChess.WebEngine.Repositories
 
         public string Turn(int gameId)
         {
-            var gameDto = m_repository.FindById(gameId);
-            m_board.FromFen(gameDto.Fen);
+            var fen = m_repository.Fen(gameId);
+            m_board.FromFen(fen);
             return m_board.CurrentTurn.ToString();
         }
 
@@ -239,7 +239,7 @@ namespace RedChess.WebEngine.Repositories
             var success = m_board.Move(start, end);
             if (!success) return false;
 
-            if (String.IsNullOrEmpty(promote)) // UI passes this from form
+            if (!String.IsNullOrEmpty(promote)) // UI passes this from form
             {
                 m_board.PromotePiece(promote);
             }
@@ -376,14 +376,6 @@ namespace RedChess.WebEngine.Repositories
             m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = ""});
 
             return newGame.GameId;
-        }
-
-        public bool IsParticipant(string name, int gameId)
-        {
-            if (String.IsNullOrEmpty(name))
-                return false;
-            var game = m_repository.FindById(gameId);
-            return game.UserProfileBlack.UserName == name || game.UserProfileWhite.UserName == name;
         }
 
         public IEnumerable<IGameBinding> WithPlayer(string userName)

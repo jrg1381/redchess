@@ -14,6 +14,20 @@ namespace RedChess.WebEngine.Repositories
 {
     internal class GameRepository : IGameRepository
     {
+        public string Fen(int gameId)
+        {
+            using (var context = new ChessContext())
+            {
+                var game = context.Boards
+                    .AsNoTracking()
+                    .Where(b => b.GameId == gameId)
+                    .Select(g => g.Fen)
+                    .Single();
+
+                return game;
+            }
+        }
+
         public GameDto FindById(int id)
         {
             using (var context = new ChessContext())
