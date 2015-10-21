@@ -211,13 +211,6 @@ namespace RedChess.WebEngine.Repositories
             return false;
         }
 
-        public string Turn(int gameId)
-        {
-            var fen = m_repository.Fen(gameId);
-            m_board.FromFen(fen);
-            return m_board.CurrentTurn.ToString();
-        }
-
         public bool IsUsersTurn(int gameId, string userName)
         {
             var gameDto = m_repository.FindById(gameId);
@@ -257,12 +250,14 @@ namespace RedChess.WebEngine.Repositories
 
             if (clock != null)
             {
-                if (Turn(gameId) == "Black")
+                var turn = gameDto.Fen.Split(new[] {' '}, 2)[1][0];
+
+                if (turn == 'b')
                 {
                     clock.LastActionBlack = DateTime.UtcNow;
                     clock.TimeElapsedWhiteMs += (int) (DateTime.UtcNow - clock.LastActionWhite).TotalMilliseconds;
                 }
-                if (Turn(gameId) == "White")
+                if (turn == 'w')
                 {
                     clock.LastActionWhite = DateTime.UtcNow;
                     clock.TimeElapsedBlackMs += (int) (DateTime.UtcNow - clock.LastActionBlack).TotalMilliseconds;
