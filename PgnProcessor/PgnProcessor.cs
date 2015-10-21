@@ -112,8 +112,10 @@ namespace RedChess.PgnProcessor
 
             if (m_board.CurrentTurn == PieceColor.Black)
                 basicPieceType |= PieceType.Black;
+            else
+                basicPieceType |= PieceType.White;
 
-            return basicPieceType | PieceType.RealPiece;
+            return basicPieceType;
         }
 
         private static Location LowerCaseSquareToLocation(string square)
