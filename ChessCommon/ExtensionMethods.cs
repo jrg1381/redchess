@@ -6,7 +6,7 @@ namespace RedChess.ChessCommon
     {
         public static bool IsOfType(this PieceType pieceType, PieceType targetPieceType)
         {
-            return (pieceType & targetPieceType) > 0;
+            return (pieceType & targetPieceType) > (PieceType.Black|PieceType.White);
         }
     }
 }
