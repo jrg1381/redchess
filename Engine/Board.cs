@@ -230,12 +230,8 @@ namespace Redchess.Engine
             if (promotionTarget.ToLower() == "king")
                 throw new CannotPromoteException();
 
-            char initialLetter = Char.ToUpper(promotionTarget[0]);
-
-            if (!new[] {'Q', 'R', 'B', 'N', 'K'}.Contains(initialLetter))
-                throw new CannotPromoteException();
-
-            var flagsForPromotedPiece = PieceType.RealPiece;
+            var initialLetter = Char.ToUpper(promotionTarget[0]);
+            var flagsForPromotedPiece = PieceType.None;
 
             if (CurrentTurn == PieceColor.White)
                 flagsForPromotedPiece |= PieceType.Black;
@@ -260,6 +256,8 @@ namespace Redchess.Engine
                     PreviousState.Promotion = "N";
                     PromotePiece(PieceType.Knight | flagsForPromotedPiece);
                     break;
+                default:
+                    throw new CannotPromoteException();
             }
 
             PreviousState.BoardAfter = new Board(this);
