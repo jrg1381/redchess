@@ -9,6 +9,7 @@ using System.Web.Routing;
 using Chess.Filters;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using RedChess.MessageQueue;
 using RedChess.WebEngine.Repositories;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.WebEngine.Models;
@@ -54,7 +55,8 @@ namespace ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
-            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            var fakeQueue = MockRepository.GenerateMock<IQueueManager>();
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueue);
             return new BoardController(manager, fakeIdentity);
         }
 
@@ -159,8 +161,10 @@ namespace ControllerTests
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var manager = new GameManager(fakeRepo);
-            var controller = new BoardController(manager);
-            bool ok = controller.MayManipulateBoard(c_fakeGameId, userName);
+            var identityProvider = MockRepository.GenerateMock<ICurrentUser>();
+            identityProvider.Expect(x => x.CurrentUser).Return(userName);
+            var controller = new BoardController(manager, identityProvider);
+            bool ok = controller.MayManipulateBoard(c_fakeGameId);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
         }
