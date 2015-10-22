@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue;
@@ -219,9 +220,9 @@ namespace RedChess.WebEngine.Repositories
                    (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
         }
 
-        private string LongAlgebraicMove(Location start, Location end, string promote)
+        private string LongAlgebraicMove(ChessMove move)
         {
-            return String.Format("{0}{1}{2}", start, end, promote ?? "").ToLower();
+            return String.Format("{0}{1}{2}", move.Start, move.End, move.Promotion ?? "").ToLower();
         }
 
         public bool Move(int gameId, Location start, Location end, string promote = null)
@@ -232,12 +233,19 @@ namespace RedChess.WebEngine.Repositories
             var success = m_board.Move(start, end);
             if (!success) return false;
 
+            var move = new ChessMove
+            {
+                Start = start,
+                End = end,
+            };
+
             if (!String.IsNullOrEmpty(promote)) // UI passes this from form
             {
                 m_board.PromotePiece(promote);
+                move.Promotion = promote[0].ToString();
             }
 
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(start, end, promote));
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
 
             gameDto.LastMove = m_board.LastMove();
             gameDto.Fen = m_board.ToFen();
