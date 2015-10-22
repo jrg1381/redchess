@@ -16,6 +16,7 @@ using RedChess.WebEngine.Models;
 using Chess.Controllers;
 using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
+using Rhino.Mocks.Expectations;
 
 namespace ControllerTests
 {
@@ -23,6 +24,7 @@ namespace ControllerTests
     class BoardControllerTests
     {
         private const int c_fakeGameId = 10;
+        private int m_moveNumber = 0;
 
         private GameDto GetFakeGame(int id = c_fakeGameId)
         {
@@ -38,6 +40,7 @@ namespace ControllerTests
 
             fakeGame.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
             fakeGame.GameId = id;
+            fakeGame.MoveNumber = 0;
 
             return fakeGame;
         }
@@ -409,19 +412,30 @@ namespace ControllerTests
         [Test]
         public void MoveNumberIncrementsInHistory()
         {
-            var fakeGame = GetFakeGame();
-
+            /* This method is full of hackery because movenumber is implemented in the database using a trigger, so it doesn't increment
+             * from a mock. We need to make the mock do the increment. Also, as the board doesn't really change, the two moves are both 
+             * by white. The point is to show that doing a move adds a history entry and AddOrUpdate is called the right number of times. */
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).WhenCalled(mi =>
+            {
+                var retval = GetFakeGame(c_fakeGameId);
+                retval.MoveNumber = m_moveNumber;
+                mi.ReturnValue = retval;
+            });
+
+            fakeRepo.Expect(x => x.AddOrUpdate(Arg<GameDto>.Is.Anything)).WhenCalled(mi =>
+            {
+                m_moveNumber++;
+            });
+
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
             manager.Move(c_fakeGameId, Location.E2, Location.E4);
-            manager.Move(c_fakeGameId, Location.E7, Location.E5);
+            manager.Move(c_fakeGameId, Location.D2, Location.D3);
 
-            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(null));
+            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(Arg<HistoryEntry>.Is.Anything));
             fakeRepo.VerifyAllExpectations();
             var newHistoryEntryE4 = historyArgs[0][0] as HistoryEntry;
             var newHistoryEntryE5 = historyArgs[1][0] as HistoryEntry;
@@ -430,7 +444,7 @@ namespace ControllerTests
             Assert.AreEqual(c_fakeGameId, newHistoryEntryE4.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
             Assert.AreEqual(1, newHistoryEntryE4.MoveNumber, "Expected this to be move 1");
 
-            Assert.AreEqual("e5", newHistoryEntryE5.Move, "Expected move to be e5");
+            Assert.AreEqual("d3", newHistoryEntryE5.Move, "Expected move to be e5");
             Assert.AreEqual(c_fakeGameId, newHistoryEntryE5.GameId, "Expected history entry to refer to this game, " + c_fakeGameId);
             Assert.AreEqual(2, newHistoryEntryE5.MoveNumber, "Expected this to be move 2");
         }
