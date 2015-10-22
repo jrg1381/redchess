@@ -56,7 +56,7 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
-        private BoardController GetControllerForFakeGameWithQueue(out IQueueManager fakeQueueManager)
+        private BoardController GetControllerForFakeGameWithQueue(out IQueueManager fakeQueueManager, bool expectPostMessage)
         {
             var fakeGame = GetFakeGame();
 
@@ -68,7 +68,14 @@ namespace RedChess.ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
             fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
-            fakeQueueManager.Expect(x => x.PostRequestBestMoveMessage(10, 0, fakeGame.Fen, "e2e4")).Repeat.Once();
+            if (expectPostMessage)
+            {
+                fakeQueueManager.Expect(x => x.PostRequestBestMoveMessage(10, 0, fakeGame.Fen, "e2e4")).Repeat.Once();
+            }
+            else
+            {
+                fakeQueueManager.Expect(x => x.PostRequestBestMoveMessage(Arg<int>.Is.Anything, Arg<int>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything)).Repeat.Never();
+            }
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
             return new BoardController(manager, fakeIdentity);
@@ -106,8 +113,17 @@ namespace RedChess.ControllerTests
         public void MessagePostedToQueueOnMove()
         {
             IQueueManager fakeQueueManager;
-            var fakeController = GetControllerForFakeGameWithQueue(out fakeQueueManager);
+            var fakeController = GetControllerForFakeGameWithQueue(out fakeQueueManager, expectPostMessage:true);
             fakeController.PlayMove(10, "E2", "E4", "");
+            fakeQueueManager.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void NoMessagePostedToQueueOnBadMove()
+        {
+            IQueueManager fakeQueueManager;
+            var fakeController = GetControllerForFakeGameWithQueue(out fakeQueueManager, expectPostMessage: false);
+            fakeController.PlayMove(10, "E2", "E5", "");
             fakeQueueManager.VerifyAllExpectations();
         }
 
