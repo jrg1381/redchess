@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CombinedTests
+namespace RedChess.CombinedTests
 {
     public class GameSource
     {

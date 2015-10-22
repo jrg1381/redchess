@@ -7,8 +7,8 @@
     <ProjectGuid>{CE27204C-C307-4898-A347-CB28AF5A8F09}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CombinedTests</RootNamespace>
-    <AssemblyName>CombinedTests</AssemblyName>
+    <RootNamespace>RedChess.CombinedTests</RootNamespace>
+    <AssemblyName>RedChess.CombinedTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

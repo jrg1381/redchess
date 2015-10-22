@@ -3,10 +3,9 @@ using System.IO;
 using NUnit.Framework;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
-using RedChess.ParserFactory;
 using RedChess.EngineFactory;
 
-namespace CombinedTests
+namespace RedChess.CombinedTests
 {
     [TestFixture]
     public class ParserAndMoveGeneratorAgree
@@ -38,7 +37,7 @@ namespace CombinedTests
             if (text.Contains("[FEN"))
                 return;
 
-            var parser = ParserFactory.GetParser();
+            var parser = ParserFactory.ParserFactory.GetParser();
             
             parser.Parse(text, (s, m, x) =>
             {

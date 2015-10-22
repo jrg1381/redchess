@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Reflection;
+﻿using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Chess.Filters;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using RedChess.MessageQueue;
-using RedChess.WebEngine.Repositories;
-using RedChess.ChessCommon.Enumerations;
-using RedChess.WebEngine.Models;
 using Chess.Controllers;
+using Chess.Filters;
+using NUnit.Framework;
+using RedChess.ChessCommon.Enumerations;
+using RedChess.MessageQueue;
+using RedChess.WebEngine.Models;
+using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
-using Rhino.Mocks.Expectations;
 
-namespace ControllerTests
+namespace RedChess.ControllerTests
 {
     [TestFixture]
     class BoardControllerTests

@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Chess.Controllers;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RedChess.WebEngine.Models;
-using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
 
-namespace ControllerTests
+namespace RedChess.ControllerTests
 {
     [TestFixture]
     public class HistoryControllerTests

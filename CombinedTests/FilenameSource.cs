@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace CombinedTests
+namespace RedChess.CombinedTests
 {
     public class FilenameSource
     {
