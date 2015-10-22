@@ -52,8 +52,25 @@ namespace RedChess.ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
-            var fakeQueue = MockRepository.GenerateMock<IQueueManager>();
-            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueue);
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            return new BoardController(manager, fakeIdentity);
+        }
+
+        private BoardController GetControllerForFakeGameWithQueue(out IQueueManager fakeQueueManager)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            var repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
+            fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
+            fakeQueueManager.Expect(x => x.PostRequestBestMoveMessage(10, 0, fakeGame.Fen, "e2e4")).Repeat.Once();
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
             return new BoardController(manager, fakeIdentity);
         }
 
@@ -83,6 +100,15 @@ namespace RedChess.ControllerTests
             controller.Details(40);
            
             fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void MessagePostedToQueueOnMove()
+        {
+            IQueueManager fakeQueueManager;
+            var fakeController = GetControllerForFakeGameWithQueue(out fakeQueueManager);
+            fakeController.PlayMove(10, "E2", "E4", "");
+            fakeQueueManager.VerifyAllExpectations();
         }
 
         [Test]
