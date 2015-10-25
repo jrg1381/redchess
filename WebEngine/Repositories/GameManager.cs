@@ -110,7 +110,7 @@ namespace RedChess.WebEngine.Repositories
             // Non-default start position (game cloned from another)
             if (numberOfMoves > 0 && entries[0].Fen != "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0")
             {
-                pgnBuilder.AppendFormat("[FEN \"{0}\"", entries[0].Fen);
+                pgnBuilder.AppendFormat("[FEN \"{0}\"]\r\n", entries[0].Fen);
             }
 
             if (gameDetails.Clock != null)
