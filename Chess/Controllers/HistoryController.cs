@@ -14,8 +14,17 @@ namespace Chess.Controllers
 {
     public class HistoryController : Controller
     {
-        readonly IGameManager m_gameManager = new GameManager();
-        private readonly ICurrentUser m_identityProvider = new CurrentUserImpl();
+        readonly IGameManager m_gameManager;
+        private readonly ICurrentUser m_identityProvider;
+
+        public HistoryController(): this(null, null)
+        { }
+
+        public HistoryController(IGameManager gameManager = null, ICurrentUser identityProvider = null)
+        {
+            m_gameManager = gameManager ?? new GameManager();
+            m_identityProvider = identityProvider ?? new CurrentUserImpl();
+        }
 
         public ActionResult Index()
         {

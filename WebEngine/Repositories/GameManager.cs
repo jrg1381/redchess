@@ -107,6 +107,12 @@ namespace RedChess.WebEngine.Repositories
             .AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName)
             .AppendFormat("[Result \"{0}\"]\r\n", result);
 
+            // Non-default start position (game cloned from another)
+            if (numberOfMoves > 0 && entries[0].Fen != "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0")
+            {
+                pgnBuilder.AppendFormat("[FEN \"{0}\"", entries[0].Fen);
+            }
+
             if (gameDetails.Clock != null)
             {
                 pgnBuilder.AppendFormat("[TimeControl \"{0}\"]\r\n", gameDetails.Clock.TimeLimitMs / 1000);
