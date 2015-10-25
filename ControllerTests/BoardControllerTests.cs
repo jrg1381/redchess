@@ -39,6 +39,25 @@ namespace RedChess.ControllerTests
             return fakeGame;
         }
 
+        private GameDto GetFakeGamePromotionImminent(int id = c_fakeGameId)
+        {
+            var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
+            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
+
+            var fakeGame = MockRepository.GenerateStub<GameDto>();
+
+            fakeGame.UserProfileBlack = myUserProfile;
+            fakeGame.UserIdBlack = myUserProfile.UserId;
+            fakeGame.UserProfileWhite = opponentUserProfile;
+            fakeGame.UserIdWhite = opponentUserProfile.UserId;
+
+            fakeGame.Fen = "8/P7/8/8/8/8/8/K6k w - - 0";
+            fakeGame.GameId = id;
+            fakeGame.MoveNumber = 0;
+
+            return fakeGame;
+        }
+
         private BoardController GetControllerForFakeEndedGameAsUser(string userName, out IGameRepository repository)
         {
             var fakeGame = GetFakeGame();
@@ -81,6 +100,24 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
+        private BoardController GetControllerForFakeGameWithQueueWithPromotionImminent(out IQueueManager fakeQueueManager)
+        {
+            var fakeGame = GetFakeGamePromotionImminent();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            var repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
+            fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
+            fakeQueueManager.Expect(x => x.PostRequestBestMoveMessage(10, 0, fakeGame.Fen, "a7a8q")).Repeat.Once();
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
+            return new BoardController(manager, fakeIdentity);
+        }
+
         private GameDto GetFakeGameAboutToPromote()
         {
             var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
@@ -115,6 +152,15 @@ namespace RedChess.ControllerTests
             IQueueManager fakeQueueManager;
             var fakeController = GetControllerForFakeGameWithQueue(out fakeQueueManager, expectPostMessage:true);
             fakeController.PlayMove(10, "E2", "E4", "");
+            fakeQueueManager.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void MessagePostedToQueueOnPromotion()
+        {
+            IQueueManager fakeQueueManager;
+            var fakeController = GetControllerForFakeGameWithQueueWithPromotionImminent(out fakeQueueManager);
+            fakeController.PlayMove(10, "A7", "A8", "Queen");
             fakeQueueManager.VerifyAllExpectations();
         }
 
