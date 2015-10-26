@@ -330,7 +330,14 @@ namespace Redchess.Engine
 			 * Way more efficient would be to track outwards from the king's position, looking to see if anything is attacking it. In the common case where the king
 			 * is protected by a shield of its own pieces, this would terminate earlier once the search lines hit friendly pieces in all directions. */
 
-            var fixedAttackers = SimpleBoard.Pieces(~colorOfKing).OccupiedSquares().Select(GetContents).ToArray();
+            if (CheckedByPawns(colorOfKing, kingPosition)) return true;
+
+            var fixedAttackers = SimpleBoard
+                .Pieces(~colorOfKing)
+                .OccupiedSquares()
+                .Select(GetContents)
+                .Where(p => !p.Type.IsOfType(PieceType.Pawn))
+                .ToArray();
 
             return
                 fixedAttackers
@@ -338,6 +345,34 @@ namespace Redchess.Engine
                     .WithDegreeOfParallelism(s_parallelism)
                     .SelectMany(p => p.AttackedSquares(this))
                     .Any(s => s == kingPosition);
+        }
+
+        private bool CheckedByPawns(PieceColor colorOfKing, Location kingPosition)
+        {
+            var kingSquare = new Square(kingPosition);
+            var upstream = colorOfKing == PieceColor.White ? 1 : -1;
+
+            if ((kingSquare.Y + upstream) < 7 && (kingSquare.Y + upstream) > 0)
+            {
+                var opponentPawn = colorOfKing == PieceColor.White ? PieceType.BlackPawn : PieceType.WhitePawn;
+
+                if (kingSquare.X > 0)
+                {
+                    var leftAttackerSquare = new Square(kingSquare.X - 1, kingSquare.Y + upstream);
+                    var leftPawn = GetContents(leftAttackerSquare.Location);
+                    if (leftPawn != null && leftPawn.Type.IsOfType(opponentPawn))
+                        return true;
+                }
+                if (kingSquare.X < 7)
+                {
+                    var rightAttackerSquare = new Square(kingSquare.X + 1, kingSquare.Y + upstream);
+
+                    var rightPawn = GetContents(rightAttackerSquare.Location);
+                    if (rightPawn != null && rightPawn.Type.IsOfType(opponentPawn))
+                        return true;
+                }
+            }
+            return false;
         }
 
         private bool ValidMovesExist()
