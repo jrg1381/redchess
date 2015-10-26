@@ -158,6 +158,14 @@ namespace Redchess.EngineTests
             Assert.AreEqual(1, m_emptyBoard.Pieces(PieceColor.White).OccupiedSquares().Count(), "Expected one white piece on the board");
 		}
 
+        [Test]
+        public void CannotMoveIntoCheckByEnemyKing()
+        {
+            m_emptyBoard.FromFen("k1K/8/8/8/8/8/8/8 b - - 0");
+            var king = m_emptyBoard.GetContents(Location.A8);
+            Assert.False(m_emptyBoard.ValidateMoveForCheck(king, Location.B8), "Black king cannot move into check by enemy king");
+        }
+
 		[Test]
 		public void CannotTakeOwnPiece()
 		{

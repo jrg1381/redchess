@@ -26,7 +26,20 @@ namespace Redchess.Engine
             if (CheckedDiagonally()) return true;
             if (CheckedByKnights()) return true;
             if (CheckedByPawns()) return true;
+            if (CheckedByKing()) return true;
 
+            return false;
+        }
+
+        private bool CheckedByKing()
+        {
+            var fakeKing = m_colorOfKing == PieceColor.White ? PieceType.WhiteKing : PieceType.BlackKing;
+            var opponentKing = m_colorOfKing == PieceColor.White ? PieceType.BlackKing: PieceType.WhiteKing;
+
+            var king = PieceFactory.CreatePiece(fakeKing, m_kingPosition);
+            // We need to use attacked squares because ReachableSquares includes squares reachable by castling
+            if (king.AttackedSquares(m_board).Select(m_board.GetContents).Any(p => p != null && p.Type == opponentKing))
+                return true;
             return false;
         }
 
