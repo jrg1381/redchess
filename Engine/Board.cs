@@ -26,7 +26,6 @@ namespace Redchess.Engine
         private readonly CheckCacheOpposingPlayer m_checkCacheOtherPlayer;
         private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
 
-        private Location m_enPassantTarget;
         private Pawn m_promotedPawn;
         private readonly List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
         protected SimpleBoard SimpleBoard { get; set; }
@@ -47,7 +46,7 @@ namespace Redchess.Engine
         internal Board(Board replacementBoard)
         {
             CurrentTurn = replacementBoard.CurrentTurn;
-            m_enPassantTarget = replacementBoard.EnPassantTarget;
+            EnPassantTarget = replacementBoard.EnPassantTarget;
 
             SimpleBoard = replacementBoard.SimpleBoard.DeepClone();
 
@@ -63,7 +62,7 @@ namespace Redchess.Engine
         public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
         {
             CurrentTurn = whoseTurn;
-            m_enPassantTarget = Location.InvalidSquare;
+            EnPassantTarget = Location.InvalidSquare;
 
             SimpleBoard = new SimpleBoard(isEmpty);
 
@@ -103,7 +102,7 @@ namespace Redchess.Engine
 
             if (enPassantTarget != "-")
             {
-                m_enPassantTarget = (Location) Enum.Parse(typeof (Location), enPassantTarget.ToUpper());
+                EnPassantTarget = (Location) Enum.Parse(typeof (Location), enPassantTarget.ToUpper());
             }
 
             m_fiftyMoveRule.ForceUpdate(Int32.Parse(halfMoveClock));
@@ -289,10 +288,7 @@ namespace Redchess.Engine
             return SimpleBoard.GetContents(loc);
         }
 
-        public Location EnPassantTarget
-        {
-            get { return m_enPassantTarget; }
-        }
+        public Location EnPassantTarget { get; private set; }
 
         public bool MayCastle(IPiece king, Side side)
         {
@@ -309,7 +305,7 @@ namespace Redchess.Engine
                 return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide) 
                     && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
 
-            throw new ArgumentException("Asked for impossible combination of casting");
+            throw new ArgumentException("Asked for impossible combination of castling");
         }
 
         /// <summary>
@@ -388,7 +384,7 @@ namespace Redchess.Engine
             if (originalOccupier != null)
             {
                 SimpleBoard.RemovePiece(originalOccupier);
-                m_enPassantTarget = Location.InvalidSquare;
+                EnPassantTarget = Location.InvalidSquare;
             }
 
             // Move the piece with no checking
@@ -411,7 +407,7 @@ namespace Redchess.Engine
             }
             else
             {
-                m_enPassantTarget = Location.InvalidSquare;
+                EnPassantTarget = Location.InvalidSquare;
             }
 
             CurrentTurn = ~CurrentTurn;
@@ -430,20 +426,20 @@ namespace Redchess.Engine
             var verticalDistanceMoved = newSquare.Y - originalLocation.Y;
             if(Math.Abs(verticalDistanceMoved) > 1)
             {
-                    m_enPassantTarget = (new Square(originalLocation.X, originalLocation.Y + Math.Sign(verticalDistanceMoved)).Location);
+                    EnPassantTarget = (new Square(originalLocation.X, originalLocation.Y + Math.Sign(verticalDistanceMoved)).Location);
                     return;
             }
 
             var horizontalDistanceMoved = newSquare.X - originalLocation.X;
-            if (horizontalDistanceMoved != 0 && m_enPassantTarget != Location.InvalidSquare)
+            if (horizontalDistanceMoved != 0 && EnPassantTarget != Location.InvalidSquare)
                 // The pawn has taken something but there was nothing on the square where it took, i.e. EP
             {
-                var epSquare = new Square(m_enPassantTarget);
+                var epSquare = new Square(EnPassantTarget);
                 // Note sign. If our pawn moved forward (white) then the e.p. target is back down the board.
                 SimpleBoard.RemovePiece(GetContents(new Square(epSquare.X, epSquare.Y - verticalDistanceMoved).Location));
             }
 
-            m_enPassantTarget = Location.InvalidSquare;
+            EnPassantTarget = Location.InvalidSquare;
         }
 
         /// <summary>
