@@ -6,6 +6,7 @@ using log4net.Core;
 using Redchess.Engine.Exceptions;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Observers;
+using Redchess.Engine.Pieces;
 using Redchess.Engine.Pieces.Abstract;
 using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
@@ -263,7 +264,10 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter { get { return m_fiftyMoveRule.Value; } }
+        public int FiftyMoveCounter
+        {
+            get { return m_fiftyMoveRule.Value; }
+        }
 
         /// <summary>
         ///     Returns true if the king of the current player is in check right now
@@ -292,18 +296,18 @@ namespace Redchess.Engine
 
         public bool MayCastle(IPiece king, Side side)
         {
-            if(king.Color == PieceColor.Black && side == Side.KingSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide) 
-                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
+            if (king.Color == PieceColor.Black && side == Side.KingSide)
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide)
+                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
             if (king.Color == PieceColor.Black && side == Side.QueenSide)
                 return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide)
-                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
+                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
             if (king.Color == PieceColor.White && side == Side.KingSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide) 
-                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide)
+                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
             if (king.Color == PieceColor.White && side == Side.QueenSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide) 
-                    && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
+                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide)
+                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
 
             throw new ArgumentException("Asked for impossible combination of castling");
         }
@@ -326,53 +330,7 @@ namespace Redchess.Engine
         /// <returns></returns>
         public bool KingInCheck(PieceColor colorOfKing, Location kingPosition)
         {
-            /* This is not an efficient algorithm for determining check, it goes through all the attackers and sees if they attack the king, stopping when one does.
-			 * Way more efficient would be to track outwards from the king's position, looking to see if anything is attacking it. In the common case where the king
-			 * is protected by a shield of its own pieces, this would terminate earlier once the search lines hit friendly pieces in all directions. */
-
-            if (CheckedByPawns(colorOfKing, kingPosition)) return true;
-
-            var fixedAttackers = SimpleBoard
-                .Pieces(~colorOfKing)
-                .OccupiedSquares()
-                .Select(GetContents)
-                .Where(p => !p.Type.IsOfType(PieceType.Pawn))
-                .ToArray();
-
-            return
-                fixedAttackers
-                    .AsParallel()
-                    .WithDegreeOfParallelism(s_parallelism)
-                    .SelectMany(p => p.AttackedSquares(this))
-                    .Any(s => s == kingPosition);
-        }
-
-        private bool CheckedByPawns(PieceColor colorOfKing, Location kingPosition)
-        {
-            var kingSquare = new Square(kingPosition);
-            var upstream = colorOfKing == PieceColor.White ? 1 : -1;
-
-            if ((kingSquare.Y + upstream) < 7 && (kingSquare.Y + upstream) > 0)
-            {
-                var opponentPawn = colorOfKing == PieceColor.White ? PieceType.BlackPawn : PieceType.WhitePawn;
-
-                if (kingSquare.X > 0)
-                {
-                    var leftAttackerSquare = new Square(kingSquare.X - 1, kingSquare.Y + upstream);
-                    var leftPawn = GetContents(leftAttackerSquare.Location);
-                    if (leftPawn != null && leftPawn.Type.IsOfType(opponentPawn))
-                        return true;
-                }
-                if (kingSquare.X < 7)
-                {
-                    var rightAttackerSquare = new Square(kingSquare.X + 1, kingSquare.Y + upstream);
-
-                    var rightPawn = GetContents(rightAttackerSquare.Location);
-                    if (rightPawn != null && rightPawn.Type.IsOfType(opponentPawn))
-                        return true;
-                }
-            }
-            return false;
+            return (new CheckTester(colorOfKing, kingPosition, this)).Check();
         }
 
         private bool ValidMovesExist()

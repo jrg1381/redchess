@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckTester.cs" />
     <Compile Include="Observers\AbstractBoardObserver.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="BoardBitmap.cs" />
