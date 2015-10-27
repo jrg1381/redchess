@@ -1,20 +1,18 @@
 ﻿using System.Linq;
-using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Pieces;
-using Redchess.Engine.Structures;
 
 namespace Redchess.Engine
 {
-    internal class CheckTester
+    internal sealed class CheckTester
     {
         private readonly PieceColor m_colorOfKing;
         private readonly Location m_kingPosition;
         private readonly IBoardExtended m_board;
         private readonly PieceType m_opponentQueen;
 
-        public CheckTester(PieceColor colorOfKing, Location kingPosition, IBoardExtended board)
+        internal CheckTester(PieceColor colorOfKing, Location kingPosition, IBoardExtended board)
         {
             m_board = board;
             m_kingPosition = kingPosition;
@@ -23,7 +21,7 @@ namespace Redchess.Engine
             m_opponentQueen = m_colorOfKing == PieceColor.White ? PieceType.BlackQueen : PieceType.WhiteQueen;
         }
 
-        public bool Check()
+        internal bool Check()
         {
             if (CheckedByRankOrFile()) return true;
             if (CheckedDiagonally()) return true;
