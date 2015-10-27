@@ -12,12 +12,15 @@ namespace Redchess.Engine
         private readonly PieceColor m_colorOfKing;
         private readonly Location m_kingPosition;
         private readonly IBoardExtended m_board;
+        private readonly PieceType m_opponentQueen;
 
         public CheckTester(PieceColor colorOfKing, Location kingPosition, IBoardExtended board)
         {
             m_board = board;
             m_kingPosition = kingPosition;
             m_colorOfKing = colorOfKing;
+
+            m_opponentQueen = m_colorOfKing == PieceColor.White ? PieceType.BlackQueen : PieceType.WhiteQueen;
         }
 
         public bool Check()
@@ -33,55 +36,95 @@ namespace Redchess.Engine
 
         private bool CheckedByKing()
         {
-            var fakeKing = m_colorOfKing == PieceColor.White ? PieceType.WhiteKing : PieceType.BlackKing;
-            var opponentKing = m_colorOfKing == PieceColor.White ? PieceType.BlackKing: PieceType.WhiteKing;
+            PieceType fakeKing, opponentKing;
+
+            if (m_colorOfKing == PieceColor.White)
+            {
+                fakeKing = PieceType.WhiteKing;
+                opponentKing = PieceType.BlackKing;
+            }
+            else
+            {
+                fakeKing = PieceType.BlackKing;
+                opponentKing = PieceType.WhiteKing;
+            }
 
             var king = PieceFactory.CreatePiece(fakeKing, m_kingPosition);
             // We need to use attacked squares because ReachableSquares includes squares reachable by castling
-            if (king.AttackedSquares(m_board).Select(m_board.GetContents).Any(p => p != null && p.Type == opponentKing))
-                return true;
-            return false;
+            return king.AttackedSquares(m_board)
+                .Select(m_board.GetContents)
+                .Any(p => p != null && p.Type == opponentKing);
+        }
+
+        private bool PieceOnKingSquareCanTakeIdenticalOpponentPiece(IPiece fakePiece, PieceType opponentPieceType)
+        {
+            return fakePiece.ReachableSquares(m_board)
+                .Select(m_board.GetContents)
+                .Any(p => p != null && p.Type == opponentPieceType);
+        }
+
+        private bool PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(IPiece fakePiece, PieceType opponentPieceType)
+        {
+            return fakePiece.ReachableSquares(m_board)
+                .Select(m_board.GetContents)
+                .Any(p => p != null && (p.Type == opponentPieceType || p.Type == m_opponentQueen));
         }
 
         private bool CheckedByKnights()
         {
-            var fakeKnight = m_colorOfKing == PieceColor.White ? PieceType.WhiteKnight : PieceType.BlackKnight;
-            var opponentKnight = m_colorOfKing == PieceColor.White ? PieceType.BlackKnight : PieceType.WhiteKnight;
+            PieceType fakeKnight, opponentKnight;
+
+            if (m_colorOfKing == PieceColor.White)
+            {
+                fakeKnight = PieceType.WhiteKnight;
+                opponentKnight = PieceType.BlackKnight;
+            }
+            else
+            {
+                fakeKnight = PieceType.BlackKnight;
+                opponentKnight = PieceType.WhiteKnight;
+            }
 
             var knight = PieceFactory.CreatePiece(fakeKnight, m_kingPosition);
-            if (knight.ReachableSquares(m_board).Select(m_board.GetContents).Any(p => p != null && p.Type == opponentKnight))
-                return true;
-            return false;
+            return PieceOnKingSquareCanTakeIdenticalOpponentPiece(knight, opponentKnight);
         }
 
         private bool CheckedByRankOrFile()
         {
-            var fakeRook = m_colorOfKing == PieceColor.White ? PieceType.WhiteRook : PieceType.BlackRook;
-            var opponentRook = m_colorOfKing == PieceColor.White ? PieceType.BlackRook : PieceType.WhiteRook;
-            var opponentQueen = m_colorOfKing == PieceColor.White ? PieceType.BlackQueen : PieceType.WhiteQueen;
+            PieceType fakeRook, opponentRook;
+
+            if (m_colorOfKing == PieceColor.White)
+            {
+                fakeRook = PieceType.WhiteRook;
+                opponentRook = PieceType.BlackRook;
+            }
+            else
+            {
+                fakeRook = PieceType.BlackRook;
+                opponentRook = PieceType.WhiteRook;
+            }
 
             var rook = PieceFactory.CreatePiece(fakeRook, m_kingPosition);
-            if (
-                rook.ReachableSquares(m_board)
-                    .Select(m_board.GetContents)
-                    .Any(p => p != null && (p.Type.IsOfType(opponentRook) || p.Type.IsOfType(opponentQueen))))
-                return true;
-            return false;
+            return PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(rook, opponentRook);
         }
 
         private bool CheckedDiagonally()
         {
-            var fakeBishop = m_colorOfKing == PieceColor.White ? PieceType.WhiteBishop : PieceType.BlackBishop;
-            var opponentBishop = m_colorOfKing == PieceColor.White ? PieceType.BlackBishop : PieceType.WhiteBishop;
-            var opponentQueen = m_colorOfKing == PieceColor.White ? PieceType.BlackQueen : PieceType.WhiteQueen;
+            PieceType fakeBishop, opponentBishop;
+
+            if (m_colorOfKing == PieceColor.White)
+            {
+                fakeBishop = PieceType.WhiteBishop;
+                opponentBishop = PieceType.BlackBishop;
+            }
+            else
+            {
+                fakeBishop = PieceType.BlackBishop;
+                opponentBishop = PieceType.WhiteBishop;
+            }
 
             var bishop = PieceFactory.CreatePiece(fakeBishop, m_kingPosition);
-            if (
-                bishop.ReachableSquares(m_board)
-                    .Select(m_board.GetContents)
-                    .Any(p => p != null && (p.Type.IsOfType(opponentBishop) || p.Type.IsOfType(opponentQueen))))
-                return true;
-            return false;
+            return PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(bishop, opponentBishop);
         }
 
         private bool CheckedByPawns()
