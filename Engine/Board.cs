@@ -202,25 +202,7 @@ namespace Redchess.Engine
 
         public bool IsDraw()
         {
-            int totalPieceCount = SimpleBoard.PieceCount;
-
-            if (totalPieceCount > 3) return false; // There are enough pieces for it not to be an obvious draw
-
-            if (totalPieceCount == 2)
-            {
-                // King vs King
-                return true;
-            }
-
-            if (SimpleBoard.PiecesOfType(PieceType.WhiteKnight) == 1 ||
-                SimpleBoard.PiecesOfType(PieceType.BlackKnight) == 1)
-                return true;
-
-            if (SimpleBoard.PiecesOfType(PieceType.WhiteBishop) == 1 ||
-                SimpleBoard.PiecesOfType(PieceType.BlackBishop) == 1)
-                return true;
-
-            return false;
+            return SimpleBoard.IsDraw();
         }
 
         public void PromotePiece(string promotionTarget)

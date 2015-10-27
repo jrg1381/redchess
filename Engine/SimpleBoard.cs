@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Exceptions;
 using Redchess.Engine.Interfaces;
@@ -82,9 +83,9 @@ namespace Redchess.Engine
             return Pieces(PieceColor.Black).OccupiedSquares().Concat(Pieces(PieceColor.White).OccupiedSquares());
         }
 
-        internal int PiecesOfType(PieceType t)
+        private int PiecesOfType(PieceType t)
         {
-            return OccupiedSquares().Count(x => GetContents(x).Type == t);
+            return OccupiedSquares().Count(x => GetContents(x).Type.IsOfType(t));
         }
 
         internal SimpleBoard DeepClone()
@@ -116,14 +117,25 @@ namespace Redchess.Engine
             AddPiece(piece);
         }
 
-        public int PieceCount
-        {
-            get { return m_whitePieces.PieceCount + m_blackPieces.PieceCount; }
-        }
-
-        public void AddPiece(PieceType pieceType, Location location)
+        internal void AddPiece(PieceType pieceType, Location location)
         {
             AddPiece(PieceFactory.CreatePiece(pieceType, location));
+        }
+
+        internal bool IsDraw()
+        {
+            var totalPieceCount = m_whitePieces.PieceCount + m_blackPieces.PieceCount;
+            if (totalPieceCount > 3) return false; // There are enough pieces for it not to be an obvious draw
+
+            if (totalPieceCount == 2)
+            {
+                return true; // King vs King
+            }
+
+            if (PiecesOfType(PieceType.Knight) == 1 || PiecesOfType(PieceType.Bishop) == 1)
+                return true;
+
+            return false;
         }
     }
 }
