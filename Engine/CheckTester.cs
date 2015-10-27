@@ -129,30 +129,21 @@ namespace Redchess.Engine
 
         private bool CheckedByPawns()
         {
-            var kingSquare = new Square(m_kingPosition);
-            var upstream = m_colorOfKing == PieceColor.White ? 1 : -1;
+            PieceType fakePawn, opponentPawn;
 
-            if ((kingSquare.Y + upstream) < 7 && (kingSquare.Y + upstream) > 0)
+            if (m_colorOfKing == PieceColor.White)
             {
-                var opponentPawn = m_colorOfKing == PieceColor.White ? PieceType.BlackPawn : PieceType.WhitePawn;
-
-                if (kingSquare.X > 0)
-                {
-                    var leftAttackerSquare = new Square(kingSquare.X - 1, kingSquare.Y + upstream);
-                    var leftPawn = m_board.GetContents(leftAttackerSquare.Location);
-                    if (leftPawn != null && leftPawn.Type.IsOfType(opponentPawn))
-                        return true;
-                }
-                if (kingSquare.X < 7)
-                {
-                    var rightAttackerSquare = new Square(kingSquare.X + 1, kingSquare.Y + upstream);
-
-                    var rightPawn = m_board.GetContents(rightAttackerSquare.Location);
-                    if (rightPawn != null && rightPawn.Type.IsOfType(opponentPawn))
-                        return true;
-                }
+                fakePawn = PieceType.WhitePawn;
+                opponentPawn = PieceType.BlackPawn;
             }
-            return false;
+            else
+            {
+                fakePawn = PieceType.BlackPawn;
+                opponentPawn = PieceType.WhitePawn;
+            }
+
+            var pawn = PieceFactory.CreatePiece(fakePawn, m_kingPosition);
+            return PieceOnKingSquareCanTakeIdenticalOpponentPiece(pawn, opponentPawn);
         }
     }
 }
