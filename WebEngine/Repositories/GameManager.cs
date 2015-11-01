@@ -99,9 +99,9 @@ namespace RedChess.WebEngine.Repositories
 
             var pgnBuilder = new StringBuilder();
 
-            pgnBuilder.AppendFormat("[Event \"Casual Game\"]\r\n")
-            .AppendFormat("[Site \"?\"]\r\n")
-            .AppendFormat("[Round \"?\"]\r\n")
+            pgnBuilder.AppendLine("[Event \"Casual Game\"]")
+            .AppendLine("[Site \"?\"]")
+            .AppendLine("[Round \"?\"]")
             .AppendFormat("[Date \"{0:yyyy.MM.dd}\"]\r\n", gameDetails.CreationDate)
             .AppendFormat("[White \"{0}\"]\r\n", gameDetails.UserProfileWhite.UserName)
             .AppendFormat("[Black \"{0}\"]\r\n", gameDetails.UserProfileBlack.UserName)
