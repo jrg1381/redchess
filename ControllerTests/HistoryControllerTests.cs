@@ -44,15 +44,7 @@ namespace RedChess.ControllerTests
             var gameManager = new GameManager(gameRepo, historyRepo, clockRepo);
             var pgn = gameManager.PgnText(10);
 
-            Assert.AreEqual(@"[Event ""Casual Game""]
-[Site ""?""]
-[Round ""?""]
-[Date ""0001.01.01""]
-[White ""clive""]
-[Black ""james""]
-[Result ""0-1""]
-
-1. e4 0-1", pgn, "PGN of game not as expected");
+            Assert.AreEqual("[Event \"Casual Game\"]\r\n[Site \"?\"]\r\n[Round \"?\"]\r\n[Date \"0001.01.01\"]\r\n[White \"clive\"]\r\n[Black \"james\"]\r\n[Result \"0-1\"]\r\n\r\n1. e4 0-1", pgn, "PGN of game not as expected");
         }
     }
 }
