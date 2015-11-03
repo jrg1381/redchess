@@ -13,5 +13,10 @@ namespace Chess.Controllers
 			ViewBag.ReturnUrl = returnUrl;
 			return View();
 		}
+
+	    public ActionResult Config()
+	    {
+	        return View("Config");
+	    }
 	}
 }

@@ -1,0 +1,58 @@
+﻿<div>
+@using RedChess.WebEngine.Repositories
+
+    <h2>Configuration</h2>
+    @{
+        var manager = new GameManager();
+
+        var environment = Environment.Version.ToString();
+        var os = Environment.OSVersion;
+        var processorCount = Environment.ProcessorCount;
+        var userCount = manager.AllUserProfiles().Count();
+        var games = manager.FindAll().ToList();
+    }
+
+    <table class="table">
+        <tr>
+            <td>CLR version</td>
+            <td>@environment</td>
+        </tr>
+        <tr>
+            <td>OS</td>
+            <td>@os</td>
+        </tr>
+        <tr>
+            <td>Processor count</td>
+            <td>@processorCount</td>
+        </tr>
+        <tr>
+            <td>User count</td>
+            <td>@userCount</td>
+        </tr>
+        <tr>
+            <td>Game count</td>
+            <td>
+                <table class="table-condensed">
+                    <tr>
+                        <td>
+                            Finished
+                        </td>
+                        <td>
+                            @games.Count(g => g.GameOver)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            In progress
+                        </td>
+                        <td>
+                            @games.Count(g => !g.GameOver)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
