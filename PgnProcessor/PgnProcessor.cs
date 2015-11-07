@@ -205,7 +205,7 @@ namespace RedChess.PgnProcessor
             if (m_onMoveAction == null)
                 return;
 
-            m_onMoveAction(m_board.ToFen(), tokenText, new ChessMove() { Start = moveMade.Item1, End = moveMade.Item2, Promotion = promotedPiece });
+            m_onMoveAction(m_board.ToFen(), tokenText, new ChessMove(moveMade.Item1, moveMade.Item2,promotedPiece));
         }
     }
 }

@@ -233,22 +233,21 @@ namespace RedChess.WebEngine.Repositories
 
         public bool Move(int gameId, Location start, Location end, string promote = null)
         {
+            ChessMove move;
             var gameDto = m_repository.FindById(gameId);
             m_board.FromFen(gameDto.Fen);
 
             var success = m_board.Move(start, end);
             if (!success) return false;
 
-            var move = new ChessMove
-            {
-                Start = start,
-                End = end,
-            };
-
             if (!String.IsNullOrEmpty(promote)) // UI passes this from form
             {
                 m_board.PromotePiece(promote);
-                move.Promotion = promote[0].ToString();
+                move = new ChessMove(start, end, promote[0].ToString());
+            }
+            else
+            {
+                move =new ChessMove(start, end);
             }
 
             PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
