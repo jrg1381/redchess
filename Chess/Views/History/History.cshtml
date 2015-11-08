@@ -56,13 +56,16 @@
                 yPosition = y0;
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", mateClass);
                 svgElement.append("text").attr("fill", "red").attr("x", xPosition).attr("y", yPosition - 10).text(Math.abs(score));
+                var indicator = Math.sign(score) === 1 ? "&#x2654;" : "&#x265a;";
+                $("#upper-analysis").html(indicator + " Mate in " + Math.abs(score));
             }
             else {
                 yPosition = y(evaluationData[moveNumber].score);
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
+                $("#upper-analysis").text(evaluationData[moveNumber].score);
             };
 
-            $("#scrollbox2").text(evaluationData[moveNumber+1].analysis);
+            $("#scrollbox2").text(evaluationData[moveNumber + 1].analysis);
         });
     }
 
@@ -124,10 +127,10 @@
             <div id="svg"></div>
         </div>
         <div class="col-lg-3">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 <div class="panel-heading">Analysis</div>
-                <div id="scrollbox2" class="panel-body pre-scrollable" style="max-height: 465px">                
-                </div>
+                <div id="upper-analysis" class="panel-body"></div>
+                <div id="scrollbox2" class="panel-body pre-scrollable" style="max-height: 465px"></div>
             </div>
         </div>
     </div>
