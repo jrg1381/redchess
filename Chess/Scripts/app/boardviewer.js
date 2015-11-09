@@ -118,7 +118,7 @@ BoardViewer.prototype.onMoveSelected = function (c) {
 
 BoardViewer.prototype.fireCallbacks = function(moveNumber) {
     for (var i = 0; i < this.callbacks.length; i++) {
-        this.callbacks[i](moveNumber);
+        this.callbacks[i](moveNumber + 1);
     }
 }
 
