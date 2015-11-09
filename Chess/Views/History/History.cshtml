@@ -1,7 +1,7 @@
 ﻿@using RedChess.WebEngine.Models
-@model int
+@Model int
 
-@section head
+@section Head
 {
     <link rel="stylesheet" type="text/css" href="/Scripts/app/viewer.css"/>
     <script src="/Scripts/app/boardviewer.js" type="text/javascript"></script>
@@ -45,18 +45,26 @@
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
         boardViewer.onMoveSelected(function (moveNumber) {
-            var yPosition;
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
             svgElement.selectAll("text").remove();
+
+            if (moveNumber > evaluationData.length - 1) {
+                $("#upper-analysis").text("Game over");
+                $("#scrollbox2").text("");
+                return;
+            }
+
+            var yPosition;
             var xPosition = x(moveNumber);
             if (evaluationData[moveNumber].scoreType === 1) { // corresponds to enum MateInN
                 var score = evaluationData[moveNumber].score;
-                var mateClass = Math.sign(score) === 1 ? "matewhite" : "mateblack";
+                var whiteWin = Math.sign(score) === 1;
+                var mateClass = whiteWin ? "matewhite" : "mateblack";
                 yPosition = y0;
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", mateClass);
                 svgElement.append("text").attr("fill", "red").attr("x", xPosition).attr("y", yPosition - 10).text(Math.abs(score));
-                var indicator = Math.sign(score) === 1 ? "&#x2654;" : "&#x265a;"; // White king / Black king unicode symbols
+                var indicator = whiteWin ? "&#x2654;" : "&#x265a;"; // White king / Black king unicode symbols
                 $("#upper-analysis").html(indicator + " Mate in " + Math.abs(score));
             }
             else {
