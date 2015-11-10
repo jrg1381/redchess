@@ -53,6 +53,7 @@ namespace Chess.Controllers
                 data.IsParticipant = game.UserProfileBlack.UserName == HttpContext.Current.User.Identity.Name ||
                                      game.UserProfileWhite.UserName == HttpContext.Current.User.Identity.Name;
                 data.Analysis = m_gameManager.AnalysisForGameMoves(id, 0, allMoves.Count);
+                data.GameOver = game.GameOver;
 
                 return Json(data);
             }

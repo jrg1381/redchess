@@ -22,7 +22,7 @@
 </style>
 
 <script>
-    function showGraph(boardViewer, evaluationData) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
+    function showGraph(boardViewer, evaluationData, gameOver) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
         var width = 512;
         var height = 64;
 
@@ -50,7 +50,12 @@
             svgElement.selectAll("text").remove();
 
             if (moveNumber > evaluationData.length - 1) {
-                $("#upper-analysis").text("Game over");
+                if (gameOver) {
+                    $("#upper-analysis").text("Game over");
+                } else {
+                    $("#upper-analysis").text("No analysis for this move");
+                }
+
                 $("#scrollbox2").text("");
                 return;
             }
@@ -91,7 +96,7 @@
             .done(function (data) {
                 boardViewer = new BoardViewer(data, board);
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
-                var evaluationData = data.Analysis.map(function (x) { return {move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis : x.AnalysisText}; });
+                var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText }; });
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
                         { move: 0, score: 0, scoreType: 0, analysis : "Hello"},
@@ -101,7 +106,7 @@
                 } else {
                     // Start data at zero
                     evaluationData.unshift({ move: 0, score: 0, scoreType: 0 });
-                    showGraph(boardViewer, evaluationData);
+                    showGraph(boardViewer, evaluationData, data.GameOver);
                 }
 
                 $('#title').text(data.Description);
