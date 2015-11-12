@@ -370,6 +370,7 @@ namespace RedChess.WebEngine.Repositories
             };
 
             m_repository.AddOrUpdate(newGame);
+            m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = "" });
 
             return newGame.GameId;
         }
