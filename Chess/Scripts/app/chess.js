@@ -72,7 +72,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
 
     this.onDragStart = function (source, piece, position, orientation) {
         if (that.isAnalysisBoard) {
-            if (!$("form").is(":hidden") || piece.search(that.currentTurn) === -1) {
+            if (!$("form").is(":hidden") || piece.search(that.currentTurn) === -1 || that.boardLocked) {
                 return false;
             }
             return true;
