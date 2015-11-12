@@ -13,24 +13,31 @@
 
     <div class="form-group">
         <div class="form-group">
-            <label for="Opponent">Opponent</label>
-            @Html.DropDownList("Opponent", Model.Select(x => new SelectListItem {Text = x.UserName, Value = x.UserId.ToString()}), new {@class = "form-control"})
+            <div class="checkbox">
+                <label><input type="checkbox" id="AnalysisBoard" name="AnalysisBoard" value="true"/>Analysis board only</label>
+            </div>
         </div>
+        <div class="form-group" id="RealGameSettings">
+            <div class="form-group">
+                <label for="Opponent">Opponent</label>
+                @Html.DropDownList("Opponent", Model.Select(x => new SelectListItem {Text = x.UserName, Value = x.UserId.ToString()}), new {@class = "form-control"})
+            </div>
 
-        <div class="checkbox">
-            <label><input type="checkbox" name="PlayAsBlack" value="true"/>Play as black</label>
-        </div>
-        <div class="checkbox">
-            <label><input id="UseClock" type="checkbox" name="UseClock" value="true"/>Use clock</label>
-        </div>
-        <div class="form-group" id="TimeLimitGroup">
-            <label for="TimeLimit">Time limit (minutes)</label>
-            <input type="number" min="1" max="180" class="form-control" id="TimeLimit" name="TimeLimit" disabled>
-        </div>
-        <div data-valmsg-summary="true" class="validation-summary-valid">
-            <ul>
-                <li style="display: none"></li>
-            </ul>
+            <div class="checkbox">
+                <label><input type="checkbox" name="PlayAsBlack" value="true"/>Play as black</label>
+            </div>
+            <div class="checkbox">
+                <label><input id="UseClock" type="checkbox" name="UseClock" value="true"/>Use clock</label>
+            </div>
+            <div class="form-group" id="TimeLimitGroup">
+                <label for="TimeLimit">Time limit (minutes)</label>
+                <input type="number" min="1" max="180" class="form-control" id="TimeLimit" name="TimeLimit" disabled>
+            </div>
+            <div data-valmsg-summary="true" class="validation-summary-valid">
+                <ul>
+                    <li style="display: none"></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -48,6 +55,14 @@
             }
             else {
                 $("input#TimeLimit").attr("disabled","");
+            }
+        });
+
+        $("input#AnalysisBoard").change(function(data) {
+            if (this.checked) {
+                $("#RealGameSettings :input").attr("disabled", "");
+            } else {
+                $("#RealGameSettings :input").removeAttr("disabled");
             }
         });
 

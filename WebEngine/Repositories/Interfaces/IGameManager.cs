@@ -9,6 +9,7 @@ namespace RedChess.WebEngine.Repositories.Interfaces
     {
         IGameBinding FetchGame(int gameId);
         int Add(IBoard board, int opponentId, string currentUser, bool playAsBlack, int timeLimitMs);
+        int Add(IBoard board, string currentUser);
         void SaveClock(IClock clock);
         IClock Clock(int gameId);
         HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber);

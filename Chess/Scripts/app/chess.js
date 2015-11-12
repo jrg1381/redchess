@@ -51,12 +51,13 @@
     }
 };
 
-function Chess(gameId, currentPlayerColor, clock) {
+function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.gameId = gameId;
     this.currentPlayerColor = currentPlayerColor;
     this.boardLocked = false;
     this.spinner = null;
     this.isTimedGame = (clock != null);
+    this.isAnalysisBoard = analysisBoard;
     this.myClock = clock;
     if (clock != null) {
         clock.theChess = this;
@@ -70,6 +71,13 @@ function Chess(gameId, currentPlayerColor, clock) {
     };
 
     this.onDragStart = function (source, piece, position, orientation) {
+        if (that.isAnalysisBoard) {
+            if (!$("form").is(":hidden") || piece.search(that.currentTurn) === -1) {
+                return false;
+            }
+            return true;
+        }
+
         if ((orientation === 'white' && piece.search(/^w/) === -1) ||
             (orientation === 'black' && piece.search(/^b/) === -1) ||
             !$("form").is(":hidden") || piece.search(that.currentPlayerColor) == -1 || that.currentTurn != that.currentPlayerColor || that.boardLocked) {
@@ -81,7 +89,7 @@ function Chess(gameId, currentPlayerColor, clock) {
     var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable: true, onDrop: this.onDrop.bind(this), onDragStart : this.onDragStart };
     this.chessBoard = new ChessBoard('board', cfg);
 
-    if (this.currentPlayerColor == 'b') {
+    if (this.currentPlayerColor === 'b' && !this.isAnalysisBoard) {
         this.chessBoard.flip();
     }
 

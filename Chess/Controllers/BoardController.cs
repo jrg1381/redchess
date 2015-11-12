@@ -67,14 +67,27 @@ namespace Chess.Controllers
             return View(m_gameManager.AllUserProfiles().Where(x => x.UserName != m_identityProvider.CurrentUser));
         }
 
+
+        private JsonResult NewAnalysisBoard()
+        {
+            var newBoard = BoardFactory.CreateInstance();
+            var newGameIdAnalysis = m_gameManager.Add(newBoard, m_identityProvider.CurrentUser);
+            RefreshIndexPage();
+            return Json(new { success = true, redirect = "/Board/Details/" + newGameIdAnalysis });
+        }
         //
         // POST: /Board/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(string opponent, string timeLimit, bool useClock = false, bool playAsBlack = false)
+        public JsonResult Create(string opponent, string timeLimit, bool useClock = false, bool playAsBlack = false, bool analysisBoard = false)
         {
             double timeLimitAsNumber = 0;
+
+            if (analysisBoard)
+            {
+                return NewAnalysisBoard();
+            }
 
             if (useClock)
             {

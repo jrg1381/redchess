@@ -17,6 +17,7 @@
         var gameId = @Model.GameId;
         var currentPlayerColor = '@Model.CurrentPlayerColor(@User.Identity.Name)';
         var myClock = null;
+        var analysisBoard = false;
 
         @if (clockModel != null)
         {
@@ -25,7 +26,12 @@
             </text>
         }
 
-        var theChess = new Chess(gameId, currentPlayerColor, myClock);
+        @if (Model.UserProfileBlack.UserId == Model.UserProfileWhite.UserId)
+        {
+            <text>analysisBoard = true;</text>
+        };
+
+        var theChess = new Chess(gameId, currentPlayerColor, myClock, analysisBoard);
 
         $("#resignbutton").click(function() {
             theChess.resignGame();

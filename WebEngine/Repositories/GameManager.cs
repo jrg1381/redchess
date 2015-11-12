@@ -358,6 +358,22 @@ namespace RedChess.WebEngine.Repositories
             PostGameEndedMessage(gameId);
         }
 
+        public int Add(IBoard board, string user)
+        {
+            var currentUserId = m_userRepository.UserId(user);
+
+            var newGame = new GameDto
+            {
+                Fen = board.ToFen(),
+                UserIdBlack = currentUserId,
+                UserIdWhite = currentUserId
+            };
+
+            m_repository.AddOrUpdate(newGame);
+
+            return newGame.GameId;
+        }
+
         public int Add(IBoard board, int opponentId, string currentUser, bool playAsBlack, int timeLimitMs)
         {
             var newGame = new GameDto {Fen = board.ToFen()};
