@@ -137,10 +137,21 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="panel panel-default">
+                                <div class="panel panel-default" style="height: 155px">
                                     <div class="panel-heading">
                                         <h3 class="panel-title"><a onclick="GoToGame(@item.GameId);">@item.Description</a></h3>
-                                        @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
+                                        @item.Status<br/>
+                                        <span class="tinier">
+                                        Started <time class="timeago" datetime="@iso8601datetime">@item.CreationDate UTC</time>
+                                        </span>
+                                        @if (item.Clock != null)
+                                        {
+                                            var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs / (1000 * 60));
+                                            <span style="float : right">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                                @iso8601GameTimeLimit
+                                            </span>
+                                        }
                                     </div>
                                     <div class="panel-body">
 
