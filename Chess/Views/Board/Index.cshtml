@@ -114,8 +114,10 @@
                         var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
 
                         <tr>
-                            <td width="300px">
-                                <div class="miniboard" id="m-@item.GameId" style="width: 300px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
+                            <td width="160px">
+                                <div>
+                                    <div class="miniboard" id="m-@item.GameId" style="width: 160px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
+                                </div>
                             </td>
                             <td>
                                 <div class="panel panel-default">
@@ -123,19 +125,26 @@
                                         <h3 class="panel-title" id="turnindicator-m">@item.Fen</h3>
                                     </div>
                                     <div class="panel-body">
-                                        @item.LastMove
+                                        @if (item.LastMove == null)
+                                        {
+                                            <div class="btn btn-primary pulseme" onclick="GoToGame(@item.GameId);">Start playing</div>
+                                        }
+                                        else
+                                        {
+                                            @item.LastMove
+                                        }
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">@item.Description</h3>
-                                        @item.Status<br /><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
+                                        <h3 class="panel-title"><a onclick="GoToGame(@item.GameId);">@item.Description</a></h3>
+                                        @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
                                     </div>
                                     <div class="panel-body">
 
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.GameId }) | @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)
+                                        @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) | @Html.ActionLink("History", "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)
                                     </div>
                                 </div>
                             </td>
