@@ -137,7 +137,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="panel panel-default" style="height: 155px">
+                                <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h3 class="panel-title"><a onclick="GoToGame(@item.GameId);">@item.Description</a></h3>
                                         @item.Status<br/>
@@ -154,8 +154,9 @@
                                         }
                                     </div>
                                     <div class="panel-body">
-
-                                        @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) | @Html.ActionLink("History", "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)
+                                        @Html.ActionLink("Go to game", "Details", new {id = item.GameId}) |
+                                        @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) |
+                                        @Html.ActionLink("History", "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)
                                     </div>
                                 </div>
                             </td>
