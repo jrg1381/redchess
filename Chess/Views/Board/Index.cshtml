@@ -156,7 +156,7 @@
                                     <div class="panel-body">
                                         @Html.ActionLink("Go to game", "Details", new {id = item.GameId}) |
                                         @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) |
-                                        @Html.ActionLink("History", "ShowMove", "History", new {gameId = item.GameId, moveNumber = 1}, null)
+                                        @Html.ActionLink("History", "ShowMove", "History", new {id = item.GameId}, null)
                                     </div>
                                 </div>
                             </td>
@@ -185,7 +185,7 @@
                     @foreach (var item in @Model.Where(x => myCompletedGames(x) && !oldGames(x)).OrderByDescending(x => x.CompletionDate))
                     {
                         var iso8601Datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-                        string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null).ToString();
+                        string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new { id = item.GameId }, null).ToString();
                         if (item.UserProfileWinner != null)
                         {
                             descriptionLink = descriptionLink.Replace(item.UserProfileWinner.UserName, "<b>" + item.UserProfileWinner.UserName + "</b>");

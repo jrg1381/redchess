@@ -1,7 +1,8 @@
-﻿function BoardViewer(positions, board) {
+﻿function BoardViewer(positions, board, gameId) {
     this.positions = positions;
     this.board = board;
     this.currentMove = 0;
+    this.gameId = gameId;
 
     var that = this;
 
@@ -86,9 +87,7 @@
         });
 
         $("#playFromHere").on("click", function () {
-            var queryDict = {};
-            location.search.substr(1).split("&").forEach(function(item) { queryDict[item.split("=")[0]] = item.split("=")[1] });
-            window.location = "/History/PlayFromHere?move=" + that.currentMove + "&gameId=" + queryDict["gameId"];
+            window.location = "/History/PlayFromHere?move=" + that.currentMove + "&gameId=" + that.gameId;
         });
     };
 

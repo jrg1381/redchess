@@ -86,7 +86,7 @@
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         var board = new ChessBoard('board', cfg);
         var emptyData = { Moves: [{ Fen: "", Move: "" }], Description: "", IsParticipant: false };
-        var boardViewer = new BoardViewer(emptyData, board);
+        var boardViewer = new BoardViewer(emptyData, board, '@Model');
         boardViewer.startSpinning();
 
         $.getJSON("/api/Moves/@Model")
@@ -94,7 +94,7 @@
                 boardViewer.stopSpinning();
             })
             .done(function (data) {
-                boardViewer = new BoardViewer(data, board);
+                boardViewer = new BoardViewer(data, board, '@Model');
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
                 var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText }; });
                 if (evaluationData.length === 0) {

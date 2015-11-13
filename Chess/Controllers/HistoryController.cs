@@ -69,20 +69,16 @@ namespace Chess.Controllers
             return RedirectToAction("Details", "Board", new { id = gameIdOfNewGame});
         }
 
-        public ActionResult ShowMove(string gameId, string moveNumber)
+        public ActionResult ShowMove(int id)
 		{
-			int game = Int32.Parse(gameId);
-			int move = Int32.Parse(moveNumber ?? "0");
-
-            var entries = m_gameManager.FindAllMoves(game);
+            var entries = m_gameManager.FindAllMoves(id);
 
             if (!entries.Any())
             {
                 return HttpNotFound("No such game or move");
             }
 
-            ViewBag.MoveNumber = move;
-            return View("History", game);
+            return View("History", id);
 		}
 
         [HttpGet]
