@@ -52,6 +52,7 @@
         $("input#UseClock").change(function (data) {
             if (this.checked) {
                 $("input#TimeLimit").removeAttr("disabled");
+                $("#TimeLimit").val($.cookie('lastTimeLimit'));
             }
             else {
                 $("input#TimeLimit").attr("disabled","");
@@ -101,6 +102,7 @@
                     errorSummary.find('ul').empty().append(items);
                 }
                 else {
+                    $.cookie('lastTimeLimit', $("#TimeLimit").val(), { expires: 365, path: '' });
                     document.location = data.redirect;
                 }
             },
