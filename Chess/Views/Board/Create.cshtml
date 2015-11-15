@@ -48,11 +48,12 @@
 }
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        $("input#TimeLimit").val($.cookie('lastTimeLimit'));
+
         $("input#UseClock").change(function (data) {
             if (this.checked) {
                 $("input#TimeLimit").removeAttr("disabled");
-                $("#TimeLimit").val($.cookie('lastTimeLimit'));
             }
             else {
                 $("input#TimeLimit").attr("disabled","");
