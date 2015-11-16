@@ -94,6 +94,13 @@
                 boardViewer.stopSpinning();
             })
             .done(function (data) {
+                var moves = data.Moves.length;
+                var analyzedMoves = data.Analysis.length;
+
+                if (moves - analyzedMoves !== 1) {
+                    $("#analysisTitle").text("Analysis (completed " + analyzedMoves + "/" + moves + ")");
+                }
+
                 boardViewer = new BoardViewer(data, board, '@Model');
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
                 var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText }; });
@@ -141,7 +148,7 @@
         </div>
         <div class="col-lg-3">
             <div class="panel panel-info">
-                <div class="panel-heading">Analysis</div>
+                <div class="panel-heading" id="analysisTitle">Analysis</div>
                 <div id="upper-analysis" class="panel-body"></div>
                 <div id="scrollbox2" class="panel-body pre-scrollable" style="max-height: 465px"></div>
             </div>
