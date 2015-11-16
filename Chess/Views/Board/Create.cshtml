@@ -50,6 +50,7 @@
 <script>
     $(document).ready(function () {
         $("input#TimeLimit").val($.cookie('lastTimeLimit'));
+        $("input#UseClock").prop("checked", $.cookie('preferTimedGame') === "true");
 
         $("input#UseClock").change(function (data) {
             if (this.checked) {
@@ -104,6 +105,7 @@
                 }
                 else {
                     $.cookie('lastTimeLimit', $("#TimeLimit").val(), { expires: 365, path: '' });
+                    $.cookie('preferTimedGame', $("input#UseClock").prop("checked"), { expires : 365, path: ''});
                     document.location = data.redirect;
                 }
             },
