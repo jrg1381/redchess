@@ -49,9 +49,6 @@
 
 <script>
     $(document).ready(function () {
-        $("input#TimeLimit").val($.cookie('lastTimeLimit'));
-        $("input#UseClock").prop("checked", $.cookie('preferTimedGame') === "true");
-
         $("input#UseClock").change(function (data) {
             if (this.checked) {
                 $("input#TimeLimit").removeAttr("disabled");
@@ -68,6 +65,9 @@
                 $("#RealGameSettings :input").removeAttr("disabled");
             }
         });
+
+        $("input#TimeLimit").val($.cookie('lastTimeLimit'));
+        $("input#UseClock").prop("checked", $.cookie('preferTimedGame') === "true");
 
         $("#createForm").valid();
         $("button#submitbutton").click(SubmitForm);
