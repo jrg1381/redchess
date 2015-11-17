@@ -49,12 +49,15 @@
 
 <script>
     $(document).ready(function () {
-        $("input#UseClock").change(function (data) {
+        // Ok to do this because the DOM won't change
+        var inputTimeLimit = $("input#TimeLimit");
+        var inputUseClock = $("input#UseClock");
+
+        inputUseClock.change(function(data) {
             if (this.checked) {
-                $("input#TimeLimit").removeAttr("disabled");
-            }
-            else {
-                $("input#TimeLimit").attr("disabled","");
+                inputTimeLimit.removeAttr("disabled");
+            } else {
+                inputTimeLimit.attr("disabled", "");
             }
         });
 
@@ -67,11 +70,11 @@
         });
 
         if ($.cookie('preferTimedGame') === "true") {
-            $("input#UseClock").prop("checked", true);
-            $("input#TimeLimit").removeAttr("disabled");
+            inputUseClock.prop("checked", true);
+            inputTimeLimit.removeAttr("disabled");
         }
 
-        $("input#TimeLimit").val($.cookie('lastTimeLimit'));
+        inputTimeLimit.val($.cookie('lastTimeLimit'));
 
         $("#createForm").valid();
         $("button#submitbutton").click(SubmitForm);
