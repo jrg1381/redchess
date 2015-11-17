@@ -66,8 +66,12 @@
             }
         });
 
+        if ($.cookie('preferTimedGame') === "true") {
+            $("input#UseClock").prop("checked", true);
+            $("input#TimeLimit").removeAttr("disabled");
+        }
+
         $("input#TimeLimit").val($.cookie('lastTimeLimit'));
-        $("input#UseClock").prop("checked", $.cookie('preferTimedGame') === "true");
 
         $("#createForm").valid();
         $("button#submitbutton").click(SubmitForm);
