@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalysisSimplifierTests.cs" />
     <Compile Include="BoardControllerTests.cs" />
     <Compile Include="HistoryControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

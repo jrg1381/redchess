@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AnalysisBinding.cs" />
     <Compile Include="Repositories\AnalysisRepository.cs" />
+    <Compile Include="Repositories\AnalysisSimplifier.cs" />
     <Compile Include="Repositories\ChessContext.cs" />
     <Compile Include="Repositories\ClockRepository.cs" />
     <Compile Include="Repositories\GameBinding.cs" />
