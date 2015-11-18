@@ -59,7 +59,9 @@ namespace RedChess.WebEngine.Repositories
             var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
             using (var board = BoardFactory.CreateInstance())
             {
-                /* score mate -11 nodes 4884896 nps 1051419 tbhits 0 time 4646 pv                  * c4e2 d7b5 g1e1 b2d2 f2f1 d2f4 f1g2 b5e2 e1e2 f4f3 g2h2 f3e2 h2g3                  * e2f3 g3h2 e4e3 h2g1 e3e2 g1h2 e2e1n h2g1 f3g2 info depth 34 */
+                /* score mate -11 nodes 4884896 nps 1051419 tbhits 0 time 4646 pv 
+                 * c4e2 d7b5 g1e1 b2d2 f2f1 d2f4 f1g2 b5e2 e1e2 f4f3 g2h2 f3e2 h2g3 
+                 * e2f3 g3h2 e4e3 h2g1 e3e2 g1h2 e2e1n h2g1 f3g2 info depth 34 */
                 board.FromFen(historyEntry.Fen);
                 if (boardAnalysis.BoardEvaluationType == EvaluationType.MateInN)
                 {
