@@ -53,6 +53,14 @@
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="AnalysisWorkerContent\install.cmd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="AnalysisWorkerContent\NDP46-KB3045560-Web.exe">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>

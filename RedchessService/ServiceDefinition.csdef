@@ -9,5 +9,17 @@
       <Setting name="Microsoft.ServiceBus.ConnectionString" />
       <Setting name="DefaultConnection" />
     </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="InstallLogs" sizeInMB="5" cleanOnRoleRecycle="false" />
+    </LocalResources>
+    <Startup>
+      <Task commandLine="install.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="PathToInstallLogs">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/LocalResources/LocalResource[@name='InstallLogs']/@path" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
   </WorkerRole>
 </ServiceDefinition>
