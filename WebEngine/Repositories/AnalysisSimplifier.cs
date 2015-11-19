@@ -14,7 +14,7 @@ namespace RedChess.WebEngine.Repositories
     internal class AnalysisSimplifier
     {
         private readonly IHistoryRepository m_historyRepository;
-        private static readonly Regex MateSequenceRegex;
+        private static readonly Regex s_mateSequenceRegex;
 
         public AnalysisSimplifier(IHistoryRepository historyRepository)
         {
@@ -23,7 +23,7 @@ namespace RedChess.WebEngine.Repositories
 
         static AnalysisSimplifier()
         {
-            MateSequenceRegex = new Regex(@"score mate -?\d+ nodes \d+ nps \d+ tbhits \d+ time \d+ pv (.*?) info depth");
+            s_mateSequenceRegex = new Regex(@"score mate -?\d+ nodes \d+ nps \d+ tbhits \d+ time \d+ pv (.*?) info depth");
         }
 
         public IBoardAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)
@@ -36,11 +36,12 @@ namespace RedChess.WebEngine.Repositories
                 if (inputAnalysis.BoardEvaluationType == EvaluationType.MateInN)
                 {
                     var outputAnalysis = new BoardAnalysis(inputAnalysis);
-                    var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
+                    // Important - the board must be from the move BEFORE the analysed move, so -1
+                    var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber - 1);
                     using (var board = BoardFactory.CreateInstance())
                     {
                         board.FromFen(historyEntry.Fen);
-                        var rx = MateSequenceRegex;
+                        var rx = s_mateSequenceRegex;
                         var matches = rx.Matches(outputAnalysis.Analysis);
                         if (matches.Count > 0)
                         {
