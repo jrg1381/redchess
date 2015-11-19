@@ -37,7 +37,7 @@ namespace RedChess.ControllerTests
                 Move = "Nc3"
             };
 
-            var mock = GetFakeHistoryRepo(historyEntry);
+            var mock = MockRepository.GenerateMock<IHistoryRepository>();
             var processor = new AnalysisSimplifier(mock);
             var boardAnalysis = new BoardAnalysis
             {
