@@ -221,7 +221,7 @@ namespace RedChess.ControllerTests
                 GameId = 10,
                 MoveNumber = 1,
                 Fen = "rnbqkbnr/pppp1ppp/8/4p3/5PP1/8/PPPPP2P/RNBQKBNR b KQkq G3 0",
-                Move = "Qh4#"
+                Move = "g4"
             };
 
             var mock = GetFakeHistoryRepo(historyEntry);
@@ -232,7 +232,7 @@ namespace RedChess.ControllerTests
                 Analysis = data,
                 BoardEvaluationType = EvaluationType.MateInN
             };
-            var newAnalysis = processor.ProcessBoardAnalysis(10, 1, boardAnalysis);
+            var newAnalysis = processor.ProcessBoardAnalysis(10, 2, boardAnalysis);
         }
     }
 }
