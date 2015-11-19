@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using Microsoft.Azure;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -8,9 +9,11 @@ namespace RedChess.WebEngine.Repositories
 {
     internal class HistoryRepository : IHistoryRepository
     {
+        ///  Only used by the AnalysisWorker role
         public HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber)
         {
-            using (var context = new ChessContext())
+            var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
+            using (var context = new ChessContext(connectionString))
             {
                 return context.HistoryEntries
                     .AsNoTracking()
