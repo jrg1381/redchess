@@ -66,7 +66,8 @@ namespace RedChess.WebEngine.Repositories
             catch (Exception e)
             {
                 Trace.WriteLine(inputAnalysis);
-                Trace.TraceError(e.Message);
+                Trace.TraceError("AnalysisSimplifier: " + e.Message);
+                throw;
             }
 
             return inputAnalysis;
