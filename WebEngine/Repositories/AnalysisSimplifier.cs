@@ -14,27 +14,33 @@ namespace RedChess.WebEngine.Repositories
     internal class AnalysisSimplifier
     {
         private readonly IHistoryRepository m_historyRepository;
+        private static readonly Regex MateSequenceRegex;
 
         public AnalysisSimplifier(IHistoryRepository historyRepository)
         {
             m_historyRepository = historyRepository;
         }
 
+        static AnalysisSimplifier()
+        {
+            MateSequenceRegex = new Regex(@"score mate -?\d+ nodes \d+ nps \d+ tbhits \d+ time \d+ pv (.*?) info depth");
+        }
+
         public IBoardAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)
         {
-            var outputAnalysis = new BoardAnalysis(inputAnalysis);
             try
             {
-                var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
-                using (var board = BoardFactory.CreateInstance())
-                {
-                    /* score mate -11 nodes 4884896 nps 1051419 tbhits 0 time 4646 pv 
+                   /* score mate -11 nodes 4884896 nps 1051419 tbhits 0 time 4646 pv 
                  * c4e2 d7b5 g1e1 b2d2 f2f1 d2f4 f1g2 b5e2 e1e2 f4f3 g2h2 f3e2 h2g3 
                  * e2f3 g3h2 e4e3 h2g1 e3e2 g1h2 e2e1n h2g1 f3g2 info depth 34 */
-                    board.FromFen(historyEntry.Fen);
-                    if (outputAnalysis.BoardEvaluationType == EvaluationType.MateInN)
+                if (inputAnalysis.BoardEvaluationType == EvaluationType.MateInN)
+                {
+                    var outputAnalysis = new BoardAnalysis(inputAnalysis);
+                    var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
+                    using (var board = BoardFactory.CreateInstance())
                     {
-                        var rx = new Regex(@"score mate -?\d+ nodes \d+ nps \d+ tbhits \d+ time \d+ pv (.*?) info depth");
+                        board.FromFen(historyEntry.Fen);
+                        var rx = MateSequenceRegex;
                         var matches = rx.Matches(outputAnalysis.Analysis);
                         if (matches.Count > 0)
                         {
@@ -53,6 +59,7 @@ namespace RedChess.WebEngine.Repositories
                             }
                         }
                     }
+                    return outputAnalysis;
                 }
             }
             catch (Exception e)
@@ -61,7 +68,7 @@ namespace RedChess.WebEngine.Repositories
                 Trace.TraceError(e.Message);
             }
 
-            return outputAnalysis;
+            return inputAnalysis;
         }
 
         private IList<Location> MovesToLocations(IEnumerable<string> locations)
