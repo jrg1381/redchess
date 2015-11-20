@@ -52,6 +52,38 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
+        public void MateByPromotion()
+        {
+            var historyEntry = new HistoryEntry
+            {
+                GameId = 10,
+                MoveNumber = 23,
+                Fen = "k7/7R/6P1/8/8/8/8/7K w - - 0",
+                Move = "Ka8"
+            };
+
+            var mock = GetFakeHistoryRepo(historyEntry);
+            var processor = new AnalysisSimplifier(mock);
+            var boardAnalysis = new BoardAnalysis
+            {
+                BoardEvaluation = 1,
+                Analysis = "score mate 1 nodes 4884896 nps 1051419 tbhits 0 time 4646 pv g6g7 a8b8 g7g8q info depth 34",
+                BoardEvaluationType = EvaluationType.MateInN
+            };
+
+            var expectedAnalysis = new BoardAnalysis
+            {
+                BoardEvaluation = 1,
+                Analysis = "g7 Kb8 g8=Q",
+                BoardEvaluationType = EvaluationType.MateInN
+            };
+
+            var newAnalysis = processor.ProcessBoardAnalysis(10, 23, boardAnalysis);
+            Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to have move substituted in");
+            mock.VerifyAllExpectations();
+        }
+
+        [Test]
         public void MateInNModified()
         {
             var historyEntry = new HistoryEntry

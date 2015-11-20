@@ -81,7 +81,7 @@ namespace Redchess.Engine
             return m_transcriber.Value;
         }
 
-        public PieceColor CurrentTurn { get; private set; }
+        public PieceColor CurrentTurn { get; set; }
 
         public string ToFen()
         {
