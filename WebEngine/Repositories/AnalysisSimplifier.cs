@@ -47,20 +47,28 @@ namespace RedChess.WebEngine.Repositories
                         if (matches.Count > 0)
                         {
                             var lastMatch = matches[matches.Count - 1];
-                            var matchBeginsAt = lastMatch.Groups[1].Index;
-                            var moves = lastMatch.Groups[1].Value.Split(' ');
+                            var matchBeginsAt = 0;
+                            var winningMateSequence = lastMatch.Groups[1].Value;
+                            var moves = winningMateSequence.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+
                             foreach (var move in moves)
                             {
                                 var locations = MovesToLocations(new[] {move.Substring(0, 2), move.Substring(2, 2)});
                                 if (!board.Move(locations[0], locations[1]))
                                     throw new ArgumentException(String.Format("Could not move from {0} to {1} on {2}",
                                         locations[0], locations[1], board.ToFen()));
+                                if (move.Length == 5)
+                                {
+                                    board.PromotePiece(move[4].ToString().ToUpperInvariant());
+                                }
                                 var lastMove = board.LastMove();
-                                outputAnalysis.Analysis =
-                                    outputAnalysis.Analysis.Remove(matchBeginsAt, move.Length)
+                                winningMateSequence =
+                                    winningMateSequence.Remove(matchBeginsAt, move.Length)
                                         .Insert(matchBeginsAt, lastMove);
                                 matchBeginsAt += lastMove.Length + 1; // include the space
                             }
+
+                            outputAnalysis.Analysis = winningMateSequence;
                         }
                     }
                     return outputAnalysis;

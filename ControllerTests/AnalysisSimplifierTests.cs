@@ -57,7 +57,7 @@ namespace RedChess.ControllerTests
             var historyEntry = new HistoryEntry
             {
                 GameId = 10,
-                MoveNumber = 0,
+                MoveNumber = 1,
                 Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
                 Move = ""
             };
@@ -74,7 +74,7 @@ namespace RedChess.ControllerTests
             var expectedAnalysis = new BoardAnalysis
             {
                 BoardEvaluation = -11,
-                Analysis = "score mate -11 nodes 4884896 nps 1051419 tbhits 0 time 4646 pv Nc3 Nc6 info depth 34",
+                Analysis = "Nc3 Nc6",
                 BoardEvaluationType = EvaluationType.MateInN
             };
 
@@ -219,7 +219,7 @@ namespace RedChess.ControllerTests
             var historyEntry = new HistoryEntry
             {
                 GameId = 10,
-                MoveNumber = 1,
+                MoveNumber = 2,
                 Fen = "rnbqkbnr/pppp1ppp/8/4p3/5PP1/8/PPPPP2P/RNBQKBNR b KQkq G3 0",
                 Move = "g4"
             };
@@ -232,7 +232,17 @@ namespace RedChess.ControllerTests
                 Analysis = data,
                 BoardEvaluationType = EvaluationType.MateInN
             };
+
+            var expectedAnalysis = new BoardAnalysis
+            {
+                BoardEvaluation = 1,
+                Analysis = "Qh4#",
+                BoardEvaluationType = EvaluationType.MateInN
+            };
+
             var newAnalysis = processor.ProcessBoardAnalysis(10, 2, boardAnalysis);
+            Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to have move substituted in");
+            mock.VerifyAllExpectations();
         }
     }
 }
