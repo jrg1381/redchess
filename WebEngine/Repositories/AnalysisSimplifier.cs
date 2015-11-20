@@ -59,9 +59,7 @@ namespace RedChess.WebEngine.Repositories
                                         locations[0], locations[1], board.ToFen()));
                                 if (move.Length == 5)
                                 {
-                                    board.CurrentTurn = ~board.CurrentTurn;
                                     board.PromotePiece(move[4].ToString().ToUpperInvariant());
-                                    board.CurrentTurn = ~board.CurrentTurn;
                                 }
                                 var lastMove = board.LastMove();
                                 winningMateSequence =

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.WebEngine.Models;
@@ -74,7 +69,7 @@ namespace RedChess.ControllerTests
             var expectedAnalysis = new BoardAnalysis
             {
                 BoardEvaluation = 1,
-                Analysis = "g7 Kb8 g8=Q",
+                Analysis = "g7 Kb8 g8=Q#",
                 BoardEvaluationType = EvaluationType.MateInN
             };
 

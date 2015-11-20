@@ -107,6 +107,27 @@ namespace Redchess.EngineTests
         }
 
         [Test]
+        public void PawnPromotesAndMates()
+        {
+            m_emptyBoard.FromFen("k7/6PR/8/8/8/8/8/7K w - - 0");
+
+            var moveDefinition = new BoardStateTransition
+            {
+                MovedPiece = m_emptyBoard.GetContents(Location.G7),
+                Target = Location.G8,
+                Promotion = "Q",
+                BoardBefore = new InteractiveBoard(m_emptyBoard)
+            };
+
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            m_emptyBoard.PromotePiece(moveDefinition.Promotion);
+            moveDefinition.BoardAfter = new InteractiveBoard(m_emptyBoard);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
+            Assert.AreEqual("g8=Q#", move, "Pawn on g7 moves to g8 and promotes to queen with mate");
+        }
+
+        [Test]
         public void NormalMoveOfKing()
         {
             m_emptyBoard.FromFen("rnbqkbnr/ppp1pppp/8/8/8/8/PPPP1PPP/RNB1KBNR w KQkq - 0");

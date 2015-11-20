@@ -215,6 +215,8 @@ namespace Redchess.Engine
             var initialLetter = Char.ToUpper(promotionTarget[0]);
             var flagsForPromotedPiece = PieceType.None;
 
+            // The trick here is that if white moved last (to put their pawn on the back rank) it's already been switched to Black's go,
+            // so we need to promote to the opposite colour piece to make it all work.
             if (CurrentTurn == PieceColor.White)
                 flagsForPromotedPiece |= PieceType.Black;
             else
