@@ -94,6 +94,10 @@ namespace Redchess.AnalysisWorker
             var lastLine = workItem.Result.Analysis.Split(new[] { "\r\n" }, StringSplitOptions.None).Last(x => x.Contains("pv " + bestMove));
 
             var centipawnScoreMatch = s_centipawnScoreRegex.Match(lastLine);
+
+            //Discard newlines
+            workItem.Result.Analysis = workItem.Result.Analysis.Replace("\r\n", "");
+
             if (centipawnScoreMatch.Success)
             {
                 Trace.WriteLine("Score for move is " + centipawnScoreMatch.Captures[0].Value);
