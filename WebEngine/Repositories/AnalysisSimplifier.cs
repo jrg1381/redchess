@@ -23,7 +23,7 @@ namespace RedChess.WebEngine.Repositories
 
         static AnalysisSimplifier()
         {
-            s_mateSequenceRegex = new Regex(@"score mate -?\d+ nodes \d+ nps \d+ tbhits \d+ time \d+ pv (.*?) info depth");
+            s_mateSequenceRegex = new Regex(@"score\s+mate\s+-?\d+\s+nodes\s+\d+\s+nps\s+\d+\s+tbhits\s+\d+\s+time\s+\d+\s+pv\s+(.*?)\s+info\s+depth");
         }
 
         public IBoardAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)

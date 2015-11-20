@@ -96,7 +96,7 @@ namespace Redchess.AnalysisWorker
             var centipawnScoreMatch = s_centipawnScoreRegex.Match(lastLine);
 
             //Discard newlines
-            workItem.Result.Analysis = workItem.Result.Analysis.Replace("\r\n", "");
+            workItem.Result.Analysis = workItem.Result.Analysis.Replace("\r\n", " ");
 
             if (centipawnScoreMatch.Success)
             {
