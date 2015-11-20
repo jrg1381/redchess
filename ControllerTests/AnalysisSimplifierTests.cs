@@ -22,7 +22,7 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
-        public void NonMateInNUnchanged()
+        public void CentipawnModified()
         {
             var historyEntry = new HistoryEntry
             {
@@ -32,17 +32,24 @@ namespace RedChess.ControllerTests
                 Move = "Nc3"
             };
 
-            var mock = MockRepository.GenerateMock<IHistoryRepository>();
+            var mock = GetFakeHistoryRepo(historyEntry);
             var processor = new AnalysisSimplifier(mock);
             var boardAnalysis = new BoardAnalysis
             {
                 BoardEvaluation = 44,
-                Analysis = "doesn't matter",
+                Analysis = "info depth 6 seldepth 6 multipv 1 score cp 21 nodes 4562 nps 350923 tbhits 0 time 13 pv g1f3 g8f6 d2d4 d7d5 b1c3 e7e6 info",
+                BoardEvaluationType = EvaluationType.Centipawn
+            };
+
+            var expectedAnalysis = new BoardAnalysis
+            {
+                BoardEvaluation = 44,
+                Analysis = "Nf3 Nf6 d4 d5 Nc3 e6",
                 BoardEvaluationType = EvaluationType.Centipawn
             };
 
             var newAnalysis = processor.ProcessBoardAnalysis(10, 1, boardAnalysis);
-            Assert.AreEqual(newAnalysis, boardAnalysis, "Expected analysis text to be unchanged for non-mate analysis");
+            Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to be unchanged for non-mate analysis");
             mock.VerifyAllExpectations();
         }
 
