@@ -35,14 +35,15 @@ namespace RedChess.WebEngine.Repositories
                  * e2f3 g3h2 e4e3 h2g1 e3e2 g1h2 e2e1n h2g1 f3g2 info depth 34 */
                 if (inputAnalysis.BoardEvaluationType == EvaluationType.MateInN)
                 {
+                    Trace.WriteLine("Mate in N detected");
                     var outputAnalysis = new BoardAnalysis(inputAnalysis);
                     // Important - the board must be from the move BEFORE the analysed move, so -1
                     var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber - 1);
                     using (var board = BoardFactory.CreateInstance())
                     {
                         board.FromFen(historyEntry.Fen);
-                        var rx = s_mateSequenceRegex;
-                        var matches = rx.Matches(outputAnalysis.Analysis);
+                        var matches = s_mateSequenceRegex.Matches(outputAnalysis.Analysis);
+                        Trace.WriteLine(matches.Count + " regex matches detected");
                         if (matches.Count > 0)
                         {
                             var lastMatch = matches[matches.Count - 1];
@@ -51,7 +52,9 @@ namespace RedChess.WebEngine.Repositories
                             foreach (var move in moves)
                             {
                                 var locations = MovesToLocations(new[] {move.Substring(0, 2), move.Substring(2, 2)});
-                                board.Move(locations[0], locations[1]);
+                                if (!board.Move(locations[0], locations[1]))
+                                    throw new ArgumentException(String.Format("Could not move from {0} to {1} on {2}",
+                                        locations[0], locations[1], board.ToFen()));
                                 var lastMove = board.LastMove();
                                 outputAnalysis.Analysis =
                                     outputAnalysis.Analysis.Remove(matchBeginsAt, move.Length)
