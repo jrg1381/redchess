@@ -37,8 +37,8 @@ namespace RedChess.WebEngine.Repositories
                 {
                     Trace.WriteLine("Mate in N detected");
                     var outputAnalysis = new BoardAnalysis(inputAnalysis);
-                    // Important - the board must be from the move BEFORE the analysed move, so -1
-                    var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber - 1);
+                    // Important - the board must be from the move BEFORE the analysed move
+                    var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
                     using (var board = BoardFactory.CreateInstance())
                     {
                         board.FromFen(historyEntry.Fen);
