@@ -24,8 +24,8 @@ namespace RedChess.WebEngine.Repositories
         static AnalysisSimplifier()
         {
             var common = @"\s+nodes\s+\d+\s+nps\s+\d+\s+tbhits\s+\d+\s+time\s+\d+\s+pv\s+";
-            s_mateSequenceRegex = new Regex(@"score\s+mate\s+-?\d+" + common + @"(.*?)\s+info\s+depth");
-            s_centipawnSequenceRegex = new Regex(@"score\s+cp\s+\d+" + common + @"(.*?)\s+(info|bestmove)");
+            s_mateSequenceRegex = new Regex(@"score\s+mate\s+-?\d+" + common +  @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)info\s+depth");
+            s_centipawnSequenceRegex = new Regex(@"score\s+cp\s+\d+" + common + @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)(info|bestmove)");
         }
 
         public IBoardAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)
@@ -67,11 +67,13 @@ namespace RedChess.WebEngine.Repositories
                 board.FromFen(historyEntry.Fen);
                 var matches = sequenceRegex.Matches(outputAnalysis.Analysis);
                 Trace.WriteLine(matches.Count + " regex matches detected");
+                if(matches.Count == 0)
+                    Trace.WriteLine("No match on : " + outputAnalysis.Analysis);
                 if (matches.Count > 0)
                 {
                     var lastMatch = matches[matches.Count - 1];
                     var matchBeginsAt = 0;
-                    var winningMateSequence = lastMatch.Groups[1].Value;
+                    var winningMateSequence = lastMatch.Groups[1].Value.TrimEnd(' ');
                     var moves = winningMateSequence.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
                     foreach (var move in moves)
