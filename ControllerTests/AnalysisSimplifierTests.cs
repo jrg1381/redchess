@@ -121,7 +121,7 @@ namespace RedChess.ControllerTests
         public void LongAnalysis()
         {
             #region data
-            string data = @"info depth 1 seldepth 2 multipv 1 score mate 1 nodes 37 nps 37000 tbhits 0 time 1 pv d8h4
+            string data = @"info depth 1 seldepth 2 multipv 1 score mate 1 nodes 37 nps 37000 tbhits 0 time 1 pv d8h4 
  info depth 2 seldepth 2 multipv 1 score mate 1 nodes 69 nps 69000 tbhits 0 time 1 pv d8h4
  info depth 3 seldepth 2 multipv 1 score mate 1 nodes 101 nps 101000 tbhits 0 time 1 pv d8h4
  info depth 4 seldepth 2 multipv 1 score mate 1 nodes 133 nps 133000 tbhits 0 time 1 pv d8h4
