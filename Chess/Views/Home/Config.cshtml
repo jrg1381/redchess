@@ -1,8 +1,11 @@
-﻿<div>
-@using RedChess.WebEngine.Repositories
+﻿@model IEnumerable<RedChess.WebEngine.Models.LogEntry>
 
-    <h2>Configuration</h2>
-    @{
+<div>
+        @using System.Collections
+        @using RedChess.WebEngine.Repositories
+
+        <h2>Configuration</h2>
+        @{
         var manager = new GameManager();
 
         var environment = Environment.Version.ToString();
@@ -10,49 +13,67 @@
         var processorCount = Environment.ProcessorCount;
         var userCount = manager.AllUserProfiles().Count();
         var games = manager.FindAll().ToList();
-    }
+        }
 
-    <table class="table">
-        <tr>
-            <td>CLR version</td>
-            <td>@environment</td>
-        </tr>
-        <tr>
-            <td>OS</td>
-            <td>@os</td>
-        </tr>
-        <tr>
-            <td>Processor count</td>
-            <td>@processorCount</td>
-        </tr>
-        <tr>
-            <td>User count</td>
-            <td>@userCount</td>
-        </tr>
-        <tr>
-            <td>Game count</td>
-            <td>
-                <table class="table-condensed">
-                    <tr>
-                        <td>
-                            Finished
-                        </td>
-                        <td>
-                            @games.Count(g => g.GameOver)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            In progress
-                        </td>
-                        <td>
-                            @games.Count(g => !g.GameOver)
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+        <table class="table">
+            <tr>
+                <td>CLR version</td>
+                <td>@environment</td>
+            </tr>
+            <tr>
+                <td>OS</td>
+                <td>@os</td>
+            </tr>
+            <tr>
+                <td>Processor count</td>
+                <td>@processorCount</td>
+            </tr>
+            <tr>
+                <td>User count</td>
+                <td>@userCount</td>
+            </tr>
+            <tr>
+                <td>Game count</td>
+                <td>
+                    <table class="table-condensed">
+                        <tr>
+                            <td>
+                                Finished
+                            </td>
+                            <td>
+                                @games.Count(g => g.GameOver)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                In progress
+                            </td>
+                            <td>
+                                @games.Count(g => !g.GameOver)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Logs</td>
+                <td>
+                    <table class="table-condensed">
+                        @foreach (var logEntry in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @logEntry.PreciseTimeStamp
+                                </td>
+                                <td>
+                                    @logEntry.Message
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        </table>
 
-</div>
+    </div>
 
