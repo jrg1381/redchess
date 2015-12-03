@@ -316,7 +316,7 @@ namespace RedChess.ControllerTests
             var boardAnalysis = new BoardAnalysis
             {
                 BoardEvaluation = 1,
-                Analysis = data,
+                Analysis = data.Replace("\r","").Replace("\n","\r\n"),
                 BoardEvaluationType = EvaluationType.MateInN
             };
 
