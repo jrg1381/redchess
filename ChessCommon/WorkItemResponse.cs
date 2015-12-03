@@ -1,9 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.ChessCommon
 {
+    public class ProcessedAnalysis : IProcessedAnalysis
+    {
+        public int BoardEvaluation { get; set; }
+        public EvaluationType BoardEvaluationType { get; set; }
+        public IList<IHistoryEntry> Analysis { get; private set; }
+
+        public ProcessedAnalysis(IBoardAnalysis boardAnalysis)
+        {
+            BoardEvaluationType = boardAnalysis.BoardEvaluationType;
+            BoardEvaluation = boardAnalysis.BoardEvaluation;
+            Analysis = new List<IHistoryEntry>();
+        }
+    }
+
     public class BoardAnalysis : IBoardAnalysis
     {
         public BoardAnalysis(IBoardAnalysis bestMove)

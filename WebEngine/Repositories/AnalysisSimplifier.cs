@@ -7,6 +7,7 @@ using RedChess.ChessCommon;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.EngineFactory;
+using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
@@ -28,7 +29,7 @@ namespace RedChess.WebEngine.Repositories
             s_centipawnSequenceRegex = new Regex(@"score\s+cp\s+-?\d+" + common + @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)(info|bestmove)");
         }
 
-        public IBoardAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)
+        public IProcessedAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)
         {
             try
             {
@@ -54,25 +55,24 @@ namespace RedChess.WebEngine.Repositories
                 throw;
             }
 
-            return inputAnalysis;
+            throw new ArgumentException("Could not process raw analysis");
         }
 
-        private IBoardAnalysis ProcessAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis, Regex sequenceRegex)
+        private IProcessedAnalysis ProcessAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis, Regex sequenceRegex)
         {
-            var outputAnalysis = new BoardAnalysis(inputAnalysis);
+            var outputAnalysis = new ProcessedAnalysis(inputAnalysis);
             // Important - the board must be from the move BEFORE the analysed move
             var historyEntry = m_historyRepository.FindByGameIdAndMoveNumber(gameId, moveNumber);
             using (var board = BoardFactory.CreateInstance())
             {
                 board.FromFen(historyEntry.Fen);
-                var matches = sequenceRegex.Matches(outputAnalysis.Analysis);
+                var matches = sequenceRegex.Matches(inputAnalysis.Analysis);
                 Trace.WriteLine(matches.Count + " regex matches detected");
                 if(matches.Count == 0)
                     Trace.WriteLine("No match on : " + outputAnalysis.Analysis);
                 if (matches.Count > 0)
                 {
                     var lastMatch = matches[matches.Count - 1];
-                    var matchBeginsAt = 0;
                     var winningMateSequence = lastMatch.Groups[1].Value.TrimEnd(' ');
                     var moves = winningMateSequence.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
@@ -87,13 +87,14 @@ namespace RedChess.WebEngine.Repositories
                             board.PromotePiece(move[4].ToString().ToUpperInvariant());
                         }
                         var lastMove = board.LastMove();
-                        winningMateSequence =
-                            winningMateSequence.Remove(matchBeginsAt, move.Length)
-                                .Insert(matchBeginsAt, lastMove);
-                        matchBeginsAt += lastMove.Length + 1; // include the space
+                        outputAnalysis.Analysis.Add(new HistoryEntry()
+                        {
+                            Fen = board.ToFen(),
+                            Move = lastMove,
+                            MoveNumber = moveNumber++,
+                            GameId = gameId
+                        });
                     }
-
-                    outputAnalysis.Analysis = winningMateSequence;
                 }
             }
             return outputAnalysis;

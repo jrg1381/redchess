@@ -43,7 +43,7 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public void AddAnalysis(int id, int moveNumber, IBoardAnalysis boardAnalysis)
+        public void AddAnalysis(int id, int moveNumber, IProcessedAnalysis boardAnalysis)
         {
             var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
             using (var context = new ChessContext(connectionString))
@@ -52,7 +52,7 @@ namespace RedChess.WebEngine.Repositories
                 {
                     GameId = id,
                     MoveNumber = moveNumber,
-                    Analysis = boardAnalysis.Analysis,
+                    Analysis = String.Join(" ", boardAnalysis.Analysis.Select(x => x.Move)),
                     Evaluation = boardAnalysis.BoardEvaluation,
                     EvaluationType = boardAnalysis.BoardEvaluationType
                 });

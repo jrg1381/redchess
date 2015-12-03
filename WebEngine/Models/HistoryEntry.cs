@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Repositories;
 
 namespace RedChess.WebEngine.Models
 {
-    public class HistoryEntry
+    public class HistoryEntry : IHistoryEntry
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
