@@ -24,19 +24,19 @@ namespace Chess.Controllers
             m_gameManager = manager ?? new GameManager();
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public object Boards()
         {
             return Json(m_gameManager.FindAll().ToDictionary(game => game.GameId, GameBindingToGameData));
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public object Boards(string id)
         {
             return Json(m_gameManager.WithPlayer(id).ToDictionary(game => game.GameId, GameBindingToGameData));
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public object Moves(int id)
         {
             try
@@ -60,7 +60,7 @@ namespace Chess.Controllers
             }
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public object Board(int id)
         {
             try
