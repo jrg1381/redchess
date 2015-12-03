@@ -8,8 +8,8 @@ namespace RedChess.ChessCommon
 {
     public class ProcessedAnalysis : IProcessedAnalysis
     {
-        public int BoardEvaluation { get; set; }
-        public EvaluationType BoardEvaluationType { get; set; }
+        public int BoardEvaluation { get; private set; }
+        public EvaluationType BoardEvaluationType { get; private set; }
         public IList<IHistoryEntry> Analysis { get; private set; }
 
         public ProcessedAnalysis(IBoardAnalysis boardAnalysis)

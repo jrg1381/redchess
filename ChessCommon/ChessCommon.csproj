@@ -56,9 +56,10 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="HistoryEntryEqualityComparer.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
+    <Compile Include="Interfaces\IBoardAnalysis.cs" />
     <Compile Include="Interfaces\IHistoryEntry.cs" />
     <Compile Include="Interfaces\IParse.cs" />
-    <Compile Include="Interfaces\IWorkItemResponse.cs" />
+    <Compile Include="Interfaces\IProcessedAnalysis.cs" />
     <Compile Include="ProcessedAnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkItemResponse.cs" />
