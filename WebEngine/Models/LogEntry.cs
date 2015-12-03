@@ -39,6 +39,14 @@ namespace RedChess.WebEngine.Models
 
         public static IEnumerable<LogEntry> FetchLogEntries()
         {
+#if DEBUG
+            return new List<LogEntry>
+            {
+                new LogEntry() {Message = "Helloworld", PreciseTimeStamp = DateTime.Now},
+                new LogEntry() {Message = "Helloworld2", PreciseTimeStamp = DateTime.Now.AddSeconds(33)}
+            };
+#endif
+
             // Retrieve the storage account from the connection string.
              var storageAccount = CloudStorageAccount.Parse(
                 CloudConfigurationManager.GetSetting("StorageConnectionString"));

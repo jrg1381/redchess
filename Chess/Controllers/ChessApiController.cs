@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
-using System.Web.Mvc;
-using Microsoft.Ajax.Utilities;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;

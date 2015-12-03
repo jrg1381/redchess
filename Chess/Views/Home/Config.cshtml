@@ -63,7 +63,7 @@
                         {
                             <tr>
                                 <td>
-                                    @logEntry.PreciseTimeStamp
+                                    @String.Format("{0:yyyy-MM-dd HH:mm:ss.fffff}", logEntry.PreciseTimeStamp)
                                 </td>
                                 <td>
                                     @logEntry.Message
