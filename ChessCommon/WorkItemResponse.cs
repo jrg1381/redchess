@@ -5,17 +5,16 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.ChessCommon
 {
-    public class ProcessedAnalysis : IProcessedAnalysis
+    class HistoryEntryEqualityComparer : IEqualityComparer<IHistoryEntry>
     {
-        public int BoardEvaluation { get; set; }
-        public EvaluationType BoardEvaluationType { get; set; }
-        public IList<IHistoryEntry> Analysis { get; private set; }
-
-        public ProcessedAnalysis(IBoardAnalysis boardAnalysis)
+        public bool Equals(IHistoryEntry x, IHistoryEntry y)
         {
-            BoardEvaluationType = boardAnalysis.BoardEvaluationType;
-            BoardEvaluation = boardAnalysis.BoardEvaluation;
-            Analysis = new List<IHistoryEntry>();
+            return x.Move == y.Move && x.Fen == y.Fen && x.MoveNumber == y.MoveNumber;
+        }
+
+        public int GetHashCode(IHistoryEntry obj)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -41,15 +41,48 @@ namespace RedChess.ControllerTests
                 BoardEvaluationType = EvaluationType.Centipawn
             };
 
-            var expectedAnalysis = new BoardAnalysis
+            var expectedAnalysis = new ProcessedAnalysis(boardAnalysis);
+            expectedAnalysis.Analysis.Add(new HistoryEntry
             {
-                BoardEvaluation = 44,
-                Analysis = "Nf3 Nf6 d4 d5 Nc3 e6",
-                BoardEvaluationType = EvaluationType.Centipawn
-            };
+                Move = "Nf3",
+                Fen = "rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1",
+                MoveNumber = 1
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry
+            {
+                Move = "Nf6",
+                Fen = "rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2",
+                MoveNumber = 2
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry
+            {
+                Move = "d4",
+                Fen = "rnbqkb1r/pppppppp/5n2/8/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq D3 0",
+                MoveNumber = 3
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry
+            {
+                Move = "d5",
+                Fen = "rnbqkb1r/ppp1pppp/5n2/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R w KQkq D6 0",
+                MoveNumber = 4
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry
+            {
+                Move = "Nc3",
+                Fen = "rnbqkb1r/ppp1pppp/5n2/3p4/3P4/2N2N2/PPP1PPPP/R1BQKB1R b KQkq - 1",
+                MoveNumber = 5
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry
+            {
+                Move = "e6",
+                Fen = "rnbqkb1r/ppp2ppp/4pn2/3p4/3P4/2N2N2/PPP1PPPP/R1BQKB1R w KQkq - 0",
+                MoveNumber = 6
+            });
+
+                //"Nf3 Nf6 d4 d5 Nc3 e6",
 
             var newAnalysis = processor.ProcessBoardAnalysis(10, 1, boardAnalysis);
-            Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to be unchanged for non-mate analysis");
+            Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to be correct for non-mate analysis");
             mock.VerifyAllExpectations();
         }
 
@@ -73,12 +106,25 @@ namespace RedChess.ControllerTests
                 BoardEvaluationType = EvaluationType.MateInN
             };
 
-            var expectedAnalysis = new BoardAnalysis
+            var expectedAnalysis = new ProcessedAnalysis(boardAnalysis);
+            expectedAnalysis.Analysis.Add(new HistoryEntry()
             {
-                BoardEvaluation = 1,
-                Analysis = "g7 Kb8 g8=Q#",
-                BoardEvaluationType = EvaluationType.MateInN
-            };
+                Move = "g7",
+                Fen = "k7/6PR/8/8/8/8/8/7K b - - 0",
+                MoveNumber = 23
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry()
+            {
+                Move = "Kb8",
+                Fen = "1k6/6PR/8/8/8/8/8/7K w - - 1",
+                MoveNumber = 24
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry()
+            {
+                Move = "g8=Q#",
+                Fen = "1k4Q1/7R/8/8/8/8/8/7K b - - 0",
+                MoveNumber = 25
+            });
 
             var newAnalysis = processor.ProcessBoardAnalysis(10, 23, boardAnalysis);
             Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to have move substituted in");
@@ -105,12 +151,19 @@ namespace RedChess.ControllerTests
                 BoardEvaluationType = EvaluationType.MateInN
             };
 
-            var expectedAnalysis = new BoardAnalysis
+            var expectedAnalysis = new ProcessedAnalysis(boardAnalysis);
+            expectedAnalysis.Analysis.Add(new HistoryEntry()
             {
-                BoardEvaluation = -11,
-                Analysis = "Nc3 Nc6",
-                BoardEvaluationType = EvaluationType.MateInN
-            };
+                Move = "Nc3",
+                Fen = "rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR b KQkq - 1",
+                MoveNumber = 1
+            });
+            expectedAnalysis.Analysis.Add(new HistoryEntry()
+            {
+                Move = "Nc6",
+                Fen = "r1bqkbnr/pppppppp/2n5/8/8/2N5/PPPPPPPP/R1BQKBNR w KQkq - 2",
+                MoveNumber = 2
+            });
 
             var newAnalysis = processor.ProcessBoardAnalysis(10, 1, boardAnalysis);
             Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to have move substituted in");
@@ -267,12 +320,13 @@ namespace RedChess.ControllerTests
                 BoardEvaluationType = EvaluationType.MateInN
             };
 
-            var expectedAnalysis = new BoardAnalysis
+            var expectedAnalysis = new ProcessedAnalysis(boardAnalysis);
+            expectedAnalysis.Analysis.Add(new HistoryEntry()
             {
-                BoardEvaluation = 1,
-                Analysis = "Qh4#",
-                BoardEvaluationType = EvaluationType.MateInN
-            };
+                Move = "Qh4#",
+                MoveNumber = 2,
+                Fen = "rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1"
+            });
 
             var newAnalysis = processor.ProcessBoardAnalysis(10, 2, boardAnalysis);
             Assert.AreEqual(expectedAnalysis, newAnalysis, "Expected analysis text to have move substituted in");
