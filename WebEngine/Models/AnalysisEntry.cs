@@ -19,7 +19,7 @@ namespace RedChess.WebEngine.Models
         public int Evaluation { get; set; }
         public EvaluationType EvaluationType { get; set; }
 
-        [ForeignKey("ParentAnalysisId")]
+        [ForeignKey("AnalysisEntryId")]
         public virtual IEnumerable<AnalysisLine> AnalysisLines { get; set; }
     }
 
