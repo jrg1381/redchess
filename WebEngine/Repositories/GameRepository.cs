@@ -63,7 +63,7 @@ namespace RedChess.WebEngine.Repositories
                 var analysisLines = boardAnalysis.Analysis.Select(a => new AnalysisLine()
                 {
                     GameId = id,
-                    AnalysisLineId = analysisEntry.AnalysisEntryId
+                    ParentAnalysisId = analysisEntry.AnalysisEntryId
                 });
 
                 context.AnalysisLines.AddRange(analysisLines);
