@@ -6,10 +6,22 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.ChessCommon
 {
+    /// <summary>
+    /// ProcessedAnalysis is a BoardAnalysis which has been parsed to make it more friendly.
+    /// </summary>
     public class ProcessedAnalysis : IProcessedAnalysis
     {
+        /// <summary>
+        /// Score in centipawns or mate-in-N moves. Positive indicates white advantage.
+        /// </summary>
         public int BoardEvaluation { get; private set; }
+        /// <summary>
+        /// Kind of evaluation (mate in N or centipawn)
+        /// </summary>
         public EvaluationType BoardEvaluationType { get; private set; }
+        /// <summary>
+        /// The best line computed by the engine
+        /// </summary>
         public IList<IHistoryEntry> Analysis { get; private set; }
 
         public ProcessedAnalysis(IBoardAnalysis boardAnalysis)

@@ -4,8 +4,28 @@ using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.ChessCommon
 {
+    /// <summary>
+    /// A board analysis represents the raw stockfish output.
+    /// </summary>
     public class BoardAnalysis : IBoardAnalysis
     {
+        /// <summary>
+        /// Raw analysis string from the stockfish engine
+        /// </summary>
+        public string Analysis { get; set; }
+        /// <summary>
+        /// The evaluation in centipawns or number of steps until mate. Positive numbers indicate advantage for white.
+        /// </summary>
+        public int BoardEvaluation { get; set; }
+        /// <summary>
+        /// Enumeration indicating whether BoardEvaluation is a centipawn or mate-in-N score
+        /// </summary>
+        public EvaluationType BoardEvaluationType { get; set; }
+
+        /// <summary>
+        /// Copy a board analysis from another.
+        /// </summary>
+        /// <param name="bestMove"></param>
         public BoardAnalysis(IBoardAnalysis bestMove)
         {
             Analysis = bestMove.Analysis;
@@ -16,10 +36,6 @@ namespace RedChess.ChessCommon
         public BoardAnalysis()
         {
         }
-
-        public string Analysis { get; set; }
-        public int BoardEvaluation { get; set; }
-        public EvaluationType BoardEvaluationType { get; set; }
 
         public override string ToString()
         {
