@@ -27,5 +27,6 @@ namespace RedChess.WebEngine.Repositories
         public DbSet<HistoryEntry> HistoryEntries { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<AnalysisEntry> AnalysisEntries { get; set; }
+        public DbSet<AnalysisLine> AnalysisLines { get; set; }
 	}
 }
