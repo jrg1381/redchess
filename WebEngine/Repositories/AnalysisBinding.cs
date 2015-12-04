@@ -10,15 +10,15 @@ namespace RedChess.WebEngine.Repositories
     {
         internal static AnalysisBinding Empty = new AnalysisBinding();
 
-        public IList<IHistoryEntry> Analysis { get; set; }
-        public string AnalysisText { get; set; }
+        public IList<IHistoryEntry> AnalysisLines { get; set; }
+        public string Analysis { get; set; }
         public int Evaluation { get; set; }
         public EvaluationType BoardEvaluationType { get; set; }
         public int MoveNumber { get; set; }
 
         public bool IsEmpty()
         {
-            return String.IsNullOrEmpty(AnalysisText);
+            return String.IsNullOrEmpty(Analysis);
         }
     }
 }

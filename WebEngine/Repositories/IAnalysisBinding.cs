@@ -8,8 +8,8 @@ namespace RedChess.WebEngine.Repositories
 {
     public interface IAnalysisBinding
     {
-        IList<IHistoryEntry> Analysis { get; set; }
-        string AnalysisText { get; set; }
+        IList<IHistoryEntry> AnalysisLines { get; set; }
+        string Analysis { get; set; }
         int Evaluation { get; set; }
         EvaluationType BoardEvaluationType { get; set; }
         int MoveNumber { get; set; }

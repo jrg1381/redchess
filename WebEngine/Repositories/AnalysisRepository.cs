@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -24,7 +25,8 @@ namespace RedChess.WebEngine.Repositories
                         MoveNumber = entry.MoveNumber,
                         GameId = newGameId,
                         Evaluation = entry.Evaluation,
-                        Analysis = entry.Analysis
+                        Analysis = entry.Analysis,
+                        AnalysisLines = entry.AnalysisLines.ToList()
                     };
                     context.AnalysisEntries.Add(newEntry);
                 }
@@ -44,7 +46,8 @@ namespace RedChess.WebEngine.Repositories
 
                 return entries.Select(x => new AnalysisBinding()
                 {
-                    AnalysisText = x.Analysis,
+                    AnalysisLines = new List<IHistoryEntry>(),
+                    Analysis = x.Analysis,
                     Evaluation = x.Evaluation,
                     BoardEvaluationType = x.EvaluationType,
                     MoveNumber = x.MoveNumber
