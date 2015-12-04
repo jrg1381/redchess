@@ -48,24 +48,25 @@ namespace RedChess.WebEngine.Repositories
             var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
             using (var context = new ChessContext(connectionString))
             {
-                var analysisLines = new List<AnalysisLine>()
-                {
-                    new AnalysisLine()
-                    {
-                        GameId = id
-                    }
-                };
-
-                context.AnalysisEntries.Add(new AnalysisEntry()
+                var analysisEntry = new AnalysisEntry()
                 {
                     GameId = id,
                     MoveNumber = moveNumber,
                     Analysis = String.Join(" ", boardAnalysis.Analysis.Select(x => x.Move)),
                     Evaluation = boardAnalysis.BoardEvaluation,
                     EvaluationType = boardAnalysis.BoardEvaluationType,
-                    AnalysisLines =  analysisLines
+                };
+
+                context.AnalysisEntries.Add(analysisEntry);
+                context.SaveChanges();
+
+                var analysisLines = boardAnalysis.Analysis.Select(a => new AnalysisLine()
+                {
+                    GameId = id,
+                    AnalysisLineId = analysisEntry.AnalysisEntryId
                 });
 
+                context.AnalysisLines.AddRange(analysisLines);
                 context.SaveChanges();
             }
         }
