@@ -62,7 +62,7 @@
     <Compile Include="Interfaces\IProcessedAnalysis.cs" />
     <Compile Include="ProcessedAnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkItemResponse.cs" />
+    <Compile Include="BoardAnalysis.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Chess.snk">
