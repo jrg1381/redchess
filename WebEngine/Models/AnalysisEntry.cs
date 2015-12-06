@@ -9,6 +9,11 @@ namespace RedChess.WebEngine.Models
     [Table("Analysis")]
     public class AnalysisEntry
     {
+        public AnalysisEntry()
+        {
+            AnalysisLines = new List<AnalysisLine>();
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AnalysisEntryId { get; set; }
@@ -20,17 +25,5 @@ namespace RedChess.WebEngine.Models
         public EvaluationType EvaluationType { get; set; }
 
         public virtual ICollection<AnalysisLine> AnalysisLines { get; set; }
-    }
-
-    [Table("AnalysisLines")]
-    public class AnalysisLine
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AnalysisLineId { get; set; }
-
-        public int GameId { get; set; }
-        public int AnalysisEntryId { get; set; }
-
     }
 }

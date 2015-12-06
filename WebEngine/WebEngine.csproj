@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AnalysisLine.cs" />
     <Compile Include="Models\ILogEntry.cs" />
     <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Models\AnalysisEntry.cs" />
