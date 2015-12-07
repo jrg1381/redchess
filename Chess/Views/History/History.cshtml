@@ -77,7 +77,37 @@
                 $("#upper-analysis").text(evaluationData[moveNumber].score);
             };
 
-            $("#scrollbox2").text(evaluationData[moveNumber].analysis);
+            if ("lines" in evaluationData[moveNumber] && evaluationData[moveNumber].lines.length > 0) {
+                $("#clickableMoves").remove();
+            $("#scrollbox2").append("<div id=\"clickableMoves\"></div>");
+            var clickableMoves = $("#clickableMoves");
+
+            function functionMaker(f, link)
+                {
+                    return function(sender, data) {
+                        boardViewer.setFen(f);
+                        $(".moveLink").css("font-weight", "normal");
+                        link.css("font-weight", "bold");
+                    };
+                };
+
+            for (var i=0;i<evaluationData[moveNumber].lines.length;i++) {
+                var evaluationLine = evaluationData[moveNumber].lines[i];
+                var newSpan = $('<span></span>');
+                var link = $('<a></a>');
+                link.text(evaluationLine.Move);
+                link.addClass("moveLink");
+                var fn = functionMaker(evaluationLine.Fen, link);
+                link.click(fn);
+                newSpan.append(link);
+                clickableMoves.append(newSpan);
+                var spacer = $('<span></span>');
+                spacer.html("&nbsp;");
+                clickableMoves.append(spacer);
+            }
+};
+
+            //  $("#scrollbox2").text(evaluationData[moveNumber].analysis);
         });
     }
 
@@ -92,7 +122,7 @@
             .always(function() {
                 boardViewer.stopSpinning();
             })
-            .done(function (data) {
+            .done(function(data) {
                 var moves = data.Moves.length;
                 var analyzedMoves = data.Analysis.length;
 
@@ -102,13 +132,69 @@
 
                 boardViewer = new BoardViewer(data, board, '@Model');
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
-                var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText }; });
+                var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText, lines : x.AnalysisLines }; });
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
-                        { move: 0, score: 0, scoreType: 0, analysis : "Hello"},
-                        { move: 1, score: -4, scoreType: 1, analysis : "Something"},
-                        { move: 2, score: 3, scoreType: 1 },
-                        { move: 3, score: 8, scoreType: 0 }]);
+                        {
+                            move: 2,
+                            score: 0,
+                            scoreType: 0,
+                            analysis: "Hello",
+                            lines: [
+                                {
+                                    AnalysisLineId: 1,
+                                    GameId: 3503,
+                                    AnalysisEntryId: 2255,
+                                    Move: "fxe5",
+                                    Fen: "rnbqkbnr/pppp1ppp/8/4P3/8/8/PPPPP1PP/RNBQKBNR b KQkq - 0",
+                                    MoveNumber: 2
+                                },
+                                {
+                                    AnalysisLineId: 2,
+                                    GameId: 3503,
+                                    AnalysisEntryId: 2255,
+                                    Move: "d6",
+                                    Fen: "rnbqkbnr/ppp2ppp/3p4/4P3/8/8/PPPPP1PP/RNBQKBNR w KQkq - 0",
+                                    MoveNumber: 3
+                                },
+                                {
+                                    AnalysisLineId: 3,
+                                    GameId: 3503,
+                                    AnalysisEntryId: 2255,
+                                    Move: "exd6",
+                                    Fen: "rnbqkbnr/ppp2ppp/3P4/8/8/8/PPPPP1PP/RNBQKBNR b KQkq - 0",
+                                    MoveNumber: 4
+                                },
+                                {
+                                    AnalysisLineId: 5,
+                                    GameId: 3503,
+                                    AnalysisEntryId: 2255,
+                                    Move: "Bxd6",
+                                    Fen: "rnbqk1nr/ppp2ppp/3b4/8/8/8/PPPPP1PP/RNBQKBNR w KQkq - 0",
+                                    MoveNumber: 5
+                                },
+                                {
+                                    AnalysisLineId: 7,
+                                    GameId: 3503,
+                                    AnalysisEntryId: 2255,
+                                    Move: "Nf3",
+                                    Fen: "rnbqk1nr/ppp2ppp/3b4/8/8/5N2/PPPPP1PP/RNBQKB1R b KQkq - 1",
+                                    MoveNumber: 6
+                                },
+                                {
+                                    AnalysisLineId: 10,
+                                    GameId: 3503,
+                                    AnalysisEntryId: 2255,
+                                    Move: "Nf6",
+                                    Fen: "rnbqk2r/ppp2ppp/3b1n2/8/8/5N2/PPPPP1PP/RNBQKB1R w KQkq - 2",
+                                    MoveNumber: 7
+                                }
+                            ]
+                        },
+                        { move: 1, score: -4, scoreType: 1, analysis: "Something" },
+                        { move: 0, score: 3, scoreType: 1 },
+                        { move: 3, score: 8, scoreType: 0 }
+                    ]);
                 } else {
                     // Start data at zero
                     evaluationData.unshift({ move: 0, score: 0, scoreType: 0 });

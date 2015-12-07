@@ -10,6 +10,8 @@
         $("#m" + that.currentMove).removeClass("highlightText");
         $(this).addClass("highlightText");
         that.currentMove = parseInt(this.id.substr(1));
+        // Remove the boldness on the variant lines
+        $(".moveLink").css("font-weight", "normal");
         that.updateBoard(that.currentMove);
     }
 
@@ -145,5 +147,9 @@ BoardViewer.prototype.updateBoard = function(newMove) {
 
     this.fireCallbacks(newMove);
     this.board.position(this.positions.Moves[newMove].Fen);
+};
+
+BoardViewer.prototype.setFen = function(fen) {
+    this.board.position(fen);
 };
 

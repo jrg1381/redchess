@@ -253,7 +253,7 @@
                                 @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
                             </div>
                             <div class="panel-body">
-                                @Html.ActionLink("History", "ShowMove", "History", new { gameId = item.GameId, moveNumber = 1 }, null)
+                                @Html.ActionLink("History", "ShowMove", "History", new { id = item.GameId }, null)
                             </div>
                         </div>
                     </td>
