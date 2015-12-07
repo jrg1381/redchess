@@ -46,7 +46,7 @@ namespace RedChess.WebEngine.Repositories
 
                 return entries.Select(x => new AnalysisBinding()
                 {
-                    AnalysisLines = new List<IHistoryEntry>(),
+                    AnalysisLines = x.AnalysisLines.Select(y => y as IHistoryEntry).ToList(),
                     AnalysisText = x.Analysis,
                     Evaluation = x.Evaluation,
                     BoardEvaluationType = x.EvaluationType,

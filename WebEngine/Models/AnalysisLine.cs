@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.WebEngine.Models
 {
     [Table("AnalysisLines")]
-    public class AnalysisLine
+    public class AnalysisLine : IHistoryEntry
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
