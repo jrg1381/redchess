@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.WebEngine.Models
@@ -18,6 +19,7 @@ namespace RedChess.WebEngine.Models
         public int MoveNumber { get; set; }
 
         [ForeignKey("AnalysisEntryId")]
+        [JsonIgnore]
         public virtual AnalysisEntry ParentAnalysisEntry { get; set; }
 
     }
