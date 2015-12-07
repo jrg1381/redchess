@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,10 +40,13 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                var entries = context.AnalysisEntries.Where(
-                    x => x.GameId == gameId &&
-                         x.MoveNumber >= minMoveNumber &&
-                         x.MoveNumber <= maxMoveNumber).ToList();
+                var entries = context.AnalysisEntries
+                    .Where(
+                        x => x.GameId == gameId &&
+                             x.MoveNumber >= minMoveNumber &&
+                             x.MoveNumber <= maxMoveNumber)
+                    .Include(b => b.AnalysisLines)
+                    .ToList();
 
                 return entries.Select(x => new AnalysisBinding()
                 {

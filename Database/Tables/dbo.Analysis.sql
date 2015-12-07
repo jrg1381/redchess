@@ -2,10 +2,11 @@ CREATE TABLE [dbo].[Analysis]
 (
 [GameId] [int] NOT NULL,
 [MoveNumber] [int] NOT NULL,
-[Analysis] [nvarchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Analysis] [nvarchar] (max) NULL,
 [Evaluation] [int] NOT NULL,
 [EvaluationType] [int] NOT NULL,
-[AnalysisEntryId] [int] NOT NULL IDENTITY(1, 1)
+[AnalysisEntryId] [int] NOT NULL IDENTITY(1, 1),
+[AnalysisLineId] [int] NULL
 )
 ALTER TABLE [dbo].[Analysis] ADD 
 PRIMARY KEY CLUSTERED  ([AnalysisEntryId])
