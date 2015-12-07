@@ -12,6 +12,9 @@ namespace RedChess.WebEngine.Models
 
         public int GameId { get; set; }
         public int AnalysisEntryId { get; set; }
+        public string Move { get; set; }
+        public string Fen { get; set; }
+        public int MoveNumber { get; set; }
 
         [ForeignKey("AnalysisEntryId")]
         public virtual AnalysisEntry ParentAnalysisEntry { get; set; }
