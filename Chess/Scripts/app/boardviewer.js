@@ -11,7 +11,7 @@
         $(this).addClass("highlightText");
         that.currentMove = parseInt(this.id.substr(1));
         // Remove the boldness on the variant lines
-        $(".moveLink").css("font-weight", "normal");
+        $("table#analysisMoves td").css("font-weight", "normal");
         that.updateBoard(that.currentMove);
     }
 

@@ -31,6 +31,10 @@ table#moves td {
        padding-right : 12pt; 
 }
 
+table#analysisMoves td {
+       padding-right : 12pt; 
+}
+
 .title {
     font-family : arial;
     width : 100%;
