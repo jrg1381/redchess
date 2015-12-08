@@ -35,15 +35,15 @@
         var x = d3.scale.linear().domain([0, evaluationData.length]).range([0, width]);
         var y = d3.scale.linear().domain([-absoluteMax, absoluteMax]).range([height, 0]);
         var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format("d"));
-        var line = d3.svg.line().x(function (d,i) { return x(d.move); }).y(function (d,i) { return y(d.score); });
+        var line = d3.svg.line().x(function(d, i) { return x(d.move); }).y(function(d, i) { return y(d.score); });
 
-        svg.append("g").attr("class", "x-axis").attr("transform","translate(0,32)").call(xAxis);
+        svg.append("g").attr("class", "x-axis").attr("transform", "translate(0,32)").call(xAxis);
         svg.append("path").attr("d", line(evaluationData));
         var x0 = x(evaluationData[0].move);
         var y0 = y(evaluationData[0].score);
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
-        boardViewer.onMoveSelected(function (moveNumber) {
+        boardViewer.onMoveSelected(function(moveNumber) {
             var svgElement = d3.select("svg");
             svgElement.selectAll("circle").remove();
             svgElement.selectAll("text").remove();
@@ -70,48 +70,55 @@
                 svgElement.append("text").attr("fill", "red").attr("x", xPosition).attr("y", yPosition - 10).text(Math.abs(score));
                 var indicator = whiteWin ? "&#x2654;" : "&#x265a;"; // White king / Black king unicode symbols
                 $("#upper-analysis").html(indicator + " Mate in " + Math.abs(score));
-            }
-            else {
+            } else {
                 yPosition = y(evaluationData[moveNumber].score);
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
                 $("#upper-analysis").text(evaluationData[moveNumber].score);
             };
 
-            if ("lines" in evaluationData[moveNumber] && evaluationData[moveNumber].lines.length > 0) {
-                $("#clickableMoves").remove();
-            $("#scrollbox2").append("<div id=\"clickableMoves\"></div>");
-            var clickableMoves = $("#clickableMoves");
+            $("#analysisMoves").remove();
 
-            function functionMaker(f, link)
-                {
-                    return function(sender, data) {
+            if ("lines" in evaluationData[moveNumber] && evaluationData[moveNumber].lines.length > 0) {
+                $("#scrollbox2").append("<table id=\"analysisMoves\"></table>");
+                var analysisMoves = $("#analysisMoves");
+
+                function functionMaker(f, link) {
+                    return function() {
                         boardViewer.setFen(f);
-                        $(".moveLink").css("font-weight", "normal");
+                        $("table#analysisMoves td").css("font-weight", "normal");
                         link.css("font-weight", "bold");
                     };
                 };
 
-            for (var i=0;i<evaluationData[moveNumber].lines.length;i++) {
-                var evaluationLine = evaluationData[moveNumber].lines[i];
-                var newSpan = $('<span></span>');
-                var link = $('<a></a>');
-                link.text(evaluationLine.Move);
-                link.addClass("moveLink");
-                var fn = functionMaker(evaluationLine.Fen, link);
-                link.click(fn);
-                newSpan.append(link);
-                clickableMoves.append(newSpan);
-                var spacer = $('<span></span>');
-                spacer.html("&nbsp;");
-                clickableMoves.append(spacer);
-            }
-};
+                var moveNumberDisplay = evaluationData[moveNumber].lines[0].MoveNumber;
+                var lastMove = evaluationData[moveNumber].lines.length;
 
-            //  $("#scrollbox2").text(evaluationData[moveNumber].analysis);
+                for (var i = 0; i < lastMove; i += 2) {
+                    var originalI1 = i;
+                    var originalI2 = i + 1;
+                    var evaluationLine2 = "";
+                    var evaluationLine1 = evaluationData[moveNumber].lines[originalI1];
+
+                    var text = "<tr><td class=\"movenumber\">" + moveNumberDisplay++ + ".</td><td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
+                    if (originalI2 < lastMove) {
+                        evaluationLine2 = evaluationData[moveNumber].lines[originalI2];
+                        text += "<td id=\"em" + originalI2 + "\">" + evaluationLine2.Move + "</td>";
+                    }
+
+                    analysisMoves.append(text);
+
+                    var firstMove = $("td#em" + originalI1);
+                    firstMove.on("click", functionMaker(evaluationLine1.Fen, firstMove));
+                    if (originalI2 < lastMove) {
+                        var secondMove = $("td#em" + originalI2);
+                        secondMove.on("click", functionMaker(evaluationLine2.Fen, secondMove));
+                    }
+                }
+            }
         });
     }
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         var board = new ChessBoard('board', cfg);
         var emptyData = { Moves: [{ Fen: "", Move: "" }], Description: "", IsParticipant: false };
@@ -132,7 +139,7 @@
 
                 boardViewer = new BoardViewer(data, board, '@Model');
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
-                var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText, lines : x.AnalysisLines }; });
+                var evaluationData = data.Analysis.map(function(x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, analysis: x.AnalysisText, lines: x.AnalysisLines }; });
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
                         {
