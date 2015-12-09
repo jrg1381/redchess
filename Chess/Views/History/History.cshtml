@@ -90,10 +90,11 @@
                     };
                 };
 
-                var moveNumberDisplay = evaluationData[moveNumber].lines[0].MoveNumber;
+
                 var lastMove = evaluationData[moveNumber].lines.length;
 
                 for (var i = 0; i < lastMove; i += 2) {
+                    var moveNumberDisplay = evaluationData[moveNumber].lines[i].MoveNumber;
                     var originalI1 = i;
                     var originalI2 = i + 1;
                     var evaluationLine2 = "";
@@ -121,8 +122,6 @@
                         var secondMove = $("td#em" + originalI2);
                         secondMove.on("click", functionMaker(evaluationLine2.Fen, secondMove));
                     }
-
-                    moveNumberDisplay++;
                 }
             }
         });
@@ -156,7 +155,6 @@
                             move: 2,
                             score: 0,
                             scoreType: 0,
-                            analysis: "Hello",
                             lines: [
                                 {
                                     AnalysisLineId: 1,
