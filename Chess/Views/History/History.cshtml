@@ -102,16 +102,17 @@
 
                     var text = "<tr><td class=\"movenumber\">" + Math.floor((moveNumberDisplay+1)/2) + ".</td>";
 
-                    if(i === 0 && moveNumberDisplay % 2 === 1) {
+                    if (i === 0 && moveNumberDisplay % 2 === 1) {
                         text += "<td>...</td>";
+                        text += "<td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
+                        i--; // Because we've only consumed a single analysis line
                     }
                     else {
                         text += "<td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
-                    }
-
-                    if (originalI2 < lastMove) {
-                        evaluationLine2 = evaluationData[moveNumber].lines[originalI2];
-                        text += "<td id=\"em" + originalI2 + "\">" + evaluationLine2.Move + "</td>";
+                        if (originalI2 < lastMove) {
+                            evaluationLine2 = evaluationData[moveNumber].lines[originalI2];
+                            text += "<td id=\"em" + originalI2 + "\">" + evaluationLine2.Move + "</td>";
+                        }
                     }
 
                     analysisMoves.append(text);
