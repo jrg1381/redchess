@@ -52,7 +52,6 @@ namespace RedChess.WebEngine.Repositories
                 {
                     GameId = id,
                     MoveNumber = moveNumber,
-                    Analysis = String.Join(" ", boardAnalysis.Analysis.Select(x => x.Move)),
                     Evaluation = boardAnalysis.BoardEvaluation,
                     EvaluationType = boardAnalysis.BoardEvaluationType,
                 };

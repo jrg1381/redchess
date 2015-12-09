@@ -7,6 +7,8 @@ CREATE TABLE [dbo].[AnalysisLines]
 [Fen] [nvarchar] (max) NOT NULL,
 [MoveNumber] [int] NOT NULL
 )
+CREATE NONCLUSTERED INDEX [Idx_EntryId] ON [dbo].[AnalysisLines] ([AnalysisEntryId])
+
 ALTER TABLE [dbo].[AnalysisLines] ADD 
 PRIMARY KEY CLUSTERED  ([AnalysisLineId])
 ALTER TABLE [dbo].[AnalysisLines] ADD

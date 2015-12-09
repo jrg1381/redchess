@@ -26,7 +26,6 @@ namespace RedChess.WebEngine.Repositories
                         MoveNumber = entry.MoveNumber,
                         GameId = newGameId,
                         Evaluation = entry.Evaluation,
-                        Analysis = entry.Analysis,
                         AnalysisLines = entry.AnalysisLines.ToList()
                     };
                     context.AnalysisEntries.Add(newEntry);
@@ -51,7 +50,6 @@ namespace RedChess.WebEngine.Repositories
                 return entries.Select(x => new AnalysisBinding()
                 {
                     AnalysisLines = x.AnalysisLines.Select(y => y as IHistoryEntry).ToList(),
-                    AnalysisText = x.Analysis,
                     Evaluation = x.Evaluation,
                     BoardEvaluationType = x.EvaluationType,
                     MoveNumber = x.MoveNumber
