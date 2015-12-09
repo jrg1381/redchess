@@ -99,7 +99,15 @@
                     var evaluationLine2 = "";
                     var evaluationLine1 = evaluationData[moveNumber].lines[originalI1];
 
-                    var text = "<tr><td class=\"movenumber\">" + moveNumberDisplay++ + ".</td><td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
+                    var text = "<tr><td class=\"movenumber\">" + Math.floor((moveNumberDisplay+1)/2) + ".</td>";
+
+                    if(i === 0 && moveNumberDisplay % 2 === 1) {
+                        text += "<td>...</td>";
+                    }
+                    else {
+                        text += "<td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
+                    }
+
                     if (originalI2 < lastMove) {
                         evaluationLine2 = evaluationData[moveNumber].lines[originalI2];
                         text += "<td id=\"em" + originalI2 + "\">" + evaluationLine2.Move + "</td>";
@@ -113,6 +121,8 @@
                         var secondMove = $("td#em" + originalI2);
                         secondMove.on("click", functionMaker(evaluationLine2.Fen, secondMove));
                     }
+
+                    moveNumberDisplay++;
                 }
             }
         });
