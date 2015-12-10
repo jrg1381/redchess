@@ -19,7 +19,8 @@ namespace RedChess.WebEngine.Repositories
             {
                 foreach (
                     var entry in
-                        context.AnalysisEntries.Where(e => e.GameId == oldGameId && e.MoveNumber <= cloneUpToMove))
+                        context.AnalysisEntries
+                        .Where(e => e.GameId == oldGameId && e.MoveNumber <= cloneUpToMove))
                 {
                     var newEntry = new AnalysisEntry()
                     {
@@ -35,15 +36,14 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId, int minMoveNumber, int maxMoveNumber)
+        public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId)
         {
             using (var context = new ChessContext())
             {
                 var entries = context.AnalysisEntries
+                    .AsNoTracking()
                     .Where(
-                        x => x.GameId == gameId &&
-                             x.MoveNumber >= minMoveNumber &&
-                             x.MoveNumber <= maxMoveNumber)
+                        x => x.GameId == gameId)
                     .Include(b => b.AnalysisLines)
                     .ToList();
 
