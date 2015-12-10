@@ -92,9 +92,9 @@
 
 
                 var lastMove = evaluationData[moveNumber].lines.length;
+                var moveNumberDisplay = evaluationData[moveNumber].lines[i].MoveNumber;
 
                 for (var i = 0; i < lastMove; i += 2) {
-                    var moveNumberDisplay = evaluationData[moveNumber].lines[i].MoveNumber;
                     var originalI1 = i;
                     var originalI2 = i + 1;
                     var evaluationLine2 = "";
@@ -125,6 +125,8 @@
                         var secondMove = $("td#em" + originalI2);
                         secondMove.on("click", functionMaker(evaluationLine2.Fen, secondMove));
                     }
+
+                    moveNumberDisplay += 2;
                 }
             }
         });
