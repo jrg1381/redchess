@@ -103,7 +103,7 @@
                     var text = "";
 
                     if (i === 0 && moveNumberDisplay % 2 === 1) {
-                        text += "<tr><td class=\"movenumber\">" + moveNumberDisplay + ".</td>";
+                        text += "<tr><td class=\"movenumber\">" + Math.floor(moveNumberDisplay / 2 + 1) + ".</td>";
                         text += "<td>...</td>";
                         text += "<td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
                         i--; // Because we've only consumed a single analysis line
