@@ -101,15 +101,22 @@
                     var evaluationLine1 = evaluationData[moveNumber].lines[originalI1];
 
                     var text = "";
+                    var fullMoveNumber = 0;
+
+                    if (moveNumberDisplay % 2 === 0) {
+                        fullMoveNumber = moveNumberDisplay / 2;
+                    } else {
+                        fullMoveNumber = (moveNumberDisplay + 1) / 2;
+                    }
 
                     if (i === 0 && moveNumberDisplay % 2 === 1) {
-                        text += "<tr><td class=\"movenumber\">" + Math.floor(moveNumberDisplay / 2 + 1) + ".</td>";
+                        text += "<tr><td class=\"movenumber\">" + fullMoveNumber + ".</td>";
                         text += "<td>...</td>";
                         text += "<td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
                         i--; // Because we've only consumed a single analysis line
                     }
                     else {
-                        text += "<tr><td class=\"movenumber\">" + Math.floor((moveNumberDisplay + 1) / 2) + ".</td>";
+                        text += "<tr><td class=\"movenumber\">" + fullMoveNumber + ".</td>";
                         text += "<td id=\"em" + originalI1 + "\">" + evaluationLine1.Move + "</td>";
                         if (originalI2 < lastMove) {
                             evaluationLine2 = evaluationData[moveNumber].lines[originalI2];
