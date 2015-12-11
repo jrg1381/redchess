@@ -109,6 +109,10 @@ BoardViewer.prototype.getSpinner = function() {
     return this.spinner;
 };
 
+BoardViewer.prototype.fakeClick = function(moveNumber) {
+    $("#m" + moveNumber).click();
+}
+
 BoardViewer.prototype.onMoveSelected = function (c) {
     if (!$.isFunction(c)) {
         console.error("Attempt to add callback object which wasn't a function.");

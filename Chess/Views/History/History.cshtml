@@ -43,6 +43,12 @@
         var y0 = y(evaluationData[0].score);
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
 
+        // Set up clicking
+        $("svg").on('click', function(d) {
+            var xFromClick = Math.round(x.invert(d.offsetX));
+            boardViewer.fakeClick(xFromClick);
+        });
+
         boardViewer.onMoveSelected(function (moveNumber) {
             window.location.hash = moveNumber - 1;
 
@@ -240,7 +246,7 @@
                     var integerMove = parseInt(moveToJumpTo);
                     if (integerMove !== NaN) {
                         // Pretend that the move has been clicked
-                        $("#m" + integerMove).click();
+                        boardViewer.fakeClick(integerMove);
                     }
                 }
 
