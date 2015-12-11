@@ -55,7 +55,7 @@
                     $("#upper-analysis").text("No analysis for this move");
                 }
 
-                $("#scrollbox2").text("");
+                $("#lower-analysis").text("");
                 return;
             }
 
@@ -73,13 +73,13 @@
             } else {
                 yPosition = y(evaluationData[moveNumber].score);
                 svgElement.append("circle").attr("r", 5).attr("cx", xPosition).attr("cy", yPosition).attr("class", "blob");
-                $("#upper-analysis").text(evaluationData[moveNumber].score);
+                $("#upper-analysis").text("Score : " + evaluationData[moveNumber].score);
             };
 
             $("#analysisMoves").remove();
 
             if ("lines" in evaluationData[moveNumber] && evaluationData[moveNumber].lines.length > 0) {
-                $("#scrollbox2").append("<table id=\"analysisMoves\"></table>");
+                $("#lower-analysis").append("<table id=\"analysisMoves\"></table>");
                 var analysisMoves = $("#analysisMoves");
 
                 function functionMaker(f, link) {
@@ -261,8 +261,12 @@
         <div class="col-lg-3">
             <div class="panel panel-info">
                 <div class="panel-heading" id="analysisTitle">Analysis</div>
-                <div id="upper-analysis" class="panel-body"></div>
-                <div id="scrollbox2" class="panel-body pre-scrollable" style="max-height: 465px"></div>
+                <div id="upper-analysis" class="panel-body">
+                    <div class="bg-info">
+                        Select a move to show evaluation and best line.
+                    </div>
+                </div>
+                <div id="lower-analysis" class="panel-body pre-scrollable" style="max-height: 465px"></div>
             </div>
         </div>
     </div>
