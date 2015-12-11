@@ -43,9 +43,9 @@ namespace RedChess.WebEngine.Repositories
             m_board = BoardFactory.CreateInstance();
         }
 
-        public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId, int minMoveNumber, int maxMoveNumber)
+        public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId)
         {
-            return m_analysisRepository.AnalysisForGameMoves(gameId, minMoveNumber, maxMoveNumber);
+            return m_analysisRepository.AnalysisForGameMoves(gameId);
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()

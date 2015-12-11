@@ -5,6 +5,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
     internal interface IAnalysisRepository
     {
         void CloneGame(int newGameId, int oldGameId, int cloneUpToMove);
-        IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId, int minMoveNumber, int maxMoveNumber);
+        IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId);
     }
 }
