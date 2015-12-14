@@ -230,7 +230,7 @@ namespace RedChess.WebEngine.Repositories
 
         private string LongAlgebraicMove(ChessMove move)
         {
-            return String.Format("{0}{1}{2}", move.Start, move.End, move.Promotion ?? "").ToLower();
+            return $"{move.Start}{move.End}{move.Promotion ?? ""}".ToLower();
         }
 
         public bool Move(int gameId, Location start, Location end, string promote = null)
