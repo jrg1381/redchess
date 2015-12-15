@@ -18,7 +18,12 @@
     }
 
     if (data.mayClaimDraw) {
-        $("#drawbutton").show();
+        $("#drawbutton").text("Claim draw");
+        $("#drawbutton").off();
+        $("#drawbutton").addClass("btn-primary");
+        $("#drawbutton").click(function () {
+            this.claimDraw();
+        });
     }
 
     if (data.status == "RESIGN" || data.status == "TIME" || data.status == "DRAW") {
@@ -108,9 +113,6 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     // Hide the promotion UI and set its selection to nothing
     $("#submitmove form").hide();
     $("#Promote").val([]);
-
-    // Hide the claim the draw button
-    $("#drawbutton").hide();
 
     $("#submitmove form").submit(function () {
         this.postMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());
