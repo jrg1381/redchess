@@ -55,7 +55,9 @@ namespace Chess
 						"~/Content/themes/base/jquery.ui.progressbar.css",
 						"~/Content/themes/base/jquery.ui.theme.css"));
 
-			BundleTable.EnableOptimizations = true;
+#if !DEBUG
+            BundleTable.EnableOptimizations = true;
+#endif
 		}
 	}
 }

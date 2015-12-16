@@ -121,8 +121,20 @@ namespace Chess.Controllers
             hubContext.Clients.Group("IndexWatchers").gameListUpdate(jsonObject);
         }
 
-        //
-        // GET: /Board/Delete/5
+        [HttpPost, ActionName("OfferDraw")]
+        [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
+        public ActionResult OfferDraw(int id)
+        {
+            var game = m_gameManager.FetchGame(id);
+            var offerFrom = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
+
+            var jsonObject = Json(new { DrawOfferedBy = offerFrom });
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(id.ToString()).showDrawOffer(jsonObject);
+
+            return Json(new { success = true });
+        }
 
         public ActionResult Delete(int id = 0)
         {
@@ -224,6 +236,24 @@ namespace Chess.Controllers
         private bool MayManipulateBoard(IGameBinding game, string userName)
         {
             return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
+        public ActionResult AgreeDraw(int id)
+        {
+            // TODO: A mechanism to prove that the offer was really made in the first place and to
+            // TODO: persist the offer in the case that the page is refreshed
+            var game = m_gameManager.FetchGame(id);
+            m_gameManager.EndGameWithMessage(id, "Draw agreed");
+
+            var jsonObject = new { fen = game.Fen, message = "Draw agreed", status = "DRAW" };
+
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
+
+            return Json(jsonObject);
         }
 
         [HttpPost]

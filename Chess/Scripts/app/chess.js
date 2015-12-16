@@ -18,7 +18,12 @@
     }
 
     if (data.mayClaimDraw) {
-        $("#drawbutton").show();
+        $("#drawbutton").text("Claim draw");
+        $("#drawbutton").off();
+        $("#drawbutton").addClass("btn-primary");
+        $("#drawbutton").click(function () {
+            this.claimDraw();
+        });
     }
 
     if (data.status == "RESIGN" || data.status == "TIME" || data.status == "DRAW") {
@@ -49,6 +54,23 @@
         this.endGame();
         return;
     }
+};
+
+Chess.prototype.respondToDrawOffer = function(accepted) {
+    if (!accepted)
+        return;
+
+    $.post("/Board/AgreeDraw", {
+        "id": this.gameId,
+        "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+    }).done(this.processServerResponse.bind(this));
+};
+
+Chess.prototype.showDrawOffer = function (message) {
+    // Ignore your own draw offer coming back at you. TODO: show acknowledgement that it was sent
+    if (message.DrawOfferedBy !== this.currentPlayerColor) {
+        $("#drawoffer").removeClass("hidden");
+    };
 };
 
 function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
@@ -100,6 +122,10 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
         this.processServerResponse(message);
     }.bind(this);
 
+    updater.client.showDrawOffer = function(message) {
+        this.showDrawOffer(message);
+    }.bind(this);
+
     // Define a callback for when the connection is established. We join the client group corresponding to our game ID.
     $.connection.hub.start(function () {
         $.connection.hub.proxies.updateserver.server.join(gameId);
@@ -109,15 +135,21 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     $("#submitmove form").hide();
     $("#Promote").val([]);
 
-    // Hide the claim the draw button
-    $("#drawbutton").hide();
-
     $("#submitmove form").submit(function () {
         this.postMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());
         $("#submitmove form").hide();
         $("#Promote").val([]);
         return false;
     }.bind(this));
+};
+
+Chess.prototype.offerDraw = function() {
+    var gameId = this.gameId;
+
+    $.post("/Board/OfferDraw", {
+        "id": gameId,
+        "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+    });
 };
 
 Chess.prototype.postMove = function (start, end, promote) {
@@ -211,6 +243,7 @@ Chess.prototype.endGame = function() {
     $("#turnindicator").text("GAME OVER");
     $("#resignbutton").hide();
     $("#drawbutton").hide();
+    $("#drawoffer").hide();
 };
 
 Chess.prototype.updateUi = function(fen) {
