@@ -31,6 +31,11 @@
         return;
     }
 
+    if (data.status === "REJECT") {
+        $("#drawoffer-sent").hide();
+        return;
+    };
+
     if (data.status != "OK")
         return;
 
@@ -57,19 +62,19 @@
 };
 
 Chess.prototype.respondToDrawOffer = function(accepted) {
-    if (!accepted)
-        return;
-
     $.post("/Board/AgreeDraw", {
         "id": this.gameId,
+        "offerAccepted": accepted,
         "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
     }).done(this.processServerResponse.bind(this));
 };
 
 Chess.prototype.showDrawOffer = function (message) {
     // Ignore your own draw offer coming back at you. TODO: show acknowledgement that it was sent
-    if (message.DrawOfferedBy !== this.currentPlayerColor) {
-        $("#drawoffer").removeClass("hidden");
+    if (message.Data.DrawOfferedBy !== this.currentPlayerColor) {
+        $("#drawoffer").show();
+    } else {
+        $("#drawoffer-sent").show();
     };
 };
 
@@ -244,6 +249,7 @@ Chess.prototype.endGame = function() {
     $("#resignbutton").hide();
     $("#drawbutton").hide();
     $("#drawoffer").hide();
+    $("#drawoffer-sent").hide();
 };
 
 Chess.prototype.updateUi = function(fen) {

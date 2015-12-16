@@ -41,14 +41,17 @@
             theChess.offerDraw();
         });
 
+        $("#drawoffer").hide();
+        $("#drawoffer-sent").hide();
+
         $("#accept-draw-request").click(function() {
             theChess.respondToDrawOffer(true);
-            $("#drawoffer").addClass("hidden");
+            $("#drawoffer").hide();
         });
 
         $("#reject-draw-request").click(function() {
-            theChess.respondToDrawRequest(false);
-            $("#drawoffer").addClass("hidden");
+            theChess.respondToDrawOffer(false);
+            $("#drawoffer").hide();
         });
 
         @if (clockModel != null)
@@ -156,12 +159,16 @@
                 <div id="turnindicator"></div>
             </div>
 
-            <div id="drawoffer" class="alert alert-warning hidden">
+            <div id="drawoffer" class="alert alert-warning">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> Draw?</strong>&nbsp;&nbsp;
                 <div class="btn-group" role="group">
                     <a class="btn btn-default" id="accept-draw-request">Accept</a>
                     <a class="btn btn-default" id="reject-draw-request">Reject</a>
                 </div>
+            </div>
+
+            <div id="drawoffer-sent" class="alert alert-warning">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
             </div>
 
             <div class="panel panel-default">

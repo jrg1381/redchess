@@ -241,18 +241,26 @@ namespace Chess.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [VerifyIsParticipant]
-        public ActionResult AgreeDraw(int id)
+        public ActionResult AgreeDraw(int id, bool offerAccepted)
         {
-            // TODO: A mechanism to prove that the offer was really made in the first place and to
-            // TODO: persist the offer in the case that the page is refreshed
             var game = m_gameManager.FetchGame(id);
-            m_gameManager.EndGameWithMessage(id, "Draw agreed");
+            object jsonObject;
 
-            var jsonObject = new { fen = game.Fen, message = "Draw agreed", status = "DRAW" };
+            if (offerAccepted)
+            {
+                // TODO: A mechanism to prove that the offer was really made in the first place and to
+                // TODO: persist the offer in the case that the page is refreshed
+                m_gameManager.EndGameWithMessage(id, "Draw agreed");
+
+                jsonObject = new {fen = game.Fen, message = "Draw agreed", status = "DRAW"};
+            }
+            else
+            {
+                jsonObject = new { fen = game.Fen, message = "Offer rejected", status = "REJECT", lastmove = game.LastMove, mayClaimDraw = game.MayClaimDraw };
+            }
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
             hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
-
             return Json(jsonObject);
         }
 
