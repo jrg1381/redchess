@@ -41,6 +41,16 @@
             theChess.offerDraw();
         });
 
+        $("#accept-draw-request").click(function() {
+            theChess.respondToDrawOffer(true);
+            $("#drawoffer").addClass("hidden");
+        });
+
+        $("#reject-draw-request").click(function() {
+            theChess.respondToDrawRequest(false);
+            $("#drawoffer").addClass("hidden");
+        });
+
         @if (clockModel != null)
         {
             <text>

@@ -56,9 +56,19 @@
     }
 };
 
+Chess.prototype.respondToDrawOffer = function(accepted) {
+    if (!accepted)
+        return;
+
+    $.post("/Board/AgreeDraw", {
+        "id": this.gameId,
+        "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+    }).done(this.processServerResponse.bind(this));
+};
+
 Chess.prototype.showDrawOffer = function (message) {
-    if (message.DrawOfferedBy === this.currentPlayerColor) {
-        alert("You are offered a draw!");
+    // Ignore your own draw offer coming back at you. TODO: show acknowledgement that it was sent
+    if (message.DrawOfferedBy !== this.currentPlayerColor) {
         $("#drawoffer").removeClass("hidden");
     };
 };
