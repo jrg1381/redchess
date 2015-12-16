@@ -243,6 +243,7 @@ Chess.prototype.endGame = function() {
     $("#turnindicator").text("GAME OVER");
     $("#resignbutton").hide();
     $("#drawbutton").hide();
+    $("#drawoffer").hide();
 };
 
 Chess.prototype.updateUi = function(fen) {
