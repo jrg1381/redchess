@@ -153,6 +153,17 @@
         var boardViewer = new BoardViewer(emptyData, board, '@Model');
         boardViewer.startSpinning();
 
+        window.addEventListener('popstate', function (event) {
+            if (window.location.hash) {
+                var moveToJumpTo = window.location.hash.substring(1);
+                var integerMove = parseInt(moveToJumpTo);
+                if (integerMove !== NaN) {
+                    // Pretend that the move has been clicked
+                    boardViewer.fakeClick(integerMove);
+                }
+            }
+        });
+
         $.getJSON("/api/Moves/@Model")
             .always(function() {
                 boardViewer.stopSpinning();
@@ -249,16 +260,6 @@
                 $("#pgn-button").click(function() {
                     location.href = "/History/Pgn/@Model";
                 });
-
-                if (window.location.hash) {
-                    var moveToJumpTo = window.location.hash.substring(1);
-                    var integerMove = parseInt(moveToJumpTo);
-                    if (integerMove !== NaN) {
-                        // Pretend that the move has been clicked
-                        boardViewer.fakeClick(integerMove);
-                    }
-                }
-
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 $('span#desc').text(jqXHR.status + " " + errorThrown);
                 $("table#moves").append("<tr><td>" + jqXHR.responseJSON.message + "</td></tr>");
