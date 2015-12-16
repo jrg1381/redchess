@@ -109,6 +109,12 @@ BoardViewer.prototype.getSpinner = function() {
     return this.spinner;
 };
 
+BoardViewer.prototype.highlightMoves = function(moves) {
+    for (var i = 0; i < moves.length; i++) {
+        $("#m" + moves[i]).addClass("mate");
+    };
+};
+
 BoardViewer.prototype.fakeClick = function(moveNumber) {
     $("#m" + moveNumber).click();
 }
