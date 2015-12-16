@@ -237,9 +237,9 @@
                 }
 
                 var movesWhichAreMateInN = evaluationData.filter(function (value) {
-                    return value.BoardEvaluationType === 1;
+                    return value.scoreType === 1;
                 }).map(function (x) {
-                    return x.move;
+                    return x.move - 1;
                 });
 
                 boardViewer.highlightMoves(movesWhichAreMateInN);
