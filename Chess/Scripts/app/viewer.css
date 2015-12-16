@@ -53,6 +53,10 @@ table#analysisMoves td {
     font-family : sans-serif;
 }
 
+.mate {
+    background-color : lightcoral
+}
+
 .highlightText {
     font-weight : bold;
 }

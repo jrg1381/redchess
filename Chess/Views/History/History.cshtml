@@ -167,7 +167,8 @@
 
                 boardViewer = new BoardViewer(data, board, '@Model');
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
-                var evaluationData = data.Analysis.map(function(x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, lines: x.AnalysisLines }; });
+                var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, lines: x.AnalysisLines }; });
+
                 if (evaluationData.length === 0) {
                     showGraph(boardViewer, [
                         {
@@ -234,6 +235,14 @@
                     evaluationData.unshift({ move: 0, score: 0, scoreType: 0 });
                     showGraph(boardViewer, evaluationData, data.GameOver);
                 }
+
+                var movesWhichAreMateInN = evaluationData.filter(function (value) {
+                    return value.scoreType === 1;
+                }).map(function (x) {
+                    return x.move - 1;
+                });
+
+                boardViewer.highlightMoves(movesWhichAreMateInN);
 
                 $('#title').text(data.Description);
                 $('span#desc').text(data.Description);
