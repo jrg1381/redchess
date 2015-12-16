@@ -56,6 +56,13 @@
     }
 };
 
+Chess.prototype.showDrawOffer = function (message) {
+    if (message.DrawOfferedBy === this.currentPlayerColor) {
+        alert("You are offered a draw!");
+        $("#drawoffer").removeClass("hidden");
+    };
+};
+
 function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.gameId = gameId;
     this.currentPlayerColor = currentPlayerColor;
@@ -105,6 +112,10 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
         this.processServerResponse(message);
     }.bind(this);
 
+    updater.client.showDrawOffer = function(message) {
+        this.showDrawOffer(message);
+    }.bind(this);
+
     // Define a callback for when the connection is established. We join the client group corresponding to our game ID.
     $.connection.hub.start(function () {
         $.connection.hub.proxies.updateserver.server.join(gameId);
@@ -120,6 +131,15 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
         $("#Promote").val([]);
         return false;
     }.bind(this));
+};
+
+Chess.prototype.offerDraw = function() {
+    var gameId = this.gameId;
+
+    $.post("/Board/OfferDraw", {
+        "id": gameId,
+        "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+    });
 };
 
 Chess.prototype.postMove = function (start, end, promote) {

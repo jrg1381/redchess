@@ -121,8 +121,20 @@ namespace Chess.Controllers
             hubContext.Clients.Group("IndexWatchers").gameListUpdate(jsonObject);
         }
 
-        //
-        // GET: /Board/Delete/5
+        [HttpPost, ActionName("OfferDraw")]
+        [ValidateAntiForgeryToken]
+        [VerifyIsParticipant]
+        public ActionResult OfferDraw(int id)
+        {
+            var game = m_gameManager.FetchGame(id);
+            var offerFrom = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
+
+            var jsonObject = Json(new { DrawOfferedBy = offerFrom });
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(id.ToString()).showDrawOffer(jsonObject);
+
+            return Json(new { success = true });
+        }
 
         public ActionResult Delete(int id = 0)
         {
