@@ -1,14 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{6966DD3C-4E17-4CC1-A8E3-4390CC3A78E3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{521FD6F8-3F59-4FC8-A632-8FBFDEB94AF9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineTests", "EngineTests\EngineTests.csproj", "{864D706E-AF87-4F15-B02C-FB562EA622BB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6329AF0-7E30-4A67-8DC2-B6696A4D1B83}"
 	ProjectSection(SolutionItems) = preProject
 		Chess.snk = Chess.snk
@@ -21,6 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{93A837
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC5AF856-C27B-4641-A6C3-6DD34A9B82CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{6966DD3C-4E17-4CC1-A8E3-4390CC3A78E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{521FD6F8-3F59-4FC8-A632-8FBFDEB94AF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineTests", "EngineTests\EngineTests.csproj", "{864D706E-AF87-4F15-B02C-FB562EA622BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTests", "WebTests\WebTests.csproj", "{D32598DC-1514-4EDF-80A0-27B5E8A84C62}"
 EndProject
@@ -37,8 +39,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessCommon", "ChessCommon\ChessCommon.csproj", "{72C3C717-AEFC-4AA3-8E1F-C26058DC34A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserFactory", "ParserFactory\ParserFactory.csproj", "{20EE0545-80C1-4B86-9263-7007A6F52ECB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC5AF856-C27B-4641-A6C3-6DD34A9B82CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CombinedTests", "CombinedTests\CombinedTests.csproj", "{CE27204C-C307-4898-A347-CB28AF5A8F09}"
 EndProject
