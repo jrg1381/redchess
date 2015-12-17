@@ -36,6 +36,10 @@
         return;
     };
 
+    // Draw offer doesn't persist between moves. Making a move is the same as rejecting the offer.
+    $("#drawoffer-sent").hide();
+    $("#drawoffer").hide();
+
     if (data.status != "OK")
         return;
 
