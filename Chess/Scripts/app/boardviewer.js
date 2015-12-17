@@ -13,6 +13,7 @@
         // Remove the boldness on the variant lines
         $("table#analysisMoves td").css("font-weight", "normal");
         that.updateBoard(that.currentMove);
+        $(this)[0].scrollIntoView();
     }
 
     function populateMovesBox() {
@@ -56,32 +57,20 @@
 
         $("#goForward").on("click", function () {
             if (that.currentMove === lastMove - 1) return;
-            that.updateBoard(that.currentMove + 1);
-            $("#m" + that.currentMove).removeClass("highlightText");
-            that.currentMove++;
-            $("#m" + that.currentMove).addClass("highlightText");
+            that.fakeClick(that.currentMove + 1);
         });
 
         $("#goBack").on("click", function () {
             if (that.currentMove === 0) return;
-            that.updateBoard(that.currentMove - 1);
-            $("#m" + that.currentMove).removeClass("highlightText");
-            that.currentMove--;
-            $("#m" + that.currentMove).addClass("highlightText");
+            that.fakeClick(that.currentMove - 1);
         });
 
         $("#goStart").on("click", function () {
-            that.updateBoard(0);
-            $("#m" + that.currentMove).removeClass("highlightText");
-            that.currentMove = 0;
-            $("#m" + that.currentMove).addClass("highlightText");
+            that.fakeClick(1);
         });
 
         $("#goEnd").on("click", function () {
-            that.updateBoard(lastMove - 1);
-            $("#m" + that.currentMove).removeClass("highlightText");
-            that.currentMove = lastMove - 1;
-            $("#m" + that.currentMove).addClass("highlightText");
+            that.fakeClick(lastMove - 1);
         });
 
         $("#goFlip").on("click", function () {
