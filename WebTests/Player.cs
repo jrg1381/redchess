@@ -62,7 +62,7 @@ namespace WebTests
             var turnIndicator = Driver.FindElement(By.Id("turnindicator"));
             var expectedText = Color == PieceColor.Black ? "Black" : "White";
 
-            bool success = WaitHelper.WaitFor(TimeSpan.FromSeconds(5), () => turnIndicator.Text.Contains(expectedText));
+            bool success = WaitHelper.WaitFor(TimeSpan.FromSeconds(10), () => turnIndicator.Text.Contains(expectedText));
             Assert.True(success, "Waited for my turn but it never arrived");
         }
 
