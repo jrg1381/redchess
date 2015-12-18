@@ -7,7 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using RedChess.ChessCommon.Enumerations;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
     [TestFixture]
     public class SmokeTest

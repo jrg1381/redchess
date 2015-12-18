@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using RedChess.ChessCommon.Enumerations;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
     class Player
     {

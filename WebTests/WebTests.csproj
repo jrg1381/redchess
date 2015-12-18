@@ -7,8 +7,8 @@
     <ProjectGuid>{D32598DC-1514-4EDF-80A0-27B5E8A84C62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebTests</RootNamespace>
-    <AssemblyName>WebTests</AssemblyName>
+    <RootNamespace>RedChess.WebTests</RootNamespace>
+    <AssemblyName>RedChess.WebTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
