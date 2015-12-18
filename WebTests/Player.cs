@@ -83,5 +83,17 @@ namespace RedChess.WebTests
 
             dragAndDrop.Perform();
         }
+
+        public void OfferDraw()
+        {
+            var drawbutton = Driver.FindElement(By.Id("drawbutton"));
+            drawbutton.Click();
+        }
+
+        public void RejectDraw()
+        {
+            var rejectDrawButton = Driver.FindElement(By.Id("reject-draw-request"));
+            rejectDrawButton.Click();
+        }
     }
 }

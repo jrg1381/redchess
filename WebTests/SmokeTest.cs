@@ -91,6 +91,9 @@ namespace RedChess.WebTests
             m_jamesPlayer.PerformDragAndDrop(Location.F1, Location.C4); // Bc4
             m_clivePlayer.PerformDragAndDrop(Location.G8, Location.F6); // Nf6
 
+            m_jamesPlayer.OfferDraw();
+            m_clivePlayer.RejectDraw();
+
             m_jamesPlayer.PerformDragAndDrop(Location.H5, Location.F7); // Qxf7#
 
             m_jamesPlayer.AssertGameOver();
