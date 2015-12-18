@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace RedChess.WebTests
 {
-    class StartIisExpress
+    class IisExpressStarter
     {
         private Process m_iisProcess;
         private readonly ProcessStartInfo m_processStartInfo;
 
-        public StartIisExpress(int port = 60898)
+        public IisExpressStarter(int port = 60898)
         {
             m_processStartInfo = new ProcessStartInfo
             {
