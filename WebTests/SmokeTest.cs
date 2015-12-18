@@ -16,13 +16,13 @@ namespace RedChess.WebTests
 
         private StringBuilder m_verificationErrors;
         private string m_baseUrl;
-        private StartIisExpress m_iisStarter;
+        private IisExpressStarter m_iisStarter;
         private Player m_clivePlayer, m_jamesPlayer;
 
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            m_iisStarter = new StartIisExpress(Port);
+            m_iisStarter = new IisExpressStarter(Port);
             m_iisStarter.Start(); 
         }
 
