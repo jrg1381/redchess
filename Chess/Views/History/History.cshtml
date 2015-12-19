@@ -59,7 +59,7 @@
             svg.append("rect")
                 .attr("width", dx)
                 .attr("height", 64)
-                .attr("cx", x(evaluationData[i].move))
+                .attr("x", x(evaluationData[movesWhichAreMate[i]].move))
                 .attr("class","mate-zone");
         }
 
