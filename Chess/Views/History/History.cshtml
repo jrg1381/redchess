@@ -258,12 +258,12 @@
                             ]
                         },
                         { move: 1, score: -4, scoreType: 1, analysis: "Something" },
-                        { move: 0, score: 3, scoreType: 1 },
+                        { move: 0, score: 3, scoreType: -99 },
                         { move: 3, score: 8, scoreType: 0 }
                     ]);
                 } else {
-                    // Start data at zero
-                    evaluationData.unshift({ move: 0, score: 0, scoreType: 0 });
+                    // Start data at zero. Make sure scoretype is invalid number.
+                    evaluationData.unshift({ move: 0, score: 0, scoreType: -99 });
                     showGraph(boardViewer, evaluationData, data.GameOver);
                 }
 
