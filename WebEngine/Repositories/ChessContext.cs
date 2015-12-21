@@ -1,9 +1,18 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {
-	internal class ChessContext : DbContext
+    public class RetryConfiguration : DbConfiguration
+    {
+        public RetryConfiguration()
+        {
+            SetExecutionStrategy(SqlProviderServices.ProviderInvariantName, () => new SqlAzureExecutionStrategy());
+        }
+    }
+
+    internal class ChessContext : DbContext
 	{
         // You can add custom code to this file. Changes will not be overwritten.
         // 
