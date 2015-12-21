@@ -38,7 +38,20 @@
         });
 
         $("#drawbutton").click(function() {
-            theChess.claimDraw();
+            theChess.offerDraw();
+        });
+
+        $("#drawoffer").hide();
+        $("#drawoffer-sent").hide();
+
+        $("#accept-draw-request").click(function() {
+            theChess.respondToDrawOffer(true);
+            $("#drawoffer").hide();
+        });
+
+        $("#reject-draw-request").click(function() {
+            theChess.respondToDrawOffer(false);
+            $("#drawoffer").hide();
         });
 
         @if (clockModel != null)
@@ -69,8 +82,16 @@
         $("#lastmove").text('@Model.LastMove');
         theChess.updateTakenPieces('@Model.Fen');
 
-        @if (Model.MayClaimDraw) {
-            <text>$('#drawbutton').show()</text>
+        @if (Model.MayClaimDraw)
+        {
+            <text>
+        $("#drawbutton").text("Claim draw");
+        $("#drawbutton").off();
+        $("#drawbutton").addClass("btn-primary");
+        $("#drawbutton").click(function() {
+            theChess.claimDraw();
+        });
+        </text>
         }
 
         @if (Model.GameOver) {
@@ -96,7 +117,7 @@
         
         <div class="btn-group" role="group">
                 <a class="btn btn-default" id="resignbutton">Resign</a>
-                <a class="btn btn-default" id="drawbutton">Claim draw</a>
+                <a class="btn btn-default" id="drawbutton">Offer draw</a>
         </div>
     </div>
 
@@ -137,6 +158,19 @@
                 <div id="lastmove"></div>
                 <div id="turnindicator"></div>
             </div>
+
+            <div id="drawoffer" class="alert alert-warning">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> Draw?</strong>&nbsp;&nbsp;
+                <div class="btn-group" role="group">
+                    <a class="btn btn-default" id="accept-draw-request">Accept</a>
+                    <a class="btn btn-default" id="reject-draw-request">Reject</a>
+                </div>
+            </div>
+
+            <div id="drawoffer-sent" class="alert alert-warning">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
+            </div>
+
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div id="blacktaken" style="font-size: 36pt;"></div>

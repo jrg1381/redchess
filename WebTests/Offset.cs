@@ -1,7 +1,7 @@
 using System;
 using RedChess.ChessCommon.Enumerations;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
     class Offset
     {
@@ -27,7 +27,7 @@ namespace WebTests
                     Y = BoardSize - (loc/8)*SquareSize - SymbolOffset;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("turnColor");
+                    throw new ArgumentOutOfRangeException(nameof(turnColor));
             }
         }
     }

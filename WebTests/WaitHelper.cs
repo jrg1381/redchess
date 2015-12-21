@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
     public static class WaitHelper
     {

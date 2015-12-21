@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using RedChess.ChessCommon.Enumerations;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
     class Player
     {
@@ -62,7 +62,7 @@ namespace WebTests
             var turnIndicator = Driver.FindElement(By.Id("turnindicator"));
             var expectedText = Color == PieceColor.Black ? "Black" : "White";
 
-            bool success = WaitHelper.WaitFor(TimeSpan.FromSeconds(5), () => turnIndicator.Text.Contains(expectedText));
+            bool success = WaitHelper.WaitFor(TimeSpan.FromSeconds(10), () => turnIndicator.Text.Contains(expectedText));
             Assert.True(success, "Waited for my turn but it never arrived");
         }
 
@@ -82,6 +82,18 @@ namespace WebTests
                 Build();
 
             dragAndDrop.Perform();
+        }
+
+        public void OfferDraw()
+        {
+            var drawbutton = Driver.FindElement(By.Id("drawbutton"));
+            drawbutton.Click();
+        }
+
+        public void RejectDraw()
+        {
+            var rejectDrawButton = Driver.FindElement(By.Id("reject-draw-request"));
+            rejectDrawButton.Click();
         }
     }
 }

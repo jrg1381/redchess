@@ -7,7 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using RedChess.ChessCommon.Enumerations;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
     [TestFixture]
     public class SmokeTest
@@ -16,13 +16,13 @@ namespace WebTests
 
         private StringBuilder m_verificationErrors;
         private string m_baseUrl;
-        private StartIisExpress m_iisStarter;
+        private IisExpressStarter m_iisStarter;
         private Player m_clivePlayer, m_jamesPlayer;
 
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            m_iisStarter = new StartIisExpress(Port);
+            m_iisStarter = new IisExpressStarter(Port);
             m_iisStarter.Start(); 
         }
 
@@ -90,6 +90,9 @@ namespace WebTests
 
             m_jamesPlayer.PerformDragAndDrop(Location.F1, Location.C4); // Bc4
             m_clivePlayer.PerformDragAndDrop(Location.G8, Location.F6); // Nf6
+
+            m_jamesPlayer.OfferDraw();
+            m_clivePlayer.RejectDraw();
 
             m_jamesPlayer.PerformDragAndDrop(Location.H5, Location.F7); // Qxf7#
 

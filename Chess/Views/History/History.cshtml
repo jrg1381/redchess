@@ -18,9 +18,17 @@
     .blob { fill: steelblue; }
     .mateblack { fill: #2f2f2f }
     .matewhite { fill: white; stroke: black; stroke-width: 1px}
+    .mate-zone { fill: lightcoral; opacity : 0.3}
 </style>
 
 <script>
+    function movesWhichAreMateInN(evaluationData) {
+        return evaluationData.filter(function (value) {
+        return value.scoreType === 1;
+    }).map(function (x) {
+        return x.move - 1;
+    });};
+
     function showGraph(boardViewer, evaluationData, gameOver) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
         var width = 512;
         var height = 64;
@@ -42,6 +50,18 @@
         var x0 = x(evaluationData[0].move);
         var y0 = y(evaluationData[0].score);
         svg.append("circle").attr("r", 5).attr("cx", x0).attr("cy", y0).attr("class", "blob");
+
+        // Mark the zones where forced mate is possible
+        var movesWhichAreMate = movesWhichAreMateInN(evaluationData);
+        // Width of a single move. TODO: optimize contiguous ranges into single rectangles
+        var dx = x(evaluationData[1].move) - x(evaluationData[0].move);
+        for (var i = 0; i < movesWhichAreMate.length; i++) {
+            svg.append("rect")
+                .attr("width", dx)
+                .attr("height", 64)
+                .attr("x", x(evaluationData[movesWhichAreMate[i]].move))
+                .attr("class","mate-zone");
+        }
 
         // Set up clicking
         $("svg").on('click', function(d) {
@@ -153,6 +173,17 @@
         var boardViewer = new BoardViewer(emptyData, board, '@Model');
         boardViewer.startSpinning();
 
+        window.addEventListener('popstate', function (event) {
+            if (window.location.hash) {
+                var moveToJumpTo = window.location.hash.substring(1);
+                var integerMove = parseInt(moveToJumpTo);
+                if (integerMove !== NaN) {
+                    // Pretend that the move has been clicked
+                    boardViewer.fakeClick(integerMove);
+                }
+            }
+        });
+
         $.getJSON("/api/Moves/@Model")
             .always(function() {
                 boardViewer.stopSpinning();
@@ -227,38 +258,22 @@
                             ]
                         },
                         { move: 1, score: -4, scoreType: 1, analysis: "Something" },
-                        { move: 0, score: 3, scoreType: 1 },
+                        { move: 0, score: 3, scoreType: -99 },
                         { move: 3, score: 8, scoreType: 0 }
                     ]);
                 } else {
-                    // Start data at zero
-                    evaluationData.unshift({ move: 0, score: 0, scoreType: 0 });
+                    // Start data at zero. Make sure scoretype is invalid number.
+                    evaluationData.unshift({ move: 0, score: 0, scoreType: -99 });
                     showGraph(boardViewer, evaluationData, data.GameOver);
                 }
 
-                var movesWhichAreMateInN = evaluationData.filter(function (value) {
-                    return value.scoreType === 1;
-                }).map(function (x) {
-                    return x.move - 1;
-                });
-
-                boardViewer.highlightMoves(movesWhichAreMateInN);
+                boardViewer.highlightMoves(movesWhichAreMateInN(evaluationData));
 
                 $('#title').text(data.Description);
                 $('span#desc').text(data.Description);
                 $("#pgn-button").click(function() {
                     location.href = "/History/Pgn/@Model";
                 });
-
-                if (window.location.hash) {
-                    var moveToJumpTo = window.location.hash.substring(1);
-                    var integerMove = parseInt(moveToJumpTo);
-                    if (integerMove !== NaN) {
-                        // Pretend that the move has been clicked
-                        boardViewer.fakeClick(integerMove);
-                    }
-                }
-
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 $('span#desc').text(jqXHR.status + " " + errorThrown);
                 $("table#moves").append("<tr><td>" + jqXHR.responseJSON.message + "</td></tr>");

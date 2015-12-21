@@ -2,14 +2,14 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace WebTests
+namespace RedChess.WebTests
 {
-    class StartIisExpress
+    class IisExpressStarter
     {
         private Process m_iisProcess;
         private readonly ProcessStartInfo m_processStartInfo;
 
-        public StartIisExpress(int port = 60898)
+        public IisExpressStarter(int port = 60898)
         {
             m_processStartInfo = new ProcessStartInfo
             {
@@ -18,7 +18,7 @@ namespace WebTests
                 LoadUserProfile = true,
                 CreateNoWindow = false,
                 UseShellExecute = false,
-                Arguments = string.Format("/path:\"{0}\" /port:{1}", @"H:\PersonalRepo\Chess\Chess", port)
+                Arguments = $"/path:\"{PathToWebsite()}\" /port:{port}"
             };
 
             var programfiles = string.IsNullOrEmpty(m_processStartInfo.EnvironmentVariables["programfiles"])
@@ -26,6 +26,14 @@ namespace WebTests
                 : m_processStartInfo.EnvironmentVariables["programfiles"];
 
             m_processStartInfo.FileName = Path.Combine(programfiles, @"IIS Express\iisexpress.exe");
+        }
+
+        private string PathToWebsite()
+        {
+            // This is written to disk by a pre-build action ready for us to pick up. 
+            // We need to do this because the test assembly might be shadow-copied by a test runner to somewhere away from the original solution.
+            var solutionDirectory = File.ReadAllText("SolutionDir.txt").TrimEnd('\r', '\n', ' ');
+            return Path.Combine(solutionDirectory, "Chess");
         }
 
         public void Start()
