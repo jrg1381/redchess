@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 namespace RedChess.ChessCommon
 {
+    /// <summary>
+    /// Lock on a value type across the whole application. Returns an object which is a wrapper for the value
+    /// and can be used in a lock() statement
+    /// </summary>
     public class LockFactory
     {
         private static readonly object s_GlobalLock = new object();
