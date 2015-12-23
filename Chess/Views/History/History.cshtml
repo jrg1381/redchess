@@ -29,7 +29,7 @@
         return x.move - 1;
     });};
 
-    function showGraph(boardViewer, evaluationData, gameOver) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
+    function showGraph(boardViewer, evaluationData, gameOver, status) { // domain([d3.min(evaluationData), d3.max(evaluationData)])
         var width = 512;
         var height = 64;
 
@@ -78,7 +78,7 @@
 
             if (moveNumber > evaluationData.length - 1) {
                 if (gameOver) {
-                    $("#upper-analysis").text("Game over");
+                    $("#upper-analysis").html("Game over<br\>" + status);
                 } else {
                     $("#upper-analysis").text("No analysis for this move");
                 }
@@ -264,7 +264,7 @@
                 } else {
                     // Start data at zero. Make sure scoretype is invalid number.
                     evaluationData.unshift({ move: 0, score: 0, scoreType: -99 });
-                    showGraph(boardViewer, evaluationData, data.GameOver);
+                    showGraph(boardViewer, evaluationData, data.GameOver, data.Status);
                 }
 
                 boardViewer.highlightMoves(movesWhichAreMateInN(evaluationData));

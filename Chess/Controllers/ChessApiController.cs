@@ -51,6 +51,7 @@ namespace Chess.Controllers
                                      game.UserProfileWhite.UserName == HttpContext.Current.User.Identity.Name;
                 data.Analysis = m_gameManager.AnalysisForGameMoves(id);
                 data.GameOver = game.GameOver;
+                data.Status = game.Status;
 
                 return Json(data);
             }
