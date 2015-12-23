@@ -166,23 +166,23 @@
         });
     }
 
+    function actOnMoveInUrlHash(event, boardViewer) {
+        if (window.location.hash) {
+            var moveToJumpTo = window.location.hash.substring(1);
+            var integerMove = parseInt(moveToJumpTo);
+            if (integerMove !== NaN) {
+                // Pretend that the move has been clicked
+                boardViewer.fakeClick(integerMove);
+            }
+        } 
+    }
+
     $(document).ready(function() {
         var cfg = { pieceTheme: '/Images/{piece}.png', position: '', showNotation: false };
         var board = new ChessBoard('board', cfg);
         var emptyData = { Moves: [{ Fen: "", Move: "" }], Description: "", IsParticipant: false };
         var boardViewer = new BoardViewer(emptyData, board, '@Model');
         boardViewer.startSpinning();
-
-        window.addEventListener('popstate', function (event) {
-            if (window.location.hash) {
-                var moveToJumpTo = window.location.hash.substring(1);
-                var integerMove = parseInt(moveToJumpTo);
-                if (integerMove !== NaN) {
-                    // Pretend that the move has been clicked
-                    boardViewer.fakeClick(integerMove);
-                }
-            }
-        });
 
         $.getJSON("/api/Moves/@Model")
             .always(function() {
@@ -197,6 +197,11 @@
                 }
 
                 boardViewer = new BoardViewer(data, board, '@Model');
+
+                window.addEventListener('popstate', function(event) { 
+                    actOnMoveInUrlHash(event, boardViewer);
+                });
+                
                 // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
                 var evaluationData = data.Analysis.map(function (x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, lines: x.AnalysisLines }; });
 
@@ -268,6 +273,8 @@
                 }
 
                 boardViewer.highlightMoves(movesWhichAreMateInN(evaluationData));
+                // Go to the move specified in the URL, if there is one
+                actOnMoveInUrlHash(null, boardViewer);
 
                 $('#title').text(data.Description);
                 $('span#desc').text(data.Description);
