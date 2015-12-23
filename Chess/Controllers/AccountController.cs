@@ -10,7 +10,6 @@ using Chess.Models;
 namespace Chess.Controllers
 {
 	[Authorize]
-	[InitializeSimpleMembership]
 	public class AccountController : Controller
 	{
 		//
