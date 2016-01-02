@@ -52,6 +52,7 @@ namespace Chess.Controllers
                 data.Analysis = m_gameManager.AnalysisForGameMoves(id);
                 data.GameOver = game.GameOver;
                 data.Status = game.Status;
+                data.Winner = game.UserProfileWinner.UserId == game.UserProfileWhite.UserId ? "w" : "b";
 
                 return Json(data);
             }
