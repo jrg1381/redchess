@@ -168,6 +168,7 @@ function onDocumentReady(gameId) {
         .done(function(data) {
             var moves = data.Moves.length;
             var analyzedMoves = data.Analysis.length;
+            var winner = data.Winner;
 
             if (moves - analyzedMoves !== 1) {
                 $("#analysisTitle").text("Analysis (completed " + analyzedMoves + "/" + moves + ")");
@@ -253,8 +254,16 @@ function onDocumentReady(gameId) {
             // Go to the move specified in the URL, if there is one
             actOnMoveInUrlHash(null, boardViewer);
 
-            $('#title').text(data.Description);
-            $('span#desc').text(data.Description);
+            var description = data.Description;
+
+            if (winner === "w") {
+                description = "<b>" + description.replace(" vs ", "</b> vs ");
+            } else if (winner === "b") {
+                description = description.replace(" vs ", " vs <b>") + "</b>";
+            }
+
+            $('#title').html(description);
+            $('span#desc').html(description);
             $("#pgn-button").click(function() {
                 location.href = "/History/Pgn/" + gameId;
             });
