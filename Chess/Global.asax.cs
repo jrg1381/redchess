@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace Chess
 {
@@ -24,6 +25,7 @@ namespace Chess
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
 #endif
 
+            WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", false, SimpleMembershipProviderCasingBehavior.RelyOnDatabaseCollation);
             FormsAuthentication.Initialize();
         }
 	}
