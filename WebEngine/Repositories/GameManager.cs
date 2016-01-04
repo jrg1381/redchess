@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,14 @@ namespace RedChess.WebEngine.Repositories
         public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId)
         {
             return m_analysisRepository.AnalysisForGameMoves(gameId);
+        }
+
+        public IEnumerable<IStats> Stats()
+        {
+            using (var context = new ChessContext())
+            {
+                return context.Stats.SqlQuery("EXEC dbo.GameStatistics").AsNoTracking().ToList();
+            }
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()

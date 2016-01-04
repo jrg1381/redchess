@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 using RedChess.WebEngine.Models;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
 {
@@ -37,5 +38,6 @@ namespace RedChess.WebEngine.Repositories
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<AnalysisEntry> AnalysisEntries { get; set; }
         public DbSet<AnalysisLine> AnalysisLines { get; set; }
+        public DbSet<Stats> Stats { get; set; }
 	}
 }

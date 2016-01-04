@@ -26,5 +26,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         string PgnText(int id);
         IEnumerable<UserProfile> AllUserProfiles();
         IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId);
+        IEnumerable<IStats> Stats();
     }
 }
