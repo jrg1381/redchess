@@ -217,7 +217,7 @@ namespace RedChess.ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("captain_bogus");
             var controller = new BoardController(manager, fakeIdentity);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteMultiple");
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "DeleteMultiple");
             Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             fakeRepo.VerifyAllExpectations();
         }
@@ -294,7 +294,10 @@ namespace RedChess.ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteConfirmed");
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            var manager = new GameManager(fakeRepo);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "DeleteConfirmed");
 
             if (allowed)
             {
@@ -314,9 +317,10 @@ namespace RedChess.ControllerTests
         /// Return true if the action is allowed, false otherwise
         /// </summary>
         /// <param name="controller"></param>
+        /// <param name="currentUser"></param>
         /// <param name="actionName"></param>
         /// <returns></returns>
-        private static bool PerformParticipantFiltering(BoardController controller, string actionName)
+        private static bool PerformParticipantFiltering(Controller controller, IGameManager manager, ICurrentUser currentUser, string actionName)
         {
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             var httpRequest = MockRepository.GenerateMock<HttpRequestBase>();
@@ -335,7 +339,7 @@ namespace RedChess.ControllerTests
                     new RouteData(),
                     controller), new ReflectedActionDescriptor(methodInfo, actionName, new ReflectedControllerDescriptor(controller.GetType())));
 
-            var authFilter = new VerifyIsParticipantAttribute();
+            var authFilter = new VerifyIsParticipantAttribute(manager, currentUser);
             authFilter.OnAuthorization(context);
             return context.Result == null; // The result has not been set by the filter, so it passes
         }
@@ -369,7 +373,11 @@ namespace RedChess.ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, "Resign");
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            var manager = new GameManager(fakeRepo);
+
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "Resign");
             var g = fakeRepo.FindById(c_fakeGameId);
 
             if (allowed)
