@@ -23,7 +23,7 @@ namespace RedChess.WebEngine.Repositories
         private readonly IQueueManager m_queueManager;
         private readonly IUserProfileRepository m_userRepository;
         private readonly IAnalysisRepository m_analysisRepository;
-
+        private readonly IStatsRepository m_statsRepository;
         public GameManager() : this(null, null, null, null, null, null)
         {
         }
@@ -33,7 +33,8 @@ namespace RedChess.WebEngine.Repositories
             IClockRepository clockRepository = null, 
             IQueueManager queueManager = null,
             IUserProfileRepository userProfileRepository = null,
-            IAnalysisRepository analysisRepository = null)
+            IAnalysisRepository analysisRepository = null,
+            IStatsRepository statsRepository = null)
         {
             m_repository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
@@ -41,6 +42,8 @@ namespace RedChess.WebEngine.Repositories
             m_queueManager = queueManager ?? QueueManagerFactory.CreateInstance();
             m_userRepository = userProfileRepository ?? new UserProfileRepository();
             m_analysisRepository = analysisRepository ?? new AnalysisRepository();
+            m_statsRepository = statsRepository ?? new StatsRepository();
+
             m_board = BoardFactory.CreateInstance();
         }
 
@@ -51,10 +54,7 @@ namespace RedChess.WebEngine.Repositories
 
         public IEnumerable<IStats> Stats()
         {
-            using (var context = new ChessContext())
-            {
-                return context.Stats.SqlQuery("EXEC dbo.GameStatistics").AsNoTracking().ToList();
-            }
+            return m_statsRepository.Stats();
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()

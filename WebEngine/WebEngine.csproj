@@ -116,6 +116,8 @@
     <Compile Include="Repositories\Interfaces\IHistoryRepository.cs" />
     <Compile Include="Repositories\Interfaces\IStats.cs" />
     <Compile Include="Repositories\Interfaces\IUserRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IStatsRepository.cs" />
+    <Compile Include="Repositories\StatsRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
   </ItemGroup>
   <ItemGroup>
