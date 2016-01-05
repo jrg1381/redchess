@@ -1,4 +1,5 @@
-﻿@model RedChess.WebEngine.Models.IClock
+﻿@using RedChess.WebEngine.Repositories
+@model RedChess.WebEngine.Models.IClock
 
 <script src="/Scripts/app/clock.js" type="text/javascript"></script>
 
@@ -67,13 +68,13 @@
 @{
 	string readyTextWhite = "NOT READY", readyTextBlack = "NOT READY", readyClassWhite = "notready", readyClassBlack = "notready";
 
-	if ((@Model.PlayersReady & 1) > 0)
+	if ((@Model.PlayersReady & PlayerReadyStatus.White) > 0)
 	{
 		readyTextWhite = "READY";
 		readyClassWhite = "ready";
 	}
 
-	if ((@Model.PlayersReady & 2) > 0)
+	if ((@Model.PlayersReady & PlayerReadyStatus.Black) > 0)
 	{
 		readyTextBlack = "READY";
 		readyClassBlack = "ready";

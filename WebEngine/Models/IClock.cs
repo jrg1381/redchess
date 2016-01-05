@@ -1,4 +1,5 @@
 using System;
+using RedChess.WebEngine.Repositories;
 
 namespace RedChess.WebEngine.Models
 {
@@ -11,6 +12,6 @@ namespace RedChess.WebEngine.Models
         int TimeElapsedBlackMs { get; set; }
         int TimeElapsedWhiteMs { get; set; }
         int TimeLimitMs { get; set; }
-        int PlayersReady { get; set; }
+        PlayerReadyStatus PlayersReady { get; set; }
     }
 }

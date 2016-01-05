@@ -225,7 +225,7 @@ namespace RedChess.WebEngine.Repositories
             if (clock == null)
                 return false;
 
-            if (clock.PlayersReady != 3)
+            if (clock.PlayersReady != PlayerReadyStatus.Both)
                 return true;
 
             return false;
@@ -419,6 +419,11 @@ namespace RedChess.WebEngine.Repositories
         public IEnumerable<IGameBinding> WithPlayer(string userName)
         {
             return m_repository.FindWithPlayer(userName).Select(x => new GameBinding(x, this));
+        }
+
+        public PlayerReadyStatus PlayerReady(int gameId, string playerColor)
+        {
+            return m_clockRepository.PlayerReady(gameId, playerColor);
         }
     }
 }

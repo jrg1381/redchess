@@ -1,6 +1,7 @@
 using System;
 using System.Web.Mvc;
 using Chess.Controllers;
+using RedChess.WebEngine.Repositories;
 
 namespace Chess.Filters
 {
@@ -16,11 +17,8 @@ namespace Chess.Filters
             if (!Int32.TryParse(idText, out id))
                 return;
 
-            var boardController = filterContext.Controller as BoardController;
-            if (boardController == null)
-                return;
-
-            if (boardController.MayManipulateBoard(id))
+            var accessValidator = new AccessValidator(new GameManager(), new CurrentUserImpl());
+            if (accessValidator.MayAccess(id))
                 return;
 
             var jsonResponse = new JsonResult
