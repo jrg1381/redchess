@@ -32,4 +32,8 @@ GROUP BY BlackProfile.UserName ,
         WinnerProfile.UserName;
 END
 
+
+GO
+
+GRANT EXECUTE ON  [dbo].[GameStatistics] TO [chessdb]
 GO
