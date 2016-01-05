@@ -28,4 +28,8 @@ AS
 
 
 
+
+GO
+
+GRANT EXECUTE ON  [dbo].[IsParticipant] TO [chessdb]
 GO

@@ -23,4 +23,8 @@ RETURN CAST(0 AS BIT);
 END
 
 
+
+GO
+
+GRANT EXECUTE ON  [dbo].[MayClaimDraw] TO [chessdb]
 GO
