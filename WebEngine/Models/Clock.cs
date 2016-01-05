@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using RedChess.WebEngine.Repositories;
 
 namespace RedChess.WebEngine.Models
 {
@@ -35,6 +36,6 @@ namespace RedChess.WebEngine.Models
 		public int TimeElapsedBlackMs { get; set; }
 		public int TimeElapsedWhiteMs { get; set; }
 		public int TimeLimitMs { get; set; }
-		public int PlayersReady { get; set; }
+		public PlayerReadyStatus PlayersReady { get; set; }
 	}
 }

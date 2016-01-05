@@ -1,5 +1,7 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
+using System.Runtime.Remoting.Messaging;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -9,7 +11,31 @@ namespace RedChess.WebEngine.Repositories
     {
         public RetryConfiguration()
         {
-            SetExecutionStrategy(SqlProviderServices.ProviderInvariantName, () => new SqlAzureExecutionStrategy());
+            SetExecutionStrategy(SqlProviderServices.ProviderInvariantName, GetStrategy);
+        }
+
+        private IDbExecutionStrategy GetStrategy()
+        {
+            if (SuspendExecutionStrategy)
+            {
+                return new DefaultExecutionStrategy();
+            }
+            else
+            {
+                return new SqlAzureExecutionStrategy();
+            }
+        }
+
+        public static bool SuspendExecutionStrategy
+        {
+            get
+            {
+                return (bool?)CallContext.LogicalGetData("SuspendExecutionStrategy") ?? false;
+            }
+            set
+            {
+                CallContext.LogicalSetData("SuspendExecutionStrategy", value);
+            }
         }
     }
 

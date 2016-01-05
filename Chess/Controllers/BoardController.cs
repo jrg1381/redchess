@@ -10,19 +10,6 @@ using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers
 {
-    public interface ICurrentUser
-    {
-        string CurrentUser { get; }
-    }
-
-    public class CurrentUserImpl : ICurrentUser
-    {
-        public string CurrentUser
-        {
-            get { return System.Web.HttpContext.Current.User.Identity.Name.ToLowerInvariant(); }
-        }
-    }
-
     public class BoardController : Controller
     {
         private readonly IGameManager m_gameManager;
@@ -220,22 +207,6 @@ namespace Chess.Controllers
             hubContext.Clients.Group(id.ToString()).addMessage(jsonObject);
 
             return Json(jsonObject);
-        }
-
-        public bool MayManipulateBoard(int gameId)
-        {
-            return MayManipulateBoard(gameId, m_identityProvider.CurrentUser);
-        }
-
-        internal bool MayManipulateBoard(int gameId, string userName)
-        {
-            var game = m_gameManager.FetchGame(gameId);
-            return MayManipulateBoard(game, userName);
-        }
-
-        private bool MayManipulateBoard(IGameBinding game, string userName)
-        {
-            return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
         }
 
         [HttpPost]
