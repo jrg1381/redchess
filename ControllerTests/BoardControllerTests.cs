@@ -270,6 +270,20 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
+        private ClockController GetClockControllerForFakeGameAsUser(string userName, ICurrentUser identity, out IGameRepository repository)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            return new ClockController(manager, identity);
+        }
+
         private BoardController GetControllerForFakeGameAsUserWithClock(string userName, out IGameRepository repository)
         {
             var fakeGame = GetFakeGame();
@@ -285,6 +299,30 @@ namespace RedChess.ControllerTests
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
             return new BoardController(manager, fakeIdentity);
+        }
+
+        [TestCase("james", true)]
+        [TestCase("clive", true)]
+        [TestCase("jason", false)]
+        public void CannotStartClockOnOtherUsersGames(string userName, bool allowed)
+        {
+            IGameRepository fakeRepo;
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            var controller = GetClockControllerForFakeGameAsUser(userName, fakeIdentity, out fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "PlayerReady");
+
+            if (allowed)
+            {
+                Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
+            }
+            else
+            {
+                Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
+            }
+
+            fakeRepo.VerifyAllExpectations();
         }
 
         [TestCase("james", true)]
@@ -317,6 +355,7 @@ namespace RedChess.ControllerTests
         /// Return true if the action is allowed, false otherwise
         /// </summary>
         /// <param name="controller"></param>
+        /// <param name="manager"></param>
         /// <param name="currentUser"></param>
         /// <param name="actionName"></param>
         /// <returns></returns>
