@@ -270,7 +270,7 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
-        private ClockController GetClockControllerForFakeGameAsUser(string userName, ICurrentUser identity, out IGameRepository repository)
+        private ClockController GetClockControllerForFakeGameAsUser(ICurrentUser identity, out IGameRepository repository)
         {
             var fakeGame = GetFakeGame();
 
@@ -309,7 +309,7 @@ namespace RedChess.ControllerTests
             IGameRepository fakeRepo;
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
-            var controller = GetClockControllerForFakeGameAsUser(userName, fakeIdentity, out fakeRepo);
+            var controller = GetClockControllerForFakeGameAsUser(fakeIdentity, out fakeRepo);
             var manager = new GameManager(fakeRepo);
             var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "PlayerReady");
 
