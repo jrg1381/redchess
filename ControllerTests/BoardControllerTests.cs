@@ -248,7 +248,6 @@ namespace RedChess.ControllerTests
             var manager = new GameManager(fakeRepo);
             var identityProvider = MockRepository.GenerateMock<ICurrentUser>();
             identityProvider.Expect(x => x.CurrentUser).Return(userName);
-            var controller = new BoardController(manager, identityProvider);
             var accessValidator = new AccessValidator(manager, identityProvider);
             bool ok = accessValidator.MayAccess(c_fakeGameId);
             fakeRepo.VerifyAllExpectations();
