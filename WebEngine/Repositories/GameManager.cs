@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +15,17 @@ namespace RedChess.WebEngine.Repositories
 {
     public class GameManager : IGameManager
     {
+        private readonly Lazy<IBoard> m_boardLazy;
         private readonly IGameRepository m_repository;
         private readonly IHistoryRepository m_historyRepository;
         private readonly IClockRepository m_clockRepository;
-        private readonly IBoard m_board;
         private readonly IQueueManager m_queueManager;
         private readonly IUserProfileRepository m_userRepository;
         private readonly IAnalysisRepository m_analysisRepository;
         private readonly IStatsRepository m_statsRepository;
+
+        private IBoard m_board => m_boardLazy.Value;
+
         public GameManager() : this(null, null, null, null, null, null)
         {
         }
@@ -44,7 +46,8 @@ namespace RedChess.WebEngine.Repositories
             m_analysisRepository = analysisRepository ?? new AnalysisRepository();
             m_statsRepository = statsRepository ?? new StatsRepository();
 
-            m_board = BoardFactory.CreateInstance();
+            // The repositories are fast to create, but this can be slow. Not all calls use the board.
+            m_boardLazy = new Lazy<IBoard>(BoardFactory.CreateInstance);
         }
 
         public IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId)
@@ -67,7 +70,6 @@ namespace RedChess.WebEngine.Repositories
             var processor = new AnalysisSimplifier(m_historyRepository);
             var processedAnalysis = processor.ProcessBoardAnalysis(gameId, moveNumber, boardAnalysis);
             m_repository.AddAnalysis(gameId, moveNumber, processedAnalysis);
-
         }
 
         public string PgnText(int id)
