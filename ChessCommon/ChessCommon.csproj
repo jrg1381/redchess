@@ -60,7 +60,6 @@
     <Compile Include="Interfaces\IHistoryEntry.cs" />
     <Compile Include="Interfaces\IParse.cs" />
     <Compile Include="Interfaces\IProcessedAnalysis.cs" />
-    <Compile Include="LockFactory.cs" />
     <Compile Include="ProcessedAnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardAnalysis.cs" />

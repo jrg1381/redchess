@@ -217,7 +217,7 @@ namespace RedChess.ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("captain_bogus");
             var controller = new BoardController(manager, fakeIdentity);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteMultiple");
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "DeleteMultiple");
             Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             fakeRepo.VerifyAllExpectations();
         }
@@ -248,8 +248,8 @@ namespace RedChess.ControllerTests
             var manager = new GameManager(fakeRepo);
             var identityProvider = MockRepository.GenerateMock<ICurrentUser>();
             identityProvider.Expect(x => x.CurrentUser).Return(userName);
-            var controller = new BoardController(manager, identityProvider);
-            bool ok = controller.MayManipulateBoard(c_fakeGameId);
+            var accessValidator = new AccessValidator(manager, identityProvider);
+            bool ok = accessValidator.MayAccess(c_fakeGameId);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
         }
@@ -268,6 +268,20 @@ namespace RedChess.ControllerTests
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
             return new BoardController(manager, fakeIdentity);
+        }
+
+        private ClockController GetClockControllerForFakeGameAsUser(ICurrentUser identity, out IGameRepository repository)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            return new ClockController(manager, identity);
         }
 
         private BoardController GetControllerForFakeGameAsUserWithClock(string userName, out IGameRepository repository)
@@ -290,11 +304,38 @@ namespace RedChess.ControllerTests
         [TestCase("james", true)]
         [TestCase("clive", true)]
         [TestCase("jason", false)]
+        public void CannotStartClockOnOtherUsersGames(string userName, bool allowed)
+        {
+            IGameRepository fakeRepo;
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            var controller = GetClockControllerForFakeGameAsUser(fakeIdentity, out fakeRepo);
+            var manager = new GameManager(fakeRepo);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "PlayerReady");
+
+            if (allowed)
+            {
+                Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
+            }
+            else
+            {
+                Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
+            }
+
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [TestCase("james", true)]
+        [TestCase("clive", true)]
+        [TestCase("jason", false)]
         public void CannotDeleteOtherUsersGames(string userName, bool allowed)
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, "DeleteConfirmed");
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            var manager = new GameManager(fakeRepo);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "DeleteConfirmed");
 
             if (allowed)
             {
@@ -314,9 +355,11 @@ namespace RedChess.ControllerTests
         /// Return true if the action is allowed, false otherwise
         /// </summary>
         /// <param name="controller"></param>
+        /// <param name="manager"></param>
+        /// <param name="currentUser"></param>
         /// <param name="actionName"></param>
         /// <returns></returns>
-        private static bool PerformParticipantFiltering(BoardController controller, string actionName)
+        private static bool PerformParticipantFiltering(Controller controller, IGameManager manager, ICurrentUser currentUser, string actionName)
         {
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             var httpRequest = MockRepository.GenerateMock<HttpRequestBase>();
@@ -335,7 +378,7 @@ namespace RedChess.ControllerTests
                     new RouteData(),
                     controller), new ReflectedActionDescriptor(methodInfo, actionName, new ReflectedControllerDescriptor(controller.GetType())));
 
-            var authFilter = new VerifyIsParticipantAttribute();
+            var authFilter = new VerifyIsParticipantAttribute(manager, currentUser);
             authFilter.OnAuthorization(context);
             return context.Result == null; // The result has not been set by the filter, so it passes
         }
@@ -369,7 +412,11 @@ namespace RedChess.ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, "Resign");
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
+            var manager = new GameManager(fakeRepo);
+
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "Resign");
             var g = fakeRepo.FindById(c_fakeGameId);
 
             if (allowed)

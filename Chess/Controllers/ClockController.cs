@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using Chess.Filters;
 using RedChess.WebEngine.Repositories;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon;
@@ -22,55 +23,23 @@ namespace Chess.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
+        [VerifyIsParticipant]
         public ActionResult PlayerReady(int id)
         {
-            string status = "WAIT";
+            var game = m_gameManager.FetchGame(id);
+            var clock = m_gameManager.Clock(id);
 
-            /* 
-            There is a race condition here when both players hit their clocks at the same time.
-            Sometimes the 2nd player's write overwrites the first player's without the 2nd player
-            having seen that the first player is ready. This can be fixed by locking on the game id,
-            but it's no good to lock on value types (two instances of "10" are different objects)
-            so we use a LockFactory which gives an object suitable for locking on.
-            */
+            if (game == null || clock == null)
+                return Json(new {status = "NULL"});
 
-            lock (LockFactory.GetLock(id))
-            {
-                var game = m_gameManager.FetchGame(id);
-                var clock = m_gameManager.Clock(id);
+            var playerColor = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
+            var status = m_gameManager.PlayerReady(id, playerColor);
+            var jsonStatus = (status == PlayerReadyStatus.Both ? "OK" : "WAIT");
 
-                if (game == null || clock == null)
-                    return Json(new {status = "NULL"});
+            IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
+            hubContext.Clients.Group(game.GameId.ToString()).startClock(new {status = jsonStatus, who = playerColor});
 
-                string playerColor = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
-                switch (playerColor)
-                {
-                    case "w":
-                        clock.PlayersReady |= 1;
-                        break;
-                    case "b":
-                        clock.PlayersReady |= 2;
-                        break;
-                    default:
-                        return Json(new {status = "AUTH"});
-                }
-
-                if (clock.PlayersReady == 3)
-                {
-                    clock.LastActionWhite = DateTime.UtcNow;
-                    status = "OK";
-                }
-
-                m_gameManager.SaveClock(clock);
-
-                IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
-                hubContext.Clients.Group(game.GameId.ToString()).startClock(new {status = status, who = playerColor});
-            }
-
-            if(status == "OK")
-                LockFactory.Purge(id);
-
-            return Json(new { status = status });
+            return Json(new {status = jsonStatus });
         }
 
         [System.Web.Mvc.HttpPost]
