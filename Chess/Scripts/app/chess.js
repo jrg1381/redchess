@@ -23,7 +23,7 @@
         $("#drawbutton").addClass("btn-primary");
         $("#drawbutton").click(function () {
             this.claimDraw();
-        });
+        }.bind(this));
     }
 
     if (data.status == "RESIGN" || data.status == "TIME" || data.status == "DRAW") {
