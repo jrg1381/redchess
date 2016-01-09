@@ -13,5 +13,14 @@ namespace RedChess.WebEngine.Repositories
                 return context.Stats.SqlQuery("EXEC dbo.GameStatistics").AsNoTracking().ToList();
             }
         }
+
+        public IEnumerable<IEloHistory> Elo()
+        {
+            using (var context = new ChessContext())
+            {
+                context.Database.ExecuteSqlCommand("EXEC dbo.UpdateEloTable");
+                return context.EloEntries.AsNoTracking().ToList();
+            }
+        }
     }
 }

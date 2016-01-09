@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AnalysisLine.cs" />
+    <Compile Include="Models\EloHistory.cs" />
     <Compile Include="Models\ILogEntry.cs" />
     <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Models\AnalysisEntry.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Repositories\IAnalysisBinding.cs" />
     <Compile Include="Repositories\Interfaces\IAnalysisRepository.cs" />
     <Compile Include="Repositories\Interfaces\IClockRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IEloHistory.cs" />
     <Compile Include="Repositories\Interfaces\IGameBinding.cs" />
     <Compile Include="Repositories\Interfaces\IGameManager.cs" />
     <Compile Include="Repositories\Interfaces\IGameRepository.cs" />

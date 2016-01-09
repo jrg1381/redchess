@@ -65,5 +65,6 @@ namespace RedChess.WebEngine.Repositories
         public DbSet<AnalysisEntry> AnalysisEntries { get; set; }
         public DbSet<AnalysisLine> AnalysisLines { get; set; }
         public DbSet<Stats> Stats { get; set; }
+        public DbSet<EloHistory> EloEntries { get; set; }
 	}
 }

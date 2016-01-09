@@ -28,5 +28,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId);
         IEnumerable<IStats> Stats();
         PlayerReadyStatus PlayerReady(int gameId, string playerColor);
+        IEnumerable<IEloHistory> EloTable();
     }
 }

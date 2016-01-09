@@ -425,5 +425,10 @@ namespace RedChess.WebEngine.Repositories
         {
             return m_clockRepository.PlayerReady(gameId, playerColor);
         }
+
+        public IEnumerable<IEloHistory> EloTable()
+        {
+            return m_statsRepository.Elo();
+        }
     }
 }

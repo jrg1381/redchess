@@ -81,6 +81,12 @@ namespace Chess.Controllers
             }
         }
 
+        [HttpGet]
+        public object Elo()
+        {
+            return Json(m_gameManager.EloTable());
+        }
+
         private static object GameBindingToGameData(IGameBinding game)
         {
             dynamic data = new ExpandoObject();
