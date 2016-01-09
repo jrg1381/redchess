@@ -96,12 +96,14 @@ namespace Chess.Controllers
             var profilesTask = Task.Factory.StartNew(() => m_gameManager.AllUserProfiles());
             var eloTableTask = Task.Factory.StartNew(() => m_gameManager.EloTable());
             var winlossTask = Task.Factory.StartNew(() => m_gameManager.Stats());
+            var lastUpdatedTask = Task.Factory.StartNew(() => m_gameManager.LastEloUpdate());
 
             Task.WaitAll(profilesTask, eloTableTask, winlossTask);
 
             var profiles = profilesTask.Result;
             var eloTable = eloTableTask.Result;
             var winlossStats = winlossTask.Result;
+            var lastUpdated = lastUpdatedTask.Result;
 
             var eloData = new Dictionary<int, List<DateElo>>();
 
@@ -124,6 +126,7 @@ namespace Chess.Controllers
             response.EloData = eloData;
             response.Profiles = profiles;
             response.WinLoss = winlossStats;
+            response.LastUpdated = lastUpdated;
 
             return Json(response);
         }

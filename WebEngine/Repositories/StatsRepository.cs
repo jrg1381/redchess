@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -27,6 +28,19 @@ namespace RedChess.WebEngine.Repositories
             using (var context = new ChessContext())
             {
                 context.Database.ExecuteSqlCommand("EXEC dbo.UpdateEloTable");
+            }
+        }
+
+        public DateTime LastUpdate()
+        {
+            const string query = "select [Value] from dbo.Metadata where [Key] = 'LastEloHistoryUpdate'";
+
+            using (var context = new ChessContext())
+            {
+                var dateAsString = context.Database.SqlQuery<string>(query).FirstOrDefault();
+                if (dateAsString == null)
+                    return DateTime.MinValue;
+                return DateTime.Parse(dateAsString);
             }
         }
     }

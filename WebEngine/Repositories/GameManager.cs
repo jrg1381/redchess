@@ -438,5 +438,10 @@ namespace RedChess.WebEngine.Repositories
         {
             return m_statsRepository.Elo();
         }
+
+        public DateTime LastEloUpdate()
+        {
+            return m_statsRepository.LastUpdate();
+        }
     }
 }

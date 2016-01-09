@@ -1,7 +1,9 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE PROCEDURE [dbo].[UpdateEloTable] AS
 BEGIN
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
@@ -106,9 +108,12 @@ WHILE @@FETCH_STATUS = 0
 CLOSE GameCursor;
 
 DEALLOCATE GameCursor;
+
+DELETE FROM dbo.Metadata WHERE [Key] = 'LastEloHistoryUpdate';
+INSERT INTO dbo.Metadata ([Key], [Value]) VALUES ('LastEloHistoryUpdate',CONVERT(nvarchar(30), GETUTCDATE(), 126));
+
 COMMIT TRANSACTION
 END
 
-GO
-GRANT EXECUTE ON  [dbo].[UpdateEloTable] TO [chessdb]
+
 GO

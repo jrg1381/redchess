@@ -45,8 +45,15 @@
                 drawEloTable(data);
                 drawWinLossTable(data.WinLoss);
                 drawGraph(data);
+                updateLastUpdated(data.LastUpdated);
             });
     };
+
+    function updateLastUpdated(data) {
+        $('time#last-updated').attr("datetime", data);
+        $('time#last-updated').text(data);
+        $("time.timeago").timeago();
+    }
 
     function drawWinLossTable(data) {
         for (var property in data) {
@@ -124,4 +131,8 @@
 
     <div id="svg">
     </div>
+
+    <p>
+    Elo ratings updated <time class="timeago" id="last-updated" datetime="">Ratings updated</time>
+    </p>
 </div>

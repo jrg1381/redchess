@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
@@ -29,5 +30,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         IEnumerable<IStats> Stats();
         PlayerReadyStatus PlayerReady(int gameId, string playerColor);
         IEnumerable<IEloHistory> EloTable();
+        DateTime LastEloUpdate();
     }
 }
