@@ -511,6 +511,21 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
+        public void EndingAGameUpdatesTheEloTable()
+        {
+            var fakeGame = GetFakeGame();
+            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
+
+            fakeStatsRepo.Expect(r => r.UpdateEloTable()).Repeat.Once();
+
+            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
+            manager.EndGameWithMessage(fakeGame, "Ended by test");
+            fakeStatsRepo.VerifyAllExpectations();
+        }
+
+        [Test]
         public void PlayMoveChangesBoardCorrectly()
         {
             var fakeGame = GetFakeGame();
