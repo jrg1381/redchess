@@ -67,11 +67,13 @@
             if (eloData.hasOwnProperty(property)) {
                 // The server guarantees that the data comes back already sorted
                 var latestElo = eloData[property][eloData[property].length - 1].Elo;
+                var previousElo = eloData[property][eloData[property].length - 2].Elo;
                 var filterFunction = function(x) { return x.UserId == property; };
                 var userName = data.Profiles.filter(filterFunction)[0].UserName;
                 var row = $("<tr></tr>");
                 row.append($("<td>" + userName + "</td>"));
                 row.append($("<td>" + latestElo + "</td>"));
+                row.append($("<td>" + (latestElo - previousElo) + "</td>"));
                 $("#ratings-table>tbody").append(row);
             }
         }
@@ -99,6 +101,7 @@
         <tr>
             <th>User</th>
             <th>Elo</th>
+            <th>+/-</th>
         </tr>
         </thead>
         <tbody>
