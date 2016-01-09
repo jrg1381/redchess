@@ -353,6 +353,7 @@ namespace RedChess.WebEngine.Repositories
             if(userIdWinner != null)
                 gameDto.UserIdWinner = userIdWinner;
             m_repository.AddOrUpdate(gameDto);
+            m_statsRepository.UpdateEloTable();
         }
 
         public IGameBinding FetchGame(int gameId)

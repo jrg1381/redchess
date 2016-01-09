@@ -18,8 +18,15 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                context.Database.ExecuteSqlCommand("EXEC dbo.UpdateEloTable");
                 return context.EloEntries.AsNoTracking().ToList();
+            }
+        }
+
+        public void UpdateEloTable()
+        {
+            using (var context = new ChessContext())
+            {
+                context.Database.ExecuteSqlCommandAsync("EXEC dbo.UpdateEloTable");
             }
         }
     }

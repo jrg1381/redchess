@@ -7,5 +7,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
     {
         IEnumerable<IStats> Stats();
         IEnumerable<IEloHistory> Elo();
+        void UpdateEloTable();
     }
 }
