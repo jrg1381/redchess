@@ -41,11 +41,28 @@
                 spinny.stopLogoSpinner();
 
             })
-            .done(function(data) {
+            .done(function (data) {
+                drawTable(data);
                 drawGraph(data);
             });
     };
 
+    function drawTable(data) {
+        var eloData = data.EloData;
+        for (var property in eloData) {
+            if (eloData.hasOwnProperty(property)) {
+                // The server guarantees that the data comes back already sorted
+                var latestElo = eloData[property][eloData[property].length - 1].Elo;
+                var filterFunction = function(x) { return x.UserId == property; };
+                var userName = data.Profiles.filter(filterFunction)[0].UserName;
+                var row = $("<tr></tr>");
+                row.append($("<td>" + userName + "</td>"));
+                row.append($("<td>" + latestElo + "</td>"));
+                $("#ratings-table>tbody").append(row);
+            }
+        }
+    };
+    
     function drawGraph(data) {
         var width = $("#svg").width();
         var height = window.screen.availHeight / 1.5;
@@ -62,6 +79,18 @@
 <h2>Stats</h2>
 
 <div class="container">
-        <div id="svg">
-        </div>
+
+    <table class="table" id="ratings-table">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Elo</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+    </table>
+    <div id="svg">
     </div>
+</div>
