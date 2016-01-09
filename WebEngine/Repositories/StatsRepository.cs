@@ -26,7 +26,7 @@ namespace RedChess.WebEngine.Repositories
         {
             using (var context = new ChessContext())
             {
-                context.Database.ExecuteSqlCommandAsync("EXEC dbo.UpdateEloTable");
+                context.Database.ExecuteSqlCommand("EXEC dbo.UpdateEloTable");
             }
         }
     }
