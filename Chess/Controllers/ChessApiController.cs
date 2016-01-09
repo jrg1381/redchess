@@ -85,15 +85,16 @@ namespace Chess.Controllers
         [HttpGet]
         public object Elo()
         {
-            var data = new List<ExpandoObject>(256);
+            var data = new Dictionary<int, List<object>>();
 
             foreach (var d in m_gameManager.EloTable())
             {
-                dynamic row = new ExpandoObject();
-                row.UserId = d.UserId;
-                row.Date = d.Date;
-                row.Elo = d.Elo;
-                data.Add(row);
+                if (!data.ContainsKey(d.UserId))
+                {
+                    data[d.UserId] = new List<object>();
+                }
+                
+                data[d.UserId].Add(new { Date = d.Date, Elo = d.Elo });
             }
 
             return Json(data);
