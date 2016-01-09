@@ -260,13 +260,14 @@ namespace RedChess.ControllerTests
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
             repository = MockRepository.GenerateMock<IGameRepository>();
             repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
-            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, null, null, null, fakeStatsRepo);
             return new BoardController(manager, fakeIdentity);
         }
 
@@ -290,6 +291,7 @@ namespace RedChess.ControllerTests
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
             repository = MockRepository.GenerateMock<IGameRepository>();
             repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
@@ -297,7 +299,7 @@ namespace RedChess.ControllerTests
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
             fakeClockRepo.Expect(x => x.Clock(c_fakeGameId)).Return(new Clock());
 
-            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
+            var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, null, null, null, fakeStatsRepo);
             return new BoardController(manager, fakeIdentity);
         }
 
@@ -414,7 +416,9 @@ namespace RedChess.ControllerTests
             var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
-            var manager = new GameManager(fakeRepo);
+            var fakeStatsRepo = MockRepository.GenerateStub<IStatsRepository>();
+
+            var manager = new GameManager(fakeRepo,null, null, null, null, null, fakeStatsRepo);
 
             var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "Resign");
             var g = fakeRepo.FindById(c_fakeGameId);
