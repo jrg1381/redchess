@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.Owin.Security.Provider;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
@@ -91,10 +93,19 @@ namespace Chess.Controllers
         [HttpGet]
         public object Elo()
         {
-            var profiles = m_gameManager.AllUserProfiles();
+            var profilesTask = Task.Factory.StartNew(() => m_gameManager.AllUserProfiles());
+            var eloTableTask = Task.Factory.StartNew(() => m_gameManager.EloTable());
+            var winlossTask = Task.Factory.StartNew(() => m_gameManager.Stats());
+
+            Task.WaitAll(profilesTask, eloTableTask, winlossTask);
+
+            var profiles = profilesTask.Result;
+            var eloTable = eloTableTask.Result;
+            var winlossStats = winlossTask.Result;
+
             var eloData = new Dictionary<int, List<DateElo>>();
 
-            foreach (var d in m_gameManager.EloTable())
+            foreach (var d in eloTable)
             {
                 if (!eloData.ContainsKey(d.UserId))
                 {
@@ -112,6 +123,7 @@ namespace Chess.Controllers
             dynamic response = new ExpandoObject();
             response.EloData = eloData;
             response.Profiles = profiles;
+            response.WinLoss = winlossStats;
 
             return Json(response);
         }

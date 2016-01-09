@@ -42,12 +42,26 @@
 
             })
             .done(function (data) {
-                drawTable(data);
+                drawEloTable(data);
+                drawWinLossTable(data.WinLoss);
                 drawGraph(data);
             });
     };
 
-    function drawTable(data) {
+    function drawWinLossTable(data) {
+        for (var property in data) {
+            if (data.hasOwnProperty(property)) {
+                var row = $("<tr></tr>");
+                row.append($("<td>" + data[property].White + "</td>"));
+                row.append($("<td>" + data[property].Black + "</td>"));
+                row.append($("<td>" + data[property].Winner + "</td>"));
+                row.append($("<td>" + data[property].Count + "</td>"));
+                $("#winloss-table>tbody").append(row);
+            }
+        }
+    }
+
+    function drawEloTable(data) {
         var eloData = data.EloData;
         for (var property in eloData) {
             if (eloData.hasOwnProperty(property)) {
@@ -88,9 +102,23 @@
         </tr>
         </thead>
         <tbody>
-        
+
         </tbody>
     </table>
+
+    <table class="table" id="winloss-table">
+        <thead>
+            <tr>
+                <th>White</th>
+                <th>Black</th>
+                <th>Winner</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+
     <div id="svg">
     </div>
 </div>
