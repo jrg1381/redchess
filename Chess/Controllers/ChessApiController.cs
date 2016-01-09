@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.Owin.Security.Provider;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
@@ -15,6 +17,12 @@ namespace Chess.Controllers
     public class ChessApiController : ApiController
     {
         private readonly IGameManager m_gameManager;
+
+        class DateElo
+        {
+            public DateTime Date;
+            public int Elo;
+        }
 
         public ChessApiController() : this(null)
         {
@@ -85,19 +93,39 @@ namespace Chess.Controllers
         [HttpGet]
         public object Elo()
         {
-            var data = new Dictionary<int, List<object>>();
+            var profilesTask = Task.Factory.StartNew(() => m_gameManager.AllUserProfiles());
+            var eloTableTask = Task.Factory.StartNew(() => m_gameManager.EloTable());
+            var winlossTask = Task.Factory.StartNew(() => m_gameManager.Stats());
 
-            foreach (var d in m_gameManager.EloTable())
+            Task.WaitAll(profilesTask, eloTableTask, winlossTask);
+
+            var profiles = profilesTask.Result;
+            var eloTable = eloTableTask.Result;
+            var winlossStats = winlossTask.Result;
+
+            var eloData = new Dictionary<int, List<DateElo>>();
+
+            foreach (var d in eloTable)
             {
-                if (!data.ContainsKey(d.UserId))
+                if (!eloData.ContainsKey(d.UserId))
                 {
-                    data[d.UserId] = new List<object>();
+                    eloData[d.UserId] = new List<DateElo>();
                 }
                 
-                data[d.UserId].Add(new { Date = d.Date, Elo = d.Elo });
+                eloData[d.UserId].Add(new DateElo { Date = d.Date, Elo = d.Elo });
             }
 
-            return Json(data);
+            foreach (var key in eloData.Keys)
+            {
+                eloData[key].Sort((a, b) => a.Date.CompareTo(b.Date));
+            }
+
+            dynamic response = new ExpandoObject();
+            response.EloData = eloData;
+            response.Profiles = profiles;
+            response.WinLoss = winlossStats;
+
+            return Json(response);
         }
 
         private static object GameBindingToGameData(IGameBinding game)

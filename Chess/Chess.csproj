@@ -396,6 +396,7 @@
     <Content Include="Views\History\History.cshtml" />
     <Content Include="Views\Pgn\PgnViewer.cshtml" />
     <Content Include="Views\Home\Config.cshtml" />
+    <Content Include="Views\Home\Stats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -57,7 +57,13 @@ namespace RedChess.WebEngine.Repositories
 
         public IEnumerable<IStats> Stats()
         {
-            return m_statsRepository.Stats();
+            return m_statsRepository.Stats().Select(x => new Stats()
+            {
+                Black = x.Black.ToLower(),
+                White = x.White.ToLower(),
+                Winner = x.Winner.ToLower(),
+                Count = x.Count
+            });
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()
