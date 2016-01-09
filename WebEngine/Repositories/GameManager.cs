@@ -359,7 +359,6 @@ namespace RedChess.WebEngine.Repositories
             if(userIdWinner != null)
                 gameDto.UserIdWinner = userIdWinner;
             m_repository.AddOrUpdate(gameDto);
-            m_statsRepository.UpdateEloTable();
         }
 
         public IGameBinding FetchGame(int gameId)
@@ -375,8 +374,12 @@ namespace RedChess.WebEngine.Repositories
         public void Delete(int gameId)
         {
             m_repository.Delete(gameId);
-            m_statsRepository.UpdateEloTable();
             PostGameEndedMessage(gameId);
+        }
+
+        public void UpdateEloTable()
+        {
+            m_statsRepository.UpdateEloTable();
         }
 
         public int Add(IBoard board, string user)
