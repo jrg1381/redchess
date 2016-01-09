@@ -184,72 +184,9 @@ function onDocumentReady(gameId) {
             // We add an extra move 0 to make the graph start at evens, so moveNumber must be incremented
             var evaluationData = data.Analysis.map(function(x) { return { move: x.MoveNumber + 1, score: x.Evaluation, scoreType: x.BoardEvaluationType, lines: x.AnalysisLines }; });
 
-            if (evaluationData.length === 0) {
-                showGraph(boardViewer, [
-                    {
-                        move: 2,
-                        score: 0,
-                        scoreType: 0,
-                        lines: [
-                            {
-                                AnalysisLineId: 1,
-                                GameId: 3503,
-                                AnalysisEntryId: 2255,
-                                Move: "fxe5",
-                                Fen: "rnbqkbnr/pppp1ppp/8/4P3/8/8/PPPPP1PP/RNBQKBNR b KQkq - 0",
-                                MoveNumber: 2
-                            },
-                            {
-                                AnalysisLineId: 2,
-                                GameId: 3503,
-                                AnalysisEntryId: 2255,
-                                Move: "d6",
-                                Fen: "rnbqkbnr/ppp2ppp/3p4/4P3/8/8/PPPPP1PP/RNBQKBNR w KQkq - 0",
-                                MoveNumber: 3
-                            },
-                            {
-                                AnalysisLineId: 3,
-                                GameId: 3503,
-                                AnalysisEntryId: 2255,
-                                Move: "exd6",
-                                Fen: "rnbqkbnr/ppp2ppp/3P4/8/8/8/PPPPP1PP/RNBQKBNR b KQkq - 0",
-                                MoveNumber: 4
-                            },
-                            {
-                                AnalysisLineId: 5,
-                                GameId: 3503,
-                                AnalysisEntryId: 2255,
-                                Move: "Bxd6",
-                                Fen: "rnbqk1nr/ppp2ppp/3b4/8/8/8/PPPPP1PP/RNBQKBNR w KQkq - 0",
-                                MoveNumber: 5
-                            },
-                            {
-                                AnalysisLineId: 7,
-                                GameId: 3503,
-                                AnalysisEntryId: 2255,
-                                Move: "Nf3",
-                                Fen: "rnbqk1nr/ppp2ppp/3b4/8/8/5N2/PPPPP1PP/RNBQKB1R b KQkq - 1",
-                                MoveNumber: 6
-                            },
-                            {
-                                AnalysisLineId: 10,
-                                GameId: 3503,
-                                AnalysisEntryId: 2255,
-                                Move: "Nf6",
-                                Fen: "rnbqk2r/ppp2ppp/3b1n2/8/8/5N2/PPPPP1PP/RNBQKB1R w KQkq - 2",
-                                MoveNumber: 7
-                            }
-                        ]
-                    },
-                    { move: 1, score: -4, scoreType: 1, analysis: "Something" },
-                    { move: 0, score: 3, scoreType: -99 },
-                    { move: 3, score: 8, scoreType: 0 }
-                ]);
-            } else {
-                // Start data at zero. Make sure scoretype is invalid number.
-                evaluationData.unshift({ move: 0, score: 0, scoreType: -99 });
-                showGraph(boardViewer, evaluationData, data.GameOver, data.Status);
-            }
+            // Start data at zero. Make sure scoretype is invalid number.
+            evaluationData.unshift({ move: 0, score: 0, scoreType: -99 });
+            showGraph(boardViewer, evaluationData, data.GameOver, data.Status);
 
             boardViewer.highlightMoves(movesWhichAreMateInN(evaluationData));
             // Go to the move specified in the URL, if there is one
