@@ -181,8 +181,9 @@ namespace RedChess.ControllerTests
 
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.Delete(40));
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
-            var manager = new GameManager(fakeRepo);
+            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
             var controller = new BoardController(manager, fakeIdProvider);
             controller.DeleteConfirmed(40);
 
@@ -193,12 +194,13 @@ namespace RedChess.ControllerTests
         public void DeleteMultipleCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
             fakeRepo.Expect(x => x.Delete(c_fakeGameId));
             fakeRepo.Expect(x => x.Delete(20));
             fakeRepo.Expect(x => x.Delete(30));
             fakeRepo.Expect(x => x.Delete(40));
-            var manager = new GameManager(fakeRepo);
+            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("james");
             var controller = new BoardController(manager, fakeIdentity);
@@ -226,8 +228,11 @@ namespace RedChess.ControllerTests
         public void DeleteMultipleOneArgumentCallsDelete()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
             fakeRepo.Expect(x => x.Delete(c_fakeGameId));
-            var manager = new GameManager(fakeRepo);
+
+            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
+
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("james");
             var controller = new BoardController(manager, fakeIdentity);
