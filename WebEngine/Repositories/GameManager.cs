@@ -369,6 +369,7 @@ namespace RedChess.WebEngine.Repositories
         public void Delete(int gameId)
         {
             m_repository.Delete(gameId);
+            m_statsRepository.UpdateEloTable();
             PostGameEndedMessage(gameId);
         }
 

@@ -526,6 +526,21 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
+        public void DeletingAGameUpdatesTheEloTable()
+        {
+            var fakeGame = GetFakeGame();
+            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
+
+            fakeStatsRepo.Expect(r => r.UpdateEloTable()).Repeat.Once();
+
+            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
+            manager.Delete(c_fakeGameId);
+            fakeStatsRepo.VerifyAllExpectations();
+        }
+
+        [Test]
         public void PlayMoveChangesBoardCorrectly()
         {
             var fakeGame = GetFakeGame();
