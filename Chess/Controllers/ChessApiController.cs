@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
@@ -84,7 +85,18 @@ namespace Chess.Controllers
         [HttpGet]
         public object Elo()
         {
-            return Json(m_gameManager.EloTable());
+            var data = new List<ExpandoObject>(256);
+
+            foreach (var d in m_gameManager.EloTable())
+            {
+                dynamic row = new ExpandoObject();
+                row.UserId = d.UserId;
+                row.Date = d.Date;
+                row.Elo = d.Elo;
+                data.Add(row);
+            }
+
+            return Json(data);
         }
 
         private static object GameBindingToGameData(IGameBinding game)
