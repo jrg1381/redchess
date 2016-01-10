@@ -10,7 +10,6 @@
 <style>
     path {
         fill: none;
-        stroke: steelblue;
     }
 
     .x-axis line {
@@ -110,17 +109,16 @@
         var yAxis = d3.svg.axis().scale(y).orient("right");
         svg.append("g").attr("class", "x-axis").attr("transform", "translate(0," + (height - 32) +")").call(xAxis);
         svg.append("g").attr("class", "x-axis").call(yAxis);
+        var color = d3.scale.category10();
 
         for (var prop in data.EloData) {
             if (data.EloData.hasOwnProperty(prop)) {
                 var mappedData = data.EloData[prop].map(function (x) { return { Date: new Date(x.Date), Elo: x.Elo } });
 
                 var line = d3.svg.line().x(function (d, i) { return x(d.Date); }).y(function (d, i) { return y(d.Elo); });
-                svg.append("g").data(mappedData);
-                svg.append("path").attr("d", line(mappedData));
+                svg.append("path").attr("d", line(mappedData)).style("stroke", function (d) { return color(prop); });
             }
         }
-
     }
 
     $(document).ready(function() {
