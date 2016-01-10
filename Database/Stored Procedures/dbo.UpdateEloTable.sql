@@ -28,7 +28,7 @@ FOR
             UserIdWinner ,
             CompletionDate
     FROM    dbo.Boards
-    WHERE   GameOver = 1
+    WHERE   GameOver = 1 AND UserIdBlack != UserIdWhite -- Ignore analysis boards
     ORDER BY CompletionDate FOR READ ONLY;
 
 /* Data from the Boards table */
