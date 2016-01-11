@@ -1,29 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
-using WebMatrix.WebData;
 using Chess.Filters;
 using Chess.Models;
+using RedChess.ChessCommon.Interfaces;
 
 namespace Chess.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class AccountController : Controller
 	{
+	    private readonly IWebSecurityProvider m_webSecurityProvider;
+
+        public AccountController() : this(null)
+        { }
+
+	    public AccountController(IWebSecurityProvider webSecurity = null)
+	    {
+	        m_webSecurityProvider = webSecurity ?? new DefaultWebSecurityProvider();
+	    }
+
 		//
 		// POST: /Account/JsonLogin
-
-		[AllowAnonymous]
+        [AllowAnonymous]
 		[HttpPost]
 		public JsonResult JsonLogin(LoginModel model, string returnUrl)
 		{
 			if (ModelState.IsValid)
 			{
-				if (WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+				if (m_webSecurityProvider.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
 				{
-					FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    m_webSecurityProvider.SetAuthCookie(model.UserName, model.RememberMe);
 					return Json(new { success = true, redirect = returnUrl });
 				}
 				else
@@ -43,7 +54,7 @@ namespace Chess.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult LogOff()
 		{
-			WebSecurity.Logout();
+            m_webSecurityProvider.Logout();
 
 			return RedirectToAction("Index", "Home");
 		}
@@ -60,12 +71,10 @@ namespace Chess.Controllers
 				// Attempt to register the user
 				try
 				{
-					WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-					WebSecurity.Login(model.UserName, model.Password);
+					m_webSecurityProvider.CreateUserAndAccount(model.UserName, model.Password, new { EmailHash = EmailHashForAddress(model.Email)});
+                    m_webSecurityProvider.Login(model.UserName, model.Password);
 
-					InitiateDatabaseForNewUser(model.UserName);
-
-					FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
+                    m_webSecurityProvider.SetAuthCookie(model.UserName, rememberMe: false);
 					return Json(new { success = true, redirect = returnUrl });
 				}
 				catch (MembershipCreateUserException e)
@@ -78,14 +87,15 @@ namespace Chess.Controllers
 			return Json(new { errors = GetErrorsFromModelState() });
 		}
 
-		/// <summary>
-		/// Initiate a new account entry for new user
-		/// </summary>
-		/// <param name="userName"></param>
-		private static void InitiateDatabaseForNewUser(string userName)
-		{
-
-		}
+	    private static string EmailHashForAddress(string email)
+	    {
+	        using (var md5 = MD5.Create())
+	        {
+	            var bytes = Encoding.UTF8.GetBytes(email);
+	            var digestBytes = md5.ComputeHash(bytes);
+	            return BitConverter.ToString(digestBytes).Replace("-", "");
+	        }
+	    }
 
 		//
 		// POST: /Account/Manage
@@ -184,7 +194,7 @@ namespace Chess.Controllers
 				bool changePasswordSucceeded;
 				try
 				{
-					changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+					changePasswordSucceeded = m_webSecurityProvider.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
 				}
 				catch (Exception)
 				{

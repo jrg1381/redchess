@@ -17,7 +17,7 @@ namespace Chess.Filters
         public VerifyIsParticipantAttribute(IGameManager manager, ICurrentUser identityProvider)
         {
             m_manager = manager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserImpl();
+            m_identityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         public void OnAuthorization(AuthorizationContext filterContext)

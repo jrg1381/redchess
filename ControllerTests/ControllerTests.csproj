@@ -107,6 +107,7 @@
     <Compile Include="BoardControllerTests.cs" />
     <Compile Include="HistoryControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserAccountTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Chess.snk">

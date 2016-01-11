@@ -19,7 +19,7 @@ namespace Chess.Controllers
         public ClockController(IGameManager manager = null, ICurrentUser identityProvider = null)
         {
             m_gameManager = manager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserImpl();
+            m_identityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         [System.Web.Mvc.HttpPost]
