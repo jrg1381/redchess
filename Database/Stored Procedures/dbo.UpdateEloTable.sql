@@ -4,6 +4,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 CREATE PROCEDURE [dbo].[UpdateEloTable] AS
 BEGIN
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
@@ -28,7 +29,10 @@ FOR
             UserIdWinner ,
             CompletionDate
     FROM    dbo.Boards
-    WHERE   GameOver = 1 AND UserIdBlack != UserIdWhite -- Ignore analysis boards
+            JOIN dbo.Clocks ON Clocks.GameId = Boards.GameId
+    WHERE   GameOver = 1
+            AND UserIdBlack != UserIdWhite -- Ignore analysis boards
+            AND TimeLimitMs = 300000 -- Only care about 5 minute games
     ORDER BY CompletionDate FOR READ ONLY;
 
 /* Data from the Boards table */
@@ -110,10 +114,11 @@ CLOSE GameCursor;
 DEALLOCATE GameCursor;
 
 DELETE FROM dbo.Metadata WHERE [Key] = 'LastEloHistoryUpdate';
-INSERT INTO dbo.Metadata ([Key], [Value]) VALUES ('LastEloHistoryUpdate',CONVERT(nvarchar(30), GETUTCDATE(), 126));
+INSERT INTO dbo.Metadata ([Key], [Value]) VALUES ('LastEloHistoryUpdate',CONVERT(NVARCHAR(30), GETUTCDATE(), 126));
 
 COMMIT TRANSACTION
 END
+
 
 
 GO
