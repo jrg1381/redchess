@@ -219,14 +219,5 @@ namespace Chess.Controllers
             // If we got this far, something failed
             return Json(new { errors = GetErrorsFromModelState() });
 		}
-
-        public static string AvatarUrlForUserName(string name)
-        {
-            var manager = new GameManager();
-            var emailHash = manager.EmailHashForUsername(name);
-            if (String.IsNullOrEmpty(emailHash))
-                return "";
-            return $"http://www.gravatar.com/avatar/{emailHash}";
-        }
 	}
 }

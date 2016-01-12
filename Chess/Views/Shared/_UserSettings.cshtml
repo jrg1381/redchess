@@ -1,7 +1,11 @@
-﻿@using Chess.Controllers
-<script>
+﻿<script>
      $(document).ready(function() {
          getSpinController().stopLogoSpinner();
+
+         $.getJSON("/api/Avatar")
+             .done(function(data) {
+                 $('#avatar').css({ "background-image" : "url(" + data + ")", "background-repeat" : "no-repeat" });
+             });
      });
  </script>
 
@@ -18,17 +22,26 @@
                     <span class="icon-bar"></span>
                 }
             </button>
-            <div class="pull-left"><img alt="logo" src="~/Images/bN.png" height="32" width="32" style="max-width:100px;margin-top : 11px; margin-right: 8px"/>
-                <div style="position:absolute;margin-left:16px;margin-top:-16px;" id="redchess-logo"></div>
-            </div>
-            <a class="navbar-brand">
-                <div>
-                @if (Request.IsAuthenticated)
-                {
-                     @HttpContext.Current.User.Identity.Name
-                     <img src="@AccountController.AvatarUrlForUserName(HttpContext.Current.User.Identity.Name)?s=28&d=mm" />
-                }
-               </div>
+            <a class="navbar-brand" style="padding-top: 11px;padding-bottom: 11px">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <div>
+                            <img alt="logo" src="~/Images/bN.png" height="28" width="28" style="max-width: 100px; margin-right: 8px"/>
+                            <div style="position: absolute; margin-left: 14px; margin-top: -14px;" id="redchess-logo"></div>
+                        </div>
+                    </li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>
+                            <div style="height: 28px; line-height: 28px;">
+                                @HttpContext.Current.User.Identity.Name
+                            </div>
+                        </li>
+                        <li>
+                            <div id="avatar" style="width: 28px; height: 28px; margin-left: 8px;"></div>
+                        </li>
+                    }
+                </ul>
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

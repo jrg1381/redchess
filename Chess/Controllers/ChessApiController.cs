@@ -40,6 +40,15 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
+        public object Avatar()
+        {
+            var emailHash = m_gameManager.EmailHashForUsername(HttpContext.Current.User.Identity.Name);
+            if (String.IsNullOrEmpty(emailHash))
+                return "";
+            return Json($"http://www.gravatar.com/avatar/{emailHash}?s=28&d=mm");
+        }
+
+        [HttpGet]
         public object Stats()
         {
             return Json(m_gameManager.Stats());
