@@ -7,5 +7,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
     {
         IEnumerable<UserProfile> FindAll();
         int UserId(string currentUser);
+        string EmailHashForUsername(string username);
     }
 }

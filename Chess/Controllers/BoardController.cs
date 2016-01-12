@@ -23,7 +23,7 @@ namespace Chess.Controllers
         public BoardController(IGameManager gameManager = null, ICurrentUser identityProvider = null)
         {
             m_gameManager = gameManager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserImpl();
+            m_identityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         // GET: /Board/

@@ -60,6 +60,7 @@
     <Compile Include="Interfaces\IHistoryEntry.cs" />
     <Compile Include="Interfaces\IParse.cs" />
     <Compile Include="Interfaces\IProcessedAnalysis.cs" />
+    <Compile Include="Interfaces\IWebSecurityProvider.cs" />
     <Compile Include="ProcessedAnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardAnalysis.cs" />

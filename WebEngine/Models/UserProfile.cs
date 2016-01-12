@@ -19,5 +19,7 @@ namespace RedChess.WebEngine.Models
             get { return m_underlyingUsername; }
             set { m_underlyingUsername = value.ToLowerInvariant(); }
         }
+
+        public string EmailHash { get; set; }
     }
 }

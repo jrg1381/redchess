@@ -246,7 +246,8 @@
     <Compile Include="Controllers\ChessApiController.cs" />
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="Controllers\ClockController.cs" />
-    <Compile Include="Controllers\CurrentUserImpl.cs" />
+    <Compile Include="Controllers\CurrentUserProvider.cs" />
+    <Compile Include="Controllers\DefaultWebSecurityProvider.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ICurrentUser.cs" />
