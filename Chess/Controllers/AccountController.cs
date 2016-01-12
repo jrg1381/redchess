@@ -89,11 +89,14 @@ namespace Chess.Controllers
 
 	    private static string EmailHashForAddress(string email)
 	    {
+	        if (String.IsNullOrEmpty(email))
+	            return String.Empty;
+
 	        using (var md5 = MD5.Create())
 	        {
 	            var bytes = Encoding.UTF8.GetBytes(email);
 	            var digestBytes = md5.ComputeHash(bytes);
-	            return BitConverter.ToString(digestBytes).Replace("-", "");
+	            return BitConverter.ToString(digestBytes).Replace("-", "").ToLower();
 	        }
 	    }
 
