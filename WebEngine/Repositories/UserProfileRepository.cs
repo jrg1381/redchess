@@ -22,5 +22,13 @@ namespace RedChess.WebEngine.Repositories
                 return context.UserProfiles.Single(u => u.UserName == currentUser).UserId;
             }
         }
+
+        public string EmailHashForUsername(string username)
+        {
+            using (var context = new ChessContext())
+            {
+                return context.UserProfiles.FirstOrDefault(u => u.UserName == username)?.EmailHash;
+            }
+        }
     }
 }

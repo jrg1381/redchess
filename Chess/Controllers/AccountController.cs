@@ -5,9 +5,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
-using Chess.Filters;
 using Chess.Models;
 using RedChess.ChessCommon.Interfaces;
+using RedChess.WebEngine.Repositories;
+
+//using RedChess.WebEngine.Repositories;
 
 namespace Chess.Controllers
 {
@@ -218,5 +220,13 @@ namespace Chess.Controllers
             return Json(new { errors = GetErrorsFromModelState() });
 		}
 
+        public static string AvatarUrlForUserName(string name)
+        {
+            var manager = new GameManager();
+            var emailHash = manager.EmailHashForUsername(name);
+            if (String.IsNullOrEmpty(emailHash))
+                return "";
+            return $"http://www.gravatar.com/avatar/{emailHash}";
+        }
 	}
 }
