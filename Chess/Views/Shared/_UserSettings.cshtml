@@ -22,8 +22,13 @@
                 <div style="position:absolute;margin-left:16px;margin-top:-16px;" id="redchess-logo"></div>
             </div>
             <a class="navbar-brand">
-                <div>@HttpContext.Current.User.Identity.Name
-            <img src="@AccountController.AvatarUrlForUserName(HttpContext.Current.User.Identity.Name)?s=28&d=mm" /></div>
+                <div>
+                @if (Request.IsAuthenticated)
+                {
+                     @HttpContext.Current.User.Identity.Name
+                     <img src="@AccountController.AvatarUrlForUserName(HttpContext.Current.User.Identity.Name)?s=28&d=mm" />
+                }
+               </div>
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
