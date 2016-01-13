@@ -23,10 +23,6 @@
         stroke: #000;
         stroke-width: 1.5px;
     }
-
-    .blob {
-        fill: steelblue;
-    }
 </style>
 
 <script>
@@ -42,6 +38,7 @@
             .done(function (data) {
                 drawEloTable(data);
                 drawWinLossTable(data.WinLoss);
+                drawWinLossPointsTable(data.WinLoss);
                 drawGraph(data);
                 updateLastUpdated(data.LastUpdated);
             });
@@ -62,6 +59,52 @@
                 row.append($("<td>" + data[property].Winner + "</td>"));
                 row.append($("<td>" + data[property].Count + "</td>"));
                 $("#winloss-table>tbody").append(row);
+            }
+        }
+    }
+
+    function drawWinLossPointsTable(data) {
+        var allUsers = new Object();
+
+        for (var property in data) {
+            if (data.hasOwnProperty(property)) {
+                var row = data[property];
+
+                if (!allUsers[row.White]) {
+                    allUsers[row.White] = new Object();
+                    allUsers[row.White]["Wins"] = 0;
+                    allUsers[row.White]["Losses"] = 0;
+                    allUsers[row.White]["Draws"] = 0;
+                }
+
+                if (!allUsers[row.Black]) {
+                    allUsers[row.Black] = new Object();
+                    allUsers[row.Black]["Wins"] = 0;
+                    allUsers[row.Black]["Losses"] = 0;
+                    allUsers[row.Black]["Draws"] = 0;
+                }
+                
+                if (row.Winner == null) {
+                    allUsers[row.White]["Draws"] += row.Count;
+                    allUsers[row.Black]["Draws"] += row.Count;
+                } else {
+                var loser = row.Winner === row.White ? row.Black : row.White;
+                allUsers[row.Winner]["Wins"] += row.Count;
+                allUsers[loser]["Losses"] += row.Count;
+                }
+            }
+        }
+
+        for (var u in allUsers) {
+            if (allUsers.hasOwnProperty(u)) {
+                var q = allUsers[u];
+                var row = $("<tr></tr>");
+                row.append($("<td>" + u + "</td>"));
+                row.append($("<td>" + q["Wins"] + "</td>"));
+                row.append($("<td>" + q["Losses"] + "</td>"));
+                row.append($("<td>" + q["Draws"] + "</td>"));
+                row.append($("<td>" + ((q["Draws"] * 0.5) + q["Wins"]) + "</td>"));
+                $("#winloss-points-table>tbody").append(row);
             }
         }
     }
@@ -141,6 +184,19 @@
         <tbody>
 
         </tbody>
+    </table>
+
+    <table class="table" id="winloss-points-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Draws</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
 
     <table class="table" id="winloss-table">
