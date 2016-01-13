@@ -276,6 +276,7 @@ Chess.prototype.lockBoard = function() {
     if (this.boardLocked)
         return;
     this.boardLocked = true;
+    $("#board-controls > a").attr("disabled", true);
     this.parentOfSpinny().prepend('<div class="lockIcon"></div>');
 };
 
@@ -283,6 +284,7 @@ Chess.prototype.unlockBoard = function() {
     if (!this.boardLocked)
         return;
     this.boardLocked = false;
+    $("#board-controls > a").removeAttr("disabled");
     $(".lockIcon").remove();
 };
 
