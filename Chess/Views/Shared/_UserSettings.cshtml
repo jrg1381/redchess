@@ -22,7 +22,7 @@
          }
 
          function setAvatar(avatarUrl) {
-             $('#avatar').css({ "background-image": "url(" + avatarUrl + ")", "background-repeat": "no-repeat" });
+             $('#avatar').css({ "background-image": "url(" + avatarUrl + ")", "background-repeat": "no-repeat", "border-radius" : "0.2rem" });
          }
      });
  </script>
@@ -40,7 +40,7 @@
                     <span class="icon-bar"></span>
                 }
             </button>
-            <a class="navbar-brand" style="padding-top: 11px;padding-bottom: 11px">
+            <a class="navbar-brand" style="padding-top: 9px;padding-bottom: 9px">
                 <ul class="nav navbar-nav navbar-left">
                     <li>
                         <div>
@@ -51,12 +51,12 @@
                     @if (Request.IsAuthenticated)
                     {
                         <li>
-                            <div style="height: 28px; line-height: 28px;">
+                            <div style="height: 32px; line-height: 32px;">
                                 @HttpContext.Current.User.Identity.Name
                             </div>
                         </li>
                         <li>
-                            <div id="avatar" style="width: 28px; height: 28px; margin-left: 8px;"></div>
+                            <div id="avatar" style="width: 32px; height: 32px; margin-left: 8px;"></div>
                         </li>
                     }
                 </ul>
