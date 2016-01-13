@@ -24,7 +24,7 @@ function getSpinController() {
             lines: 12, // The number of lines to draw
             length: 2, // The length of each line
             width: 5, // The line thickness
-            radius: 13, // The radius of the inner circle
+            radius: 15, // The radius of the inner circle
             color: '#72b571', // #rbg or #rrggbb
             speed: 1, // Rounds per second
             trail: 100, // Afterglow percentage
