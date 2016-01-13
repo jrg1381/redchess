@@ -89,9 +89,15 @@ function drawEloTable(data) {
 
     for (var property in eloData) {
         if (eloData.hasOwnProperty(property)) {
+            var userElo = eloData[property];
+
             // The server guarantees that the data comes back already sorted
-            var latestElo = eloData[property][eloData[property].length - 1].Elo;
-            var previousElo = eloData[property][eloData[property].length - 2].Elo;
+            var latestElo = userElo[userElo.length - 1].Elo;
+            // The user might not have a previous Elo
+            var previousElo = latestElo;
+            if (userElo.length > 1) {
+                previousElo = userElo[userElo.length - 2].Elo;
+            }
             var filterFunction = function (x) { return x.UserId == property; };
             var userName = data.Profiles.filter(filterFunction)[0].UserName;
             var row = $("<tr></tr>");
