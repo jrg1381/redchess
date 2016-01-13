@@ -61,7 +61,7 @@ namespace RedChess.WebEngine.Repositories
             {
                 Black = x.Black.ToLower(),
                 White = x.White.ToLower(),
-                Winner = x.Winner.ToLower(),
+                Winner = x.Winner?.ToLower(),
                 Count = x.Count
             });
         }

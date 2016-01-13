@@ -26,10 +26,12 @@ function drawWinLossTable(data) {
     for (var property in data) {
         if (data.hasOwnProperty(property)) {
             var row = $("<tr></tr>");
-            row.append($("<td>" + data[property].White + "</td>"));
-            row.append($("<td>" + data[property].Black + "</td>"));
-            row.append($("<td>" + data[property].Winner + "</td>"));
-            row.append($("<td>" + data[property].Count + "</td>"));
+            var dataRow = data[property];
+
+            row.append($("<td>" + dataRow.White + "</td>"));
+            row.append($("<td>" + dataRow.Black + "</td>"));
+            row.append($("<td>" + (dataRow.Winner == null ? "-" : dataRow.Winner) + "</td>"));
+            row.append($("<td>" + dataRow.Count + "</td>"));
             $("#winloss-table>tbody").append(row);
         }
     }
