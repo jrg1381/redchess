@@ -334,6 +334,7 @@
     <Content Include="Scripts\app\clock.js" />
     <Content Include="Scripts\app\evaluationgraph.js" />
     <Content Include="Scripts\app\spinner.js" />
+    <Content Include="Scripts\app\stats.js" />
     <Content Include="Scripts\app\viewer.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
