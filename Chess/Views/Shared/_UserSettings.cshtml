@@ -2,10 +2,28 @@
      $(document).ready(function() {
          getSpinController().stopLogoSpinner();
 
-         $.getJSON("/api/Avatar")
-             .done(function(data) {
-                 $('#avatar').css({ "background-image" : "url(" + data + ")", "background-repeat" : "no-repeat" });
-             });
+         if ($('#avatar').length !== 0) { // Do we have an avatar div to populate?
+             if (typeof (Storage) !== "undefined") { // Do we have local storage capability?
+                 var avatarUrl = localStorage.getItem("AvatarUrl");
+
+                 if (avatarUrl == null) { // Does the local storage have the data we want?
+                     $.getJSON("/api/Avatar").done(function(d) { // Boo, we have to get the date via a POST
+                         localStorage.setItem("AvatarUrl", d);
+                         setAvatar(d);
+                     });
+                 } else {
+                     setAvatar(avatarUrl); // Yay, we found the url in the local storage
+                 }
+             } else {
+                 $.getJSON("/api/Avatar").done(setAvatar); // No local storage => make the request and don't try to store it
+             }
+         } else {
+             localStorage.removeItem("AvatarUrl"); // No div to populate => user is logged out
+         }
+
+         function setAvatar(avatarUrl) {
+             $('#avatar').css({ "background-image": "url(" + avatarUrl + ")", "background-repeat": "no-repeat" });
+         }
      });
  </script>
 
