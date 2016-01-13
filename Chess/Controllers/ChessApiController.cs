@@ -45,7 +45,7 @@ namespace Chess.Controllers
             var emailHash = m_gameManager.EmailHashForUsername(HttpContext.Current.User.Identity.Name);
             if (String.IsNullOrEmpty(emailHash))
                 return "";
-            return Json($"http://www.gravatar.com/avatar/{emailHash}?s=28&d=mm");
+            return Json($"https://www.gravatar.com/avatar/{emailHash}?s=32&d=mm");
         }
 
         [HttpGet]
