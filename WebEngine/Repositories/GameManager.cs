@@ -364,7 +364,10 @@ namespace RedChess.WebEngine.Repositories
 
         public IGameBinding FetchGame(int gameId)
         {
-            return new GameBinding(m_repository.FindById(gameId), this);
+            var dto = m_repository.FindById(gameId);
+            if (dto == null)
+                return null;
+            return new GameBinding(dto, this);
         }
 
         public IEnumerable<IGameBinding> FindAll()
