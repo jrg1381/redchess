@@ -37,7 +37,7 @@ namespace RedChess.WebEngine.Repositories
                     .Include(b => b.UserProfileWhite)
                     .Include(b => b.UserProfileWinner)
                     .AsNoTracking()
-                    .Single(b => b.GameId == id);
+                    .FirstOrDefault(b => b.GameId == id);
 
                 return game;
             }
