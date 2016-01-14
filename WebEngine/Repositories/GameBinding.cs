@@ -16,6 +16,9 @@ namespace RedChess.WebEngine.Repositories
 
         public GameBinding(GameDto gameDto, GameManager gameManager)
         {
+            if(gameDto == null) throw new ArgumentException("Null parameter", nameof(gameDto));
+            if (gameManager == null) throw new ArgumentException("Null parameter", nameof(gameManager));
+
             m_gameDto = gameDto;
             m_gameManager = gameManager;
         }
