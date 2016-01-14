@@ -33,6 +33,10 @@ namespace Chess
 
             bundles.Add(new ScriptBundle("~/bundles/timeago").Include("~/Scripts/jquery.timeago.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/stats").Include(
+                "~/Scripts/d3/d3.min.js",
+                "~/Scripts/app/stats.js"));
+
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/Site.css",
 				"~/Scripts/app/chessboard-0.3.0.css"));

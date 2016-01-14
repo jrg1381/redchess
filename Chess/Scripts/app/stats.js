@@ -141,7 +141,7 @@ function drawGraph(data) {
             var mappedData = data.EloData[prop].map(function (x) { return { Date: new Date(x.Date), Elo: x.Elo } });
 
             var line = d3.svg.line().x(function (d, i) { return x(d.Date); }).y(function (d, i) { return y(d.Elo); });
-            svg.append("path").attr("d", line(mappedData)).style("stroke", function (d) { return color(prop); });
+            svg.append("path").attr("d", line(mappedData)).style("stroke", function (d) { return color(prop); }).attr("class","nofill-line");
         }
     }
 }
