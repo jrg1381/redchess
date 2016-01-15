@@ -121,4 +121,8 @@ END
 
 
 
+
+GO
+
+GRANT EXECUTE ON  [dbo].[UpdateEloTable] TO [chessdb]
 GO
