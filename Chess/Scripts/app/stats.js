@@ -87,9 +87,9 @@ function drawEloTable(data) {
     var eloData = data.EloData;
     var color = d3.scale.category10();
 
-    for (var property in eloData) {
-        if (eloData.hasOwnProperty(property)) {
-            var userElo = eloData[property];
+    for (var username in eloData) {
+        if (eloData.hasOwnProperty(username)) {
+            var userElo = eloData[username];
 
             // The server guarantees that the data comes back already sorted
             var latestElo = userElo[userElo.length - 1].Elo;
@@ -98,7 +98,7 @@ function drawEloTable(data) {
             if (userElo.length > 1) {
                 previousElo = userElo[userElo.length - 2].Elo;
             }
-            var filterFunction = function (x) { return x.UserId == property; };
+            var filterFunction = function (x) { return x.UserId == username; };
             var userName = data.Profiles.filter(filterFunction)[0].UserName;
             var row = $("<tr></tr>");
             row.append($('<td><span class="glyphicon glyphicon-user" style="padding-right:0.5em;color :' + color(userName) + '" aria-hidden="true"></span>' + userName + "</td>"));
