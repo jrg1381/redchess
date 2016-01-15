@@ -87,6 +87,9 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.currentPlayerColor = currentPlayerColor;
     this.boardLocked = false;
     this.spinner = null;
+    this.source = "";
+    this.target = "";
+    this.pendingPromotion = false;
     this.isTimedGame = (clock != null);
     this.isAnalysisBoard = analysisBoard;
     this.myClock = clock;
@@ -103,7 +106,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
 
     this.onDragStart = function (source, piece, position, orientation) {
         if (that.isAnalysisBoard) {
-            if (!$("form").is(":hidden") || piece.search(that.currentTurn) === -1 || that.boardLocked) {
+            if (that.pendingPromotion || piece.search(that.currentTurn) === -1 || that.boardLocked) {
                 return false;
             }
             return true;
@@ -111,7 +114,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
 
         if ((orientation === 'white' && piece.search(/^w/) === -1) ||
             (orientation === 'black' && piece.search(/^b/) === -1) ||
-            !$("form").is(":hidden") || piece.search(that.currentPlayerColor) == -1 || that.currentTurn != that.currentPlayerColor || that.boardLocked) {
+            that.pendingPromotion || piece.search(that.currentPlayerColor) == -1 || that.currentTurn != that.currentPlayerColor || that.boardLocked) {
             return false;
         }
         return true;
@@ -139,17 +142,6 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     $.connection.hub.start(function () {
         $.connection.hub.proxies.updateserver.server.join(gameId);
     });
-
-    // Hide the promotion UI and set its selection to nothing
-    $("#submitmove form").hide();
-    $("#Promote").val([]);
-
-    $("#submitmove form").submit(function () {
-        this.postMove($("input#Start").val(), $("input#End").val(), $("#Promote option:selected").text());
-        $("#submitmove form").hide();
-        $("#Promote").val([]);
-        return false;
-    }.bind(this));
 };
 
 Chess.prototype.offerDraw = function() {
@@ -161,8 +153,10 @@ Chess.prototype.offerDraw = function() {
     });
 };
 
-Chess.prototype.postMove = function (start, end, promote) {
+Chess.prototype.postMove = function (promote) {
     var gameId = this.gameId;
+    var start = this.source;
+    var end = this.target;
 
     if (start == end)
         return;
@@ -172,6 +166,9 @@ Chess.prototype.postMove = function (start, end, promote) {
     if (this.isTimedGame) {
         this.myClock.pauseClock();
     }
+
+    this.pendingPromotion = false;
+    $("#promotion-selection").hide();
 
     $.post("/Board/PlayMove", {
         "id": gameId,
@@ -184,17 +181,16 @@ Chess.prototype.postMove = function (start, end, promote) {
 };
 
 Chess.prototype.onDrop = function (source, target, piece) {
+    this.source = source.toUpperCase();
+    this.target = target.toUpperCase();
+
     if ((target[1] == '8' && piece == 'wP') || (target[1] == '1' && piece == 'bP')) {
-        $("input#Start").val(source.toUpperCase());
-        $("input#End").val(target.toUpperCase());
-        $("#submitmove form").show();
-        $("#Promote").val("Queen");
+        $("#promotion-selection").show();
+        this.pendingPromotion = true;
         return '';
     }
 
-    this.postMove(source.toUpperCase(), target.toUpperCase(), $("#Promote option:selected").text());
-    $("#submitmove form").hide();
-    $("#Promote").val([]);
+    this.postMove();
 };
 
 Chess.prototype.getSpinner = function () {

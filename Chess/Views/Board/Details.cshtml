@@ -4,6 +4,12 @@
     ViewBag.Title = "Game";
 }
 
+<style>
+    .thick-thumbnail {
+    border : 1px solid #ff00ff
+}
+</style>
+
 <script src="/Scripts/jquery.cookie.js"></script>
 <script src="/Scripts/jquery.signalR-2.2.0.min.js" type="text/javascript"></script>
 <script src="/signalr/hubs"></script>
@@ -43,6 +49,7 @@
 
         $("#drawoffer").hide();
         $("#drawoffer-sent").hide();
+        $("#promotion-selection").hide();
 
         $("#accept-draw-request").click(function() {
             theChess.respondToDrawOffer(true);
@@ -53,6 +60,33 @@
             theChess.respondToDrawOffer(false);
             $("#drawoffer").hide();
         });
+
+        // Configure the promotion dialog
+
+        $(".thumbnail").click(function(e) {
+            theChess.postMove(this.id);
+        });
+
+        var pieces = ['Q', 'R', 'N', 'B'];
+        for(var pIndex = 0;pIndex<pieces.length; pIndex++) {
+            var tnail = $(".thumbnail#" + pieces[pIndex]);
+            var img = $("<img></img>");
+            img.attr("src", "/Images/" + theChess.currentPlayerColor + pieces[pIndex] + ".png");
+            tnail.append(img);
+        }
+
+        // Set a sensible size
+        $(".thumbnail>img").attr("width", "64px");
+
+        // Hover behaviour
+        $('.thumbnail').hover(
+            function() {
+                $(this).addClass("thick-thumbnail");
+            },
+            function() {
+                $(this).removeClass("thick-thumbnail");
+            });
+
 
         @if (clockModel != null)
         {
@@ -121,61 +155,47 @@
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="alert alert-danger" role="alert" style="visibility: hidden">
-            <div id="messages" style="text-align: center">&nbsp;</div>
+<div class="col-md-3">
+    <div class="alert alert-danger" role="alert" style="visibility: hidden">
+        <div id="messages" style="text-align: center">&nbsp;</div>
+    </div>
+    <div>
+        <div class="panel panel-primary" id="promotion-selection">
+            <div class="panel-heading">Promote piece</div>
+            <div class="panel-body">
+                <div class="thumbnail" id="Q"></div>
+                <div class="thumbnail" id="R"></div>
+                <div class="thumbnail" id="N"></div>
+                <div class="thumbnail" id="B"></div>
+            </div>
         </div>
-        <div id="submitmove">
-            @using (Html.BeginForm("PlayMove", "Board", FormMethod.Post, new { @class = "form-inline"}))
-            {
-                var items = new List<SelectListItem>
-                {
-                    new SelectListItem {Value = "Queen", Text = "Queen"},
-                    new SelectListItem {Value = "Rook", Text = "Rook"},
-                    new SelectListItem {Value = "Knight", Text = "Knight"},
-                    new SelectListItem {Value = "Bishop", Text = "Bishop"},
-                };
 
-                @Html.AntiForgeryToken()
-                @Html.Hidden("Id", Model.GameId)
-                @Html.Hidden("Start")
-                @Html.Hidden("End")
+        @if (clockModel != null)
+        {
+            @Html.Partial("_Clock", clockModel)
+        }
 
-                <div class="form-group" style="margin-bottom : 10px">
-                    <div class="input-group">
-                        @Html.DropDownList("Promote", items, new { @class = "form-control"})
-                    </div>
-                        <input type="submit" value="Submit" id="submitbutton" class="btn btn-primary"/>
-                </div>
-            }
+        <div class="well">
+            <div id="lastmove"></div>
+            <div id="turnindicator"></div>
+        </div>
 
-            @if (clockModel != null)
-            {
-                @Html.Partial("_Clock", clockModel)
-            }
-
-            <div class="well">
-                <div id="lastmove"></div>
-                <div id="turnindicator"></div>
+        <div id="drawoffer" class="alert alert-warning">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> Draw?</strong>&nbsp;&nbsp;
+            <div class="btn-group" role="group">
+                <a class="btn btn-default" id="accept-draw-request">Accept</a>
+                <a class="btn btn-default" id="reject-draw-request">Reject</a>
             </div>
+        </div>
 
-            <div id="drawoffer" class="alert alert-warning">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> Draw?</strong>&nbsp;&nbsp;
-                <div class="btn-group" role="group">
-                    <a class="btn btn-default" id="accept-draw-request">Accept</a>
-                    <a class="btn btn-default" id="reject-draw-request">Reject</a>
-                </div>
-            </div>
+        <div id="drawoffer-sent" class="alert alert-warning">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
+        </div>
 
-            <div id="drawoffer-sent" class="alert alert-warning">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div id="blacktaken" style="font-size: 36pt;"></div>
-                    <div id="whitetaken" style="font-size: 36pt;"></div>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="blacktaken" style="font-size: 36pt;"></div>
+                <div id="whitetaken" style="font-size: 36pt;"></div>
             </div>
         </div>
     </div>
