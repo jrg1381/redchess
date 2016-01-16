@@ -160,7 +160,7 @@ function drawGraph(data) {
         if (data.EloData.hasOwnProperty(prop)) {
             var mappedData = data.EloData[prop].map(function (x) { return { Date: new Date(x.Date), Elo: x.Elo } });
 
-            var line = d3.svg.line().x(function (d, i) { return x(d.Date); }).y(function (d, i) { return y(d.Elo); });
+            var line = d3.svg.line().x(function (d, i) { return x(d.Date); }).y(function (d, i) { return y(d.Elo); }).interpolate("step-after");
             svg.append("path").attr("d", line(mappedData)).style("stroke", function (d) { return color(prop); }).attr("class","nofill-line");
         }
     }
