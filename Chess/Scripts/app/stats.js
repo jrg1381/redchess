@@ -81,6 +81,24 @@ function drawWinLossPointsTable(data) {
             $("#winloss-points-table>tbody").append(row);
         }
     }
+
+    sortTable("#winloss-points-table", 4);
+}
+
+function sortTable(tableName, columnIndex) {
+    var $table = $(tableName);
+    var $rows = $('tbody > tr', $table);
+
+    $rows.sort(function(a, b) {
+
+        var keyA = $($('td', a)[columnIndex]).text();
+        var keyB = $($('td', b)[columnIndex]).text();
+        return (keyA < keyB) ? 1 : 0;
+    });
+
+    $rows.each(function(index, row) {
+        $table.append(row); // append rows after sort
+    });
 }
 
 function drawEloTable(data) {
@@ -107,6 +125,8 @@ function drawEloTable(data) {
             $("#ratings-table>tbody").append(row);
         }
     }
+
+    sortTable("#ratings-table", 1);
 };
 
 function drawGraph(data) {
