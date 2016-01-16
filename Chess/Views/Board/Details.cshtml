@@ -6,7 +6,7 @@
 
 <style>
     .thick-thumbnail {
-    border : 1px solid #ff00ff
+    border : 1px solid #337ab7
 }
 </style>
 
@@ -71,12 +71,10 @@
         for(var pIndex = 0;pIndex<pieces.length; pIndex++) {
             var tnail = $(".thumbnail#" + pieces[pIndex]);
             var img = $("<img></img>");
+            img.attr("width", "64px");
             img.attr("src", "/Images/" + theChess.currentPlayerColor + pieces[pIndex] + ".png");
             tnail.append(img);
         }
-
-        // Set a sensible size
-        $(".thumbnail>img").attr("width", "64px");
 
         // Hover behaviour
         $('.thumbnail').hover(
