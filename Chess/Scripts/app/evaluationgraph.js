@@ -170,8 +170,8 @@ function onDocumentReady(gameId) {
             var analyzedMoves = data.Analysis.length;
             var winner = data.Winner;
 
-            // They're allowed to differ by 1 because 'moves' includes the terminal move which has no corresponding analysis
-            if (moves - analyzedMoves >= 1) {
+            // They're allowed to differ by 2 because 'moves' includes the terminal move which has no corresponding analysis and the first 'move' which is the starting position
+            if (moves - analyzedMoves >= 2) {
                 $("#analysisTitle").text("Analysis (completed " + analyzedMoves + "/" + moves + ")");
             }
 
