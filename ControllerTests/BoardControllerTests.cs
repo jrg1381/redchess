@@ -100,6 +100,24 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
+        private IGameManager GetControllerForFakeGameWithQueueExpectingGameOver(out IQueueManager fakeQueueManager)
+        {
+            var fakeGame = GetFakeGame();
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            var repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
+            fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
+            fakeQueueManager.Expect(x => x.PostGameEndedMessage(10)).Repeat.Once();
+
+            return new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
+        }
+
+
         private BoardController GetControllerForFakeGameWithQueueWithPromotionImminent(out IQueueManager fakeQueueManager)
         {
             var fakeGame = GetFakeGamePromotionImminent();
@@ -522,31 +540,19 @@ namespace RedChess.ControllerTests
         [Test]
         public void EndingAGameUpdatesTheEloTable()
         {
-            var fakeGame = GetFakeGame();
-            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
-            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
-
-            fakeStatsRepo.Expect(r => r.UpdateEloTable()).Repeat.Once();
-
-            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
-            manager.EndGameWithMessage(fakeGame, "Ended by test");
-            fakeStatsRepo.VerifyAllExpectations();
+            IQueueManager fakeQueueManager;
+            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(out fakeQueueManager);
+            gameManager.EndGameWithMessage(c_fakeGameId, "Ended by test");
+            fakeQueueManager.VerifyAllExpectations();
         }
 
         [Test]
         public void DeletingAGameUpdatesTheEloTable()
         {
-            var fakeGame = GetFakeGame();
-            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
-            var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
-
-            fakeStatsRepo.Expect(r => r.UpdateEloTable()).Repeat.Once();
-
-            var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
-            manager.Delete(c_fakeGameId);
-            fakeStatsRepo.VerifyAllExpectations();
+            IQueueManager fakeQueueManager;
+            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(out fakeQueueManager);
+            gameManager.Delete(c_fakeGameId);
+            fakeQueueManager.VerifyAllExpectations();
         }
 
         [Test]
