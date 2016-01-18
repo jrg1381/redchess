@@ -102,6 +102,7 @@ namespace Redchess.AnalysisWorker
         {
             var message = JsonConvert.DeserializeObject<GameEndedMessage>(json);
             m_engineFarm.GameOver(message.GameId);
+            (new GameManager()).UpdateEloTable();
         }
 
         public override bool OnStart()

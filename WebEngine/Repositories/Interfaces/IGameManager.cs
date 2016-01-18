@@ -32,5 +32,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         IEnumerable<IEloHistory> EloTable();
         DateTime LastEloUpdate();
         string EmailHashForUsername(string username);
+        void UpdateEloTable();
     }
 }

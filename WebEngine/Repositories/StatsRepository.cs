@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Azure;
 using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine.Repositories
@@ -25,7 +26,8 @@ namespace RedChess.WebEngine.Repositories
 
         public void UpdateEloTable()
         {
-            using (var context = new ChessContext())
+            var connectionString = CloudConfigurationManager.GetSetting("DefaultConnection");
+            using (var context = new ChessContext(connectionString))
             {
                 context.Database.ExecuteSqlCommand("EXEC dbo.UpdateEloTable");
             }
