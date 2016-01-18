@@ -100,19 +100,19 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
-        private IGameManager GetControllerForFakeGameWithQueueExpectingGameOver(out IQueueManager fakeQueueManager)
+        private IGameManager GetControllerForFakeGameWithQueueExpectingGameOver(int gameId, out IQueueManager fakeQueueManager)
         {
-            var fakeGame = GetFakeGame();
+            var fakeGame = GetFakeGame(gameId);
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(c_fakeGameId)).Return(fakeGame);
+            repository.Expect(x => x.FindById(gameId)).Return(fakeGame);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
             fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
-            fakeQueueManager.Expect(x => x.PostGameEndedMessage(10)).Repeat.Once();
+            fakeQueueManager.Expect(x => x.PostGameEndedMessage(gameId)).Repeat.Once();
 
             return new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
         }
@@ -541,7 +541,7 @@ namespace RedChess.ControllerTests
         public void EndingAGameUpdatesTheEloTable()
         {
             IQueueManager fakeQueueManager;
-            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(out fakeQueueManager);
+            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager);
             gameManager.EndGameWithMessage(c_fakeGameId, "Ended by test");
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -550,8 +550,8 @@ namespace RedChess.ControllerTests
         public void DeletingAGameUpdatesTheEloTable()
         {
             IQueueManager fakeQueueManager;
-            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(out fakeQueueManager);
-            gameManager.Delete(c_fakeGameId);
+            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId + 1, out fakeQueueManager);
+            gameManager.Delete(c_fakeGameId + 1);
             fakeQueueManager.VerifyAllExpectations();
         }
 
