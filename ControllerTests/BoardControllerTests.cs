@@ -102,7 +102,7 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
-        private IGameManager GetControllerForFakeGameWithQueueExpectingGameOver(int gameId, out IQueueManager fakeQueueManager, AutoResetEvent autoResetEvent)
+        private IGameManager GetGameManagerForFakeGameWithQueueExpectingGameOver(int gameId, out IQueueManager fakeQueueManager, AutoResetEvent autoResetEvent)
         {
             var fakeGame = GetFakeGame(gameId);
 
@@ -120,6 +120,13 @@ namespace RedChess.ControllerTests
             }));
 
             return new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
+        }
+
+        private BoardController GetControllerForFakeGameWithQueueExpectingGameOver(IGameManager manager)
+        {
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
+            return new BoardController(manager, fakeIdentity);
         }
 
 
@@ -547,8 +554,34 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
+            var gameManager = GetGameManagerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
             gameManager.EndGameWithMessage(c_fakeGameId, "Ended by test");
+            reset.WaitOne(TimeSpan.FromSeconds(5));
+            fakeQueueManager.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void ResigningAGameUpdatesTheEloTable()
+        {
+            var reset = new AutoResetEvent(false);
+            IQueueManager fakeQueueManager;
+            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
+            var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
+            controller.Resign(c_fakeGameId);
+            reset.WaitOne(TimeSpan.FromSeconds(5));
+            fakeQueueManager.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void AcceptingADrawnGameUpdatesTheEloTable()
+        {
+            var reset = new AutoResetEvent(false);
+            IQueueManager fakeQueueManager;
+            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
+            var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
+            // This relies on the known bug that a user can accept their own draw requests, if the UI allowed them
+            controller.OfferDraw(c_fakeGameId);
+            controller.AgreeDraw(c_fakeGameId, true);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -558,8 +591,8 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId + 1, out fakeQueueManager, reset);
-            gameManager.Delete(c_fakeGameId + 1);
+            var gameManager = GetGameManagerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
+            gameManager.Delete(c_fakeGameId);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
