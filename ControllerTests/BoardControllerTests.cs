@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -100,7 +102,7 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
-        private IGameManager GetControllerForFakeGameWithQueueExpectingGameOver(int gameId, out IQueueManager fakeQueueManager)
+        private IGameManager GetControllerForFakeGameWithQueueExpectingGameOver(int gameId, out IQueueManager fakeQueueManager, AutoResetEvent autoResetEvent)
         {
             var fakeGame = GetFakeGame(gameId);
 
@@ -112,7 +114,10 @@ namespace RedChess.ControllerTests
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
             fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
-            fakeQueueManager.Expect(x => x.PostGameEndedMessage(gameId)).Repeat.Once();
+            fakeQueueManager.Expect(x => x.PostGameEndedMessage(gameId)).Repeat.Once().Do(new Action<int>(id =>
+            {
+                autoResetEvent.Set();
+            }));
 
             return new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
         }
@@ -540,18 +545,22 @@ namespace RedChess.ControllerTests
         [Test]
         public void EndingAGameUpdatesTheEloTable()
         {
+            var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager);
+            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
             gameManager.EndGameWithMessage(c_fakeGameId, "Ended by test");
+            reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
 
         [Test]
         public void DeletingAGameUpdatesTheEloTable()
         {
+            var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId + 1, out fakeQueueManager);
+            var gameManager = GetControllerForFakeGameWithQueueExpectingGameOver(c_fakeGameId + 1, out fakeQueueManager, reset);
             gameManager.Delete(c_fakeGameId + 1);
+            reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
 
