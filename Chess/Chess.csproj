@@ -251,6 +251,7 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ICurrentUser.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
     <Compile Include="Filters\ValidateHttpAntiForgeryTokenAttribute.cs" />
     <Compile Include="Filters\VerifyIsParticipantAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -398,7 +399,7 @@
     <Content Include="Views\History\History.cshtml" />
     <Content Include="Views\Pgn\PgnViewer.cshtml" />
     <Content Include="Views\Home\Config.cshtml" />
-    <Content Include="Views\Home\Stats.cshtml" />
+    <Content Include="Views\Stats\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

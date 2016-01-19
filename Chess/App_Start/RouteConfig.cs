@@ -9,12 +9,6 @@ namespace Chess
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-		    routes.MapRoute(
-		        name: "SpecialActions",
-		        url: "Stats/{id}",
-		        defaults: new {controller = "Home", action = "Stats", id = UrlParameter.Optional}
-		        );
-
             routes.MapRoute(
 				name: "Default",
 				url: "{controller}/{action}/{id}",

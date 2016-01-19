@@ -19,10 +19,5 @@ namespace Chess.Controllers
         {
             return View("Config", LogEntry.FetchLogEntries());
         }
-
-        public ActionResult Stats()
-        {
-            return View("Stats");
-        }
     }
 }
