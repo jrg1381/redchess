@@ -208,7 +208,18 @@ namespace Chess.Controllers
 
 				if (changePasswordSucceeded)
 				{
-                    return Json(new { success = true, redirect = Url.Action("Index", "Board") });
+				    try
+				    {
+				        if (!String.IsNullOrEmpty(model.Email))
+				        {
+				            m_webSecurityProvider.ChangeEmailHash(EmailHashForAddress(model.Email));
+				        }
+				        return Json(new {success = true, redirect = Url.Action("Index", "Board")});
+				    }
+				    catch (Exception)
+				    {
+				        ModelState.AddModelError("", "Password update successful. Unable to update email address.");
+				    }
 				}
 				else
 				{

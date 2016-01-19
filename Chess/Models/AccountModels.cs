@@ -28,7 +28,11 @@ namespace Chess.Models
 		[Display(Name = "Confirm new password")]
 		[Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
 		public string ConfirmPassword { get; set; }
-	}
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email address")]
+        public string Email { get; set; }
+    }
 
 	public class LoginModel
 	{

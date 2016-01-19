@@ -7,5 +7,6 @@ namespace RedChess.ChessCommon.Interfaces
         void CreateUserAndAccount(string userName, string password, object propertyValues);
         bool ChangePassword(string name, string oldPassword, string newPassword);
         void SetAuthCookie(string userName, bool rememberMe);
+        void ChangeEmailHash(string emailHashForAddress);
     }
 }

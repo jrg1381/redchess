@@ -440,9 +440,14 @@ namespace RedChess.WebEngine.Repositories
             return m_clockRepository.PlayerReady(gameId, playerColor);
         }
 
-        public string EmailHashForUsername(string username)
+        public string GetEmailHashForUsername(string username)
         {
-            return m_userRepository.EmailHashForUsername(username);
+            return m_userRepository.GetEmailHashForUsername(username);
+        }
+
+        public void SetEmailHashForUserId(int userId, string emailHash)
+        {
+            m_userRepository.SetEmailHashForUserId(userId, emailHash);
         }
 
         public IEnumerable<IEloHistory> EloTable()

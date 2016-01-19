@@ -42,7 +42,7 @@ namespace Chess.Controllers
         [HttpGet]
         public object Avatar()
         {
-            var emailHash = m_gameManager.EmailHashForUsername(HttpContext.Current.User.Identity.Name);
+            var emailHash = m_gameManager.GetEmailHashForUsername(HttpContext.Current.User.Identity.Name);
             if (String.IsNullOrEmpty(emailHash))
                 return "";
             return Json($"https://www.gravatar.com/avatar/{emailHash}?s=32&d=mm");

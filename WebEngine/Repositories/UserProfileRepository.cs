@@ -23,11 +23,20 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public string EmailHashForUsername(string username)
+        public string GetEmailHashForUsername(string username)
         {
             using (var context = new ChessContext())
             {
                 return context.UserProfiles.FirstOrDefault(u => u.UserName == username)?.EmailHash;
+            }
+        }
+
+        public void SetEmailHashForUserId(int userId, string emailHash)
+        {
+            using (var context = new ChessContext())
+            {
+                context.UserProfiles.First(u => u.UserId == userId).EmailHash = emailHash;
+                context.SaveChanges();
             }
         }
     }

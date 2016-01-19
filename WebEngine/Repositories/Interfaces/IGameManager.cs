@@ -31,7 +31,7 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         PlayerReadyStatus PlayerReady(int gameId, string playerColor);
         IEnumerable<IEloHistory> EloTable();
         DateTime LastEloUpdate();
-        string EmailHashForUsername(string username);
+        string GetEmailHashForUsername(string username);
         void UpdateEloTable();
     }
 }

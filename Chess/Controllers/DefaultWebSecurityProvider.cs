@@ -1,5 +1,6 @@
 using System.Web.Security;
 using RedChess.ChessCommon.Interfaces;
+using RedChess.WebEngine.Repositories;
 using WebMatrix.WebData;
 
 namespace Chess.Controllers
@@ -29,6 +30,16 @@ namespace Chess.Controllers
         public void SetAuthCookie(string userName, bool rememberMe)
         {
             FormsAuthentication.SetAuthCookie(userName, rememberMe);
+        }
+
+        public void ChangeEmailHash(string hashedEmail)
+        {
+            (new GameManager()).SetEmailHashForUserId(CurrentUserId(), hashedEmail);
+        }
+
+        public int CurrentUserId()
+        {
+            return WebSecurity.CurrentUserId;
         }
     }
 }
