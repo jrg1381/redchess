@@ -591,8 +591,9 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var gameManager = GetGameManagerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
-            gameManager.Delete(c_fakeGameId);
+            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(c_fakeGameId, out fakeQueueManager, reset);
+            var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
+            controller.DeleteConfirmed(c_fakeGameId);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
