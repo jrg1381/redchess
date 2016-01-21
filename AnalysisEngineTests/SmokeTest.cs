@@ -47,14 +47,14 @@ namespace Redchess.AnalysisEngineTests
             m_engineWrapper.Dispose();
 
             int count;
-            var expiry = DateTime.UtcNow.AddSeconds(30);
+            var expiry = DateTime.UtcNow.AddSeconds(45);
             while ((count = StockfishProcesses().Length) > 0 && DateTime.UtcNow < expiry)
             {
                 Thread.Sleep(250);
                 Console.WriteLine("Stockfish processes : {0}", count);
             }
 
-            CollectionAssert.IsEmpty(Process.GetProcessesByName("stockfish-6-64"), "Expected no stockfish64 processes to be running");
+            CollectionAssert.IsEmpty(StockfishProcesses(), "Expected no stockfish64 processes to be running");
         }
 
         private static Process[] StockfishProcesses()
