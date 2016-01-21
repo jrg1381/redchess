@@ -16,17 +16,19 @@ namespace Chess.Controllers
     [Authorize]
 	public class AccountController : Controller
 	{
-	    private readonly IWebSecurityProvider m_webSecurityProvider;
+        private readonly ICurrentUser m_userProvider;
+        private readonly IWebSecurityProvider m_webSecurityProvider;
 
-        public AccountController() : this(null)
+        public AccountController() : this(null, null)
         { }
 
-	    public AccountController(IWebSecurityProvider webSecurity = null)
+	    public AccountController(ICurrentUser userProvider = null, IWebSecurityProvider webSecurity = null)
 	    {
-	        m_webSecurityProvider = webSecurity ?? new DefaultWebSecurityProvider();
+	        m_userProvider = userProvider ?? new CurrentUserProvider();
+	        m_webSecurityProvider = webSecurity ?? new DefaultWebSecurityProvider(m_userProvider);
 	    }
 
-		//
+        //
 		// POST: /Account/JsonLogin
         [AllowAnonymous]
 		[HttpPost]
@@ -191,15 +193,13 @@ namespace Chess.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Manage(LocalPasswordModel model)
 		{
-			ViewBag.HasLocalPassword = true;
-
 			if (ModelState.IsValid)
 			{
 				// ChangePassword will throw an exception rather than return false in certain failure scenarios.
 				bool changePasswordSucceeded;
 				try
 				{
-					changePasswordSucceeded = m_webSecurityProvider.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+					changePasswordSucceeded = m_webSecurityProvider.ChangePassword(m_userProvider.CurrentUser, model.OldPassword, model.NewPassword);
 				}
 				catch (Exception)
 				{
@@ -214,7 +214,7 @@ namespace Chess.Controllers
 				        {
 				            m_webSecurityProvider.ChangeEmailHash(EmailHashForAddress(model.Email));
 				        }
-				        return Json(new {success = true, redirect = Url.Action("Index", "Board")});
+				        return Json(new {success = true, redirect = Url?.Action("Index", "Board")});
 				    }
 				    catch (Exception)
 				    {
