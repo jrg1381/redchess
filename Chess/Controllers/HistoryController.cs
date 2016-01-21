@@ -45,7 +45,7 @@ namespace Chess.Controllers
                 return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in database"), "History", "PlayFromHere"));
             }
 
-            if (thisGame.UserProfileBlack.UserName == m_identityProvider.CurrentUser)
+            if (thisGame.UserProfileBlack.UserId == m_identityProvider.CurrentUserId)
             {
                 opponent = thisGame.UserProfileWhite.UserId;
                 playAsBlack = true;
