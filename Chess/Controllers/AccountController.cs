@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -108,17 +109,6 @@ namespace Chess.Controllers
 		// POST: /Account/Manage
 
 		#region Helpers
-		private ActionResult RedirectToLocal(string returnUrl)
-		{
-			if (Url.IsLocalUrl(returnUrl))
-			{
-				return Redirect(returnUrl);
-			}
-			else
-			{
-				return RedirectToAction("Index", "Home");
-			}
-		}
 
 		public enum ManageMessageId
 		{
@@ -173,7 +163,6 @@ namespace Chess.Controllers
 
 		//
 		// GET: /Account/Manage
-
 		public ActionResult Manage(ManageMessageId? message)
 		{
 			ViewBag.StatusMessage =
@@ -182,7 +171,7 @@ namespace Chess.Controllers
 				: message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
 				: "";
 			ViewBag.HasLocalPassword = true;
-			ViewBag.ReturnUrl = Url.Action("Manage");
+			ViewBag.ReturnUrl = Url?.Action("Manage");
 			return View();
 		}
 
