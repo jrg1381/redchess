@@ -74,10 +74,10 @@ namespace RedChess.ControllerTests
             var result = controller.JsonLogin(loginModel, "http://localhost/") as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            var loginOk = ExtractPropertyValue<bool>(result, "success");
+            var loginOk = PropertyUtils.ExtractPropertyValue<bool>(result, "success");
             Assert.AreEqual(true , loginOk, "Expected login to succeed");
 
-            var redirectUrl = ExtractPropertyValue<string>(result, "redirect");
+            var redirectUrl = PropertyUtils.ExtractPropertyValue<string>(result, "redirect");
             Assert.AreEqual("http://localhost/", redirectUrl, "Expected redirect URL not correct");
         }
 
@@ -102,7 +102,7 @@ namespace RedChess.ControllerTests
             var result = controller.Manage(passwordModel) as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            var loginOk = ExtractPropertyValue<bool>(result.Data, "success");
+            var loginOk = PropertyUtils.ExtractPropertyValue<bool>(result.Data, "success");
             Assert.AreEqual(true, loginOk, "Expected change password to succeed");
         }
 
@@ -161,9 +161,9 @@ namespace RedChess.ControllerTests
             var result = controller.Manage(passwordModel) as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            Assert.Throws<ArgumentException>(() => ExtractPropertyValue<bool>(result.Data, "success"));
+            Assert.Throws<ArgumentException>(() => PropertyUtils.ExtractPropertyValue<bool>(result.Data, "success"));
 
-            var errorMessage = ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
+            var errorMessage = PropertyUtils.ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
             Assert.AreEqual(expectedErrorMessage, errorMessage.First(), "Expected change password to fail with this error message");
         }
 
@@ -184,7 +184,7 @@ namespace RedChess.ControllerTests
             var result = controller.JsonLogin(loginModel, "http://localhost/") as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            Assert.Throws<ArgumentException>(() => ExtractPropertyValue<bool>(result, "success"));
+            Assert.Throws<ArgumentException>(() => PropertyUtils.ExtractPropertyValue<bool>(result, "success"));
         }
 
         private void SetupCreateUserMock(IWebSecurityProvider mockSecurity, Action<string> hashCapturer)
@@ -196,7 +196,7 @@ namespace RedChess.ControllerTests
                     (invocation) =>
                     {
                         var anonymousTypeObject = invocation.Arguments[2];
-                        var capturedEmailHash = ExtractPropertyValue<string>(anonymousTypeObject, "EmailHash");
+                        var capturedEmailHash = PropertyUtils.ExtractPropertyValue<string>(anonymousTypeObject, "EmailHash");
                         hashCapturer(capturedEmailHash);
                     });
             mockSecurity.Expect(x => x.Login(c_username, c_password, false)).Return(true);
@@ -236,8 +236,8 @@ namespace RedChess.ControllerTests
             var result = controller.JsonRegister(registerModel, "http://localhost/") as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            var success = ExtractPropertyValue<bool>(result, "success");
-            var redirectUrl = ExtractPropertyValue<string>(result, "redirect");
+            var success = PropertyUtils.ExtractPropertyValue<bool>(result, "success");
+            var redirectUrl = PropertyUtils.ExtractPropertyValue<string>(result, "redirect");
 
             Assert.IsTrue(success, "Expected operation to return success");
             Assert.AreEqual("http://localhost/", redirectUrl, "Expected operation to set redirect url correctly");
@@ -267,7 +267,7 @@ namespace RedChess.ControllerTests
             mockSecurity.VerifyAllExpectations();
 
             // The test is that the message is not the default error message
-            var errorMessage = ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
+            var errorMessage = PropertyUtils.ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
             StringAssert.DoesNotStartWith("The authentication provider returned an error. Please verify", errorMessage.First(), "Got default error message instead of specialized one");
         }
 
@@ -289,28 +289,9 @@ namespace RedChess.ControllerTests
             var result = controller.JsonRegister(registerModel, "http://localhost/") as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            var errorMessage = ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
+            var errorMessage = PropertyUtils.ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
             StringAssert.StartsWith("The authentication provider returned an error. Please verify", errorMessage.First(), "Expected change password to fail with this error message");
-            Assert.Throws<ArgumentException>(() => ExtractPropertyValue<bool>(result, "success"));
-        }
-
-        private static T ExtractPropertyValue<T>(JsonResult result, string propertyName)
-        {
-            var res = result.Data;
-            var propertyInfo = res.GetType().GetProperty(propertyName);
-            if(propertyInfo == null)
-                throw new ArgumentException("Property '" + propertyName + "' not found on JsonResult");
-            var value = propertyInfo.GetValue(res, null);
-            return (T)value;
-        }
-
-        private static T ExtractPropertyValue<T>(object result, string propertyName)
-        {
-            var propertyInfo = result.GetType().GetProperty(propertyName);
-            if (propertyInfo == null)
-                throw new ArgumentException("Property '" + propertyName + "' not found on object");
-            var value = propertyInfo.GetValue(result, null);
-            return (T)value;
+            Assert.Throws<ArgumentException>(() => PropertyUtils.ExtractPropertyValue<bool>(result, "success"));
         }
     }
 }

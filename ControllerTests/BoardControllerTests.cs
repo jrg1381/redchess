@@ -338,6 +338,70 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
+        [TestCase("0.99")]
+        [TestCase("180.1")]
+        [TestCase("-5")]
+        [TestCase("Not a number")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void CreateGameInvalidTimeLimits(string timeLimit)
+        {
+            const int whiteUserId = 44;
+
+            var fakeGameRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeGameRepo.Expect(x => x.AddOrUpdate(Arg<GameDto>.Is.Anything)).Repeat.Never();
+
+            var fakeUserRepo = MockRepository.GenerateStub<IUserProfileRepository>();
+            fakeUserRepo.Expect(x => x.UserId("james")).Return(whiteUserId);
+
+            var fakeHistoryRepo = MockRepository.GenerateStub<IHistoryRepository>();
+
+            var manager = new GameManager(fakeGameRepo, fakeHistoryRepo, userProfileRepository: fakeUserRepo);
+
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("james");
+            var controller = new BoardController(manager, fakeIdentity);
+
+            var result = controller.Create("77", timeLimit, true) as JsonResult;
+            fakeGameRepo.VerifyAllExpectations();
+
+            Assert.IsFalse(PropertyUtils.ExtractPropertyValue<bool>(result.Data, "success"), "Game creation should fail");
+        }
+
+        [Test]
+        public void CreateGame()
+        {
+            const int whiteUserId = 44;
+            const int blackUserId = 77;
+
+            GameDto actualGameAdded = null;
+            
+            var fakeGameRepo = MockRepository.GenerateMock<IGameRepository>();
+            fakeGameRepo.Expect(x => x.AddOrUpdate(Arg<GameDto>.Is.Anything)).Repeat.Once().Do(new Action<GameDto>(
+                x =>
+                {
+                    actualGameAdded = x;
+                }));
+
+            var fakeUserRepo = MockRepository.GenerateStub<IUserProfileRepository>();
+            fakeUserRepo.Expect(x => x.UserId("james")).Return(whiteUserId);
+
+            var fakeHistoryRepo = MockRepository.GenerateStub<IHistoryRepository>();
+
+            var manager = new GameManager(fakeGameRepo, fakeHistoryRepo, userProfileRepository: fakeUserRepo);
+
+            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
+            fakeIdentity.Stub(x => x.CurrentUser).Return("james");
+            var controller = new BoardController(manager, fakeIdentity);
+
+            controller.Create("77", "0");
+            fakeGameRepo.VerifyAllExpectations();
+
+            Assert.AreEqual(whiteUserId, actualGameAdded.UserIdWhite, "Added game has wrong white player");
+            Assert.AreEqual(blackUserId, actualGameAdded.UserIdBlack, "Added game has wrong black player");
+            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", actualGameAdded.Fen, "Starting FEN is wrong");
+        }
+
         [TestCase("james", true)]
         [TestCase("clive", true)]
         [TestCase("jason", false)]
