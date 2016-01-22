@@ -2,6 +2,7 @@
 
 <div>
         @using System.Collections
+@using RedChess.MessageQueue
         @using RedChess.WebEngine.Repositories
 
         <h2>Configuration</h2>
@@ -13,6 +14,7 @@
         var processorCount = Environment.ProcessorCount;
         var userCount = manager.AllUserProfiles().Count();
         var games = manager.FindAll().ToList();
+        var queueLength = QueueManagerFactory.CreateInstance().QueryQueueLength();
         }
 
         <table class="table">
@@ -31,6 +33,10 @@
             <tr>
                 <td>User count</td>
                 <td>@userCount</td>
+            </tr>
+            <tr>
+                <td>Analysis queue length</td>
+                <td>@queueLength</td>
             </tr>
             <tr>
                 <td>Game count</td>

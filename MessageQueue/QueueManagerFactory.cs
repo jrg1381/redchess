@@ -45,5 +45,10 @@ namespace RedChess.MessageQueue
         public void PostBestMoveResponseMessage(int gameId, int moveNumber, IBoardAnalysis foo)
         {
         }
+
+        public long QueryQueueLength()
+        {
+            return 0;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -26,6 +27,12 @@ namespace RedChess.MessageQueue
         private void SendMessage(object message)
         {
             m_queueClient.Send(new BrokeredMessage(message));
+        }
+
+        public long QueryQueueLength()
+        {
+            var queueDescription = new QueueDescription(QueueManagerFactory.QueueName);
+            return queueDescription.MessageCount;
         }
 
         public void PostGameEndedMessage(int gameId)
