@@ -8,7 +8,7 @@
  *
  */
 
-/// <reference path="Scripts/jquery-2.1.4.js" />
+/// <reference path="Scripts/jquery-2.2.0.js" />
 /// <reference path="jquery.signalR.version.js" />
 (function ($, window, undefined) {
 
