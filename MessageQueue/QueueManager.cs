@@ -18,10 +18,12 @@ namespace RedChess.MessageQueue
     internal class QueueManager : IQueueManager, IDisposable
     {
         private readonly QueueClient m_queueClient;
+        private readonly NamespaceManager m_namespaceManager;
 
         internal QueueManager(string connectionString)
         {
             m_queueClient = QueueClient.CreateFromConnectionString(connectionString, QueueManagerFactory.QueueName);
+            m_namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
         }
 
         private void SendMessage(object message)
@@ -31,8 +33,7 @@ namespace RedChess.MessageQueue
 
         public long QueryQueueLength()
         {
-            var queueDescription = new QueueDescription(QueueManagerFactory.QueueName);
-            return queueDescription.MessageCount;
+            return m_namespaceManager.GetQueue(QueueManagerFactory.QueueName).MessageCount;
         }
 
         public void PostGameEndedMessage(int gameId)
