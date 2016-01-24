@@ -12,9 +12,9 @@ namespace RedChess.WebEngine.Repositories
     internal class GameBinding : IGameBinding
     {
         private readonly GameDto m_gameDto;
-        private readonly GameManager m_gameManager;
+        private readonly IGameManager m_gameManager;
 
-        public GameBinding(GameDto gameDto, GameManager gameManager)
+        public GameBinding(GameDto gameDto, IGameManager gameManager)
         {
             if(gameDto == null) throw new ArgumentException("Null parameter", nameof(gameDto));
             if (gameManager == null) throw new ArgumentException("Null parameter", nameof(gameManager));

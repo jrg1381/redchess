@@ -33,5 +33,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         DateTime LastEloUpdate();
         string GetEmailHashForUsername(string username);
         void UpdateEloTable();
+        bool ShouldLockUi(int gameId);
     }
 }
