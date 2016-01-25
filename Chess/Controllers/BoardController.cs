@@ -51,7 +51,7 @@ namespace Chess.Controllers
 
         public ActionResult Create()
         {
-            return View(m_gameManager.AllUserProfiles().Where(x => x.UserName != m_identityProvider.CurrentUser));
+            return View(m_gameManager.AllUserProfiles().Where(x => x.UserId != m_identityProvider.CurrentUserId));
         }
 
 

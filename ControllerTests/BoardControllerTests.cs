@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Web;
@@ -132,15 +135,101 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
+        public void TestConstructor()
+        {
+            Assert.DoesNotThrow(() => { var x = new BoardController(); });
+        }
+
+        [Test]
+        public void IndexShowsAllGames()
+        {
+            var manager = MockRepository.GenerateStub<IGameManager>();
+
+            var allGames = new[]
+            {
+                new GameBinding(new FakeGame().WithId(2), manager),
+                new GameBinding(new FakeGame().WithId(3), manager)
+            };
+
+            manager.Expect(x => x.FindAll()).Return(allGames);
+
+            var controller = new BoardController(manager);
+            var result = controller.Index() as ViewResult;
+
+            Assert.IsInstanceOf<IEnumerable<IGameBinding>>(result.Model, "Model is of wrong type");
+            CollectionAssert.AreEquivalent(allGames, result.Model as IEnumerable<IGameBinding>, "Model contents are wrong");
+        }
+
+        [Test]
+        public void DeleteRedirectsForNonExistentGame()
+        {
+            var fakeRepo = MockRepository.GenerateStub<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(40)).Return(null);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
+            var result = controller.Delete(40) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"], "Incorrect action");
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void DeleteRedirectsToDeleteConfirmationPage()
+        {
+            GameDto fakeGame = new FakeGame();
+            var fakeRepo = MockRepoForGame(fakeGame);
+            var manager = new GameManager(fakeRepo);
+            var expectedModel = new GameBinding(fakeGame, manager);
+            var controller = new BoardController(manager);
+            var result = controller.Delete(FakeGame.DefaultGameId) as ViewResult;
+            Assert.AreEqual(expectedModel.GameId, (result.Model as GameBinding).GameId, "Incorrect model passed to view");
+            // Not sure this really tests the redirection to the correct view
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void CreateOffersDropdownOfAllUsersExceptSelf()
+        {
+            const int myUserId = 2;
+
+            var users = new[]
+            {
+                new UserProfile {UserId = 1, UserName = "MrFoo"},
+                new UserProfile {UserId = 2, UserName = "CaptainDoom"},
+                new UserProfile {UserId = 3, UserName = "Something"}
+            };
+
+            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
+            identityProvider.Expect(x => x.CurrentUserId).Return(myUserId);
+            var fakeUserProfileRepo = MockRepository.GenerateStub<IUserProfileRepository>();
+            fakeUserProfileRepo.Expect(x => x.FindAll()).Return(users);
+            var manager = new GameManager(userProfileRepository:fakeUserProfileRepo);
+            var controller = new BoardController(manager, identityProvider);
+            var result = controller.Create() as ViewResult;
+            CollectionAssert.AreEquivalent(users.Where(x => x.UserId != myUserId), result.Model as IEnumerable<UserProfile>, "List of users shown in Create is wrong");
+        }
+
+        [Test]
         public void GetDetailsCallsFindById()
         {
             GameDto fakeGame = new FakeGame().WithId(40);
             var fakeRepo = MockRepoForGame(fakeGame);
-            fakeRepo.Replay();
             var manager = new GameManager(fakeRepo);
             var controller = new BoardController(manager);
-            controller.Details(40);
-           
+            var result = controller.Details(40) as ViewResult;
+            Assert.IsInstanceOf<IGameBinding>(result.Model,"Model is of wrong type");
+            Assert.AreEqual(fakeGame.GameId, (result.Model as IGameBinding).GameId, "Incorrect model passed to view");
+            fakeRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void GetDetailsForNonExistentGameRedirectsToIndex()
+        {
+            var fakeRepo = MockRepository.GenerateStub<IGameRepository>();
+            fakeRepo.Expect(x => x.FindById(40)).Return(null);
+            var manager = new GameManager(fakeRepo);
+            var controller = new BoardController(manager);
+            var result = controller.Details(40) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"], "Incorrect action");
             fakeRepo.VerifyAllExpectations();
         }
 
@@ -337,11 +426,15 @@ namespace RedChess.ControllerTests
             Assert.IsFalse(PropertyUtils.ExtractPropertyValue<bool>(result.Data, "success"), "Game creation should fail");
         }
 
-        [Test]
-        public void CreateGame()
+        [TestCase(true, false, false, Description = "Play black")]
+        [TestCase(false, false, false, Description = "Play white")]
+        [TestCase(true, false, true, Description = "Play black with clock")]
+        [TestCase(false, false, true, Description = "Play white with clock")]
+        [TestCase(false, true, false, Description = "Play against self")]
+        public void CreateGame(bool playAsBlack, bool analysisBoard, bool useClock)
         {
-            const int whiteUserId = 44;
-            const int blackUserId = 77;
+            const int challengerUserId = 44;
+            const int opponentUserId = 77;
 
             GameDto actualGameAdded = null;
             
@@ -353,21 +446,34 @@ namespace RedChess.ControllerTests
                 }));
 
             var fakeUserRepo = MockRepository.GenerateStub<IUserProfileRepository>();
-            fakeUserRepo.Expect(x => x.UserId("james")).Return(whiteUserId);
+            fakeUserRepo.Expect(x => x.UserId("james")).Return(challengerUserId);
 
             var fakeHistoryRepo = MockRepository.GenerateStub<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateStub<IClockRepository>();
 
-            var manager = new GameManager(fakeGameRepo, fakeHistoryRepo, userProfileRepository: fakeUserRepo);
+            var manager = new GameManager(fakeGameRepo, fakeHistoryRepo, fakeClockRepo, userProfileRepository: fakeUserRepo);
 
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("james");
             var controller = new BoardController(manager, fakeIdentity);
 
-            controller.Create("77", "0");
+            controller.Create(opponentUserId.ToString(), "5", useClock, playAsBlack, analysisBoard);
             fakeGameRepo.VerifyAllExpectations();
 
-            Assert.AreEqual(whiteUserId, actualGameAdded.UserIdWhite, "Added game has wrong white player");
-            Assert.AreEqual(blackUserId, actualGameAdded.UserIdBlack, "Added game has wrong black player");
+            if (analysisBoard)
+            {
+                Assert.AreEqual(challengerUserId, actualGameAdded.UserIdWhite,
+                    "Added game has wrong white player");
+                Assert.AreEqual(challengerUserId, actualGameAdded.UserIdBlack,
+                    "Added game has wrong black player");
+            }
+            else
+            {
+                Assert.AreEqual(playAsBlack ? opponentUserId : challengerUserId, actualGameAdded.UserIdWhite,
+                    "Added game has wrong white player");
+                Assert.AreEqual(playAsBlack ? challengerUserId : opponentUserId, actualGameAdded.UserIdBlack,
+                    "Added game has wrong black player");
+            }
             Assert.AreEqual("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", actualGameAdded.Fen, "Starting FEN is wrong");
         }
 
