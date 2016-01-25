@@ -294,6 +294,19 @@ namespace RedChess.ControllerTests
             return new BoardController(manager, fakeIdentity);
         }
 
+        [TestCase(false, "FAIL")]
+        [TestCase(true, "DRAW")]
+        public void ClaimDrawReturnsCorrectStatus(bool drawClaimable, string expectedStatus)
+        {
+            GameDto fakeGame = new FakeGame().WithClaimableDraw(drawClaimable);
+            var manager = MockRepository.GenerateStub<IGameManager>();
+            manager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
+            var controller = new BoardController(manager);
+            var result = controller.ClaimDraw(FakeGame.DefaultGameId) as JsonResult;
+            var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
+            Assert.AreEqual(expectedStatus, status, $"Expected {expectedStatus} status when claiming draw");
+        }
+
         [TestCase("0.99")]
         [TestCase("180.1")]
         [TestCase("-5")]
@@ -652,6 +665,30 @@ namespace RedChess.ControllerTests
             controller.AgreeDraw(FakeGame.DefaultGameId, true);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void AgreedDrawHasCorrectStatus()
+        {
+            var result = PlayADraw(true);
+            var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
+            Assert.AreEqual("DRAW", status, "Expected status to be DRAW");
+        }
+
+        [Test]
+        public void DeclinedDrawHasCorrectStatus()
+        {
+            var result = PlayADraw(false);
+            var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
+            Assert.AreEqual("REJECT", status, "Expected status to be REJECT");
+        }
+
+        private JsonResult PlayADraw(bool drawAccepted)
+        {
+            IGameRepository repo;
+            var controller = GetControllerForFakeGameAsUser("james", out repo);
+            controller.OfferDraw(FakeGame.DefaultGameId);
+            return controller.AgreeDraw(FakeGame.DefaultGameId, drawAccepted) as JsonResult;
         }
 
         [Test]

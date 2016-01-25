@@ -68,5 +68,11 @@ namespace RedChess.ControllerTests
             m_game.Status = status;
             return this;
         }
+
+        public FakeGame WithClaimableDraw(bool drawClaimable)
+        {
+            m_game.MayClaimDraw = drawClaimable;
+            return this;
+        }
     }
 }
