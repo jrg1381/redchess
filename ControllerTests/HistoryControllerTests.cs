@@ -14,46 +14,98 @@ namespace RedChess.ControllerTests
     [TestFixture]
     public class HistoryControllerTests
     {
-        private GameDto GetFakeGame()
+        private IHistoryRepository GetHistoryRepo()
         {
-            var myUserProfile = new UserProfile { UserId = 23, UserName = "james" };
-            var opponentUserProfile = new UserProfile { UserId = 27, UserName = "clive" };
-
-            var fakeGame = MockRepository.GenerateStub<GameDto>();
-
-            fakeGame.UserProfileBlack = myUserProfile;
-            fakeGame.UserProfileWhite = opponentUserProfile;
-            fakeGame.UserProfileWinner = myUserProfile;
-            fakeGame.UserIdWhite = opponentUserProfile.UserId;
-            fakeGame.UserIdBlack = myUserProfile.UserId;
-            fakeGame.GameOver = true;
-            return fakeGame;
-        }
-
-        [Test]
-        public void PgnWriting()
-        {
-            const int gameId = 10;
-
             var historyEntries = new[]
             {
-                new HistoryEntry() { Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", GameId = gameId, HistoryId = 0, Move = "", MoveNumber = 1},
-                new HistoryEntry() { Fen = "rnbqkbnr/pppp1ppp/8/413/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", GameId = gameId, HistoryId = 1, Move = "e4", MoveNumber = 2}
+                new HistoryEntry()
+                {
+                    Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
+                    GameId = FakeGame.DefaultGameId,
+                    HistoryId = 0,
+                    Move = "",
+                    MoveNumber = 1
+                },
+                new HistoryEntry()
+                {
+                    Fen = "rnbqkbnr/pppp1ppp/8/413/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
+                    GameId = FakeGame.DefaultGameId,
+                    HistoryId = 1,
+                    Move = "e4",
+                    MoveNumber = 2
+                }
             };
 
-            var gameRepo = MockRepository.GenerateMock<IGameRepository>();
-            gameRepo.Expect(x => x.FindById(gameId)).Return(GetFakeGame());
+            var historyRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            historyRepo.Expect(x => x.FindAllMoves(FakeGame.DefaultGameId)).Return(historyEntries);
+
+            return historyRepo;
+        }
+
+        private IHistoryRepository GetHistoryRepoNonDefaultStart()
+        {
+            var historyEntries = new[]
+            {
+                new HistoryEntry()
+                {
+                    Fen = "rnbqk3/pppppppp/8/8/8/8/PPPPPPPP/4KBNR w KQkq - 0",
+                    GameId = FakeGame.DefaultGameId,
+                    HistoryId = 0,
+                    Move = "",
+                    MoveNumber = 1
+                },
+                new HistoryEntry()
+                {
+                    Fen = "rnbqkbnr/pppp1ppp/8/413/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
+                    GameId = FakeGame.DefaultGameId,
+                    HistoryId = 1,
+                    Move = "e4",
+                    MoveNumber = 2
+                }
+            };
 
             var historyRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            historyRepo.Expect(x => x.FindAllMoves(10)).Return(historyEntries);
+            historyRepo.Expect(x => x.FindAllMoves(FakeGame.DefaultGameId)).Return(historyEntries);
 
+            return historyRepo;
+        }
+
+        private IEnumerable<TestCaseData>PgnWritingTestSource()
+        {
+            yield return new TestCaseData(new FakeGame().WhiteWins().Build(), "[Result \"1-0\"]\r\n\r\n1. e4 1-0", false, true).SetDescription("White wins");
+            yield return new TestCaseData(new FakeGame().BlackWins().Build(), "[Result \"0-1\"]\r\n\r\n1. e4 0-1", false, true).SetDescription("Black wins");
+            yield return new TestCaseData(new FakeGame().GameOver().Build(), "[Result \"1/2-1/2\"]\r\n\r\n1. e4 1/2-1/2", false, true).SetDescription("Drawn game");
+            yield return new TestCaseData(new FakeGame().Build(), "[Result \"*\"]\r\n\r\n1. e4 *", false, true).SetDescription("Incomplete game");
+            yield return new TestCaseData(new FakeGame().Build(), "[Result \"*\"]\r\n[TimeControl \"300\"]\r\n\r\n1. e4 *", true, true).SetDescription("Timed game");
+
+            yield return new TestCaseData(new FakeGame().Build(), 
+                "[Result \"*\"]\r\n[FEN \"rnbqk3/pppppppp/8/8/8/8/PPPPPPPP/4KBNR w KQkq - 0\"]\r\n\r\n1. e4 *", 
+                false, 
+                false)
+                .SetDescription("Non-default start position");
+        }
+
+        [TestCaseSource(nameof(PgnWritingTestSource))]
+        public void PgnWriting(GameDto inputGame, string expectedResultSuffix, bool timedGame = false, bool defaultStartPosition = true)
+        {
+            const string pgnPrefix = "[Event \"Casual Game\"]\r\n[Site \"?\"]\r\n[Round \"?\"]\r\n[Date \"0001.01.01\"]\r\n[White \"clive\"]\r\n[Black \"james\"]\r\n";
+            var gameRepo = FakeGame.MockRepoForGame(inputGame);
+
+            var historyRepo = defaultStartPosition ? GetHistoryRepo() : GetHistoryRepoNonDefaultStart();
             var clockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            if (timedGame)
+            {
+                var stubClock = MockRepository.GenerateStub<IClock>();
+                stubClock.TimeLimitMs = 300000; // 5 minutes
+                clockRepo.Expect(x => x.Clock(inputGame.GameId)).Return(stubClock);
+            }
 
             var gameManager = new GameManager(gameRepo, historyRepo, clockRepo);
             var controller = new HistoryController(gameManager);
-            var pgn = controller.Pgn(gameId).Content;
+            var pgn = controller.Pgn(FakeGame.DefaultGameId).Content;
 
-            Assert.AreEqual("[Event \"Casual Game\"]\r\n[Site \"?\"]\r\n[Round \"?\"]\r\n[Date \"0001.01.01\"]\r\n[White \"clive\"]\r\n[Black \"james\"]\r\n[Result \"0-1\"]\r\n\r\n1. e4 0-1", pgn, "PGN of game not as expected");
+            Assert.AreEqual(pgnPrefix + expectedResultSuffix, pgn, "PGN of game not as expected");
         }
 
         [Test]
@@ -67,52 +119,26 @@ namespace RedChess.ControllerTests
         [Test]
         public void ShowMoveReturnsCorrectView()
         {
-            const int gameId = 10;
-
-            var historyEntries = new[]
-            {
-                new HistoryEntry()
-                {
-                    Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
-                    GameId = gameId,
-                    HistoryId = 0,
-                    Move = "",
-                    MoveNumber = 1
-                },
-                new HistoryEntry()
-                {
-                    Fen = "rnbqkbnr/pppp1ppp/8/413/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
-                    GameId = gameId,
-                    HistoryId = 1,
-                    Move = "e4",
-                    MoveNumber = 2
-                }
-            };
-
-            var gameRepo = MockRepository.GenerateMock<IGameRepository>();
-            gameRepo.Expect(x => x.FindById(gameId)).Return(GetFakeGame());
-            var historyRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            historyRepo.Expect(x => x.FindAllMoves(gameId)).Return(historyEntries);
+            var gameRepo = FakeGame.MockRepoForDefaultFakeGame();
+            var historyRepo = GetHistoryRepo();
             var gameManager = new GameManager(gameRepo, historyRepo);
             var controller = new HistoryController(gameManager);
 
-            var result = controller.ShowMove(gameId) as ViewResult;
-            Assert.AreEqual(result.ViewData.Model, gameId, "Model for ShowMove is incorrect");
+            var result = controller.ShowMove(FakeGame.DefaultGameId) as ViewResult;
+            Assert.AreEqual(result.ViewData.Model, FakeGame.DefaultGameId, "Model for ShowMove is incorrect");
         }
 
         [Test]
         public void ShowMoveReturnsCorrectViewWhenGameNotPresent()
         {
-            const int gameId = 10;
-
             var gameRepo = MockRepository.GenerateMock<IGameRepository>();
-            gameRepo.Expect(x => x.FindById(gameId)).Return(null);
+            gameRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(null);
             var historyRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            historyRepo.Expect(x => x.FindAllMoves(gameId)).Return(Enumerable.Empty<HistoryEntry>());
+            historyRepo.Expect(x => x.FindAllMoves(FakeGame.DefaultGameId)).Return(Enumerable.Empty<HistoryEntry>());
             var gameManager = new GameManager(gameRepo, historyRepo);
             var controller = new HistoryController(gameManager);
 
-            var actionResult = controller.ShowMove(gameId);
+            var actionResult = controller.ShowMove(FakeGame.DefaultGameId);
             Assert.IsInstanceOf(typeof(HttpNotFoundResult), actionResult, "Expected 404 when requesting history of non-existent game");
         }
 
@@ -120,18 +146,9 @@ namespace RedChess.ControllerTests
         [TestCase("7", "10", Description = "Non-existent move")]
         public void PlayFromHereNonExistentData(string move, string gameId)
         {
-            const int game = 10;
-            var historyEntries = new[]
-{
-                new HistoryEntry() { Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", GameId = game, HistoryId = 0, Move = "", MoveNumber = 1},
-                new HistoryEntry() { Fen = "rnbqkbnr/pppp1ppp/8/413/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", GameId = game, HistoryId = 1, Move = "e4", MoveNumber = 2}
-            };
-
-            var fakeGame = GetFakeGame();
-            var gameRepo = MockRepository.GenerateMock<IGameRepository>();
-            gameRepo.Expect(x => x.FindById(game)).Return(fakeGame);
-            var historyRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            historyRepo.Expect(x => x.FindAllMoves(game)).Return(historyEntries);
+            GameDto fakeGame = new FakeGame();
+            var gameRepo = FakeGame.MockRepoForGame(fakeGame);
+            var historyRepo = GetHistoryRepo();
             var gameManager = new GameManager(gameRepo, historyRepo);
 
             var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
@@ -145,7 +162,7 @@ namespace RedChess.ControllerTests
 
         private IEnumerable<TestCaseData> Identities()
         {
-            var fakeGame = GetFakeGame();
+            GameDto fakeGame = new FakeGame();
             yield return new TestCaseData(IdentityProviderForFakeGameWhite(fakeGame)).SetName("Play as white");
             yield return new TestCaseData(IdentityProviderForFakeGameBlack(fakeGame)).SetName("Play as black");
         }
@@ -161,7 +178,7 @@ namespace RedChess.ControllerTests
                 new HistoryEntry() { Fen = "rnbqkbnr/pppp1ppp/8/413/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", GameId = gameId, HistoryId = 1, Move = "e4", MoveNumber = 2}
             };
 
-            var fakeGame = GetFakeGame();
+            GameDto fakeGame = new FakeGame();
 
             var gameRepo = MockRepository.GenerateStub<IGameRepository>();
             gameRepo.Expect(x => x.FindById(gameId)).Return(fakeGame);

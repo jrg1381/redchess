@@ -1,5 +1,6 @@
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
 
 namespace RedChess.ControllerTests
@@ -73,6 +74,47 @@ namespace RedChess.ControllerTests
         {
             m_game.MayClaimDraw = drawClaimable;
             return this;
+        }
+
+        public FakeGame WithGameOver(bool gameOver)
+        {
+            m_game.GameOver = gameOver;
+            return this;
+        }
+
+        public FakeGame BlackWins()
+        {
+            m_game.GameOver = true;
+            m_game.UserIdWinner = m_game.UserIdBlack;
+            m_game.UserProfileWinner = m_game.UserProfileBlack;
+            return this;
+        }
+
+        public FakeGame WhiteWins()
+        {
+            m_game.GameOver = true;
+            m_game.UserIdWinner = m_game.UserIdWhite;
+            m_game.UserProfileWinner = m_game.UserProfileWhite;
+            return this;
+        }
+
+        public static IGameRepository MockRepoForDefaultFakeGame()
+        {
+            var repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(DefaultGameId)).Return(new FakeGame());
+            return repository;
+        }
+
+        public static IGameRepository MockRepoForGame(GameDto fakeGame)
+        {
+            var repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(fakeGame.GameId)).Return(fakeGame);
+            return repository;
+        }
+
+        public GameDto Build()
+        {
+            return (GameDto) this;
         }
     }
 }

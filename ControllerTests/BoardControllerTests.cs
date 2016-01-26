@@ -30,13 +30,6 @@ namespace RedChess.ControllerTests
             return new FakeGame().WithId(id).WithFen("8/P7/8/8/8/8/8/K6k w - - 0");
         }
 
-        private IGameRepository MockRepoForDefaultFakeGame()
-        {
-            var repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(new FakeGame());
-            return repository;
-        }
-
         private BoardController GetControllerForFakeEndedGameAsUser(string userName, out IGameRepository repository)
         {
             GameDto fakeGame = new FakeGame().GameOver();
@@ -44,19 +37,12 @@ namespace RedChess.ControllerTests
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            repository = MockRepoForGame(fakeGame);
+            repository = FakeGame.MockRepoForGame(fakeGame);
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
             return new BoardController(manager, fakeIdentity);
-        }
-
-        private IGameRepository MockRepoForGame(GameDto fakeGame)
-        {
-            var repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(fakeGame.GameId)).Return(fakeGame);
-            return repository;
         }
 
         private BoardController GetControllerForFakeGameWithQueue(out IQueueManager fakeQueueManager, bool expectPostMessage)
@@ -66,7 +52,7 @@ namespace RedChess.ControllerTests
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            var repository = MockRepoForDefaultFakeGame();
+            var repository = FakeGame.MockRepoForDefaultFakeGame();
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
             fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
@@ -176,7 +162,7 @@ namespace RedChess.ControllerTests
         public void DeleteRedirectsToDeleteConfirmationPage()
         {
             GameDto fakeGame = new FakeGame();
-            var fakeRepo = MockRepoForGame(fakeGame);
+            var fakeRepo = FakeGame.MockRepoForGame(fakeGame);
             var manager = new GameManager(fakeRepo);
             var expectedModel = new GameBinding(fakeGame, manager);
             var controller = new BoardController(manager);
@@ -212,7 +198,7 @@ namespace RedChess.ControllerTests
         public void GetDetailsCallsFindById()
         {
             GameDto fakeGame = new FakeGame().WithId(40);
-            var fakeRepo = MockRepoForGame(fakeGame);
+            var fakeRepo = FakeGame.MockRepoForGame(fakeGame);
             var manager = new GameManager(fakeRepo);
             var controller = new BoardController(manager);
             var result = controller.Details(40) as ViewResult;
@@ -333,7 +319,7 @@ namespace RedChess.ControllerTests
         [TestCase("jason", false)]
         public void MayManipulateBoardTest(string userName, bool expectedResult)
         {
-            var fakeRepo = MockRepoForDefaultFakeGame();
+            var fakeRepo = FakeGame.MockRepoForDefaultFakeGame();
             var manager = new GameManager(fakeRepo);
             var identityProvider = MockRepository.GenerateMock<ICurrentUser>();
             identityProvider.Expect(x => x.CurrentUser).Return(userName);
@@ -349,7 +335,7 @@ namespace RedChess.ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
-            repository = MockRepoForDefaultFakeGame();
+            repository = FakeGame.MockRepoForDefaultFakeGame();
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
 
@@ -362,7 +348,7 @@ namespace RedChess.ControllerTests
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            repository = MockRepoForDefaultFakeGame();
+            repository = FakeGame.MockRepoForDefaultFakeGame();
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
             return new ClockController(manager, identity);
@@ -374,7 +360,7 @@ namespace RedChess.ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
-            repository = MockRepoForDefaultFakeGame();
+            repository = FakeGame.MockRepoForDefaultFakeGame();
             var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
             fakeIdentity.Stub(x => x.CurrentUser).Return(userName);
             fakeClockRepo.Expect(x => x.Clock(FakeGame.DefaultGameId)).Return(new Clock());
