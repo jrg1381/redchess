@@ -152,49 +152,49 @@
             <a class="btn btn-default" id="drawbutton">Offer draw</a>
         </div>
     </div>
-</div>
 
-<div class="col-md-3">
-    <div class="alert alert-danger" role="alert" style="visibility: hidden">
-        <div id="messages" style="text-align: center">&nbsp;</div>
-    </div>
-    <div>
-        <div class="panel panel-primary" id="promotion-selection">
-            <div class="panel-heading">Promote piece</div>
-            <div class="panel-body">
-                <div class="thumbnail" id="Q"></div>
-                <div class="thumbnail" id="R"></div>
-                <div class="thumbnail" id="N"></div>
-                <div class="thumbnail" id="B"></div>
+    <div class="col-md-3">
+        <div class="alert alert-danger" role="alert" style="visibility: hidden">
+            <div id="messages" style="text-align: center">&nbsp;</div>
+        </div>
+        <div>
+            <div class="panel panel-primary" id="promotion-selection">
+                <div class="panel-heading">Promote piece</div>
+                <div class="panel-body">
+                    <div class="thumbnail" id="Q"></div>
+                    <div class="thumbnail" id="R"></div>
+                    <div class="thumbnail" id="N"></div>
+                    <div class="thumbnail" id="B"></div>
+                </div>
             </div>
-        </div>
 
-        @if (clockModel != null)
-        {
-            @Html.Partial("_Clock", clockModel)
-        }
+            @if (clockModel != null)
+            {
+                @Html.Partial("_Clock", clockModel)
+            }
 
-        <div class="well">
-            <div id="lastmove"></div>
-            <div id="turnindicator"></div>
-        </div>
-
-        <div id="drawoffer" class="alert alert-warning">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> Draw?</strong>&nbsp;&nbsp;
-            <div class="btn-group" role="group">
-                <a class="btn btn-default" id="accept-draw-request">Accept</a>
-                <a class="btn btn-default" id="reject-draw-request">Reject</a>
+            <div class="well">
+                <div id="lastmove"></div>
+                <div id="turnindicator"></div>
             </div>
-        </div>
 
-        <div id="drawoffer-sent" class="alert alert-warning">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
-        </div>
+            <div id="drawoffer" class="alert alert-warning">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> Draw?</strong>&nbsp;&nbsp;
+                <div class="btn-group" role="group">
+                    <a class="btn btn-default" id="accept-draw-request">Accept</a>
+                    <a class="btn btn-default" id="reject-draw-request">Reject</a>
+                </div>
+            </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div id="blacktaken" style="font-size: 36pt;"></div>
-                <div id="whitetaken" style="font-size: 36pt;"></div>
+            <div id="drawoffer-sent" class="alert alert-warning">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="blacktaken" style="font-size: 36pt;"></div>
+                    <div id="whitetaken" style="font-size: 36pt;"></div>
+                </div>
             </div>
         </div>
     </div>
