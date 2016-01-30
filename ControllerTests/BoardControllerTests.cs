@@ -809,7 +809,7 @@ namespace RedChess.ControllerTests
             manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
-            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(null));
+            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(Arg<HistoryEntry>.Is.Anything));
 
             fakeRepo.VerifyAllExpectations();
 
