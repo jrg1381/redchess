@@ -80,8 +80,7 @@ namespace RedChess.WebEngine.Repositories
                     {
                         var locations = MovesToLocations(new[] {move.Substring(0, 2), move.Substring(2, 2)});
                         if (!board.Move(locations[0], locations[1]))
-                            throw new ArgumentException(String.Format("Could not move from {0} to {1} on {2}",
-                                locations[0], locations[1], board.ToFen()));
+                            throw new ArgumentException($"Could not move from {locations[0]} to {locations[1]} on {board.ToFen()}");
                         if (move.Length == 5)
                         {
                             board.PromotePiece(move[4].ToString().ToUpperInvariant());

@@ -90,7 +90,7 @@ namespace Redchess.Engine
 
         public virtual void FromFen(string fen)
         {
-            string[] fields = fen.Split(new[] {' '});
+            string[] fields = fen.Split(' ');
             string position = fields[0];
             string currentTurn = fields[1];
             string castling = fields[2];

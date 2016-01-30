@@ -16,17 +16,18 @@ namespace RedChess.WebEngine.Repositories
     public class GameManager : IGameManager
     {
         private readonly Lazy<IBoard> m_boardLazy;
-        private readonly IGameRepository m_repository;
+        private readonly IGameRepository m_gameRepository;
         private readonly IHistoryRepository m_historyRepository;
         private readonly IClockRepository m_clockRepository;
         private readonly IQueueManager m_queueManager;
         private readonly IUserProfileRepository m_userRepository;
         private readonly IAnalysisRepository m_analysisRepository;
         private readonly IStatsRepository m_statsRepository;
+        private readonly IDateTimeProvider m_dateTimeProvider;
 
         private IBoard m_board => m_boardLazy.Value;
 
-        public GameManager() : this(null, null, null, null, null, null)
+        public GameManager() : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -36,15 +37,17 @@ namespace RedChess.WebEngine.Repositories
             IQueueManager queueManager = null,
             IUserProfileRepository userProfileRepository = null,
             IAnalysisRepository analysisRepository = null,
-            IStatsRepository statsRepository = null)
+            IStatsRepository statsRepository = null,
+            IDateTimeProvider dateTimeProvider = null)
         {
-            m_repository = gameRepository ?? new GameRepository();
+            m_gameRepository = gameRepository ?? new GameRepository();
             m_historyRepository = historyRepository ?? new HistoryRepository();
             m_clockRepository = clockRepository ?? new ClockRepository();
             m_queueManager = queueManager ?? QueueManagerFactory.CreateInstance();
             m_userRepository = userProfileRepository ?? new UserProfileRepository();
             m_analysisRepository = analysisRepository ?? new AnalysisRepository();
             m_statsRepository = statsRepository ?? new StatsRepository();
+            m_dateTimeProvider = dateTimeProvider ?? new DefaultDateTimeProvider();
 
             // The repositories are fast to create, but this can be slow. Not all calls use the board.
             m_boardLazy = new Lazy<IBoard>(BoardFactory.CreateInstance);
@@ -75,7 +78,7 @@ namespace RedChess.WebEngine.Repositories
         {
             var processor = new AnalysisSimplifier(m_historyRepository);
             var processedAnalysis = processor.ProcessBoardAnalysis(gameId, moveNumber, boardAnalysis);
-            m_repository.AddAnalysis(gameId, moveNumber, processedAnalysis);
+            m_gameRepository.AddAnalysis(gameId, moveNumber, processedAnalysis);
         }
 
         public string PgnText(int id)
@@ -190,7 +193,7 @@ namespace RedChess.WebEngine.Repositories
                 newGame.UserIdWhite = currentUserId;
             }
 
-            m_repository.AddOrUpdate(newGame);
+            m_gameRepository.AddOrUpdate(newGame);
             m_historyRepository.CloneGame(newGame.GameId, oldGameId, cloneUpToMove);
             m_analysisRepository.CloneGame(newGame.GameId, oldGameId, cloneUpToMove);
 
@@ -199,7 +202,7 @@ namespace RedChess.WebEngine.Repositories
 
         public void TimeGameOut(int gameId, string message, string timedOutColor)
         {
-            var game = m_repository.FindById(gameId);
+            var game = m_gameRepository.FindById(gameId);
 
             // Because the user who timed out hasn't made a move to update the clock, the database will contains an elapsed time
             // which is too small. It will be equal to the time spent on all their _completed_ moves, and not the time they spent
@@ -239,7 +242,7 @@ namespace RedChess.WebEngine.Repositories
 
         public bool IsUsersTurn(int gameId, string userName)
         {
-            var gameDto = m_repository.FindById(gameId);
+            var gameDto = m_gameRepository.FindById(gameId);
             m_board.FromFen(gameDto.Fen);
             return (m_board.CurrentTurn == PieceColor.Black && userName == gameDto.UserProfileBlack.UserName) ||
                    (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
@@ -253,7 +256,7 @@ namespace RedChess.WebEngine.Repositories
         public bool Move(int gameId, Location start, Location end, string promote = null)
         {
             ChessMove move;
-            var gameDto = m_repository.FindById(gameId);
+            var gameDto = m_gameRepository.FindById(gameId);
             m_board.FromFen(gameDto.Fen);
 
             var success = m_board.Move(start, end);
@@ -274,25 +277,26 @@ namespace RedChess.WebEngine.Repositories
             gameDto.LastMove = m_board.LastMove();
             gameDto.Fen = m_board.ToFen();
 
-            m_repository.AddOrUpdate(gameDto);
+            m_gameRepository.AddOrUpdate(gameDto);
 
-            m_historyRepository.Add(new HistoryEntry { Fen = gameDto.Fen, GameId = gameDto.GameId, Move = gameDto.LastMove, MoveNumber = gameDto.MoveNumber + 1});
+            m_historyRepository.Add(new HistoryEntry(gameDto));
 
             var clock = m_clockRepository.Clock(gameId);
 
             if (clock != null)
             {
                 var turn = gameDto.Fen.Split(new[] {' '}, 2)[1][0];
+                var now = m_dateTimeProvider.UtcNow;
 
                 if (turn == 'b')
                 {
-                    clock.LastActionBlack = DateTime.UtcNow;
-                    clock.TimeElapsedWhiteMs += (int) (DateTime.UtcNow - clock.LastActionWhite).TotalMilliseconds;
+                    clock.LastActionBlack = now;
+                    clock.TimeElapsedWhiteMs += (int) (now - clock.LastActionWhite).TotalMilliseconds;
                 }
                 if (turn == 'w')
                 {
-                    clock.LastActionWhite = DateTime.UtcNow;
-                    clock.TimeElapsedBlackMs += (int) (DateTime.UtcNow - clock.LastActionBlack).TotalMilliseconds;
+                    clock.LastActionWhite = now;
+                    clock.TimeElapsedBlackMs += (int) (now - clock.LastActionBlack).TotalMilliseconds;
                 }
 
                 m_clockRepository.SaveClock(clock);
@@ -303,7 +307,7 @@ namespace RedChess.WebEngine.Repositories
 
         public void UpdateMessage(int gameId)
         {
-            var gameDto = m_repository.FindById(gameId);
+            var gameDto = m_gameRepository.FindById(gameId);
             m_board.FromFen(gameDto.Fen);
 
             if (m_board.KingInCheck())
@@ -331,12 +335,12 @@ namespace RedChess.WebEngine.Repositories
                 gameDto.Status = "";
             }
 
-            m_repository.AddOrUpdate(gameDto);
+            m_gameRepository.AddOrUpdate(gameDto);
         }
 
         public void EndGameWithMessage(int gameId, string message, int? userIdWinner = null)
         {
-            var gameDto = m_repository.FindById(gameId);
+            var gameDto = m_gameRepository.FindById(gameId);
             EndGameWithMessage(gameDto, message, userIdWinner);
             PostGameEndedMessage(gameId);
         }
@@ -358,12 +362,12 @@ namespace RedChess.WebEngine.Repositories
             gameDto.GameOver = true;
             if(userIdWinner != null)
                 gameDto.UserIdWinner = userIdWinner;
-            m_repository.AddOrUpdate(gameDto);
+            m_gameRepository.AddOrUpdate(gameDto);
         }
 
         public IGameBinding FetchGame(int gameId)
         {
-            var dto = m_repository.FindById(gameId);
+            var dto = m_gameRepository.FindById(gameId);
             if (dto == null)
                 return null;
             return new GameBinding(dto, this);
@@ -371,12 +375,12 @@ namespace RedChess.WebEngine.Repositories
 
         public IEnumerable<IGameBinding> FindAll()
         {
-            return m_repository.FindAll().Select(x => new GameBinding(x, this));
+            return m_gameRepository.FindAll().Select(x => new GameBinding(x, this));
         }
 
         public void Delete(int gameId)
         {
-            m_repository.Delete(gameId);
+            m_gameRepository.Delete(gameId);
             PostGameEndedMessage(gameId);
         }
 
@@ -396,7 +400,7 @@ namespace RedChess.WebEngine.Repositories
                 UserIdWhite = currentUserId
             };
 
-            m_repository.AddOrUpdate(newGame);
+            m_gameRepository.AddOrUpdate(newGame);
             m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = "" });
 
             return newGame.GameId;
@@ -418,7 +422,7 @@ namespace RedChess.WebEngine.Repositories
                 newGame.UserIdWhite = currentUserId;
             }
 
-            m_repository.AddOrUpdate(newGame);
+            m_gameRepository.AddOrUpdate(newGame);
 
             if (timeLimitMs != 0)
             {
@@ -432,7 +436,7 @@ namespace RedChess.WebEngine.Repositories
 
         public IEnumerable<IGameBinding> WithPlayer(string userName)
         {
-            return m_repository.FindWithPlayer(userName).Select(x => new GameBinding(x, this));
+            return m_gameRepository.FindWithPlayer(userName).Select(x => new GameBinding(x, this));
         }
 
         public PlayerReadyStatus PlayerReady(int gameId, string playerColor)

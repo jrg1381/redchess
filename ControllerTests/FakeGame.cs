@@ -10,10 +10,8 @@ namespace RedChess.ControllerTests
     /// </summary>
     class FakeGame
     {
-        const int c_fakeGameId = 10;
         private readonly GameDto m_game;
-
-        public static int DefaultGameId => c_fakeGameId;
+        public static int DefaultGameId => 10;
 
         /// <summary>
         /// Allow the FakeGame to be used in place of the GameDto object by implicit cast
@@ -36,7 +34,7 @@ namespace RedChess.ControllerTests
             m_game.UserIdWhite = opponentUserProfile.UserId;
 
             m_game.Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0";
-            m_game.GameId = c_fakeGameId;
+            m_game.GameId = DefaultGameId;
             m_game.MoveNumber = 0;
         }
 
@@ -98,10 +96,11 @@ namespace RedChess.ControllerTests
             return this;
         }
 
-        public static IGameRepository MockRepoForDefaultFakeGame()
+        public static IGameRepository StubRepoForDefaultFakeGame()
         {
-            var repository = MockRepository.GenerateMock<IGameRepository>();
+            var repository = MockRepository.GenerateStub<IGameRepository>();
             repository.Expect(x => x.FindById(DefaultGameId)).Return(new FakeGame());
+            repository.Expect(x => x.FindById(Arg<int>.Is.NotEqual(DefaultGameId))).Return(null);
             return repository;
         }
 
