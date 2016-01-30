@@ -222,10 +222,7 @@ namespace RedChess.ControllerTests
             var historyRepo = GetHistoryRepo();
             var gameManager = new GameManager(gameRepo, historyRepo);
 
-            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
-            identityProvider.Expect(x => x.CurrentUserId).Return(fakeGame.UserIdWhite);
-
-            var controller = new HistoryController(gameManager, identityProvider);
+            var controller = new HistoryController(gameManager, IdentityProviderForFakeGameWhite(fakeGame));
             
             var actionResult = controller.PlayFromHere(move, gameId) as ViewResult;
             Assert.AreEqual(actionResult.ViewName, "Error", "Expected an error");
@@ -281,17 +278,11 @@ namespace RedChess.ControllerTests
 
         private static ICurrentUser IdentityProviderForFakeGameWhite(GameDto fakeGame)
         {
-            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
-            identityProvider.Expect(x => x.CurrentUserId).Return(fakeGame.UserIdWhite);
-            identityProvider.Expect(x => x.CurrentUser).Return(fakeGame.UserProfileWhite.UserName);
-            return identityProvider;
+            return FakeGame.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId);
         }
         private static ICurrentUser IdentityProviderForFakeGameBlack(GameDto fakeGame)
         {
-            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
-            identityProvider.Expect(x => x.CurrentUserId).Return(fakeGame.UserIdBlack);
-            identityProvider.Expect(x => x.CurrentUser).Return(fakeGame.UserProfileBlack.UserName);
-            return identityProvider;
+            return FakeGame.StubIdentityProviderFor(fakeGame.UserProfileBlack.UserName, fakeGame.UserProfileBlack.UserId);
         }
 
         private static IUserProfileRepository FakeUserProfileRepo(GameDto fakeGame)

@@ -1,3 +1,4 @@
+using Chess.Controllers;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
@@ -114,6 +115,14 @@ namespace RedChess.ControllerTests
         public GameDto Build()
         {
             return (GameDto) this;
+        }
+
+        public static ICurrentUser StubIdentityProviderFor(string username, int userId = 33)
+        {
+            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
+            identityProvider.Expect(x => x.CurrentUser).Return(username);
+            identityProvider.Expect(x => x.CurrentUserId).Return(userId);
+            return identityProvider;
         }
     }
 }

@@ -19,9 +19,7 @@ namespace RedChess.ControllerTests
 
         private ICurrentUser IdentityProvider()
         {
-            var identityProvider = MockRepository.GenerateStub<ICurrentUser>();
-            identityProvider.Expect(x => x.CurrentUser).Return(c_username);
-            return identityProvider;
+            return FakeGame.StubIdentityProviderFor(c_username);
         }
 
         [Test]
