@@ -86,9 +86,7 @@ namespace RedChess.ControllerTests
 
         private BoardController GetControllerForFakeGameWithQueueExpectingGameOver(IGameManager manager)
         {
-            var fakeIdentity = MockRepository.GenerateStub<ICurrentUser>();
-            fakeIdentity.Stub(x => x.CurrentUser).Return("clive");
-            return new BoardController(manager, fakeIdentity);
+            return new BoardController(manager, FakeGame.StubIdentityProviderFor("clive"));
         }
 
 
