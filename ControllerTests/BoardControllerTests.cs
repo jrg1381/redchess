@@ -84,6 +84,25 @@ namespace RedChess.ControllerTests
             return new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
         }
 
+        private IGameManager GetGameManagerForFakeGameWithQueueAndClaimableDraw(int gameId, out IQueueManager fakeQueueManager, AutoResetEvent autoResetEvent)
+        {
+            GameDto fakeGame = new FakeGame().WithId(gameId).WithClaimableDraw(true);
+
+            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
+            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+
+            var repository = MockRepository.GenerateMock<IGameRepository>();
+            repository.Expect(x => x.FindById(gameId)).Return(fakeGame);
+
+            fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
+            fakeQueueManager.Expect(x => x.PostGameEndedMessage(gameId)).Repeat.Once().Do(new Action<int>(id =>
+            {
+                autoResetEvent.Set();
+            }));
+
+            return new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
+        }
+
         private BoardController GetControllerForFakeGameWithQueueExpectingGameOver(IGameManager manager)
         {
             return new BoardController(manager, FakeGame.StubIdentityProviderFor("clive"));
@@ -713,6 +732,18 @@ namespace RedChess.ControllerTests
             // This relies on the known bug that a user can accept their own draw requests, if the UI allowed them
             controller.OfferDraw(FakeGame.DefaultGameId);
             controller.AgreeDraw(FakeGame.DefaultGameId, true);
+            reset.WaitOne(TimeSpan.FromSeconds(5));
+            fakeQueueManager.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void ClaimingADrawUpdatesTheEloTable()
+        {
+            var reset = new AutoResetEvent(false);
+            IQueueManager fakeQueueManager;
+            var manager = GetGameManagerForFakeGameWithQueueAndClaimableDraw(FakeGame.DefaultGameId, out fakeQueueManager, reset);
+            var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
+            controller.ClaimDraw(FakeGame.DefaultGameId);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
