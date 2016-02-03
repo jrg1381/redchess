@@ -37,7 +37,7 @@ namespace RedChess.WebEngine.Models
         public DateTimeOffset Timestamp { get; set; }
         public string ETag { get; set; }
 
-        public static IEnumerable<LogEntry> FetchLogEntries()
+        public static IEnumerable<LogEntry> FetchLogEntries(int entryCount)
         {
 #if DEBUG
             return new List<LogEntry>
@@ -59,7 +59,7 @@ namespace RedChess.WebEngine.Models
             var recent = new DateTimeOffset(DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)));
             var query = new TableQuery<LogEntry>
             {
-                TakeCount = 250,
+                TakeCount = entryCount,
                 SelectColumns = new List<string>() { "Message", "Pid", "Tid", "PreciseTimeStamp" }
             };
             query =

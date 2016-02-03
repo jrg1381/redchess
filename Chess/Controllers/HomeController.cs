@@ -15,9 +15,7 @@ namespace Chess.Controllers
             return View();
         }
 
-        public ActionResult Config()
-        {
-            return View("Config", LogEntry.FetchLogEntries());
-        }
+        // This is a bit of a misuse of 'id' parameter
+        public ActionResult Config(int? id) => View("Config", LogEntry.FetchLogEntries(id ?? 250));
     }
 }
