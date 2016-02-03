@@ -10,8 +10,8 @@ function showGraph(boardViewer, evaluationData, gameOver, status) { // domain([d
     var width = 512;
     var height = 64;
 
-    if (evaluationData.length === 0) {
-        console.log("Danger: No evaluation data in JSON");
+    if (evaluationData.length <= 1) {
+        console.log("Danger: Not enough evaluation data in JSON");
         return;
     }
 
