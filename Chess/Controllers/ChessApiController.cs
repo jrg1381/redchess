@@ -69,14 +69,22 @@ namespace Chess.Controllers
                 var game = m_gameManager.FetchGame(id);
                 var allMoves = m_gameManager.FindAllMoves(id).ToList();
 
-                data.Moves = allMoves.Select<HistoryEntry, object>(m => new { m.Fen, m.Move });
+                data.Moves = allMoves.Select<HistoryEntry, object>(m => new {m.Fen, m.Move});
                 data.Description = game.Description;
                 data.IsParticipant = game.UserProfileBlack.UserName == HttpContext.Current.User.Identity.Name ||
                                      game.UserProfileWhite.UserName == HttpContext.Current.User.Identity.Name;
                 data.Analysis = m_gameManager.AnalysisForGameMoves(id);
                 data.GameOver = game.GameOver;
                 data.Status = game.Status;
-                data.Winner = game.UserProfileWinner.UserId == game.UserProfileWhite.UserId ? "w" : "b";
+                data.Winner = "";
+
+                if (game.UserProfileWinner != null)
+                {
+                    if (game.UserProfileWinner.UserId == game.UserProfileWhite.UserId)
+                        data.Winner = "w";
+                    else if (game.UserProfileWinner.UserId == game.UserProfileBlack.UserId)
+                        data.Winner = "b";
+                }
 
                 return Json(data);
             }
