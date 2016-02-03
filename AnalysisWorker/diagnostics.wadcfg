@@ -2,7 +2,8 @@
 <PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
   <WadCfg>
     <DiagnosticMonitorConfiguration overallQuotaInMB="25000">
-      <Logs scheduledTransferPeriod="PT5M"  />
+      <Logs scheduledTransferPeriod="PT5M"
+            scheduledTransferLogLevelFilter="Debug"/>
     </DiagnosticMonitorConfiguration>
   </WadCfg>
 </PublicConfig>
