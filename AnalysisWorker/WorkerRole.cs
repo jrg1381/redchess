@@ -31,6 +31,7 @@ namespace Redchess.AnalysisWorker
             var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 1};
             messageOptions.ExceptionReceived += (sender, args) =>
             {
+                Trace.TraceError($"Failed action : {args.Action}");
                 Trace.TraceError("Exception processing message loop {0}", args.Exception);
             };
 
