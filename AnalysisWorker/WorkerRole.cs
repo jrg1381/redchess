@@ -29,6 +29,10 @@ namespace Redchess.AnalysisWorker
             m_engineFarm = new UciEngineFarm();
             Trace.WriteLine("Starting processing of messages");
             var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
+            messageOptions.ExceptionReceived += (sender, args) =>
+            {
+                Trace.TraceError("Exception processing message loop {0}", args.Exception);
+            };
 
             // Initiates the message pump and callback is invoked for each message that is received, calling close on the client will stop the pump.
             m_client.OnMessage(receivedMessage =>
