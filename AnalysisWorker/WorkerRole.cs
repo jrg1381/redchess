@@ -28,7 +28,7 @@ namespace Redchess.AnalysisWorker
         {
             m_engineFarm = new UciEngineFarm();
             Trace.WriteLine("Starting processing of messages");
-            var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 4};
+            var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 1};
             messageOptions.ExceptionReceived += (sender, args) =>
             {
                 Trace.TraceError("Exception processing message loop {0}", args.Exception);
