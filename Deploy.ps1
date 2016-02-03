@@ -146,6 +146,9 @@ try {
           -Configuration $Configuration
     }
     
+    $storageContext = New-AzureStorageContext -StorageAccountName $StorageAccount -StorageAccountKey $ENV:StorageAccountKey
+	Set-AzureServiceDiagnosticsExtension -StorageContext $storageContext -DiagnosticsConfigurationPath .\RedchessService\AnalysisWorkerContent\diagnostics.wadcfgx -ServiceName $ServiceName -Slot $Slot
+
     if ($SwapVips -eq $true) {
         Write-Host "swapping VIPs..."
         # this seems to regularly fail with a 500 error. Let's try retrying.
