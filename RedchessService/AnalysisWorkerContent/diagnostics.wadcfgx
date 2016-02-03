@@ -13,9 +13,6 @@
         </CrashDumps>
         
         <Logs scheduledTransferPeriod="PT5M" scheduledTransferLogLevelFilter="Verbose" />
-
-        <DiagnosticInfrastructureLogs bufferQuotaInMB="0" scheduledTransferPeriod="PT30M" />
-        <PerformanceCounters bufferQuotaInMB="0" scheduledTransferPeriod="PT30M"/>
         
       </DiagnosticMonitorConfiguration>
     </WadCfg>
