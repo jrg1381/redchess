@@ -28,7 +28,13 @@ namespace Redchess.AnalysisWorker
         {
             m_engineFarm = new UciEngineFarm();
             Trace.WriteLine("Starting processing of messages");
-            var messageOptions = new OnMessageOptions {MaxConcurrentCalls = 1};
+
+            var messageOptions = new OnMessageOptions
+            {
+                MaxConcurrentCalls = 1,
+                AutoComplete = false
+            };
+
             messageOptions.ExceptionReceived += (sender, args) =>
             {
                 Trace.TraceError($"Failed action : {args.Action}");
@@ -106,7 +112,9 @@ namespace Redchess.AnalysisWorker
         private void ProcessGameEndedMessage(string json)
         {
             var message = JsonConvert.DeserializeObject<GameEndedMessage>(json);
+            Trace.WriteLine("Telling engine farm to delete worker for game "  + message.GameId);
             m_engineFarm.GameOver(message.GameId);
+            Trace.WriteLine("Telling database to recalculate ELO table");
             (new GameManager()).UpdateEloTable();
         }
 
