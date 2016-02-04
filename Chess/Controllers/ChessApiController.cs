@@ -17,6 +17,7 @@ namespace Chess.Controllers
     public class ChessApiController : ApiController
     {
         private readonly IGameManager m_gameManager;
+        private readonly ICurrentUser m_identityProvider;
 
         class DateElo
         {
@@ -24,13 +25,14 @@ namespace Chess.Controllers
             public int Elo;
         }
 
-        public ChessApiController() : this(null)
+        public ChessApiController() : this(null, null)
         {
         }
 
-        public ChessApiController(IGameManager manager = null)
+        public ChessApiController(IGameManager manager = null, ICurrentUser identityProvider = null)
         {
             m_gameManager = manager ?? new GameManager();
+            m_identityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         [HttpGet]
@@ -71,8 +73,8 @@ namespace Chess.Controllers
 
                 data.Moves = allMoves.Select<HistoryEntry, object>(m => new {m.Fen, m.Move});
                 data.Description = game.Description;
-                data.IsParticipant = game.UserProfileBlack.UserName == HttpContext.Current.User.Identity.Name ||
-                                     game.UserProfileWhite.UserName == HttpContext.Current.User.Identity.Name;
+                data.IsParticipant = game.UserProfileBlack.UserId == m_identityProvider.CurrentUserId ||
+                                     game.UserProfileWhite.UserId == m_identityProvider.CurrentUserId;
                 data.Analysis = m_gameManager.AnalysisForGameMoves(id);
                 data.GameOver = game.GameOver;
                 data.Status = game.Status;
