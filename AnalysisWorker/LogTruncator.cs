@@ -21,7 +21,7 @@ namespace Redchess.AnalysisWorker
         public LogTruncator()
         {
             Trace.WriteLine("Initializing log truncator");
-            m_storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            m_storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
             m_timer = new Timer(TruncateLogsTimerCallback, null, 0, (int)TimeSpan.FromHours(c_timerIntervalInHours).TotalMilliseconds);
         }
 
