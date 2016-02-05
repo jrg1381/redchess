@@ -107,6 +107,7 @@
     <Compile Include="BidirectionalProcess.cs" />
     <Compile Include="EngineDownloader.cs" />
     <Compile Include="IUciEngine.cs" />
+    <Compile Include="LogTruncator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UciEngineFarm.cs" />
     <Compile Include="UciEngine.cs" />

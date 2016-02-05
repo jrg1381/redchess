@@ -23,6 +23,7 @@ namespace Redchess.AnalysisWorker
         readonly ManualResetEvent m_completedEvent = new ManualResetEvent(false);
         private readonly IQueueManager m_queueManager = QueueManagerFactory.CreateInstance();
         private UciEngineFarm m_engineFarm;
+        private static LogTruncator s_logTruncator;
 
         public override void Run()
         {
@@ -126,6 +127,10 @@ namespace Redchess.AnalysisWorker
             var connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
             // Initialize the connection to Service Bus Queue
             m_client = QueueClient.CreateFromConnectionString(connectionString, c_queueName);
+
+#if !DEBUG
+            s_logTruncator = new LogTruncator();
+#endif
             return base.OnStart();
         }
 
