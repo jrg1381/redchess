@@ -40,7 +40,7 @@ namespace Redchess.AnalysisWorker
 
                 var query = new TableQuery
                 {
-                    FilterString = $"Timestamp lt datetime’{keepThreshold:yyyy - MM - ddTHH:mm: ss}’"
+                    FilterString = $"Timestamp lt datetime'{keepThreshold:yyyy - MM - ddTHH:mm: ss}'"
                 };
 
                 var items = cloudTable.ExecuteQuery(query).ToList();
