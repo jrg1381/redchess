@@ -69,7 +69,7 @@
                         {
                             <tr>
                                 <td>
-                                    @String.Format("{0:yyyy-MM-dd HH:mm:ss.fffff}", logEntry.PreciseTimeStamp)
+                                    @String.Format("{0:yyyy-MM-dd", logEntry.PreciseTimeStamp)&nbsp;@String.Format("{0:HH:mm:ss.fffff}", logEntry.PreciseTimeStamp)
                                 </td>
                                 <td>
                                     @logEntry.Message
