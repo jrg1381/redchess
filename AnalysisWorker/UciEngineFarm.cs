@@ -45,9 +45,14 @@ namespace Redchess.AnalysisWorker
                             Monitor.Pulse(workItem);
                         }
                     }
-                    catch (InvalidOperationException)
+                    catch (ObjectDisposedException e)
                     {
+                        Trace.TraceError(e.Message);
                         break;
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        Trace.TraceError(e.Message);
                     }
                 }
             }
