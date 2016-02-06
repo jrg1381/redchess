@@ -22,6 +22,11 @@
     text-align: center;
 }
 
+table.monospace-table>tbody>tr>td {
+    font-family: monospace;
+    font-size: smaller;
+}
+
 .error {
     float: none;
     color: red;

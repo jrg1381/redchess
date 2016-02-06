@@ -64,18 +64,26 @@
             <tr>
                 <td>Logs</td>
                 <td>
-                    <table class="table-condensed">
+                    <table class="table-condensed monospace-table">
+                        <thead>
+                        <tr>
+                            <td class="col-md-3">Date</td>
+                            <td class="col-md-9">Message</td>
+                        </tr>
+                        </thead>
+                        <tbody>
                         @foreach (var logEntry in Model)
                         {
                             <tr>
-                                <td style="font-family: monospace; width : 28em" class=".small">
+                                <td>
                                     @String.Format("{0:yyyy-MM-dd}", logEntry.PreciseTimeStamp)&nbsp;@String.Format("{0:HH:mm:ss.fffff}", logEntry.PreciseTimeStamp)
                                 </td>
-                                <td style="font-family: monospace" class=".small">
+                                <td>
                                     @logEntry.Message
                                 </td>
                             </tr>
                         }
+                        </tbody>
                     </table>
                 </td>
             </tr>
