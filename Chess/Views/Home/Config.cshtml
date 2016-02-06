@@ -68,7 +68,7 @@
                         @foreach (var logEntry in Model)
                         {
                             <tr>
-                                <td style="font-family: monospace" class=".small">
+                                <td style="font-family: monospace; width : 28em" class=".small">
                                     @String.Format("{0:yyyy-MM-dd}", logEntry.PreciseTimeStamp)&nbsp;@String.Format("{0:HH:mm:ss.fffff}", logEntry.PreciseTimeStamp)
                                 </td>
                                 <td style="font-family: monospace" class=".small">
