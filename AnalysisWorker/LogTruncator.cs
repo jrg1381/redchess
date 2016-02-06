@@ -14,6 +14,7 @@ namespace Redchess.AnalysisWorker
     {
         const int c_timerIntervalInHours = 3;
         const int c_maxLogAgeInHours = 6;
+        const string c_logTable = "WADLogsTable";
 
         private Timer m_timer;
         private readonly CloudStorageAccount m_storageAccount;
@@ -36,7 +37,7 @@ namespace Redchess.AnalysisWorker
             try
             {
                 var tableClient = storageAccount.CreateCloudTableClient();
-                var cloudTable = tableClient.GetTableReference("WADLogsTable");
+                var cloudTable = tableClient.GetTableReference(c_logTable);
 
                 var filter = TableQuery.GenerateFilterConditionForDate("Timestamp", QueryComparisons.LessThanOrEqual, keepThreshold);
                 var query = new TableQuery {FilterString = filter};
@@ -50,7 +51,7 @@ namespace Redchess.AnalysisWorker
                     var key = entity.PartitionKey;
 
                     // Can't do more than 100 operations in a batch
-                    while (batches[key].Count >= 99)
+                    while (batches.ContainsKey(key) && batches[key].Count >= 99)
                     {
                         key = key + "0";
                     }
