@@ -47,13 +47,20 @@ namespace Redchess.AnalysisWorker
                 foreach (var entity in items)
                 {
                     var tableOperation = TableOperation.Delete(entity);
+                    var key = entity.PartitionKey;
 
-                    if (!batches.ContainsKey(entity.PartitionKey))
+                    // Can't do more than 100 operations in a batch
+                    while (batches[key].Count >= 99)
                     {
-                        batches.Add(entity.PartitionKey, new TableBatchOperation());
+                        key = key + "0";
                     }
 
-                    batches[entity.PartitionKey].Add(tableOperation);
+                    if (!batches.ContainsKey(key))
+                    {
+                        batches.Add(key, new TableBatchOperation());
+                    }
+
+                    batches[key].Add(tableOperation);
                 }
 
                 foreach (var batch in batches.Values)
