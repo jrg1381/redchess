@@ -38,10 +38,8 @@ namespace Redchess.AnalysisWorker
                 var tableClient = storageAccount.CreateCloudTableClient();
                 var cloudTable = tableClient.GetTableReference("WADLogsTable");
 
-                var query = new TableQuery
-                {
-                    FilterString = $"Timestamp lt datetime'{keepThreshold:yyyy - MM - ddTHH:mm: ss}'"
-                };
+                var filter = TableQuery.GenerateFilterCondition("Timestamp", QueryComparisons.LessThanOrEqual, $"{keepThreshold:yyyy-MM-ddTHH:mm:ssZ}");
+                var query = new TableQuery {FilterString = filter};
 
                 var items = cloudTable.ExecuteQuery(query).ToList();
                 var batches = new Dictionary<string, TableBatchOperation>();
