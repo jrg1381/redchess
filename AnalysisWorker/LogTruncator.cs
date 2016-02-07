@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Redchess.AnalysisWorker
@@ -28,7 +27,7 @@ namespace Redchess.AnalysisWorker
 
         public void TruncateLogsTimerCallback(object obj)
         {
-            Trace.WriteLine("Truncating logs");
+            Trace.WriteLine($"Truncating logs. Max log age {c_maxLogAgeInHours} hours.");
             TruncateDiagnostics(m_storageAccount, DateTime.UtcNow.Subtract(TimeSpan.FromHours(c_maxLogAgeInHours)));
         }
 
@@ -48,6 +47,8 @@ namespace Redchess.AnalysisWorker
                 foreach (var entity in items)
                 {
                     var tableOperation = TableOperation.Delete(entity);
+                    // The original code partitioned into batches using this, but it wasn't clear what the advantage of doing so was.
+                    // I think it's the only column which is 'indexed' so using it prevents a table scan, but we're not doing a 'where' on it, so...
                     var key = entity.PartitionKey;
 
                     // Can't do more than 100 operations in a batch
