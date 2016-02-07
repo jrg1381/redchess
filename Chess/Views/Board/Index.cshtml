@@ -25,30 +25,31 @@
 }
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         //SignalR stuff
         var updater = $.connection.updateServer;
         // Define a client-side message which the server can call
         updater.client.gameListUpdate = gameListUpdate;
 
         // Define a callback for when the connection is established. We join the client group for index page watchers
-        $.connection.hub.start(function () {
+        $.connection.hub.start(function() {
             $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
         });
 
         $("time.timeago").timeago();
 
-        $("div.miniboard").each(function (index, element) {
+        $("div.miniboard").each(function(index, element) {
             var originalText = element.innerText;
             if (originalText == null) {
                 originalText = element.innerHTML;
             }
 
-            var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false };
+            var shouldFlip = GamePlayedAsBlack(element.id.substr(2)); // remove the m-
+            var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false, orientation: (shouldFlip ? "black" : "white") };
             var board = new ChessBoard(element, cfg);
         });
 
-        $("h3#turnindicator-o,h3#turnindicator-m").each(function (index, element) {
+        $("h3#turnindicator-o,h3#turnindicator-m").each(function(index, element) {
             var originalText = element.innerText;
             if (originalText == null) {
                 originalText = element.innerHTML;
@@ -60,7 +61,7 @@
     });
 
     function DeleteMultiple() {
-        var ids = $(".deleteCheckbox:checked").toArray().map(function (x) { return x.name; }).join();
+        var ids = $(".deleteCheckbox:checked").toArray().map(function(x) { return x.name; }).join();
         if (ids.length == 0) {
             return false;
         };
@@ -77,7 +78,7 @@
                     getSpinController().stopLogoSpinner();
                 }
             })
-            .error(function (jqXhr, textStatus, errorThrown) {
+            .error(function(jqXhr, textStatus, errorThrown) {
                 getSpinController().stopLogoSpinner();
             });
     }
@@ -94,23 +95,44 @@
             return "White to play";
         }
     }
+
+    {
+        // In the first pass, the map is populated with the games in which the current player is black.
+        // In the second pass, the result is returned. This works because the map is populated before document.ready() is called.
+        var flippedGames = new Map();
+        function GamePlayedAsBlack(g) {
+            if (flippedGames[g] === undefined) {
+                flippedGames[g] = 1;
+                return false;
+            }
+            return true;
+        }
+    }
 </script>
-    
- @{
-     var myCompletedGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver);
-     var oldGames = new Func<IGameBinding, bool>(x => x.CompletionDate < DateTime.UtcNow.AddMonths(-1));
-     var otherLiveGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver);
+
+@{
+    var myCurrentGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver);
+    var myCompletedGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver);
+    var oldGames = new Func<IGameBinding, bool>(x => x.CompletionDate < DateTime.UtcNow.AddMonths(-1));
+    var otherLiveGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver);
  }
 
 @if (Request.IsAuthenticated)
 {
+    // Populate the set of games in which the current player is playing black
+    foreach(var item in @Model.Where(x => myCurrentGames(x) && x.UserProfileBlack.UserId == WebSecurity.CurrentUserId))
+    {
+        <script>
+            GamePlayedAsBlack(@item.GameId);
+        </script>
+    }
+
         <div class="row">
             <h3>My current games</h3>
             <div class="col-md-10">
                 <table class="table">
-                    @foreach (var item in @Model.Where(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver).OrderByDescending(x => x.CreationDate))
+                    @foreach (var item in @Model.Where(myCurrentGames).OrderByDescending(x => x.CreationDate))
                     {
-
                         var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
 
                         <tr>
