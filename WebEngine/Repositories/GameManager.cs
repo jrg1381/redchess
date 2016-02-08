@@ -373,9 +373,9 @@ namespace RedChess.WebEngine.Repositories
             return new GameBinding(dto, this);
         }
 
-        public IEnumerable<IGameBinding> FindAll()
+        public IQueryable<IGameBinding> FindAll()
         {
-            return m_gameRepository.FindAll().Select(x => new GameBinding(x, this));
+            return m_gameRepository.FindAll().Select(x => new GameBinding(x, this)).AsQueryable();
         }
 
         public void Delete(int gameId)
@@ -432,11 +432,6 @@ namespace RedChess.WebEngine.Repositories
             m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = ""});
 
             return newGame.GameId;
-        }
-
-        public IEnumerable<IGameBinding> WithPlayer(string userName)
-        {
-            return m_gameRepository.FindWithPlayer(userName).Select(x => new GameBinding(x, this));
         }
 
         public PlayerReadyStatus PlayerReady(int gameId, string playerColor)

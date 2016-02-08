@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
+using LinqToQuerystring.WebApi;
 using Microsoft.Owin.Security.Provider;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
@@ -35,10 +36,10 @@ namespace Chess.Controllers
             m_identityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
-        [HttpGet]
-        public object Boards()
+        [LinqToQueryable]
+        public IQueryable<IGameBinding> Boards()
         {
-            return Json(m_gameManager.FindAll().ToDictionary(game => game.GameId, GameBindingToGameData));
+            return m_gameManager.FindAll();
         }
 
         [HttpGet]
@@ -54,12 +55,6 @@ namespace Chess.Controllers
         public object Stats()
         {
             return Json(m_gameManager.Stats());
-        }
-
-        [HttpGet]
-        public object Boards(string id)
-        {
-            return Json(m_gameManager.WithPlayer(id).ToDictionary(game => game.GameId, GameBindingToGameData));
         }
 
         [HttpGet]
