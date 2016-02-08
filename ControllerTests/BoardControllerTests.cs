@@ -147,7 +147,7 @@ namespace RedChess.ControllerTests
                 new GameBinding(new FakeGame().WithId(3), manager)
             };
 
-            manager.Expect(x => x.FindAll()).Return(allGames);
+            manager.Expect(x => x.FindAll()).Return(allGames.AsQueryable());
 
             var controller = new BoardController(manager);
             var result = controller.Index() as ViewResult;
