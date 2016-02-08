@@ -5,6 +5,8 @@
 
     @{
         ViewBag.Title = "Index of games";
+        var currentUserId = WebSecurity.CurrentUserId;
+        var timeLimitForOldGames = String.Format("{0:yyyy-MM-ddTHH:mm}", DateTime.UtcNow.AddMonths(-1));
     }
     
 <script src="/Scripts/jquery.signalR-2.2.0.min.js" type="text/javascript"></script>
@@ -37,6 +39,27 @@
         });
 
         $("time.timeago").timeago();
+
+        // My current games
+        $.getJSON("api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen")
+            .always(function() {})
+            .done(function(data) {
+                alert(data);
+            });
+
+        // My finished games less than a month old
+        $.getJSON("api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen")
+            .always(function() {})
+            .done(function(data) {
+                alert(data);
+            });
+
+        // Other live games
+        $.getJSON("api/Boards?$filter=userProfileWhite/userId ne @currentUserId and userProfileBlack/userId ne @currentUserId and gameOver eq false&$select=fen")
+            .always(function() {})
+            .done(function(data) {
+                alert(data);
+            });
 
         $("div.miniboard").each(function(index, element) {
             var originalText = element.innerText;

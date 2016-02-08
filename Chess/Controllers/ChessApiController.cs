@@ -37,6 +37,7 @@ namespace Chess.Controllers
         }
 
         [LinqToQueryable]
+        [HttpGet]
         public IQueryable<IGameBinding> Boards()
         {
             return m_gameManager.FindAll();
