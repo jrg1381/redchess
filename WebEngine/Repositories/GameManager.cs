@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using RedChess.ChessCommon;
@@ -67,6 +68,11 @@ namespace RedChess.WebEngine.Repositories
                 Winner = x.Winner?.ToLower(),
                 Count = x.Count
             });
+        }
+
+        public object FindWhere(string queryString)
+        {
+            return m_gameRepository.FindWhere(queryString);
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()

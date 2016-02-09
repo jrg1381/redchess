@@ -25,6 +25,7 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         bool Move(int id, Location startLocation, Location endLocation, string promoteTo);
         void UpdateMessage(int id);
         string PgnText(int id);
+        object FindWhere(string queryString);
         IEnumerable<UserProfile> AllUserProfiles();
         IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId);
         IEnumerable<IStats> Stats();

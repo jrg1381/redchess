@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
-using LinqToQuerystring.WebApi;
-using Microsoft.Owin.Security.Provider;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
@@ -36,11 +34,11 @@ namespace Chess.Controllers
             m_identityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
-        [LinqToQueryable]
         [HttpGet]
-        public IQueryable<IGameBinding> Boards()
+        public object Boards()
         {
-            return m_gameManager.FindAll();
+            var queryString = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Request.QueryString.ToString());
+            return m_gameManager.FindWhere(queryString);
         }
 
         [HttpGet]

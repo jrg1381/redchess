@@ -11,5 +11,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void AddOrUpdate(GameDto data);
         void AddAnalysis(int id, int moveNumber, IProcessedAnalysis boardAnalysis);
         string Fen(int gameId);
+        object FindWhere(string queryString);
     }
 }

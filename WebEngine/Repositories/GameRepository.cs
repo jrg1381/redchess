@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using LinqToQuerystring;
 using Microsoft.Azure;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Models;
@@ -25,6 +26,20 @@ namespace RedChess.WebEngine.Repositories
                     .Single();
 
                 return game;
+            }
+        }
+
+        public object FindWhere(string queryString)
+        {
+            using (var context = new ChessContext())
+            {
+                var game = context.Boards
+                    .Include(b => b.UserProfileBlack)
+                    .Include(b => b.UserProfileWhite)
+                    .Include(b => b.UserProfileWinner)
+                    .AsNoTracking();
+
+                return game.LinqToQuerystring(typeof (GameDto), queryString);
             }
         }
 
