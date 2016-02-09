@@ -39,7 +39,8 @@ namespace RedChess.WebEngine.Repositories
                     .Include(b => b.UserProfileWinner)
                     .AsNoTracking();
 
-                return game.LinqToQuerystring(queryString).ToArray();
+                IEnumerable<object> queriedResult = (IEnumerable<object>) game.LinqToQuerystring(typeof(GameDto), queryString);
+                return queriedResult.ToArray();
             }
         }
 
