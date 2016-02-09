@@ -8,8 +8,9 @@
         var currentUserId = WebSecurity.CurrentUserId;
         var timeLimitForOldGames = String.Format("{0:yyyy-MM-ddTHH:mm}", DateTime.UtcNow.AddMonths(-1));
     }
-    
+
 <script src="/Scripts/jquery.signalR-2.2.0.min.js" type="text/javascript"></script>
+<script src="/Scripts/knockout-3.4.0.js" type="text/javascript"></script>
 <script src="/signalr/hubs"></script>
     
 <script>
@@ -41,36 +42,34 @@
         $("time.timeago").timeago();
 
         // My current games
-        $.getJSON("api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove")
             .always(function() {})
-            .done(function(data) {
-                alert(data);
+            .done(function (data) {
+                ko.applyBindings({ game: data });
+
+                $("div.miniboard").each(function (index, element) {
+                    var originalText = element.innerText;
+                    if (originalText == null) {
+                        originalText = element.innerHTML;
+                    }
+
+                    var shouldFlip = GamePlayedAsBlack(element.id.substr(2)); // remove the m-
+                    var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false, orientation: (shouldFlip ? "black" : "white") };
+                    var board = new ChessBoard(element, cfg);
+                });
             });
 
         // My finished games less than a month old
-        $.getJSON("api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=description,creationDate,status&$orderBy=creationDate")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,status,creationdate&$orderBy=creationDate")
             .always(function() {})
             .done(function(data) {
-                alert(data);
             });
 
         // Other live games
-        $.getJSON("api/Boards?$filter=userProfileWhite/userId ne @currentUserId and userProfileBlack/userId ne @currentUserId and gameOver eq false&$select=fen")
+        $.getJSON("/api/Boards?$filter=userProfileWhite/userId ne @currentUserId and userProfileBlack/userId ne @currentUserId and gameOver eq false&$select=fen")
             .always(function() {})
             .done(function(data) {
-                alert(data);
             });
-
-        $("div.miniboard").each(function(index, element) {
-            var originalText = element.innerText;
-            if (originalText == null) {
-                originalText = element.innerHTML;
-            }
-
-            var shouldFlip = GamePlayedAsBlack(element.id.substr(2)); // remove the m-
-            var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false, orientation: (shouldFlip ? "black" : "white") };
-            var board = new ChessBoard(element, cfg);
-        });
 
         $("h3#turnindicator-o,h3#turnindicator-m").each(function(index, element) {
             var originalText = element.innerText;
@@ -150,124 +149,151 @@
         </script>
     }
 
-        <div class="row">
-            <h3>My current games</h3>
-            <div class="col-md-10">
-                <table class="table">
-                    @foreach (var item in @Model.Where(myCurrentGames).OrderByDescending(x => x.CreationDate))
-                    {
-                        var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-
-                        <tr>
-                            <td width="160px">
-                                <div>
-                                    <div class="miniboard" id="m-@item.GameId" style="width: 160px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title" id="turnindicator-m">@item.Fen</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        @if (item.LastMove == null)
-                                        {
-                                            <div class="btn btn-primary pulseme" onclick="GoToGame(@item.GameId);">Start playing</div>
-                                        }
-                                        else
-                                        {
-                                            @item.LastMove
-                                        }
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title"><a onclick="GoToGame(@item.GameId);">@item.Description</a></h3>
-                                        @item.Status<br/>
-                                        <span class="tinier">
-                                        Started <time class="timeago" datetime="@iso8601datetime">@item.CreationDate UTC</time>
-                                        </span>
-                                        @if (item.Clock != null)
-                                        {
-                                            var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs / (1000 * 60));
-                                            <span style="float : right">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                                @iso8601GameTimeLimit
-                                            </span>
-                                        }
-                                    </div>
-                                    <div class="panel-body">
-                                        @Html.ActionLink("Go to game", "Details", new {id = item.GameId}) |
-                                        @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) |
-                                        @Html.ActionLink("History", "ShowMove", "History", new {id = item.GameId}, null)
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
+    <div class="row">
+        <h3>My current games</h3>
+        <div class="col-md-10">
+            <table class="table" id="my-current-games-table">
+                <tbody data-bind="foreach: game">
+                <tr>
+                    <td width="160px">
+                        <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
+                    </td>
+                    <td>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title" id="turnindicator-m" data-bind="text: TurnIndicatorText(fen)"></h3>
+                            </div>
+                            <div class="panel-body">
+                                    <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
+                                <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
 
-        <div class="row">
-@{
-                    var extraText = "";
-                    var unshownGames = Model.Count(x => myCompletedGames(x) && oldGames(x));
-                    if (unshownGames > 0)
-                    {
-                        extraText = String.Format("(not shown: {0} game{1} older than 30 days)", unshownGames, unshownGames > 1 ? "s" : "");
-                    }
-}
-            <h3>My finished games</h3>
-            @if (unshownGames >= 0)
+    <div class="row">
+        <h3>My current games</h3>
+        <div class="col-md-10">
+            <table class="table">
+                @foreach (var item in @Model.Where(myCurrentGames).OrderByDescending(x => x.CreationDate))
+                {
+                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+
+                    <tr>
+                        <td width="160px">
+                            <div>
+                                <div class="miniboard" id="m-@item.GameId" style="width: 160px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title" id="turnindicator-m">@item.Fen</h3>
+                                </div>
+                                <div class="panel-body">
+                                    @if (item.LastMove == null)
+                                    {
+                                        <div class="btn btn-primary pulseme" onclick="GoToGame(@item.GameId);">Start playing</div>
+                                    }
+                                    else
+                                    {
+                                        @item.LastMove
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><a onclick="GoToGame(@item.GameId);">@item.Description</a>
+                                    </h3>
+                                    @item.Status<br/>
+                                    <span class="tinier">
+                                                          Started <time class="timeago" datetime="@iso8601datetime">@item.CreationDate UTC</time>
+                                                      </span>
+                                    @if (item.Clock != null)
+                                    {
+                                        var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs/(1000*60));
+                                        <span style="float: right">
+                                                              <span class="glyphicon glyphicon-time"></span>
+                                                              @iso8601GameTimeLimit
+                                                          </span>
+                                    }
+                                </div>
+                                <div class="panel-body">
+                                    @Html.ActionLink("Go to game", "Details", new {id = item.GameId}) |
+                                    @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) |
+                                    @Html.ActionLink("History", "ShowMove", "History", new {id = item.GameId}, null)
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        @{
+            var extraText = "";
+            var unshownGames = Model.Count(x => myCompletedGames(x) && oldGames(x));
+            if (unshownGames > 0)
             {
-                <h5>@extraText</h5>;
+                extraText = String.Format("(not shown: {0} game{1} older than 30 days)", unshownGames, unshownGames > 1 ? "s" : "");
             }
-            <div class="col-md-10">
-                <table class="table">
-                    @foreach (var item in @Model.Where(x => myCompletedGames(x) && !oldGames(x)).OrderByDescending(x => x.CompletionDate))
+        }
+        <h3>My finished games</h3>
+        @if (unshownGames >= 0)
+        {
+            <h5>@extraText</h5>;
+        }
+        <div class="col-md-10">
+            <table class="table">
+                @foreach (var item in @Model.Where(x => myCompletedGames(x) && !oldGames(x)).OrderByDescending(x => x.CompletionDate))
+                {
+                    var iso8601Datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+                    string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new {id = item.GameId}, null).ToString();
+                    if (item.UserProfileWinner != null)
                     {
-                        var iso8601Datetime = item.CompletionDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-                        string descriptionLink = Html.ActionLink(@item.Description, "ShowMove", "History", new { id = item.GameId }, null).ToString();
-                        if (item.UserProfileWinner != null)
-                        {
-                            descriptionLink = descriptionLink.Replace(item.UserProfileWinner.UserName, "<b>" + item.UserProfileWinner.UserName + "</b>");
-                        }
+                        descriptionLink = descriptionLink.Replace(item.UserProfileWinner.UserName, "<b>" + item.UserProfileWinner.UserName + "</b>");
+                    }
 
-                        <tr>
-                            <td style="vertical-align: middle">
-                                <div id="f-@item.GameId" onclick="GoToGame(@item.GameId);">@Html.Raw(@descriptionLink)</div>
-                            </td>
-                            <td style="vertical-align: middle">
-                                @if (item.Clock != null)
-                                {
-                                    var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs / (1000 * 60));
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    @iso8601GameTimeLimit
-                                    ;
-                                }
-                            </td>
-                            <td>
-                                @item.Status<br /><time class="timeago" datetime="@iso8601Datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time>
-                            </td>
-                            <td style="vertical-align: middle">
-                                <a href="/Board/Delete/@item.GameId"><span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span></a>
-                            </td>
-                            <td style="vertical-align: middle">
-                                @Html.CheckBox(@item.GameId.ToString(), false, new { @class = "deleteCheckbox" })
-                            </td>
-                        </tr>
-                    }
-                    @if (@Model.Any(x => myCompletedGames(x) && !oldGames(x)))
-                    {
-                        <tr><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
-                    }
-                </table>
-            </div>
+                    <tr>
+                        <td style="vertical-align: middle">
+                            <div id="f-@item.GameId" onclick="GoToGame(@item.GameId);">@Html.Raw(@descriptionLink)</div>
+                        </td>
+                        <td style="vertical-align: middle">
+                            @if (item.Clock != null)
+                            {
+                                var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs/(1000*60));
+                                <span class="glyphicon glyphicon-time"></span>
+                                @iso8601GameTimeLimit
+                                ;
+                            }
+                        </td>
+                        <td>
+                            @item.Status<br/><time class="timeago" datetime="@iso8601Datetime">Started @item.CreationDate UTC, finished @item.CompletionDate UTC</time>
+                        </td>
+                        <td style="vertical-align: middle">
+                            <a href="/Board/Delete/@item.GameId"><span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span></a>
+                        </td>
+                        <td style="vertical-align: middle">
+                            @Html.CheckBox(@item.GameId.ToString(), false, new {@class = "deleteCheckbox"})
+                        </td>
+                    </tr>
+                }
+                @if (@Model.Any(x => myCompletedGames(x) && !oldGames(x)))
+                {
+                    <tr><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
+                }
+            </table>
         </div>
-}
+    </div>
+            }
 
 <div class="row">
     <h3>Other games</h3>
@@ -298,7 +324,7 @@
                                 @item.Status<br/><time class="timeago" datetime="@iso8601datetime">Started @item.CreationDate UTC</time>
                             </div>
                             <div class="panel-body">
-                                @Html.ActionLink("History", "ShowMove", "History", new { id = item.GameId }, null)
+                                @Html.ActionLink("History", "ShowMove", "History", new {id = item.GameId}, null)
                             </div>
                         </div>
                     </td>
