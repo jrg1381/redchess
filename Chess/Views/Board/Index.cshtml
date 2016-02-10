@@ -42,10 +42,12 @@
         $("time.timeago").timeago();
 
         // My current games
-        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack/username,userprofilewhite/username")
             .always(function() {})
             .done(function (data) {
                 ko.applyBindings({ game: data });
+
+                $("time.timeago").timeago();
 
                 $("div.miniboard").each(function (index, element) {
                     var originalText = element.innerText;
@@ -164,8 +166,34 @@
                                 <h3 class="panel-title" id="turnindicator-m" data-bind="text: TurnIndicatorText(fen)"></h3>
                             </div>
                             <div class="panel-body">
-                                    <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
+                                <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
                                 <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <a data-bind="text : userprofilewhite +' vs ' + userprofileblack, click : function() { GoToGame(gameid); }"></a>
+                                </h3>
+                                <span data-bind="text: status"></span><br/>
+                                <span class="tinier">
+                                    Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
+                                </span>
+                                @if (false)
+                                {
+                                    var iso8601GameTimeLimit = String.Format("{0}m", 400);
+                                    <span style="float: right">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        @iso8601GameTimeLimit
+                                    </span>
+                                }
+                            </div>
+                            <div class="panel-body">
+                                <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
+                                <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">Delete</a> |
+                                <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
                             </div>
                         </div>
                     </td>
