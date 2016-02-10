@@ -11,8 +11,11 @@ CREATE TABLE [dbo].[Boards]
 [MayClaimDraw] AS (case  when [GameOver]=(1) then CONVERT([bit],(0),(0)) else [dbo].[MayClaimDraw]([GameId]) end),
 [LastMove] [nvarchar] (10) NULL,
 [UserIdWinner] [int] NULL,
-[MoveNumber] [int] NOT NULL DEFAULT ((0))
+[MoveNumber] [int] NOT NULL DEFAULT ((0)),
+[ClockId] [int] NULL
 )
+ALTER TABLE [dbo].[Boards] ADD
+CONSTRAINT [ClockId] FOREIGN KEY ([ClockId]) REFERENCES [dbo].[Clocks] ([ClockId])
 GO
 SET QUOTED_IDENTIFIER ON
 GO

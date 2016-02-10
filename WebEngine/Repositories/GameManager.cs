@@ -428,12 +428,17 @@ namespace RedChess.WebEngine.Repositories
                 newGame.UserIdWhite = currentUserId;
             }
 
+            // Update to get the id for the newly created game
             m_gameRepository.AddOrUpdate(newGame);
 
             if (timeLimitMs != 0)
             {
-                m_clockRepository.AddClock(newGame.GameId, timeLimitMs);
+                var clockId = m_clockRepository.AddClock(newGame.GameId, timeLimitMs);
+                newGame.ClockId = clockId;
             }
+
+            // Update again to force save of the clockId in the GameDto
+            m_gameRepository.AddOrUpdate(newGame);
 
             m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = ""});
 

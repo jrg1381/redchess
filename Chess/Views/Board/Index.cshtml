@@ -39,17 +39,18 @@
             $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
         });
 
+        $("#my-current-games-table").hide();
         $("time.timeago").timeago();
 
         // My current games
-        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack/username,userprofilewhite/username")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack/username,userprofilewhite/username,clock")
             .always(function() {})
-            .done(function (data) {
+            .done(function(data) {
                 ko.applyBindings({ game: data });
 
                 $("time.timeago").timeago();
 
-                $("div.miniboard").each(function (index, element) {
+                $("div.miniboard").each(function(index, element) {
                     var originalText = element.innerText;
                     if (originalText == null) {
                         originalText = element.innerHTML;
@@ -59,6 +60,11 @@
                     var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false, orientation: (shouldFlip ? "black" : "white") };
                     var board = new ChessBoard(element, cfg);
                 });
+
+                $("#my-current-games-table").show();
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                ko.applyBindings({ error: textStatus });
             });
 
         // My finished games less than a month old
@@ -151,7 +157,9 @@
         </script>
     }
 
-    <div class="row">
+    <h1 data-binding="if:error, text:error"></h1>
+
+    <div class="row" data-binding="ifnot: error">
         <h3>My current games</h3>
         <div class="col-md-10">
             <table class="table" id="my-current-games-table">
@@ -177,18 +185,14 @@
                                 <h3 class="panel-title">
                                     <a data-bind="text : userprofilewhite +' vs ' + userprofileblack, click : function() { GoToGame(gameid); }"></a>
                                 </h3>
-                                <span data-bind="text: status"></span><br/>
+                                <span data-bind="text: status"></span><br />
                                 <span class="tinier">
                                     Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
                                 </span>
-                                @if (false)
-                                {
-                                    var iso8601GameTimeLimit = String.Format("{0}m", 400);
-                                    <span style="float: right">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                        @iso8601GameTimeLimit
-                                    </span>
-                                }
+                                <span data-bind="if: clock" style="float: right">
+                                    <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
+                                    <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
+                                </span>
                             </div>
                             <div class="panel-body">
                                 <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
@@ -199,68 +203,6 @@
                     </td>
                 </tr>
                 </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="row">
-        <h3>My current games</h3>
-        <div class="col-md-10">
-            <table class="table">
-                @foreach (var item in @Model.Where(myCurrentGames).OrderByDescending(x => x.CreationDate))
-                {
-                    var iso8601datetime = item.CreationDate.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
-
-                    <tr>
-                        <td width="160px">
-                            <div>
-                                <div class="miniboard" id="m-@item.GameId" style="width: 160px" onclick="GoToGame(@item.GameId);">@item.Fen</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title" id="turnindicator-m">@item.Fen</h3>
-                                </div>
-                                <div class="panel-body">
-                                    @if (item.LastMove == null)
-                                    {
-                                        <div class="btn btn-primary pulseme" onclick="GoToGame(@item.GameId);">Start playing</div>
-                                    }
-                                    else
-                                    {
-                                        @item.LastMove
-                                    }
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><a onclick="GoToGame(@item.GameId);">@item.Description</a>
-                                    </h3>
-                                    @item.Status<br/>
-                                    <span class="tinier">
-                                                          Started <time class="timeago" datetime="@iso8601datetime">@item.CreationDate UTC</time>
-                                                      </span>
-                                    @if (item.Clock != null)
-                                    {
-                                        var iso8601GameTimeLimit = String.Format("{0}m", item.Clock.TimeLimitMs/(1000*60));
-                                        <span style="float: right">
-                                                              <span class="glyphicon glyphicon-time"></span>
-                                                              @iso8601GameTimeLimit
-                                                          </span>
-                                    }
-                                </div>
-                                <div class="panel-body">
-                                    @Html.ActionLink("Go to game", "Details", new {id = item.GameId}) |
-                                    @Html.ActionLink("Delete", "Delete", new {id = item.GameId}) |
-                                    @Html.ActionLink("History", "ShowMove", "History", new {id = item.GameId}, null)
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                }
             </table>
         </div>
     </div>
