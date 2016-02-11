@@ -261,6 +261,9 @@ namespace RedChess.WebEngine.Repositories
 
         public bool Move(int gameId, Location start, Location end, string promote = null)
         {
+            // Be generous to the user and take the time as soon as possible, so they lose the least clock time
+            var now = m_dateTimeProvider.UtcNow;
+
             ChessMove move;
             var gameDto = m_gameRepository.FindById(gameId);
             m_board.FromFen(gameDto.Fen);
@@ -292,7 +295,6 @@ namespace RedChess.WebEngine.Repositories
             if (clock != null)
             {
                 var turn = gameDto.Fen.Split(new[] {' '}, 2)[1][0];
-                var now = m_dateTimeProvider.UtcNow;
 
                 if (turn == 'b')
                 {
