@@ -15,7 +15,7 @@
     
 <script>
     function gameListUpdate(data) {
-        location.reload(true);
+        updateGameLists();
     }
 </script>
 
@@ -28,30 +28,14 @@
 }
 
 <script>
-    $(document).ready(function() {
-        //SignalR stuff
-        var updater = $.connection.updateServer;
-        // Define a client-side message which the server can call
-        updater.client.gameListUpdate = gameListUpdate;
+    var viewModel = {
+        currentGames: ko.observable([]),
+        finishedGames: ko.observable([]),
+        otherGames: ko.observable([]),
+        error: ko.observable("")
+    };
 
-        // Define a callback for when the connection is established. We join the client group for index page watchers
-        $.connection.hub.start(function() {
-            $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
-        });
-
-        var viewModel = {
-            currentGames: ko.observable([]),
-            finishedGames: ko.observable([]),
-            otherGames: ko.observable([]),
-            error: ko.observable("")
-        };
-
-        ko.applyBindings(viewModel);
-
-        $("#my-current-games-table").hide();
-        $('#my-finished-games-table').hide();
-        $('#other-games-table').hide();
-
+    function updateGameLists() {
         // My current games
         $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack,userprofilewhite,clock&$orderby=creationdate desc")
             .always(function() {})
@@ -123,6 +107,26 @@
             .fail(function(jqXHR, textStatus, errorThrown) {
                 viewModel.error(textStatus);
             });
+    }
+
+    $(document).ready(function() {
+        //SignalR stuff
+        var updater = $.connection.updateServer;
+        // Define a client-side message which the server can call
+        updater.client.gameListUpdate = gameListUpdate;
+
+        // Define a callback for when the connection is established. We join the client group for index page watchers
+        $.connection.hub.start(function() {
+            $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
+        });
+
+        ko.applyBindings(viewModel);
+
+        $("#my-current-games-table").hide();
+        $('#my-finished-games-table').hide();
+        $('#other-games-table').hide();
+
+        updateGameLists();
     });
 
     function DeleteMultiple() {
@@ -253,7 +257,7 @@
                 </tr>
                 </tbody>
                 <tfoot>
-                    <tr><td colspan="4"></td><td><a data-bind="visible: (finishedGames == true), text: 'Delete selected games'" class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
+                    <tr><td colspan="4"></td><td><a id="delete-multiple-button" class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
                 </tfoot>
             </table>
         </div>
