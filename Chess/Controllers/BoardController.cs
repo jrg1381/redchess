@@ -30,7 +30,8 @@ namespace Chess.Controllers
 
         public ActionResult Index()
         {
-            return View(m_gameManager.FindAll().ToList());
+            // The model is not used in this view
+            return View(new object());
         }
 
         //

@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using LinqToQuerystring;
 using Microsoft.Azure;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Models;
@@ -25,6 +26,21 @@ namespace RedChess.WebEngine.Repositories
                     .Single();
 
                 return game;
+            }
+        }
+
+        public object FindWhere(string queryString)
+        {
+            using (var context = new ChessContext())
+            {
+                var game = context.Boards
+                    .Include(b => b.UserProfileBlack)
+                    .Include(b => b.UserProfileWhite)
+                    .Include(b => b.UserProfileWinner)
+                    .AsNoTracking();
+
+                IEnumerable<object> queriedResult = (IEnumerable<object>) game.LinqToQuerystring(typeof(GameDto), queryString);
+                return queriedResult.ToArray();
             }
         }
 
@@ -98,33 +114,6 @@ namespace RedChess.WebEngine.Repositories
             {
                 dbContext.Boards.AddOrUpdate(data);
                 dbContext.SaveChanges();
-            }
-        }
-
-        public IEnumerable<GameDto> FindAll()
-        {
-            using (var context = new ChessContext())
-            {
-                return context.Boards
-                    .Include(b => b.UserProfileBlack)
-                    .Include(b => b.UserProfileWhite)
-                    .Include(b => b.UserProfileWinner)
-                    .AsNoTracking()
-                    .ToList();
-            }
-        }
-
-        public IEnumerable<GameDto> FindWithPlayer(string userName)
-        {
-            using (var context = new ChessContext())
-            {
-                return
-                    context.Boards.Include(b => b.UserProfileBlack)
-                        .Include(b => b.UserProfileWhite)
-                        .Include(b => b.UserProfileWinner)
-                        .Where(b => b.UserProfileBlack.UserName == userName || b.UserProfileWhite.UserName == userName)
-                        .AsNoTracking()
-                        .ToList();
             }
         }
     }

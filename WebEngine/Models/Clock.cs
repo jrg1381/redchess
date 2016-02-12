@@ -1,9 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RedChess.WebEngine.Repositories;
 
 namespace RedChess.WebEngine.Models
 {
+    [Table("Clocks")]
     public class Clock : IClock
     {
 		public static readonly DateTime MinimumDateTime;
@@ -29,8 +31,9 @@ namespace RedChess.WebEngine.Models
 		}
 
 		[Key]
-		public int ClockId { get; set; }
-		public int GameId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ClockId { get; set; }
+        public int GameId { get; set; }
 		public DateTime LastActionBlack { get; set; }
 		public DateTime LastActionWhite { get; set; }
 		public int TimeElapsedBlackMs { get; set; }

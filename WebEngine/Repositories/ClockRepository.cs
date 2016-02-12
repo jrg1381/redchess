@@ -26,13 +26,14 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public void AddClock(int gameId, int timeLimitMs)
+        public int AddClock(int gameId, int timeLimitMs)
         {
             using (var context = new ChessContext())
             {
                 var clock = new Clock(gameId, timeLimitMs);
                 context.Clocks.Add(clock);
                 context.SaveChanges();
+                return clock.ClockId;
             }
         }
 

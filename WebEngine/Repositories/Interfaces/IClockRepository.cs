@@ -6,7 +6,7 @@ namespace RedChess.WebEngine.Repositories.Interfaces
     {
         IClock Clock(int gameId);
         void SaveClock(IClock clock);
-        void AddClock(int gameId, int timeLimitMs);
+        int AddClock(int gameId, int timeLimitMs);
         PlayerReadyStatus PlayerReady(int gameId, string playerColor);
     }
 }

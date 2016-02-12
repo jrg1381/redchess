@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Models;
@@ -16,15 +17,14 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber);
         IEnumerable<HistoryEntry> FindAllMoves(int game);
         int CloneBoard(IBoard newBoard, int opponent, string currentUser, bool playAsBlack, int oldGameId, int movesToClone);
-        IEnumerable<IGameBinding> FindAll();
         void Delete(int gameId);
         bool IsUsersTurn(int gameId, string currentUser);
         void TimeGameOut(int id, string message, string currentUser);
         void EndGameWithMessage(int id, string message, int? userIdWinner = null);
         bool Move(int id, Location startLocation, Location endLocation, string promoteTo);
         void UpdateMessage(int id);
-        IEnumerable<IGameBinding> WithPlayer(string userName);
         string PgnText(int id);
+        object FindWhere(string queryString);
         IEnumerable<UserProfile> AllUserProfiles();
         IEnumerable<IAnalysisBinding> AnalysisForGameMoves(int gameId);
         IEnumerable<IStats> Stats();

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
-using Microsoft.Owin.Security.Provider;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
@@ -38,7 +37,8 @@ namespace Chess.Controllers
         [HttpGet]
         public object Boards()
         {
-            return Json(m_gameManager.FindAll().ToDictionary(game => game.GameId, GameBindingToGameData));
+            var queryString = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Request.QueryString.ToString());
+            return m_gameManager.FindWhere(queryString);
         }
 
         [HttpGet]
@@ -54,12 +54,6 @@ namespace Chess.Controllers
         public object Stats()
         {
             return Json(m_gameManager.Stats());
-        }
-
-        [HttpGet]
-        public object Boards(string id)
-        {
-            return Json(m_gameManager.WithPlayer(id).ToDictionary(game => game.GameId, GameBindingToGameData));
         }
 
         [HttpGet]

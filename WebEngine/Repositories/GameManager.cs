@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using RedChess.ChessCommon;
@@ -67,6 +68,11 @@ namespace RedChess.WebEngine.Repositories
                 Winner = x.Winner?.ToLower(),
                 Count = x.Count
             });
+        }
+
+        public object FindWhere(string queryString)
+        {
+            return m_gameRepository.FindWhere(queryString);
         }
 
         public IEnumerable<UserProfile> AllUserProfiles()
@@ -375,11 +381,6 @@ namespace RedChess.WebEngine.Repositories
             return new GameBinding(dto, this);
         }
 
-        public IEnumerable<IGameBinding> FindAll()
-        {
-            return m_gameRepository.FindAll().Select(x => new GameBinding(x, this));
-        }
-
         public void Delete(int gameId)
         {
             m_gameRepository.Delete(gameId);
@@ -424,21 +425,21 @@ namespace RedChess.WebEngine.Repositories
                 newGame.UserIdWhite = currentUserId;
             }
 
+            // Update to get the id for the newly created game
             m_gameRepository.AddOrUpdate(newGame);
 
             if (timeLimitMs != 0)
             {
-                m_clockRepository.AddClock(newGame.GameId, timeLimitMs);
+                var clockId = m_clockRepository.AddClock(newGame.GameId, timeLimitMs);
+                newGame.ClockId = clockId;
             }
+
+            // Update again to force save of the clockId in the GameDto
+            m_gameRepository.AddOrUpdate(newGame);
 
             m_historyRepository.Add(new HistoryEntry { Fen = newGame.Fen, GameId = newGame.GameId, Move = ""});
 
             return newGame.GameId;
-        }
-
-        public IEnumerable<IGameBinding> WithPlayer(string userName)
-        {
-            return m_gameRepository.FindWithPlayer(userName).Select(x => new GameBinding(x, this));
         }
 
         public PlayerReadyStatus PlayerReady(int gameId, string playerColor)

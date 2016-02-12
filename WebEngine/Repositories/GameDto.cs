@@ -17,6 +17,7 @@ namespace RedChess.WebEngine.Repositories
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GameId { get; set; }
 
+        public int? ClockId { get; set; }
         public int UserIdWhite { get; set; }
         public int UserIdBlack { get; set; }
         public int? UserIdWinner { get; set; }
@@ -50,5 +51,7 @@ namespace RedChess.WebEngine.Repositories
         public virtual UserProfile UserProfileBlack { get; set; }
         [ForeignKey("UserIdWinner")]
         public virtual UserProfile UserProfileWinner { get; set; }
+        [ForeignKey("ClockId")]
+        public virtual Clock Clock { get; set; }
     }
 }
