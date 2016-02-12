@@ -171,13 +171,6 @@
     }
 </script>
 
-@{
-    var myCurrentGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && !x.GameOver);
-    var myCompletedGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) != "" && x.GameOver);
-    var oldGames = new Func<IGameBinding, bool>(x => x.CompletionDate < DateTime.UtcNow.AddMonths(-1));
-    var otherLiveGames = new Func<IGameBinding, bool>(x => x.CurrentPlayerColor(HttpContext.Current.User.Identity.Name) == "" && !x.GameOver);
- }
-
 @if (Request.IsAuthenticated)
 {
     <h1 data-binding="if:error, text:error"></h1>
