@@ -9,6 +9,8 @@ CREATE TABLE [dbo].[Clocks]
 [TimeLimitMs] [int] NOT NULL,
 [PlayersReady] [int] NOT NULL
 )
+CREATE UNIQUE NONCLUSTERED INDEX [GameId_FK] ON [dbo].[Clocks] ([GameId])
+
 ALTER TABLE [dbo].[Clocks] ADD
 CONSTRAINT [FK_Cascade_clocks] FOREIGN KEY ([GameId]) REFERENCES [dbo].[Boards] ([GameId]) ON DELETE CASCADE
 GO
