@@ -381,11 +381,6 @@ namespace RedChess.WebEngine.Repositories
             return new GameBinding(dto, this);
         }
 
-        public IQueryable<IGameBinding> FindAll()
-        {
-            return m_gameRepository.FindAll().Select(x => new GameBinding(x, this)).AsQueryable();
-        }
-
         public void Delete(int gameId)
         {
             m_gameRepository.Delete(gameId);

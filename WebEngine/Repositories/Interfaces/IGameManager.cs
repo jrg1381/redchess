@@ -17,7 +17,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         HistoryEntry FindByGameIdAndMoveNumber(int gameId, int moveNumber);
         IEnumerable<HistoryEntry> FindAllMoves(int game);
         int CloneBoard(IBoard newBoard, int opponent, string currentUser, bool playAsBlack, int oldGameId, int movesToClone);
-        IQueryable<IGameBinding> FindAll();
         void Delete(int gameId);
         bool IsUsersTurn(int gameId, string currentUser);
         void TimeGameOut(int id, string message, string currentUser);

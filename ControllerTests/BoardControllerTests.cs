@@ -137,26 +137,6 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
-        public void IndexShowsAllGames()
-        {
-            var manager = MockRepository.GenerateStub<IGameManager>();
-
-            var allGames = new[]
-            {
-                new GameBinding(new FakeGame().WithId(2), manager),
-                new GameBinding(new FakeGame().WithId(3), manager)
-            };
-
-            manager.Expect(x => x.FindAll()).Return(allGames.AsQueryable());
-
-            var controller = new BoardController(manager);
-            var result = controller.Index() as ViewResult;
-
-            Assert.IsInstanceOf<IEnumerable<IGameBinding>>(result.Model, "Model is of wrong type");
-            CollectionAssert.AreEquivalent(allGames, result.Model as IEnumerable<IGameBinding>, "Model contents are wrong");
-        }
-
-        [Test]
         public void DeleteRedirectsForNonExistentGame()
         {
             var fakeRepo = MockRepository.GenerateStub<IGameRepository>();

@@ -116,18 +116,5 @@ namespace RedChess.WebEngine.Repositories
                 dbContext.SaveChanges();
             }
         }
-
-        public IEnumerable<GameDto> FindAll()
-        {
-            using (var context = new ChessContext())
-            {
-                return context.Boards
-                    .Include(b => b.UserProfileBlack)
-                    .Include(b => b.UserProfileWhite)
-                    .Include(b => b.UserProfileWinner)
-                    .AsNoTracking()
-                    .ToList();
-            }
-        }
     }
 }
