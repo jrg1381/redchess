@@ -39,16 +39,24 @@
             $.connection.hub.proxies.updateserver.server.join("IndexWatchers");
         });
 
+        var viewModel = {
+            currentGames: ko.observable([]),
+            finishedGames: ko.observable([]),
+            error: ko.observable("")
+        };
+
+        ko.applyBindings(viewModel);
+
         $("#my-current-games-table").hide();
         $("time.timeago").timeago();
 
         // My current games
-        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack/username,userprofilewhite/username,clock")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack,userprofilewhite,clock&$orderby=creationdate desc")
             .always(function() {})
             .done(function(data) {
-                ko.applyBindings({ game: data });
+                viewModel.currentGames(data);
 
-                $("time.timeago").timeago();
+                $("table#my-current-games-table time.timeago").timeago();
 
                 $("div.miniboard").each(function(index, element) {
                     var originalText = element.innerText;
@@ -56,7 +64,7 @@
                         originalText = element.innerHTML;
                     }
 
-                    var shouldFlip = GamePlayedAsBlack(element.id.substr(2)); // remove the m-
+                    var shouldFlip = data[index].userprofileblack.userId === @currentUserId;
                     var cfg = { pieceTheme: '/Images/{piece}.png', position: originalText, showNotation: false, orientation: (shouldFlip ? "black" : "white") };
                     var board = new ChessBoard(element, cfg);
                 });
@@ -64,13 +72,19 @@
                 $("#my-current-games-table").show();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                ko.applyBindings({ error: textStatus });
+                viewModel.error(textStatus);
             });
 
         // My finished games less than a month old
-        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,status,creationdate&$orderBy=creationDate")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,gameid,status,creationdate,userprofileblack,userprofilewhite,clock&$orderBy=creationDate desc")
             .always(function() {})
-            .done(function(data) {
+            .done(function (data) {
+                viewModel.finishedGames(data);
+
+                $("table#my-finished-games-table time.timeago").timeago();
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                viewModel.error(textStatus);
             });
 
         // Other live games
@@ -92,7 +106,7 @@
 
     function DeleteMultiple() {
         var ids = $(".deleteCheckbox:checked").toArray().map(function(x) { return x.name; }).join();
-        if (ids.length == 0) {
+        if (ids.length === 0) {
             return false;
         };
 
@@ -125,19 +139,6 @@
             return "White to play";
         }
     }
-
-    {
-        // In the first pass, the map is populated with the games in which the current player is black.
-        // In the second pass, the result is returned. This works because the map is populated before document.ready() is called.
-        var flippedGames = new Map();
-        function GamePlayedAsBlack(g) {
-            if (flippedGames[g] === undefined) {
-                flippedGames[g] = 1;
-                return false;
-            }
-            return true;
-        }
-    }
 </script>
 
 @{
@@ -149,21 +150,13 @@
 
 @if (Request.IsAuthenticated)
 {
-    // Populate the set of games in which the current player is playing black
-    foreach(var item in @Model.Where(x => myCurrentGames(x) && x.UserProfileBlack.UserId == WebSecurity.CurrentUserId))
-    {
-        <script>
-            GamePlayedAsBlack(@item.GameId);
-        </script>
-    }
-
     <h1 data-binding="if:error, text:error"></h1>
 
     <div class="row" data-binding="ifnot: error">
         <h3>My current games</h3>
         <div class="col-md-10">
             <table class="table" id="my-current-games-table">
-                <tbody data-bind="foreach: game">
+                <tbody data-bind="foreach: currentGames">
                 <tr>
                     <td width="160px">
                         <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
@@ -183,7 +176,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    <a data-bind="text : userprofilewhite +' vs ' + userprofileblack, click : function() { GoToGame(gameid); }"></a>
+                                    <a data-bind="text : userprofilewhite.userName +' vs ' + userprofileblack.userName, click : function() { GoToGame(gameid); }"></a>
                                 </h3>
                                 <span data-bind="text: status"></span><br />
                                 <span class="tinier">
@@ -203,6 +196,39 @@
                     </td>
                 </tr>
                 </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3>My finished games</h3>
+        <div class="col-md-10">
+            <table class="table" id="my-finished-games-table">
+                    <tbody data-bind="foreach: finishedGames">
+                        <tr>
+                            <td style="vertical-align: middle">
+                                <a data-bind="text : userprofilewhite.userName +' vs ' + userprofileblack.userName, attr : { href : '/History/Showmove/'+ gameid}"></a>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <span data-bind="if: clock" style="float: right">
+                                    <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
+                                    <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
+                                </span>
+                            </td>
+                            <td>
+                                <span data-bind="text:status"></span><br /><time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">
+                                    <span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span>
+                                </a>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <input class="deleteCheckbox" type="checkbox" value="true" data-bind="attr: { name : gameid}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tr><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
             </table>
         </div>
     </div>
