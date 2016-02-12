@@ -1,7 +1,7 @@
 ﻿@using Chess.Models
 @using RedChess.WebEngine.Repositories
 @using RedChess.WebEngine.Repositories.Interfaces
-@model IEnumerable<RedChess.WebEngine.Repositories.Interfaces.IGameBinding>
+@model object
 
     @{
         ViewBag.Title = "Index of games";
@@ -83,7 +83,7 @@
         // My finished games less than a month old
         $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,gameid,status,creationdate,userprofileblack,userprofilewhite,userprofilewinner,clock&$orderBy=creationDate desc")
             .always(function() {})
-            .done(function (data) {
+            .done(function(data) {
                 data.forEach(function(element, index) {
                     element.description = gameDescription(element.userprofilewhite, element.userprofileblack, element.userprofilewinner);
                 });
@@ -122,16 +122,6 @@
             .fail(function(jqXHR, textStatus, errorThrown) {
                 viewModel.error(textStatus);
             });
-
-        $("h3#turnindicator-o,h3#turnindicator-m").each(function(index, element) {
-            var originalText = element.innerText;
-            if (originalText == null) {
-                originalText = element.innerHTML;
-                element.innerHTML = TurnIndicatorText(originalText);
-            } else {
-                element.innerText = TurnIndicatorText(originalText);
-            }
-        });
     });
 
     function DeleteMultiple() {
@@ -270,7 +260,7 @@
                 </tr>
                 </tbody>
                 <tfoot>
-                    <tr data-bind="visible: finishedGames.length > 0"><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
+                    <tr data-bind="visible: finishedGames.length"><td colspan="4"></td><td><a class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
                 </tfoot>
             </table>
         </div>
