@@ -32,7 +32,7 @@
         currentGames: ko.observable([]),
         finishedGames: ko.observable([]),
         otherGames: ko.observable([]),
-        error: ko.observable("")
+        errors: ko.observableArray([])
     };
 
     function updateGameLists() {
@@ -62,7 +62,7 @@
                 $("#my-current-games-table").show();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                viewModel.error(textStatus);
+                viewModel.errors.push(jqXHR.statusText);
             });
 
         // My finished games less than a month old
@@ -78,7 +78,7 @@
                 $("#my-finished-games-table").show();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                viewModel.error(textStatus);
+                viewModel.errors.push(jqXHR.statusText);
             });
 
         // Other live games
@@ -105,7 +105,7 @@
                 $("#other-games-table").show();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                viewModel.error(textStatus);
+                viewModel.errors.push(jqXHR.statusText);
             });
     }
 
@@ -149,6 +149,7 @@
             })
             .error(function(jqXhr, textStatus, errorThrown) {
                 getSpinController().stopLogoSpinner();
+                viewModel.errors.push(textStatus);
             });
     }
 
@@ -176,11 +177,15 @@
     }
 </script>
 
+<div data-bind="if:errors().length > 0" id="errors-display">
+    <div data-bind="foreach:errors">
+        <div class="alert alert-danger" data-bind="text:$data"></div>
+    </div>
+</div>
+
 @if (Request.IsAuthenticated)
 {
-    <h1 data-binding="if:error, text:error"></h1>
-
-    <div class="row" data-bind="ifnot: error">
+    <div class="row" data-bind="if: errors().length == 0">
         <h3>My current games</h3>
         <div class="col-md-10">
             <table class="table" id="my-current-games-table">
@@ -228,7 +233,7 @@
         </div>
     </div>
 
-    <div class="row" data-bind="ifnot: error">
+    <div class="row" data-bind="if: errors().length == 0">
         <h3>My finished games</h3>
         <div class="col-md-10">
             <table class="table" id="my-finished-games-table">
@@ -256,7 +261,7 @@
                     </td>
                 </tr>
                 </tbody>
-                <tfoot>
+                <tfoot data-bind="if: finishedGames().length">
                     <tr><td colspan="4"></td><td><a id="delete-multiple-button" class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
                 </tfoot>
             </table>
@@ -264,7 +269,7 @@
     </div>
 }
 
-<div class="row" data-bind="ifnot: error">
+<div class="row" data-bind="if: errors().length == 0">
     <h3>Other games</h3>
     <div class="col-md-10">
         <table class="table" id="other-games-table">
