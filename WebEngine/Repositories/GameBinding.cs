@@ -68,7 +68,7 @@ namespace RedChess.WebEngine.Repositories
         /// </summary>
         public string LastMove => m_gameDto.LastMove;
 
-        public IClock Clock => m_gameManager.Clock(m_gameDto.GameId);
+        public IClock Clock => m_gameDto.Clock;
 
         /// <summary>
         /// The string "b" or "w" or "", representing the colour being played by userName in this game.

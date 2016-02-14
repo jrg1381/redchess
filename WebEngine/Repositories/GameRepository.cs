@@ -52,6 +52,7 @@ namespace RedChess.WebEngine.Repositories
                     .Include(b => b.UserProfileBlack)
                     .Include(b => b.UserProfileWhite)
                     .Include(b => b.UserProfileWinner)
+                    .Include(b => b.Clock)
                     .AsNoTracking()
                     .FirstOrDefault(b => b.GameId == id);
 
