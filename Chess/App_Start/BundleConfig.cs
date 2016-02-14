@@ -10,6 +10,7 @@ namespace Chess
 			bundles.Add(new ScriptBundle("~/bundles/jquerykobs").Include(
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/bootstrap.js",
+                        "~/Scripts/jquery.timeago.js",
                         "~/Scripts/jquery-{version}.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
@@ -29,8 +30,6 @@ namespace Chess
                 "~/Scripts/app/chessboard-0.3.0.js",
                 "~/Scripts/app/clock.js",
                 "~/Scripts/app/chess.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/timeago").Include("~/Scripts/jquery.timeago.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/stats").Include(
                 "~/Scripts/d3/d3.min.js",
