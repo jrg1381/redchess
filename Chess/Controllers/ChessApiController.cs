@@ -91,19 +91,6 @@ namespace Chess.Controllers
         }
 
         [HttpGet]
-        public object Board(int id)
-        {
-            try
-            {
-                return Json(GameBindingToGameData(m_gameManager.FetchGame(id)));
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(HttpStatusCode.NotFound, this);
-            }
-        }
-
-        [HttpGet]
         public object Elo()
         {
             var profilesTask = Task.Factory.StartNew(() => m_gameManager.AllUserProfiles());
@@ -142,31 +129,6 @@ namespace Chess.Controllers
             response.LastUpdated = lastUpdated;
 
             return Json(response);
-        }
-
-        private static object GameBindingToGameData(IGameBinding game)
-        {
-            dynamic data = new ExpandoObject();
-
-            data.Fen = game.Fen;
-            data.Status = game.Status;
-            data.CreationDate = game.CreationDate;
-            data.Description = game.Description;
-            data.White = game.UserProfileWhite.UserId;
-            data.Black = game.UserProfileBlack.UserId;
-            data.GameOver = game.GameOver;
-
-            if (game.UserProfileWinner != null)
-            {
-                data.Winner = game.UserProfileWinner.UserId;
-            }
-
-            if (game.GameOver)
-            {
-                data.CompletionDate = game.CompletionDate;
-            }
-
-            return data;
         }
     }
 }
