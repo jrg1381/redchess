@@ -7,8 +7,10 @@ namespace Chess
 		// For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
 		public static void RegisterBundles(BundleCollection bundles)
 		{
-			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-						"~/Scripts/jquery-{version}.js"));
+			bundles.Add(new ScriptBundle("~/bundles/jquerykobs").Include(
+                        "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/jquery-{version}.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
 						"~/Scripts/jquery-ui-{version}.js"));
@@ -17,9 +19,6 @@ namespace Chess
 						"~/Scripts/jquery.unobtrusive*",
 						"~/Scripts/jquery.validate*",
                         "~/Scripts/jquery.cookie.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/ajaxlogin").Include(
 				"~/Scripts/app/ajaxlogin.js"));
