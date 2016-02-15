@@ -281,34 +281,10 @@ namespace RedChess.WebEngine.Repositories
                 move =new ChessMove(start, end);
             }
 
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
+            var fen = m_board.ToFen();
 
-            gameDto.LastMove = m_board.LastMove();
-            gameDto.Fen = m_board.ToFen();
-
-            m_gameRepository.AddOrUpdate(gameDto);
-
-            m_historyRepository.Add(new HistoryEntry(gameDto));
-
-            var clock = m_clockRepository.Clock(gameId);
-
-            if (clock != null)
-            {
-                var turn = gameDto.Fen.Split(new[] {' '}, 2)[1][0];
-
-                if (turn == 'b')
-                {
-                    clock.LastActionBlack = now;
-                    clock.TimeElapsedWhiteMs += (int) (now - clock.LastActionWhite).TotalMilliseconds;
-                }
-                if (turn == 'w')
-                {
-                    clock.LastActionWhite = now;
-                    clock.TimeElapsedBlackMs += (int) (now - clock.LastActionBlack).TotalMilliseconds;
-                }
-
-                m_clockRepository.SaveClock(clock);
-            }
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber + 1, fen, LongAlgebraicMove(move));
+            m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now);
 
             return true;
         }

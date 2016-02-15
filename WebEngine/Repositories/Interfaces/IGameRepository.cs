@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RedChess.ChessCommon.Interfaces;
 
@@ -11,5 +12,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void AddAnalysis(int id, int moveNumber, IProcessedAnalysis boardAnalysis);
         string Fen(int gameId);
         object FindWhere(string queryString);
+        void RecordMove(int gameId, string fen, string lastMove, DateTime moveReceivedAt);
     }
 }
