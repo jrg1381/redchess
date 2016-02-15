@@ -115,15 +115,14 @@ namespace RedChess.ControllerTests
 
         private IEnumerable<TestCaseData>PgnWritingTestSource()
         {
-            yield return new TestCaseData(new FakeGame().WhiteWins().Build(), "[Result \"1-0\"]\r\n\r\n1. e4 1-0", false, true).SetDescription("White wins");
-            yield return new TestCaseData(new FakeGame().BlackWins().Build(), "[Result \"0-1\"]\r\n\r\n1. e4 0-1", false, true).SetDescription("Black wins");
-            yield return new TestCaseData(new FakeGame().GameOver().Build(), "[Result \"1/2-1/2\"]\r\n\r\n1. e4 1/2-1/2", false, true).SetDescription("Drawn game");
-            yield return new TestCaseData(new FakeGame().Build(), "[Result \"*\"]\r\n\r\n1. e4 *", false, true).SetDescription("Incomplete game");
-            yield return new TestCaseData(new FakeGame().Build(), "[Result \"*\"]\r\n[TimeControl \"300\"]\r\n\r\n1. e4 *", true, true).SetDescription("Timed game");
+            yield return new TestCaseData(new FakeGame().WhiteWins().Build(), "[Result \"1-0\"]\r\n\r\n1. e4 1-0", true).SetDescription("White wins");
+            yield return new TestCaseData(new FakeGame().BlackWins().Build(), "[Result \"0-1\"]\r\n\r\n1. e4 0-1", true).SetDescription("Black wins");
+            yield return new TestCaseData(new FakeGame().GameOver().Build(), "[Result \"1/2-1/2\"]\r\n\r\n1. e4 1/2-1/2", true).SetDescription("Drawn game");
+            yield return new TestCaseData(new FakeGame().Build(), "[Result \"*\"]\r\n\r\n1. e4 *", true).SetDescription("Incomplete game");
+            yield return new TestCaseData(new FakeGame().WithTimeLimit(300).Build(), "[Result \"*\"]\r\n[TimeControl \"300\"]\r\n\r\n1. e4 *", true).SetDescription("Timed game");
 
             yield return new TestCaseData(new FakeGame().Build(), 
                 "[Result \"*\"]\r\n[FEN \"rnbqk3/pppppppp/8/8/8/8/PPPPPPPP/4KBNR w KQkq - 0\"]\r\n\r\n1. e4 *", 
-                false, 
                 false)
                 .SetDescription("Non-default start position");
         }
@@ -159,22 +158,13 @@ namespace RedChess.ControllerTests
         }
 
         [TestCaseSource(nameof(PgnWritingTestSource))]
-        public void PgnWriting(GameDto inputGame, string expectedResultSuffix, bool timedGame = false, bool defaultStartPosition = true)
+        public void PgnWriting(GameDto inputGame, string expectedResultSuffix, bool defaultStartPosition = true)
         {
             const string pgnPrefix = "[Event \"Casual Game\"]\r\n[Site \"?\"]\r\n[Round \"?\"]\r\n[Date \"0001.01.01\"]\r\n[White \"clive\"]\r\n[Black \"james\"]\r\n";
             var gameRepo = FakeGame.MockRepoForGame(inputGame);
 
             var historyRepo = defaultStartPosition ? GetHistoryRepo() : GetHistoryRepoNonDefaultStart();
-            var clockRepo = MockRepository.GenerateMock<IClockRepository>();
-
-            if (timedGame)
-            {
-                var stubClock = MockRepository.GenerateStub<IClock>();
-                stubClock.TimeLimitMs = 300000; // 5 minutes
-                clockRepo.Expect(x => x.Clock(inputGame.GameId)).Return(stubClock);
-            }
-
-            var gameManager = new GameManager(gameRepo, historyRepo, clockRepo);
+            var gameManager = new GameManager(gameRepo, historyRepo);
             var controller = new HistoryController(gameManager);
             var pgn = controller.Pgn(FakeGame.DefaultGameId).Content;
 
