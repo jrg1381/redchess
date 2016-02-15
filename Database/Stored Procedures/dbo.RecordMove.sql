@@ -15,7 +15,8 @@ AS
         BEGIN TRANSACTION;
         UPDATE  dbo.Boards
         SET     Fen = @fen ,
-                LastMove = @lastMove
+                LastMove = @lastMove,
+				MoveNumber = MoveNumber + 1
         WHERE   GameId = @gameId;
 
         INSERT  INTO dbo.HistoryEntries
