@@ -44,6 +44,14 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
+        public void PlayMove(int gameId, string fen, string lastMove, DateTime moveReceived)
+        {
+            using (var context = new ChessContext())
+            {
+                context.Database.ExecuteSqlCommand("exec dbo.RecordMove(@1,@2,@3,@4)", gameId, fen, lastMove, moveReceived);
+            }
+        }
+
         public GameDto FindById(int id)
         {
             using (var context = new ChessContext())

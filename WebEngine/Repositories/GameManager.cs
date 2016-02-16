@@ -283,33 +283,7 @@ namespace RedChess.WebEngine.Repositories
 
             PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
 
-            gameDto.LastMove = m_board.LastMove();
-            gameDto.Fen = m_board.ToFen();
-
-            m_gameRepository.AddOrUpdate(gameDto);
-
-            m_historyRepository.Add(new HistoryEntry(gameDto));
-
-            var clock = m_clockRepository.Clock(gameId);
-
-            if (clock != null)
-            {
-                var turn = gameDto.Fen.Split(new[] {' '}, 2)[1][0];
-
-                if (turn == 'b')
-                {
-                    clock.LastActionBlack = now;
-                    clock.TimeElapsedWhiteMs += (int) (now - clock.LastActionWhite).TotalMilliseconds;
-                }
-                if (turn == 'w')
-                {
-                    clock.LastActionWhite = now;
-                    clock.TimeElapsedBlackMs += (int) (now - clock.LastActionBlack).TotalMilliseconds;
-                }
-
-                m_clockRepository.SaveClock(clock);
-            }
-
+            m_gameRepository.PlayMove(gameId, m_board.ToFen(), m_board.LastMove(), now);
             return true;
         }
 
