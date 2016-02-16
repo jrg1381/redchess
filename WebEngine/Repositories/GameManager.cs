@@ -283,7 +283,7 @@ namespace RedChess.WebEngine.Repositories
 
             var fen = m_board.ToFen();
 
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber + 1, fen, LongAlgebraicMove(move));
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, fen, LongAlgebraicMove(move));
             m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now);
 
             return true;
