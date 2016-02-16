@@ -281,9 +281,11 @@ namespace RedChess.WebEngine.Repositories
                 move =new ChessMove(start, end);
             }
 
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
+            var fen = m_board.ToFen();
 
-            m_gameRepository.PlayMove(gameId, m_board.ToFen(), m_board.LastMove(), now);
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, fen, LongAlgebraicMove(move));
+            m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now);
+
             return true;
         }
 

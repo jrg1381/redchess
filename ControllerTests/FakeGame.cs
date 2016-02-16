@@ -1,3 +1,4 @@
+using System;
 using Chess.Controllers;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
@@ -123,6 +124,12 @@ namespace RedChess.ControllerTests
             identityProvider.Expect(x => x.CurrentUser).Return(username);
             identityProvider.Expect(x => x.CurrentUserId).Return(userId);
             return identityProvider;
+        }
+
+        internal FakeGame WithTimeLimit(int timeLimitInSeconds)
+        {
+            m_game.Clock = new Clock {TimeLimitMs = timeLimitInSeconds*1000};
+            return this;
         }
     }
 }
