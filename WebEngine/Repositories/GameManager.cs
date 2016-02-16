@@ -281,9 +281,10 @@ namespace RedChess.WebEngine.Repositories
                 move =new ChessMove(start, end);
             }
 
-            var fen = m_board.ToFen();
+            // We post the move with the old fen and movenumber
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
 
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, fen, LongAlgebraicMove(move));
+            var fen = m_board.ToFen();
             m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now);
 
             return true;
