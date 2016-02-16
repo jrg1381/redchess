@@ -65,7 +65,7 @@
             });
 
         // My finished games less than a month old
-        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,gameid,status,creationdate,userprofileblack,userprofilewhite,userprofilewinner,clock&$orderBy=creationDate desc")
+        $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,gameid,status,creationdate,userprofileblack,userprofilewhite,userprofilewinner,clock&$orderby=creationDate desc")
             .always(function() {})
             .done(function(data) {
                 data.forEach(function(element, index) {
