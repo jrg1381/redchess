@@ -662,21 +662,21 @@ namespace RedChess.ControllerTests
         {
             var fakeGame = GetFakeGameAboutToPromote();
 
-            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(fakeGame);
-            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
-            var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
+            var fakeRepo = FakeGame.MockRepoForGame(fakeGame);
+            var manager = new GameManager(fakeRepo);
             var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileBlack.UserName, fakeGame.UserIdBlack));
             controller.PlayMove(FakeGame.DefaultGameId, "H2", "H1", "Q");
 
-            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
+            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.RecordMove(Arg<int>.Is.Anything,
+                Arg<string>.Is.Anything, 
+                Arg<string>.Is.Anything, 
+                Arg<DateTime>.Is.Anything));
 
             fakeRepo.VerifyAllExpectations();
 
-            var updatedDto = args[0][0] as GameDto;
+            var updatedFen = args[0][1] as string;
 
-            Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", updatedDto.Fen, "Fen after move not as expected");
+            Assert.AreEqual("k6K/8/8/8/8/8/8/7q w - - 0", updatedFen, "Fen after move not as expected");
         }
 
         [Test]
@@ -765,39 +765,13 @@ namespace RedChess.ControllerTests
         }
 
         [Test]
-        public void PlayMoveChangesBoardCorrectly()
+        public void MovesAreRecordedCorrectly()
         {
-            GameDto fakeGame = new FakeGame();
+            int callCount = 0;
+            var firstMoveMade = new DateTime(2014, 11, 11, 12, 31, 15);
+            var secondMoveMade = firstMoveMade.AddMinutes(3);
 
-            var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(fakeGame);
-            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
-
-            var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
-            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4);
-
-            var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(fakeGame));
-            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(Arg<HistoryEntry>.Is.Anything));
-
-            fakeRepo.VerifyAllExpectations();
-
-            var updatedDto = args[0][0] as GameDto;
-            var newHistoryEntry = historyArgs[0][0] as HistoryEntry;
-
-            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", updatedDto.Fen, "Fen after move not as expected");
-            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0", newHistoryEntry.Fen, "Fen in history is wrong");
-            Assert.AreEqual("e4", newHistoryEntry.Move, "Expected move to be e4");
-            Assert.AreEqual(FakeGame.DefaultGameId, newHistoryEntry.GameId, "Expected history entry to refer to this game, " + FakeGame.DefaultGameId);
-            Assert.AreEqual(1, newHistoryEntry.MoveNumber, "Expected this to be move 1");
-        }
-
-        [Test]
-        public void MoveNumberIncrementsInHistory()
-        {
-            /* This method is full of hackery because movenumber is implemented in the database using a trigger, so it doesn't increment
-             * from a mock. We need to make the mock do the increment. Also, as the board doesn't really change, the two moves are both 
-             * by white. The point is to show that doing a move adds a history entry and AddOrUpdate is called the right number of times. */
+            /* Move number increment is implemented via a stored procedure */
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
             fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).WhenCalled(mi =>
             {
@@ -805,30 +779,30 @@ namespace RedChess.ControllerTests
                 mi.ReturnValue = retval;
             });
 
-            fakeRepo.Expect(x => x.AddOrUpdate(Arg<GameDto>.Is.Anything)).WhenCalled(mi =>
+            var stubDateTimeProvider = MockRepository.GenerateStub<IDateTimeProvider>();
+            stubDateTimeProvider.Expect(x => x.UtcNow).Do(new Func<DateTime>(() =>
             {
-                m_moveNumber++;
-            });
+                if (callCount++ == 0)
+                    return firstMoveMade;
+                return secondMoveMade;
+            }));
 
-            var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
-            var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
+            fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
+                Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0"),
+                Arg<string>.Is.Equal("e4"),
+                Arg<DateTime>.Is.Equal(firstMoveMade)));
 
-            var manager = new GameManager(fakeRepo, fakeHistoryRepo, fakeClockRepo);
+            fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
+                Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0"),
+                Arg<string>.Is.Equal("d3"),
+                Arg<DateTime>.Is.Equal(secondMoveMade)));
+
+            var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
+            // The board does not change between moves because it's a fake. Both moves are made by white.
             manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4);
             manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3);
 
-            var historyArgs = fakeHistoryRepo.GetArgumentsForCallsMadeOn(a => a.Add(Arg<HistoryEntry>.Is.Anything));
             fakeRepo.VerifyAllExpectations();
-            var newHistoryEntryE4 = historyArgs[0][0] as HistoryEntry;
-            var newHistoryEntryE5 = historyArgs[1][0] as HistoryEntry;
-
-            Assert.AreEqual("e4", newHistoryEntryE4.Move, "Expected move to be e4");
-            Assert.AreEqual(FakeGame.DefaultGameId, newHistoryEntryE4.GameId, "Expected history entry to refer to this game, " + FakeGame.DefaultGameId);
-            Assert.AreEqual(1, newHistoryEntryE4.MoveNumber, "Expected this to be move 1");
-
-            Assert.AreEqual("d3", newHistoryEntryE5.Move, "Expected move to be e5");
-            Assert.AreEqual(FakeGame.DefaultGameId, newHistoryEntryE5.GameId, "Expected history entry to refer to this game, " + FakeGame.DefaultGameId);
-            Assert.AreEqual(2, newHistoryEntryE5.MoveNumber, "Expected this to be move 2");
         }
     }
 }
