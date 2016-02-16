@@ -306,8 +306,6 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = errorMessage, status = "FAIL" });
             }
 
-            m_gameManager.UpdateMessage(id);
-
             game = m_gameManager.FetchGame(id);
             string messageForUser = game.Status;
             string lastMove = game.LastMove;

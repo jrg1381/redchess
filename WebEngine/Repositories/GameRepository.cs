@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
-using System.Diagnostics;
 using System.Linq;
 using LinqToQuerystring;
 using Microsoft.Azure;
@@ -41,6 +40,18 @@ namespace RedChess.WebEngine.Repositories
 
                 IEnumerable<object> queriedResult = (IEnumerable<object>) game.LinqToQuerystring(typeof(GameDto), queryString);
                 return queriedResult.ToArray();
+            }
+        }
+
+        public void RecordMove(int gameId, string fen, string lastMove, DateTime moveReceivedAt)
+        {
+            using (var context = new ChessContext())
+            {
+                context.Database.ExecuteSqlCommand("EXEC dbo.RecordMove @p0, @p1, @p2, @p3", 
+                    gameId, 
+                    fen, 
+                    lastMove,
+                    moveReceivedAt);
             }
         }
 

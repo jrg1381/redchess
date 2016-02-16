@@ -281,69 +281,57 @@ namespace RedChess.WebEngine.Repositories
                 move =new ChessMove(start, end);
             }
 
+            // We post the move with the old fen and movenumber
             PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
 
-            gameDto.LastMove = m_board.LastMove();
-            gameDto.Fen = m_board.ToFen();
-
-            m_gameRepository.AddOrUpdate(gameDto);
-
-            m_historyRepository.Add(new HistoryEntry(gameDto));
-
-            var clock = m_clockRepository.Clock(gameId);
-
-            if (clock != null)
-            {
-                var turn = gameDto.Fen.Split(new[] {' '}, 2)[1][0];
-
-                if (turn == 'b')
-                {
-                    clock.LastActionBlack = now;
-                    clock.TimeElapsedWhiteMs += (int) (now - clock.LastActionWhite).TotalMilliseconds;
-                }
-                if (turn == 'w')
-                {
-                    clock.LastActionWhite = now;
-                    clock.TimeElapsedBlackMs += (int) (now - clock.LastActionBlack).TotalMilliseconds;
-                }
-
-                m_clockRepository.SaveClock(clock);
-            }
-
+            var fen = m_board.ToFen();
+            m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now);
+            UpdateMessage(gameId, fen, gameDto.Status);
             return true;
         }
 
-        public void UpdateMessage(int gameId)
+        private void UpdateMessage(int gameId, string fen, string currentStatus)
         {
-            var gameDto = m_gameRepository.FindById(gameId);
-            m_board.FromFen(gameDto.Fen);
+            // Not efficient to fire another request at the database but it only happens for game ending and check
+            // (and the move after check), so for most moves it doesn't matter. Ultimate aim is to do it with the
+            // minimum number of requests.
+            m_board.FromFen(fen);
 
             if (m_board.KingInCheck())
             {
+                var gameDto = m_gameRepository.FindById(gameId);
                 gameDto.Status = "Check";
                 if (m_board.IsCheckmate(true))
                 {
                     var winner = m_board.CurrentTurn == PieceColor.White ? gameDto.UserIdBlack : gameDto.UserIdWhite;
                     EndGameWithMessage(gameDto, "Checkmate", winner);
-                    return;
                 }
+                else
+                {
+                    m_gameRepository.AddOrUpdate(gameDto);
+                }
+                return;
             }
             else if (m_board.IsStalemate())
             {
+                var gameDto = m_gameRepository.FindById(gameId);
                 EndGameWithMessage(gameDto, "Stalemate");
                 return;
             }
             else if (m_board.IsDraw())
             {
+                var gameDto = m_gameRepository.FindById(gameId);
                 EndGameWithMessage(gameDto, "Insufficient material - draw");
                 return;
             }
             else
             {
+                if (currentStatus == "") // No point setting the status if there's no change
+                    return;
+                var gameDto = m_gameRepository.FindById(gameId);
                 gameDto.Status = "";
+                m_gameRepository.AddOrUpdate(gameDto);
             }
-
-            m_gameRepository.AddOrUpdate(gameDto);
         }
 
         public void EndGameWithMessage(int gameId, string message, int? userIdWinner = null)

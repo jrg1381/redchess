@@ -22,7 +22,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void TimeGameOut(int id, string message, string currentUser);
         void EndGameWithMessage(int id, string message, int? userIdWinner = null);
         bool Move(int id, Location startLocation, Location endLocation, string promoteTo);
-        void UpdateMessage(int id);
         string PgnText(int id);
         object FindWhere(string queryString);
         IEnumerable<UserProfile> AllUserProfiles();
