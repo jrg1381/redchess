@@ -4,6 +4,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 CREATE PROCEDURE [dbo].[RecordMove]
     @gameId INT ,
     @fen NVARCHAR(MAX) ,
@@ -15,8 +16,8 @@ AS
         BEGIN TRANSACTION;
         UPDATE  dbo.Boards
         SET     Fen = @fen ,
-                LastMove = @lastMove,
-				MoveNumber = MoveNumber + 1
+                LastMove = @lastMove ,
+                MoveNumber = MoveNumber + 1
         WHERE   GameId = @gameId;
 
         INSERT  INTO dbo.HistoryEntries
@@ -38,20 +39,24 @@ AS
         IF CHARINDEX('w', @fen) > 0 -- It is white's turn now
             UPDATE  dbo.Clocks
             SET     LastActionWhite = @moveReceived ,
-                    TimeElapsedBlackMs = DATEDIFF(ms, LastActionBlack,
-                                                  @moveReceived)
+                    TimeElapsedBlackMs = TimeElapsedBlackMs + DATEDIFF(ms,
+                                                              LastActionBlack,
+                                                              @moveReceived)
             WHERE   GameId = @gameId; 
         ELSE
             UPDATE  dbo.Clocks
             SET     LastActionBlack = @moveReceived ,
-                    TimeElapsedWhiteMs = DATEDIFF(ms, LastActionWhite,
-                                                  @moveReceived)
+                    TimeElapsedWhiteMs = TimeElapsedWhiteMs + DATEDIFF(ms,
+                                                              LastActionWhite,
+                                                              @moveReceived)
             WHERE   GameId = @gameId;
 
         COMMIT;
     END;
 
+
 GO
+
 
 GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
 GO
