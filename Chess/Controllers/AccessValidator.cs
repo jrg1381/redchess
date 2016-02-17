@@ -16,9 +16,9 @@ namespace Chess.Controllers
         public bool MayAccess(int gameId)
         {
             var game = m_GameManager.FetchGame(gameId);
-            var userName = m_IdentityProvider.CurrentUser;
+            var userId = m_IdentityProvider.CurrentUserId;
 
-            return (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
+            return (game.UserProfileBlack.UserId == userId || game.UserProfileWhite.UserId == userId);
         }
     }
 }

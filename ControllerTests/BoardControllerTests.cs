@@ -294,20 +294,20 @@ namespace RedChess.ControllerTests
             fakeRepo.VerifyAllExpectations();
         }
 
-        [TestCase("james", true)]
-        [TestCase("clive", true)]
-        [TestCase("jason", false)]
-        public void MayManipulateBoardTest(string userName, bool expectedResult)
+        [TestCase("james", 23, true)]
+        [TestCase("clive", 27, true)]
+        [TestCase("jason", 3, false)]
+        public void MayManipulateBoardTest(string userName, int userId, bool expectedResult)
         {
             var fakeRepo = FakeGame.StubRepoForDefaultFakeGame();
             var manager = new GameManager(fakeRepo);
-            var accessValidator = new AccessValidator(manager, FakeGame.StubIdentityProviderFor(userName));
+            var accessValidator = new AccessValidator(manager, FakeGame.StubIdentityProviderFor(userName, userId));
             bool ok = accessValidator.MayAccess(FakeGame.DefaultGameId);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
         }
 
-        private BoardController GetControllerForFakeGameAsUser(string userName, out IGameRepository repository)
+        private BoardController GetControllerForFakeGameAsUser(string userName, int userId, out IGameRepository repository)
         {
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
@@ -316,7 +316,7 @@ namespace RedChess.ControllerTests
             repository = FakeGame.StubRepoForDefaultFakeGame();
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, null, null, null, fakeStatsRepo);
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor(userName));
+            return new BoardController(manager, FakeGame.StubIdentityProviderFor(userName, userId));
         }
 
         private ClockController GetClockControllerForFakeGameAsUser(ICurrentUser identity, out IGameRepository repository)
@@ -431,13 +431,13 @@ namespace RedChess.ControllerTests
             Assert.AreEqual("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", actualGameAdded.Fen, "Starting FEN is wrong");
         }
 
-        [TestCase("james", true)]
-        [TestCase("clive", true)]
-        [TestCase("jason", false)]
-        public void CannotStartClockOnOtherUsersGames(string userName, bool allowed)
+        [TestCase("james", 23, true)]
+        [TestCase("clive", 27, true)]
+        [TestCase("jason", 3, false)]
+        public void CannotStartClockOnOtherUsersGames(string userName, int userId, bool allowed)
         {
             IGameRepository fakeRepo;
-            var fakeIdentity = FakeGame.StubIdentityProviderFor(userName);
+            var fakeIdentity = FakeGame.StubIdentityProviderFor(userName, userId);
             var controller = GetClockControllerForFakeGameAsUser(fakeIdentity, out fakeRepo);
             var manager = new GameManager(fakeRepo);
             var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "PlayerReady");
@@ -454,15 +454,15 @@ namespace RedChess.ControllerTests
             fakeRepo.VerifyAllExpectations();
         }
 
-        [TestCase("james", true)]
-        [TestCase("clive", true)]
-        [TestCase("jason", false)]
-        public void CannotDeleteOtherUsersGames(string userName, bool allowed)
+        [TestCase("james", 23, true)]
+        [TestCase("clive", 27, true)]
+        [TestCase("jason", 3, false)]
+        public void CannotDeleteOtherUsersGames(string userName, int userId, bool allowed)
         {
             IGameRepository fakeRepo;
-            var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var controller = GetControllerForFakeGameAsUser(userName, userId, out fakeRepo);
             var manager = new GameManager(fakeRepo);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, FakeGame.StubIdentityProviderFor(userName), "DeleteConfirmed");
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, FakeGame.StubIdentityProviderFor(userName, userId), "DeleteConfirmed");
 
             if (allowed)
             {
@@ -509,13 +509,13 @@ namespace RedChess.ControllerTests
             return context.Result == null; // The result has not been set by the filter, so it passes
         }
 
-        [TestCase("james", false)]
-        [TestCase("clive", true)]
-        [TestCase("jason", false)]
-        public void CannotPlayOnOtherUsersGames(string userName, bool allowed)
+        [TestCase("james", 23, false)]
+        [TestCase("clive", 27, true)]
+        [TestCase("jason", 3, false)]
+        public void CannotPlayOnOtherUsersGames(string userName, int userId, bool allowed)
         {
             IGameRepository fakeRepo;
-            var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var controller = GetControllerForFakeGameAsUser(userName, userId, out fakeRepo);
             var g = fakeRepo.FindById(FakeGame.DefaultGameId);
 
             if (allowed)
@@ -530,19 +530,19 @@ namespace RedChess.ControllerTests
             controller.PlayMove(FakeGame.DefaultGameId, "E2", "E4", "");
             fakeRepo.VerifyAllExpectations();
         }
-
-        [TestCase("james", true)]
-        [TestCase("clive", true)]
-        [TestCase("jason", false)]
-        public void CannotResignOtherUsersGames(string userName, bool allowed)
+        
+        [TestCase("james", 23, true)]
+        [TestCase("clive", 27, true)]
+        [TestCase("jason", 3, false)]
+        public void CannotResignOtherUsersGames(string userName, int userId, bool allowed)
         {
             IGameRepository fakeRepo;
-            var controller = GetControllerForFakeGameAsUser(userName, out fakeRepo);
+            var controller = GetControllerForFakeGameAsUser(userName, userId, out fakeRepo);
             var fakeStatsRepo = MockRepository.GenerateStub<IStatsRepository>();
 
             var manager = new GameManager(fakeRepo,null, null, null, null, null, fakeStatsRepo);
 
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, FakeGame.StubIdentityProviderFor(userName), "Resign");
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, FakeGame.StubIdentityProviderFor(userName, userId), "Resign");
             var g = fakeRepo.FindById(FakeGame.DefaultGameId);
 
             if (allowed)
@@ -651,7 +651,7 @@ namespace RedChess.ControllerTests
         public void MoveDoesNotParseIsError(string start, string end)
         {
             IGameRepository repo;
-            var controller = GetControllerForFakeGameAsUser("clive", out repo);
+            var controller = GetControllerForFakeGameAsUser("clive", 27, out repo);
             var result = controller.PlayMove(FakeGame.DefaultGameId, start, end, "") as JsonResult;
             var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
             Assert.AreEqual("FAIL", status, $"Expected FAIL status when playing bogus moves {start}->{end}");
@@ -747,7 +747,7 @@ namespace RedChess.ControllerTests
         private JsonResult PlayADraw(bool drawAccepted)
         {
             IGameRepository repo;
-            var controller = GetControllerForFakeGameAsUser("james", out repo);
+            var controller = GetControllerForFakeGameAsUser("james", 23, out repo);
             controller.OfferDraw(FakeGame.DefaultGameId);
             return controller.AgreeDraw(FakeGame.DefaultGameId, drawAccepted) as JsonResult;
         }
