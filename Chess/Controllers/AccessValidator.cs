@@ -27,7 +27,7 @@ namespace Chess.Controllers
             bool allowed;
             var gameIdUserIdTuple = new Tuple<int, int>(gameId, userId);
 
-            if (m_Cache.Get(gameIdUserIdTuple, out allowed))
+            if (m_Cache.TryGet(gameIdUserIdTuple, out allowed))
             {
                 return allowed;
             }

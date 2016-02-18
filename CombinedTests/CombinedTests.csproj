@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="FilenameSource.cs" />
     <Compile Include="GameSource.cs" />
+    <Compile Include="MruCacheTests.cs" />
     <Compile Include="ParserAndMoveGeneratorAgree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

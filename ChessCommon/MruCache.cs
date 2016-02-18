@@ -18,14 +18,14 @@ namespace RedChess.ChessCommon
 
         public void Set(TK key, TV value)
         {
-            m_data[key] = value;
             if (m_orderedKeys[m_index] != null)
-                m_data.Remove(key);
+                m_data.Remove(m_orderedKeys[m_index]);
+            m_data[key] = value;
             m_orderedKeys[m_index] = key;
             m_index = (m_index + 1) % m_size;
         }
 
-        public bool Get(TK key, out TV value)
+        public bool TryGet(TK key, out TV value)
         {
             return m_data.TryGetValue(key, out value);
         }
