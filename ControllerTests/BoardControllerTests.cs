@@ -632,7 +632,7 @@ namespace RedChess.ControllerTests
 
             GameDto fakeGame = new FakeGame().WithStatus(canaryValue);
             var manager = MockRepository.GenerateStub<IGameManager>();
-            manager.Expect(x => x.IsUsersTurn(FakeGame.DefaultGameId, "clive")).Return(true);
+            manager.Expect(x => x.IsUsersTurn(new GameBinding(fakeGame, manager), "clive")).Return(true);
             manager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
             manager.Expect(x => x.Move(FakeGame.DefaultGameId, Location.A1, Location.A2, "")).Return(false);
             var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId));

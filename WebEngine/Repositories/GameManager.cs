@@ -246,12 +246,11 @@ namespace RedChess.WebEngine.Repositories
             return false;
         }
 
-        public bool IsUsersTurn(int gameId, string userName)
+        public bool IsUsersTurn(IGameBinding game, string userName)
         {
-            var gameDto = m_gameRepository.FindById(gameId);
-            m_board.FromFen(gameDto.Fen);
-            return (m_board.CurrentTurn == PieceColor.Black && userName == gameDto.UserProfileBlack.UserName) ||
-                   (m_board.CurrentTurn == PieceColor.White && userName == gameDto.UserProfileWhite.UserName);
+            m_board.FromFen(game.Fen);
+            return (m_board.CurrentTurn == PieceColor.Black && userName == game.UserProfileBlack.UserName) ||
+                   (m_board.CurrentTurn == PieceColor.White && userName == game.UserProfileWhite.UserName);
         }
 
         private string LongAlgebraicMove(ChessMove move)
