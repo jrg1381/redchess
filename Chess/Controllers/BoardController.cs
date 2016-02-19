@@ -166,9 +166,9 @@ namespace Chess.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool IsCurrentUsersTurn(int gameId)
+        private bool IsCurrentUsersTurn(IGameBinding game)
         {
-            return m_gameManager.IsUsersTurn(gameId, m_identityProvider.CurrentUser); 
+            return m_gameManager.IsUsersTurn(game, m_identityProvider.CurrentUser); 
         }
 
         [HttpPost]
@@ -279,7 +279,7 @@ namespace Chess.Controllers
             }
 
             // This is also covered by client side validation
-            if (!IsCurrentUsersTurn(id))
+            if (!IsCurrentUsersTurn(game))
             {
                 return Json(new { fen = game.Fen, message = "It's not your turn.", status = "AUTH" });
             }

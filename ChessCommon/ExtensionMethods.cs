@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using RedChess.ChessCommon.Enumerations;
 
 namespace RedChess.ChessCommon
@@ -15,6 +16,26 @@ namespace RedChess.ChessCommon
 
             // Test is for a specific color of piece
             return pieceType == targetPieceType;
+        }
+
+        public static string FriendlyName(this GameStatus gameStatus)
+        {
+            switch (gameStatus)
+            {
+                case GameStatus.None:
+                    return String.Empty;
+                case GameStatus.Check:
+                    return "Check";
+                case GameStatus.CheckmateWhiteWins:
+                case GameStatus.CheckmateBlackWins:
+                    return "Checkmate";
+                case GameStatus.Stalemate:
+                    return "Stalemate";
+                case GameStatus.DrawInsufficientMaterial:
+                    return "Draw - insufficient material";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gameStatus));
+            }
         }
     }
 }

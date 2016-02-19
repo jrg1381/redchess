@@ -632,7 +632,7 @@ namespace RedChess.ControllerTests
 
             GameDto fakeGame = new FakeGame().WithStatus(canaryValue);
             var manager = MockRepository.GenerateStub<IGameManager>();
-            manager.Expect(x => x.IsUsersTurn(FakeGame.DefaultGameId, "clive")).Return(true);
+            manager.Expect(x => x.IsUsersTurn(Arg<IGameBinding>.Is.Anything, Arg<string>.Is.Equal("clive"))).Return(true);
             manager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
             manager.Expect(x => x.Move(FakeGame.DefaultGameId, Location.A1, Location.A2, "")).Return(false);
             var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId));
@@ -670,7 +670,8 @@ namespace RedChess.ControllerTests
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.RecordMove(Arg<int>.Is.Anything,
                 Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything, 
-                Arg<DateTime>.Is.Anything));
+                Arg<DateTime>.Is.Anything, 
+                Arg<GameStatus>.Is.Anything));
 
             fakeRepo.VerifyAllExpectations();
 
@@ -790,12 +791,14 @@ namespace RedChess.ControllerTests
             fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0"),
                 Arg<string>.Is.Equal("e4"),
-                Arg<DateTime>.Is.Equal(firstMoveMade)));
+                Arg<DateTime>.Is.Equal(firstMoveMade), 
+                Arg<GameStatus>.Is.Anything));
 
             fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0"),
                 Arg<string>.Is.Equal("d3"),
-                Arg<DateTime>.Is.Equal(secondMoveMade)));
+                Arg<DateTime>.Is.Equal(secondMoveMade), 
+                Arg<GameStatus>.Is.Anything));
 
             var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
             // The board does not change between moves because it's a fake. Both moves are made by white.
