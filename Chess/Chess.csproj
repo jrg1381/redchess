@@ -296,6 +296,7 @@
     <Content Include="Images\fast-rewind.png" />
     <Content Include="Images\flip.png" />
     <Content Include="Images\lock.png" />
+    <Content Include="Images\spinny.gif" />
     <Content Include="Images\wB.png" />
     <Content Include="Images\wK.png" />
     <Content Include="Images\wN.png" />

@@ -37,7 +37,9 @@
     function updateGameLists() {
         // My current games
         $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack,userprofilewhite,clock&$orderby=creationdate desc")
-            .always(function() {})
+            .always(function() {
+                $("#my-current-games-spinny").remove();
+            })
             .done(function(data) {
                 data.forEach(function(element, index) {
                     element.description = element.userprofilewhite.userName + ' vs ' + element.userprofileblack.userName;
@@ -66,7 +68,9 @@
 
         // My finished games less than a month old
         $.getJSON("/api/Boards?$filter=(userProfileWhite/userId eq @currentUserId or userProfileBlack/userId eq @currentUserId) and gameOver eq true and completionDate gt datetime'@timeLimitForOldGames'&$select=fen,gameid,status,creationdate,userprofileblack,userprofilewhite,userprofilewinner,clock&$orderby=creationDate desc")
-            .always(function() {})
+            .always(function() {
+                $("#my-finished-games-spinny").remove();
+            })
             .done(function(data) {
                 data.forEach(function(element, index) {
                     element.description = gameDescription(element.userprofilewhite, element.userprofileblack, element.userprofilewinner);
@@ -82,7 +86,9 @@
 
         // Other live games
         $.getJSON("/api/Boards?$filter=userProfileWhite/userId ne @currentUserId and userProfileBlack/userId ne @currentUserId and gameOver eq false&$select=fen,gameid,lastmove,status,creationdate,userprofileblack,userprofilewhite,clock&$orderby=creationdate desc")
-            .always(function() {})
+            .always(function() {
+                $("#other-games-spinny").remove();
+            })
             .done(function(data) {
                 data.forEach(function(element, index) {
                     element.description = element.userprofilewhite.userName + ' vs ' + element.userprofileblack.userName;
@@ -185,7 +191,7 @@
 @if (Request.IsAuthenticated)
 {
     <div class="row" data-bind="if: errors().length == 0">
-        <h3>My current games</h3>
+        <h3>My current games <img src="/Images/spinny.gif" id="my-current-games-spinny" /></h3>
         <div class="col-md-10">
             <table class="table" id="my-current-games-table">
                 <tbody data-bind="foreach: currentGames">
@@ -233,7 +239,7 @@
     </div>
 
     <div class="row" data-bind="if: errors().length == 0">
-        <h3>My finished games</h3>
+        <h3>My finished games <img src="/Images/spinny.gif" id="my-finished-games-spinny" /></h3>
         <div class="col-md-10">
             <table class="table" id="my-finished-games-table">
                 <tbody data-bind="foreach: finishedGames">
@@ -269,7 +275,7 @@
 }
 
 <div class="row" data-bind="if: errors().length == 0">
-    <h3>Other games</h3>
+    <h3>Other games <img src="/Images/spinny.gif" id="other-games-spinny" /></h3>
     <div class="col-md-10">
         <table class="table" id="other-games-table">
             <tbody data-bind="foreach: otherGames">
