@@ -69,7 +69,7 @@
       <HintPath>..\packages\WindowsAzure.Storage.6.1.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-	<Reference Include="Redchess.LinqToQueryString">
+    <Reference Include="Redchess.LinqToQueryString">
       <HintPath>..\packages\Redchess.LinqToQueryString\RedChess.LinqToQueryString.dll</HintPath>
       <Private>True</Private>
     </Reference>

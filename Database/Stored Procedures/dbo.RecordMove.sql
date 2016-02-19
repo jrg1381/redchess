@@ -5,11 +5,14 @@ SET ANSI_NULLS ON
 GO
 
 
+
 CREATE PROCEDURE [dbo].[RecordMove]
     @gameId INT ,
     @fen NVARCHAR(MAX) ,
     @lastMove NVARCHAR(10) ,
-    @moveReceived DATETIME
+    @moveReceived DATETIME,
+	@status NVARCHAR(32),
+	@gameOver BIT
 AS
     BEGIN
         SET XACT_ABORT ON;
@@ -17,7 +20,9 @@ AS
         UPDATE  dbo.Boards
         SET     Fen = @fen ,
                 LastMove = @lastMove ,
-                MoveNumber = MoveNumber + 1
+                MoveNumber = MoveNumber + 1,
+				Status = @status,
+				GameOver = gameOver
         WHERE   GameId = @gameId;
 
         INSERT  INTO dbo.HistoryEntries
@@ -54,8 +59,8 @@ AS
         COMMIT;
     END;
 
-
 GO
+
 
 
 GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
