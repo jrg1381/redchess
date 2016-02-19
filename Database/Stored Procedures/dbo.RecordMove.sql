@@ -24,7 +24,7 @@ AS
                 MoveNumber = MoveNumber + 1,
 				Status = @status,
 				CompletionDate = case(@gameOver) when 1 then getutcdate() else CompletionDate end,
-				GameOver = gameOver
+				GameOver = @gameOver
         WHERE   GameId = @gameId;
 
         INSERT  INTO dbo.HistoryEntries
