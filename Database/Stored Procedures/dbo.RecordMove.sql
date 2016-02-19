@@ -17,11 +17,13 @@ AS
     BEGIN
         SET XACT_ABORT ON;
         BEGIN TRANSACTION;
+
         UPDATE  dbo.Boards
         SET     Fen = @fen ,
                 LastMove = @lastMove ,
                 MoveNumber = MoveNumber + 1,
 				Status = @status,
+				CompletionDate = case(@gameOver) when 1 then getutcdate() else CompletionDate end,
 				GameOver = gameOver
         WHERE   GameId = @gameId;
 
@@ -60,6 +62,7 @@ AS
     END;
 
 GO
+
 
 
 
