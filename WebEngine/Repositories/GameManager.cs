@@ -277,7 +277,7 @@ namespace RedChess.WebEngine.Repositories
             }
             else
             {
-                move =new ChessMove(start, end);
+                move = new ChessMove(start, end);
             }
 
             // We post the move with the old fen and movenumber
@@ -286,6 +286,10 @@ namespace RedChess.WebEngine.Repositories
             var fen = m_board.ToFen();
             var status = StatusMessageForCurrentBoard();
             m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now, status);
+            if (status > GameStatus.Check)
+            {
+                PostGameEndedMessage(gameId);
+            }
 
             return true;
         }
