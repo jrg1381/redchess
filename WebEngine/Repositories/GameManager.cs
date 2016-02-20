@@ -248,9 +248,10 @@ namespace RedChess.WebEngine.Repositories
 
         public bool IsUsersTurn(IGameBinding game, string userName)
         {
-            m_board.FromFen(game.Fen);
-            return (m_board.CurrentTurn == PieceColor.Black && userName == game.UserProfileBlack.UserName) ||
-                   (m_board.CurrentTurn == PieceColor.White && userName == game.UserProfileWhite.UserName);
+            var whiteToPlay = game.Fen.Contains("w");
+
+            return (!whiteToPlay && userName == game.UserProfileBlack.UserName) ||
+                   (whiteToPlay && userName == game.UserProfileWhite.UserName);
         }
 
         private string LongAlgebraicMove(ChessMove move)
