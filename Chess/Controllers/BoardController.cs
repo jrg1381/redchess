@@ -5,6 +5,7 @@ using Chess.Filters;
 using Microsoft.AspNet.SignalR;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.EngineFactory;
+using RedChess.WebEngine;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -14,16 +15,18 @@ namespace Chess.Controllers
     {
         private readonly IGameManager m_gameManager;
         private readonly ICurrentUser m_identityProvider;
+        private readonly IDateTimeProvider m_dateTimeProvider;
 
-        public BoardController() : this(null, null)
+        public BoardController() : this(null, null, null)
         {
             
         }
 
-        public BoardController(IGameManager gameManager = null, ICurrentUser identityProvider = null)
+        public BoardController(IGameManager gameManager = null, ICurrentUser identityProvider = null, IDateTimeProvider dateTimeProvider = null)
         {
             m_gameManager = gameManager ?? new GameManager();
             m_identityProvider = identityProvider ?? new CurrentUserProvider();
+            m_dateTimeProvider = dateTimeProvider ?? new DefaultDateTimeProvider();
         }
 
         // GET: /Board/
@@ -266,6 +269,9 @@ namespace Chess.Controllers
         [VerifyIsParticipant]
         public ActionResult PlayMove(int id, string start, string end, string promote)
         {
+            // Be generous to the user and take the time as soon as possible, so they lose the least clock time
+            var now = m_dateTimeProvider.UtcNow;
+
             var game = m_gameManager.FetchGame(id);
 
             if (game == null)
@@ -292,7 +298,7 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = "Invalid move", status = "FAIL" });
             }
 
-            bool success = m_gameManager.Move(id, startLocation, endLocation, promote);
+            bool success = m_gameManager.Move(id, startLocation, endLocation, promote, now);
 
             if (!success)
             {

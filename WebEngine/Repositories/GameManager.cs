@@ -259,11 +259,17 @@ namespace RedChess.WebEngine.Repositories
             return $"{move.Start}{move.End}{move.Promotion ?? ""}".ToLower();
         }
 
-        public bool Move(int gameId, Location start, Location end, string promote = null)
+        /// <summary>
+        /// Move a piece from start to end with optional promotion. Returns true if the move was successful (valid)
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="promote">A string beginning with one of "Q", "R", "B", "N"</param>
+        /// <param name="moveReceivedAt"></param>
+        /// <returns></returns>
+        public bool Move(int gameId, Location start, Location end, string promote, DateTime moveReceivedAt)
         {
-            // Be generous to the user and take the time as soon as possible, so they lose the least clock time
-            var now = m_dateTimeProvider.UtcNow;
-
             ChessMove move;
             var gameDto = m_gameRepository.FindById(gameId);
             m_board.FromFen(gameDto.Fen);
@@ -286,7 +292,7 @@ namespace RedChess.WebEngine.Repositories
 
             var fen = m_board.ToFen();
             var status = StatusMessageForCurrentBoard();
-            m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), now, status);
+            m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
             if (status > GameStatus.Check)
             {
                 PostGameEndedMessage(gameId);
