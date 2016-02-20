@@ -7,7 +7,7 @@ using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace RedChess.WebEngine
 {
-    class DefaultDateTimeProvider : IDateTimeProvider
+    public class DefaultDateTimeProvider : IDateTimeProvider
     {
         public DateTime UtcNow => DateTime.UtcNow;
     }

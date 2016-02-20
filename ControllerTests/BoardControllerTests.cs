@@ -634,7 +634,15 @@ namespace RedChess.ControllerTests
             var manager = MockRepository.GenerateStub<IGameManager>();
             manager.Expect(x => x.IsUsersTurn(Arg<IGameBinding>.Is.Anything, Arg<string>.Is.Equal("clive"))).Return(true);
             manager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
-            manager.Expect(x => x.Move(FakeGame.DefaultGameId, Location.A1, Location.A2, "")).Return(false);
+
+            manager.Expect(x => x.Move(
+                Arg<int>.Is.Equal(FakeGame.DefaultGameId),
+                Arg<Location>.Is.Equal(Location.A1),
+                Arg<Location>.Is.Equal(Location.A2),
+                Arg<string>.Is.Anything,
+                Arg<DateTime>.Is.Anything))
+                .Return(false);
+
             var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId));
             var result = controller.PlayMove(FakeGame.DefaultGameId, "A1", "A2", "") as JsonResult;
             var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
@@ -802,8 +810,8 @@ namespace RedChess.ControllerTests
 
             var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
             // The board does not change between moves because it's a fake. Both moves are made by white.
-            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4);
-            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3);
+            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", DateTime.UtcNow);
+            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", DateTime.UtcNow);
 
             fakeRepo.VerifyAllExpectations();
         }

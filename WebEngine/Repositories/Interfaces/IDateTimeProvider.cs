@@ -2,7 +2,7 @@ using System;
 
 namespace RedChess.WebEngine.Repositories.Interfaces
 {
-    internal interface IDateTimeProvider
+    public interface IDateTimeProvider
     {
         DateTime UtcNow { get; }
     }
