@@ -810,8 +810,8 @@ namespace RedChess.ControllerTests
 
             var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
             // The board does not change between moves because it's a fake. Both moves are made by white.
-            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", DateTime.UtcNow);
-            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", DateTime.UtcNow);
+            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", firstMoveMade);
+            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", secondMoveMade);
 
             fakeRepo.VerifyAllExpectations();
         }
