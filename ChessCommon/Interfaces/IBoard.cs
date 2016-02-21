@@ -18,5 +18,6 @@ namespace RedChess.ChessCommon.Interfaces
         IEnumerable<Location> FindPieces(PieceType pieceType);
         bool IsAwaitingPromotionDecision();
         string LastMove();
+        GameStatus StatusForBoard();
     }
 }
