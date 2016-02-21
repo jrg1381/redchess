@@ -18,6 +18,21 @@ namespace RedChess.ChessCommon
             return pieceType == targetPieceType;
         }
 
+        /// <summary>
+        /// Returns true if gameStatus refers to a game over state, false otherwise
+        /// </summary>
+        /// <param name="gameStatus"></param>
+        /// <returns></returns>
+        public static bool GameOver(this GameStatus gameStatus)
+        {
+            return gameStatus > GameStatus.Check;
+        }
+
+        /// <summary>
+        /// Turns the enum into a string suitable for UI display
+        /// </summary>
+        /// <param name="gameStatus"></param>
+        /// <returns></returns>
         public static string FriendlyName(this GameStatus gameStatus)
         {
             switch (gameStatus)

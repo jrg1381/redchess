@@ -293,7 +293,7 @@ namespace RedChess.WebEngine.Repositories
             var fen = m_board.ToFen();
             var status = m_board.StatusForBoard();
             m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
-            if (status > GameStatus.Check)
+            if (status.GameOver())
             {
                 PostGameEndedMessage(gameId);
             }

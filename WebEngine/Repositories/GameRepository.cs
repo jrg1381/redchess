@@ -55,7 +55,7 @@ namespace RedChess.WebEngine.Repositories
                     lastMove,
                     moveReceivedAt,
                     status.FriendlyName(),
-                    status > GameStatus.Check); // Game over
+                    status.GameOver()); // Game over
             }
         }
 
