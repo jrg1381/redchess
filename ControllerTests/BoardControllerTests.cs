@@ -23,8 +23,6 @@ namespace RedChess.ControllerTests
     [TestFixture]
     class BoardControllerTests
     {
-        private int m_moveNumber = 0;
-
         private GameDto GetFakeGamePromotionImminent(int id)
         {
             return new FakeGame().WithId(id).WithFen("8/P7/8/8/8/8/8/K6k w - - 0");
@@ -782,11 +780,7 @@ namespace RedChess.ControllerTests
 
             /* Move number increment is implemented via a stored procedure */
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).WhenCalled(mi =>
-            {
-                GameDto retval = new FakeGame().WithMoveNumber(m_moveNumber);
-                mi.ReturnValue = retval;
-            });
+            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(new FakeGame().WithMoveNumber(0));
 
             var stubDateTimeProvider = MockRepository.GenerateStub<IDateTimeProvider>();
             stubDateTimeProvider.Expect(x => x.UtcNow).Do(new Func<DateTime>(() =>

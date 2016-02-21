@@ -291,7 +291,7 @@ namespace RedChess.WebEngine.Repositories
             PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
 
             var fen = m_board.ToFen();
-            var status = StatusMessageForCurrentBoard();
+            var status = m_board.StatusForBoard();
             m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
             if (status > GameStatus.Check)
             {
@@ -299,29 +299,6 @@ namespace RedChess.WebEngine.Repositories
             }
 
             return true;
-        }
-
-        private GameStatus StatusMessageForCurrentBoard()
-        {
-            if (m_board.KingInCheck())
-            {
-                if (m_board.IsCheckmate(true))
-                {
-                    return m_board.CurrentTurn == PieceColor.White ? GameStatus.CheckmateBlackWins : GameStatus.CheckmateWhiteWins;
-                }
-
-                return GameStatus.Check;
-            }
-            else if (m_board.IsStalemate())
-            {
-                return GameStatus.Stalemate;
-            }
-            else if (m_board.IsDraw())
-            {
-                return GameStatus.DrawInsufficientMaterial;
-            }
-
-            return GameStatus.None;
         }
 
         public void EndGameWithMessage(int gameId, string message, int? userIdWinner = null)

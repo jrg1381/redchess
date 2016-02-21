@@ -205,6 +205,29 @@ namespace Redchess.Engine
             return SimpleBoard.IsDraw();
         }
 
+        public GameStatus StatusForBoard()
+        {
+            if (KingInCheck())
+            {
+                if (IsCheckmate(true))
+                {
+                    return CurrentTurn == PieceColor.White ? GameStatus.CheckmateBlackWins : GameStatus.CheckmateWhiteWins;
+                }
+
+                return GameStatus.Check;
+            }
+            else if (IsStalemate())
+            {
+                return GameStatus.Stalemate;
+            }
+            else if (IsDraw())
+            {
+                return GameStatus.DrawInsufficientMaterial;
+            }
+
+            return GameStatus.None;
+        }
+
         public void PromotePiece(string promotionTarget)
         {
             // Crappy, but we want to allow K (for Knight, when the UI asks for it) but not King.
