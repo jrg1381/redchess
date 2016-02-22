@@ -267,7 +267,7 @@ namespace RedChess.WebEngine.Repositories
         /// <param name="end"></param>
         /// <param name="promote">A string beginning with one of "Q", "R", "B", "N"</param>
         /// <param name="moveReceivedAt"></param>
-        /// <param name="newBoard"></param>
+        /// <param name="newBoard">Board after the move is made</param>
         /// <returns></returns>
         public bool Move(int gameId, Location start, Location end, string promote, DateTime moveReceivedAt, out GameDto newBoard)
         {
