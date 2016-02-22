@@ -796,16 +796,22 @@ namespace RedChess.ControllerTests
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0"),
                 Arg<string>.Is.Equal("e4"),
                 Arg<DateTime>.Is.Equal(firstMoveMade), 
-                Arg<GameStatus>.Is.Anything));
+                Arg<GameStatus>.Is.Anything))
+                .Return(
+                new FakeGame().WithFen("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0")
+                );
 
             fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0"),
                 Arg<string>.Is.Equal("d3"),
                 Arg<DateTime>.Is.Equal(secondMoveMade), 
-                Arg<GameStatus>.Is.Anything));
+                Arg<GameStatus>.Is.Anything))
+                .Return(
+                new FakeGame().WithFen("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0")
+                );
 
             var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
-            var fakeGame = 
+
             // The board does not change between moves because it's a fake. Both moves are made by white.
             manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", firstMoveMade, out withMoveNumber);
             manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", secondMoveMade, out withMoveNumber);
