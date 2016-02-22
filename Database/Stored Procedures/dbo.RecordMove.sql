@@ -6,6 +6,7 @@ GO
 
 
 
+
 CREATE PROCEDURE [dbo].[RecordMove]
     @gameId INT ,
     @fen NVARCHAR(MAX) ,
@@ -23,7 +24,7 @@ AS
                 LastMove = @lastMove ,
                 MoveNumber = MoveNumber + 1,
 				Status = @status,
-				CompletionDate = case(@gameOver) when 1 then getutcdate() else CompletionDate end,
+				CompletionDate = CASE(@gameOver) WHEN 1 THEN GETUTCDATE() ELSE CompletionDate END,
 				GameOver = @gameOver
         WHERE   GameId = @gameId;
 
@@ -59,9 +60,13 @@ AS
             WHERE   GameId = @gameId;
 
         COMMIT;
+
+		SELECT TOP 1 * FROM dbo.Boards WHERE GameId = @gameId
     END;
 
+
 GO
+
 
 
 
