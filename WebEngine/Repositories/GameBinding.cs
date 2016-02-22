@@ -9,7 +9,7 @@ namespace RedChess.WebEngine.Repositories
     /// in the database. The GameBinding extends the GameDto with some utility properties which make it more
     /// suitable for the role of the model in an MVC view.
     /// </summary>
-    internal class GameBinding : IGameBinding
+    public class GameBinding : IGameBinding
     {
         private readonly GameDto m_gameDto;
         private readonly IGameManager m_gameManager;

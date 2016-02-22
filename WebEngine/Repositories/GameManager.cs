@@ -267,11 +267,14 @@ namespace RedChess.WebEngine.Repositories
         /// <param name="end"></param>
         /// <param name="promote">A string beginning with one of "Q", "R", "B", "N"</param>
         /// <param name="moveReceivedAt"></param>
+        /// <param name="newBoard"></param>
         /// <returns></returns>
-        public bool Move(int gameId, Location start, Location end, string promote, DateTime moveReceivedAt)
+        public bool Move(int gameId, Location start, Location end, string promote, DateTime moveReceivedAt, out GameDto newBoard)
         {
             ChessMove move;
             var gameDto = m_gameRepository.FindById(gameId);
+            newBoard = gameDto;
+
             m_board.FromFen(gameDto.Fen);
 
             var success = m_board.Move(start, end);
@@ -292,7 +295,7 @@ namespace RedChess.WebEngine.Repositories
 
             var fen = m_board.ToFen();
             var status = m_board.StatusForBoard();
-            m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
+            newBoard = m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
             if (status.GameOver())
             {
                 PostGameEndedMessage(gameId);

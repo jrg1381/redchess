@@ -298,7 +298,8 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = "Invalid move", status = "FAIL" });
             }
 
-            bool success = m_gameManager.Move(id, startLocation, endLocation, promote, now);
+            GameDto newDto;
+            bool success = m_gameManager.Move(id, startLocation, endLocation, promote, now, out newDto);
 
             if (!success)
             {
@@ -312,7 +313,7 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = errorMessage, status = "FAIL" });
             }
 
-            game = m_gameManager.FetchGame(id);
+            game = new GameBinding(newDto, m_gameManager); // Don't fetch from the DB again
             string messageForUser = game.Status;
             string lastMove = game.LastMove;
 

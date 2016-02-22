@@ -20,7 +20,7 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void Delete(int gameId);
         void TimeGameOut(int id, string message, string currentUser);
         void EndGameWithMessage(int id, string message, int? userIdWinner = null);
-        bool Move(int id, Location startLocation, Location endLocation, string promoteTo, DateTime moveReceivedAt);
+        bool Move(int id, Location startLocation, Location endLocation, string promoteTo, DateTime moveReceivedAt, out GameDto);
         string PgnText(int id);
         object FindWhere(string queryString);
         IEnumerable<UserProfile> AllUserProfiles();
