@@ -313,7 +313,11 @@ namespace Chess.Controllers
                 return Json(new { fen = game.Fen, message = errorMessage, status = "FAIL" });
             }
 
-            game = new GameBinding(newDto, m_gameManager); // Don't fetch from the DB again
+            if (newDto != null) // failure, so keep game the same
+            {
+                game = new GameBinding(newDto, m_gameManager); // Don't fetch from the DB again
+            }
+
             string messageForUser = game.Status;
             string lastMove = game.LastMove;
 
