@@ -638,7 +638,8 @@ namespace RedChess.ControllerTests
                 Arg<Location>.Is.Equal(Location.A1),
                 Arg<Location>.Is.Equal(Location.A2),
                 Arg<string>.Is.Anything,
-                Arg<DateTime>.Is.Anything))
+                Arg<DateTime>.Is.Anything,
+                out Arg<GameDto>.Out(fakeGame).Dummy))
                 .Return(false);
 
             var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId));
@@ -780,7 +781,8 @@ namespace RedChess.ControllerTests
 
             /* Move number increment is implemented via a stored procedure */
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(new FakeGame().WithMoveNumber(0));
+            GameDto withMoveNumber = new FakeGame().WithMoveNumber(0);
+            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(withMoveNumber);
 
             var stubDateTimeProvider = MockRepository.GenerateStub<IDateTimeProvider>();
             stubDateTimeProvider.Expect(x => x.UtcNow).Do(new Func<DateTime>(() =>
@@ -803,9 +805,10 @@ namespace RedChess.ControllerTests
                 Arg<GameStatus>.Is.Anything));
 
             var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
+            var fakeGame = 
             // The board does not change between moves because it's a fake. Both moves are made by white.
-            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", firstMoveMade);
-            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", secondMoveMade);
+            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", firstMoveMade, out withMoveNumber);
+            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", secondMoveMade, out withMoveNumber);
 
             fakeRepo.VerifyAllExpectations();
         }
