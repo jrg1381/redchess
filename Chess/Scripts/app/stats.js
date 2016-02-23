@@ -3,39 +3,48 @@
     spinny.startLogoSpinner();
 
     $.getJSON("/api/Elo")
-        .always(function () {
-            spinny.stopLogoSpinner();
-        })
-        .done(function (data) {
-            drawEloTable(data);
-            drawWinLossPointsTable(data.WinLoss);
-            drawGraph(data);
-            updateLastUpdated(data.LastUpdated);
-        });
-
-    $.getJSON("/api/Boards?$filter=gameOver%20eq%20true&$select=fen,movenumber,useridwinner,useridwhite")
         .always(function() {
             spinny.stopLogoSpinner();
         })
         .done(function(data) {
-            var newData = data.map(function(d) {
-                var o = {};
+            drawEloTable(data);
+            drawWinLossPointsTable(data.WinLoss);
+            drawGraph(data);
+            updateLastUpdated(data.LastUpdated);
 
-                if (d.useridwinner === d.useridwhite) {
-                    o.winner = "white";
-                } else if (d.useridwinner === null) {
-                    o.winner = "grey";
-                } else {
-                    o.winner = "black";
-                }
+            $.getJSON("/api/Boards?$filter=gameOver%20eq%20true&$select=fen,movenumber,useridwinner,useridwhite")
+                .always(function() {
+                    spinny.stopLogoSpinner();
+                })
+                .done(function(visData) {
+                    var newData = visData.map(function (d) {
+                        var o = {};
 
-                o.moves = d.movenumber;
-                o.pieceCount = d.fen.split(" ")[0].replace(/[1-8]|\//g, "").length;
+                        if (d.useridwinner === d.useridwhite) {
+                            o.winner = "white";
+                        } else if (d.useridwinner === null) {
+                            o.winner = "grey";
+                        } else {
+                            o.winner = "black";
+                        }
 
-                return o;
-            });
+                        var filterFunction = function (x) { return x.UserId === d.useridwinner; };
+                        var matches = data.Profiles.filter(filterFunction);
 
-            drawVisualization(newData);
+                        if (matches.length > 0) {
+                            o.winnerUserName = matches[0].UserName;
+                        } else {
+                            o.winnerUserName = "";
+                        }
+
+                        o.moves = d.movenumber;
+                        o.pieceCount = d.fen.split(" ")[0].replace(/[1-8]|\//g, "").length;
+
+                        return o;
+                    });
+
+                    drawVisualization(newData);
+                });
         });
 };
 
@@ -66,12 +75,14 @@ function drawVisualization(data) {
         .enter()
         .append("circle");
 
+    var color = d3.scale.category10();
+
     var circleAttributes = circles
         .attr("cx", function(d) { return width/2 })
         .attr("cy", function(d) { return height/2 })
         .attr("r", function(d) { return 4; })
         .attr("stroke-width", 2)
-        .attr("stroke", "black")
+        .attr("stroke", function (d) { return d.winner === "grey" ? "grey" : color(d.winnerUserName); })
         .style("fill", function (d) { return d.winner; });
 
     var circleAttributes2 = circles
