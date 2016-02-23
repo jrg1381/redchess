@@ -24,7 +24,7 @@ AS
                 LastMove = @lastMove ,
                 MoveNumber = MoveNumber + 1,
 				Status = @status,
-				CompletionDate = CASE(@gameOver) WHEN 1 THEN GETUTCDATE() ELSE CompletionDate END,
+				CompletionDate = CASE(@gameOver) WHEN 1 THEN @moveReceived ELSE CompletionDate END,
 				GameOver = @gameOver
         WHERE   GameId = @gameId;
 
@@ -66,6 +66,7 @@ AS
 
 
 GO
+
 
 
 
