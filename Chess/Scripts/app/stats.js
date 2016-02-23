@@ -141,8 +141,8 @@ function sortTable(tableName, columnIndex) {
 
     $rows.sort(function(a, b) {
 
-        var keyA = $($('td', a)[columnIndex]).text();
-        var keyB = $($('td', b)[columnIndex]).text();
+        var keyA = Number($($('td', a)[columnIndex]).text());
+        var keyB = Number($($('td', b)[columnIndex]).text());
         return (keyA < keyB) ? 1 : 0;
     });
 
