@@ -5,36 +5,86 @@
     $.getJSON("/api/Elo")
         .always(function () {
             spinny.stopLogoSpinner();
-
         })
         .done(function (data) {
             drawEloTable(data);
-            drawWinLossTable(data.WinLoss);
             drawWinLossPointsTable(data.WinLoss);
             drawGraph(data);
             updateLastUpdated(data.LastUpdated);
         });
+
+    $.getJSON("/api/Boards?$filter=gameOver%20eq%20true&$select=fen,movenumber,useridwinner,useridwhite")
+        .always(function() {
+            spinny.stopLogoSpinner();
+        })
+        .done(function(data) {
+            var newData = data.map(function(d) {
+                var o = {};
+
+                if (d.useridwinner === d.useridwhite) {
+                    o.winner = "white";
+                } else if (d.useridwinner === null) {
+                    o.winner = "grey";
+                } else {
+                    o.winner = "black";
+                }
+
+                o.moves = d.movenumber;
+                o.pieceCount = d.fen.split(" ")[0].replace(/[1-8]|\//g, "").length;
+
+                return o;
+            });
+
+            drawVisualization(newData);
+        });
 };
+
+function drawVisualization(data) {
+    var width = $("#vis").width();
+    var height = window.screen.availHeight / 1.5;
+
+    var svg = d3.select("#vis").append("svg").attr("width", width).attr("height", height);
+
+    svg.append("rect").attr({
+        width: width,
+        height: height,
+        x: 0,
+        y: 0,
+        fill: "#fffff0"
+    });
+
+    var xScale = d3.scale.linear()
+        .domain([d3.min(data.map(function(x) { return x.moves; })) - 5, d3.max(data.map(function(x) { return x.moves; })) + 5])
+        .range([0, width]);
+
+    var yScale = d3.scale.linear()
+        .domain([d3.min(data.map(function(x) { return x.pieceCount; })) - 5, d3.max(data.map(function(x) { return x.pieceCount; })) + 5])
+        .range([height, 0]);
+
+    var circles = svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle");
+
+    var circleAttributes = circles
+        .attr("cx", function(d) { return width/2 })
+        .attr("cy", function(d) { return height/2 })
+        .attr("r", function(d) { return 4; })
+        .attr("stroke-width", 2)
+        .attr("stroke", "black")
+        .style("fill", function (d) { return d.winner; });
+
+    var circleAttributes2 = circles
+        .transition()
+        .attr("cx", function(d) { return xScale(d.moves); })
+        .attr("cy", function(d) { return yScale(d.pieceCount); });
+
+}
 
 function updateLastUpdated(data) {
     $('time#last-updated').attr("datetime", data);
     $('time#last-updated').text(data);
     $("time.timeago").timeago();
-}
-
-function drawWinLossTable(data) {
-    for (var property in data) {
-        if (data.hasOwnProperty(property)) {
-            var row = $("<tr></tr>");
-            var dataRow = data[property];
-
-            row.append($("<td>" + dataRow.White + "</td>"));
-            row.append($("<td>" + dataRow.Black + "</td>"));
-            row.append($("<td>" + (dataRow.Winner == null ? "-" : dataRow.Winner) + "</td>"));
-            row.append($("<td>" + dataRow.Count + "</td>"));
-            $("#winloss-table>tbody").append(row);
-        }
-    }
 }
 
 function drawWinLossPointsTable(data) {
