@@ -175,17 +175,6 @@ namespace Redchess.Engine
             return m_promotedPawn != null;
         }
 
-        /// <summary>
-        ///     Returns true if the position is checkmate
-        /// </summary>
-        /// <param name="skipCheckTest">Set to true to omit the initial test for the king being in check</param>
-        /// <returns></returns>
-        public bool IsCheckmate(bool skipCheckTest = false)
-        {
-            var x = StatusForBoard();
-            return x == GameStatus.CheckmateBlackWins || x == GameStatus.CheckmateWhiteWins;
-        }
-
         public IEnumerable<Location> FindPieces(PieceType pieceType)
         {
             return SimpleBoard.OccupiedSquares().Where(x => GetContents(x).Type == pieceType);

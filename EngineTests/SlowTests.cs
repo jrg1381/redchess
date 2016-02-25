@@ -50,12 +50,13 @@ namespace Redchess.EngineTests
 					else
 					{
 						Console.WriteLine("No moves for {0} on {1}", piece, piece.Position.Location);
-                        if (m_normalBoard.IsCheckmate(false))
+					    var status = m_normalBoard.StatusForBoard();
+                        if (status == GameStatus.CheckmateBlackWins || status == GameStatus.CheckmateWhiteWins)
 						{
 							Console.WriteLine("Checkmate!");
 							goto GAME_OVER;
 						}
-                        if (m_normalBoard.StatusForBoard() == GameStatus.Stalemate)
+                        if (status == GameStatus.Stalemate)
 						{
 							Console.WriteLine("Stalemate!");
 							goto GAME_OVER;

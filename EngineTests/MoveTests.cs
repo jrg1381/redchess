@@ -323,17 +323,7 @@ namespace Redchess.EngineTests
             m_normalBoard.Move(Location.G2, Location.G4);
             m_normalBoard.Move(Location.D8, Location.H4);
 
-            Assert.True(m_normalBoard.IsCheckmate(false), "White king should be mated");
-		}
-
-        [Test]
-		public void IsMateAndOnlyMate()
-		{
-			m_emptyBoard.FromFen("rn5k/7Q/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ - 0");
-            // Both methods calls should return true
-            bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) && m_emptyBoard.IsCheckmate(skipCheckTest: true);
-            Assert.IsTrue(isMate, "Given position should be checkmate");
-            Assert.IsTrue(m_emptyBoard.StatusForBoard() != GameStatus.Stalemate, "Should not be stalemate in this position");
+            Assert.True(m_normalBoard.StatusForBoard() == GameStatus.CheckmateBlackWins, "White king should be mated");
 		}
 
         [Test]
@@ -341,8 +331,9 @@ namespace Redchess.EngineTests
         {
             m_emptyBoard.FromFen("rn5k/8/2p3B1/pp1np3/4P3/8/PPP2PPP/RN2K2R b KQ - 0");
             // Shouldn't matter whether we test for check first or not, they should both be false
-            bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) || m_emptyBoard.IsCheckmate(skipCheckTest: true);
-            Assert.IsFalse(isMate, "Given position should not be checkmate because the king is not in check");
+            bool isCheckOrMate = m_emptyBoard.Check || m_emptyBoard.StatusForBoard() == GameStatus.CheckmateBlackWins ||
+                          m_emptyBoard.StatusForBoard() == GameStatus.CheckmateWhiteWins;
+            Assert.IsFalse(isCheckOrMate, "Given position should not be checkmate because the king is not in check");
         }
 
 		[Test]
@@ -379,7 +370,7 @@ namespace Redchess.EngineTests
             Assert.That(m_emptyBoard.StatusForBoard() == GameStatus.Check, "King should be in check");
             CollectionAssert.IsEmpty(m_emptyBoard.GetContents(Location.E1).ValidMoves(m_emptyBoard), "King should have nowhere to go");
             CollectionAssert.IsNotEmpty(m_emptyBoard.GetContents(Location.A8).ValidMoves(m_emptyBoard), "Bishop should have many moves");
-            Assert.False(m_emptyBoard.IsCheckmate(false), "White king should not be mated");
+            Assert.False(m_emptyBoard.StatusForBoard() == GameStatus.CheckmateBlackWins, "White king should not be mated");
 		}
 
 		[Test]
