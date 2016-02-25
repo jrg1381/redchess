@@ -197,12 +197,12 @@ namespace Redchess.Engine
 
         public bool IsStalemate()
         {
-            return (!KingInCheck() && !ValidMovesExist());
+            return StatusForBoard() == GameStatus.Stalemate;
         }
 
         public bool IsDraw()
         {
-            return SimpleBoard.IsDraw();
+            return StatusForBoard() == GameStatus.DrawInsufficientMaterial;
         }
 
         public GameStatus StatusForBoard()
