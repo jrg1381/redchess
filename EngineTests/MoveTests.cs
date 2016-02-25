@@ -230,7 +230,7 @@ namespace Redchess.EngineTests
             }
 
             CollectionAssert.IsEmpty(theKing.ValidMoves(m_emptyBoard), "The king should have no valid moves");
-            Assert.True(m_emptyBoard.IsStalemate(), "Should be stalemate");
+            Assert.True(m_emptyBoard.StatusForBoard() == GameStatus.Stalemate, "Should be stalemate");
 		}
 
         [Test]
@@ -302,7 +302,7 @@ namespace Redchess.EngineTests
             m_emptyBoard.FromFen(fen);          
             var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
-            Assert.That(!m_emptyBoard.IsStalemate() && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
+            Assert.That(m_emptyBoard.StatusForBoard() != GameStatus.Stalemate && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
         }
 
         [TestCase("6qk/8/8/8/8/8/8/K7/ w - - 0")]
