@@ -16,6 +16,7 @@ namespace Redchess.Engine.Interfaces
         int FiftyMoveCounter { get; }
         BoardStateTransition PreviousState { get; }
         CastlingOptions PermanentCastlingOptions { get; }
+        bool Check { get; }
         string FenCastleString();
     }
 }

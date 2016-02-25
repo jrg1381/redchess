@@ -192,6 +192,8 @@ namespace Redchess.Engine
             return SimpleBoard.OccupiedSquares().Where(x => GetContents(x).Type == pieceType);
         }
 
+        public bool Check => m_checkCacheCurrentPlayer.Value;
+
         public GameStatus StatusForBoard()
         {
             if (m_checkCacheCurrentPlayer.Value)
