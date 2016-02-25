@@ -263,7 +263,7 @@ namespace Redchess.EngineTests
         [Test]
         public void CastleKingSide()
         {
-            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQkq - 0");
+            m_emptyBoard.FromFen("k7/8/8/8/8/8/8/4K2R w KQ - 0");
 
             var moveDefinition = new BoardStateTransition
             {
