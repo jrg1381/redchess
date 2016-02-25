@@ -17,7 +17,6 @@ namespace Redchess.Engine
     public class Board : IBoardExtended
     {
         private static readonly int s_parallelism = Environment.ProcessorCount;
-        private static readonly Location[] s_emptyLocationArray = new Location[0];
         // Observers
         private readonly TransientCastlingRules m_transientCastlingRules;
         private readonly PermanentCastlingRules m_permanentCastlingRules;
@@ -116,7 +115,7 @@ namespace Redchess.Engine
                 int trueIndex = 8*(7 - index/8) + (index%8);
                 if (Char.IsDigit(c))
                 {
-                    index += Int32.Parse(c.ToString(CultureInfo.InvariantCulture));
+                    index += c - '0'; // Faster than Int32.Parse 
                     continue;
                 }
 
@@ -183,11 +182,8 @@ namespace Redchess.Engine
         /// <returns></returns>
         public bool IsCheckmate(bool skipCheckTest = false)
         {
-            if (!skipCheckTest && !KingInCheck())
-                return false; // Can't be mate if the king is not in check
-
-            // The king is in check, and..
-            return !ValidMovesExist();
+            var x = StatusForBoard();
+            return x == GameStatus.CheckmateBlackWins || x == GameStatus.CheckmateWhiteWins;
         }
 
         public IEnumerable<Location> FindPieces(PieceType pieceType)
@@ -195,32 +191,24 @@ namespace Redchess.Engine
             return SimpleBoard.OccupiedSquares().Where(x => GetContents(x).Type == pieceType);
         }
 
-        public bool IsStalemate()
-        {
-            return (!KingInCheck() && !ValidMovesExist());
-        }
-
-        public bool IsDraw()
-        {
-            return SimpleBoard.IsDraw();
-        }
+        public bool Check => m_checkCacheCurrentPlayer.Value;
 
         public GameStatus StatusForBoard()
         {
-            if (KingInCheck())
+            if (m_checkCacheCurrentPlayer.Value)
             {
-                if (IsCheckmate(true))
+                if (!ValidMovesExist())
                 {
                     return CurrentTurn == PieceColor.White ? GameStatus.CheckmateBlackWins : GameStatus.CheckmateWhiteWins;
                 }
 
                 return GameStatus.Check;
             }
-            else if (IsStalemate())
+            else if (!ValidMovesExist())
             {
                 return GameStatus.Stalemate;
             }
-            else if (IsDraw())
+            else if (SimpleBoard.IsDraw())
             {
                 return GameStatus.DrawInsufficientMaterial;
             }
@@ -271,19 +259,7 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter
-        {
-            get { return m_fiftyMoveRule.Value; }
-        }
-
-        /// <summary>
-        ///     Returns true if the king of the current player is in check right now
-        /// </summary>
-        /// <returns></returns>
-        public bool KingInCheck()
-        {
-            return m_checkCacheCurrentPlayer.Value;
-        }
+        public int FiftyMoveCounter => m_fiftyMoveRule.Value;
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
