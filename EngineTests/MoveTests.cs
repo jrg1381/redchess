@@ -292,7 +292,7 @@ namespace Redchess.EngineTests
 			m_emptyBoard.FromFen(fen);		
 			var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
-			Assert.That(m_emptyBoard.IsStalemate(),"Should be stalemate - White has no moves");
+			Assert.That(m_emptyBoard.StatusForBoard() == GameStatus.Stalemate,"Should be stalemate - White has no moves");
 		}
 
         [TestCase("7r/2k5/8/8/8/8/8/6K1/ w - - 0")]
@@ -333,7 +333,7 @@ namespace Redchess.EngineTests
             // Both methods calls should return true
             bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) && m_emptyBoard.IsCheckmate(skipCheckTest: true);
             Assert.IsTrue(isMate, "Given position should be checkmate");
-            Assert.IsFalse(m_emptyBoard.IsStalemate(), "Should not be stalemate in this position");
+            Assert.IsTrue(m_emptyBoard.StatusForBoard() != GameStatus.Stalemate, "Should not be stalemate in this position");
 		}
 
         [Test]

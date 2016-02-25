@@ -195,11 +195,6 @@ namespace Redchess.Engine
             return SimpleBoard.OccupiedSquares().Where(x => GetContents(x).Type == pieceType);
         }
 
-        public bool IsStalemate()
-        {
-            return StatusForBoard() == GameStatus.Stalemate;
-        }
-
         public bool IsDraw()
         {
             return StatusForBoard() == GameStatus.DrawInsufficientMaterial;

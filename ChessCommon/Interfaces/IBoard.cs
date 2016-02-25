@@ -10,7 +10,6 @@ namespace RedChess.ChessCommon.Interfaces
         bool KingInCheck();
         bool IsCheckmate(bool skipCheckTest);
         bool IsDraw();
-        bool IsStalemate();
         string ToFen();
         void FromFen(string fen);
         bool Move(Location start, Location end);
