@@ -41,7 +41,7 @@ namespace Redchess.EngineTests
                             m_normalBoard.PromotePiece(promoteTo);
 						}
 
-                        if (m_normalBoard.IsDraw())
+                        if (m_normalBoard.StatusForBoard() == GameStatus.DrawInsufficientMaterial)
                         {
                             Console.WriteLine("Draw!");
                             goto GAME_OVER;
@@ -55,7 +55,7 @@ namespace Redchess.EngineTests
 							Console.WriteLine("Checkmate!");
 							goto GAME_OVER;
 						}
-                        if (m_normalBoard.IsStalemate())
+                        if (m_normalBoard.StatusForBoard() == GameStatus.Stalemate)
 						{
 							Console.WriteLine("Stalemate!");
 							goto GAME_OVER;

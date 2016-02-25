@@ -122,22 +122,22 @@ namespace Redchess.EngineTests
 	            "Queen reachable squares not as expected");
 	    }
 
-	    [TestCase("7k/6P1/8/8/8/8/8/7K b KQkq - 0")]
-        [TestCase("3k4/2B5/8/8/8/8/8/7K b KQkq - 0")]
-        [TestCase("3k4/5N2/8/8/8/8/8/7K b KQkq - 0")]
+	    [TestCase("7k/6P1/8/8/8/8/8/7K b - - 0")]
+        [TestCase("3k4/2B5/8/8/8/8/8/7K b - - 0")]
+        [TestCase("3k4/5N2/8/8/8/8/8/7K b - - 0")]
 		public void BlackKingShouldBeInCheck(string fen)
 		{
             m_emptyBoard.FromFen(fen);
-            Assert.True(m_emptyBoard.KingInCheck(), "Black king should be in check");
+            Assert.True(m_emptyBoard.StatusForBoard() == GameStatus.Check, "Black king should be in check");
 		}
 
-        [TestCase("7k/7P/8/8/8/8/8/K7 b KQkq - 0")]
-        [TestCase("3k4/2b5/8/8/8/8/8/K7 b KQkq - 0")]
-        [TestCase("3k3K/2r5/1B6/8/8/8/8/8 b KQkq - 0")]
+        [TestCase("7k/7P/8/8/8/8/8/K7 b - - 0")]
+        [TestCase("3k4/2b5/8/8/8/8/8/K7 b - - 0")]
+        [TestCase("3k3K/2r5/1B6/8/8/8/8/8 b - - 0")]
         public void BlackKingShouldNotBeInCheck(string fen)
         {
             m_emptyBoard.FromFen(fen);
-            Assert.False(m_emptyBoard.KingInCheck(), "Black king should not be in check");
+            Assert.False(m_emptyBoard.StatusForBoard() == GameStatus.Check, "Black king should not be in check");
         }
 
 		[Test]
@@ -230,7 +230,7 @@ namespace Redchess.EngineTests
             }
 
             CollectionAssert.IsEmpty(theKing.ValidMoves(m_emptyBoard), "The king should have no valid moves");
-            Assert.True(m_emptyBoard.IsStalemate(), "Should be stalemate");
+            Assert.True(m_emptyBoard.StatusForBoard() == GameStatus.Stalemate, "Should be stalemate");
 		}
 
         [Test]
@@ -255,7 +255,7 @@ namespace Redchess.EngineTests
 			m_emptyBoard.Move(Location.H7, Location.H8);
 			m_emptyBoard.PromotePiece("Queen");
 			
-			Assert.True(m_emptyBoard.KingInCheck(),"King should be in check after promotion of pawn");
+			Assert.True(m_emptyBoard.StatusForBoard() == GameStatus.Check, "King should be in check after promotion of pawn");
 		}
 
         [TestCase("Queen", Location.A8, true)]
@@ -264,11 +264,11 @@ namespace Redchess.EngineTests
         [TestCase("Knight", Location.E7, false)]
 		public void PromotionByString(string target, Location kingLocation, bool kingShouldBeInCheck)
 		{
-            m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w KQkq - 0");
+            m_emptyBoard.FromFen("k5r1/7P/8/8/8/8/8/4K3 w - - 0");
 			m_emptyBoard.Move(Location.H7, Location.G8);
             m_emptyBoard.PromotePiece(target);
 			
-			Assert.AreEqual(kingShouldBeInCheck, m_emptyBoard.KingInCheck(), "King should be in check after promotion of pawn");
+			Assert.AreEqual(kingShouldBeInCheck, m_emptyBoard.StatusForBoard() == GameStatus.Check, "King should be in check after promotion of pawn");
 		}
 
 		[Test]
@@ -292,7 +292,7 @@ namespace Redchess.EngineTests
 			m_emptyBoard.FromFen(fen);		
 			var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
-			Assert.That(m_emptyBoard.IsStalemate(),"Should be stalemate - White has no moves");
+			Assert.That(m_emptyBoard.StatusForBoard() == GameStatus.Stalemate,"Should be stalemate - White has no moves");
 		}
 
         [TestCase("7r/2k5/8/8/8/8/8/6K1/ w - - 0")]
@@ -302,14 +302,14 @@ namespace Redchess.EngineTests
             m_emptyBoard.FromFen(fen);          
             var king = m_emptyBoard.GetContents(Location.G1);
             Console.WriteLine(LocationListAsFriendlyString(king.ValidMoves(m_emptyBoard)));
-            Assert.That(!m_emptyBoard.IsStalemate() && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
+            Assert.That(m_emptyBoard.StatusForBoard() != GameStatus.Stalemate && king.ValidMoves(m_emptyBoard).Count() == 3, "Should not be stalemate - White has 3 moves");
         }
 
         [TestCase("6qk/8/8/8/8/8/8/K7/ w - - 0")]
         public void NotDrawTest(string fen)
         {
             m_emptyBoard.FromFen(fen);
-            Assert.That(!m_emptyBoard.IsDraw(), "Should not be a draw in this position");
+            Assert.That(m_emptyBoard.StatusForBoard() != GameStatus.DrawInsufficientMaterial, "Should not be a draw in this position");
         }
 
 		[Test]
@@ -333,7 +333,7 @@ namespace Redchess.EngineTests
             // Both methods calls should return true
             bool isMate = m_emptyBoard.IsCheckmate(skipCheckTest: false) && m_emptyBoard.IsCheckmate(skipCheckTest: true);
             Assert.IsTrue(isMate, "Given position should be checkmate");
-            Assert.IsFalse(m_emptyBoard.IsStalemate(), "Should not be stalemate in this position");
+            Assert.IsTrue(m_emptyBoard.StatusForBoard() != GameStatus.Stalemate, "Should not be stalemate in this position");
 		}
 
         [Test]
@@ -376,7 +376,7 @@ namespace Redchess.EngineTests
 			// Mate isn't just that the King can't do anything, it's that NO pieces can do anything. In this case, the white bishop can take the rook.
             m_emptyBoard.FromFen("B6k/8/8/8/8/8/7r/4K2r w KQkq - 0");
 
-            Assert.That(m_emptyBoard.KingInCheck(), "King should be in check");
+            Assert.That(m_emptyBoard.StatusForBoard() == GameStatus.Check, "King should be in check");
             CollectionAssert.IsEmpty(m_emptyBoard.GetContents(Location.E1).ValidMoves(m_emptyBoard), "King should have nowhere to go");
             CollectionAssert.IsNotEmpty(m_emptyBoard.GetContents(Location.A8).ValidMoves(m_emptyBoard), "Bishop should have many moves");
             Assert.False(m_emptyBoard.IsCheckmate(false), "White king should not be mated");
@@ -410,7 +410,7 @@ namespace Redchess.EngineTests
 		public void TestDraw(string fen, string description)
 		{
             m_emptyBoard.FromFen(fen);
-            Assert.True(m_emptyBoard.IsDraw(), "This position is a draw - " + description);
+            Assert.True(m_emptyBoard.StatusForBoard() == GameStatus.DrawInsufficientMaterial, "This position is a draw - " + description);
 		}
 
         [TestCase("6nk/8/8/8/8/6N1/8/K7/ w - - 0", "king and two knights")]
@@ -418,7 +418,7 @@ namespace Redchess.EngineTests
         public void TestNotDraw(string fen, string description)
         {
             m_emptyBoard.FromFen(fen);
-            Assert.False(m_emptyBoard.IsDraw(), "This position is not a draw - " + description);
+            Assert.True(m_emptyBoard.StatusForBoard() != GameStatus.DrawInsufficientMaterial, "This position is not a draw - " + description);
         }
 	}
 }
