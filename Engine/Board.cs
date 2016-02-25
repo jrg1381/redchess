@@ -207,20 +207,20 @@ namespace Redchess.Engine
 
         public GameStatus StatusForBoard()
         {
-            if (KingInCheck())
+            if (m_checkCacheCurrentPlayer.Value)
             {
-                if (IsCheckmate(true))
+                if (!ValidMovesExist())
                 {
                     return CurrentTurn == PieceColor.White ? GameStatus.CheckmateBlackWins : GameStatus.CheckmateWhiteWins;
                 }
 
                 return GameStatus.Check;
             }
-            else if (IsStalemate())
+            else if (!ValidMovesExist())
             {
                 return GameStatus.Stalemate;
             }
-            else if (IsDraw())
+            else if (SimpleBoard.IsDraw())
             {
                 return GameStatus.DrawInsufficientMaterial;
             }
