@@ -309,7 +309,7 @@ namespace Redchess.EngineTests
         public void NotDrawTest(string fen)
         {
             m_emptyBoard.FromFen(fen);
-            Assert.That(!m_emptyBoard.IsDraw(), "Should not be a draw in this position");
+            Assert.That(m_emptyBoard.StatusForBoard() != GameStatus.DrawInsufficientMaterial, "Should not be a draw in this position");
         }
 
 		[Test]
@@ -410,7 +410,7 @@ namespace Redchess.EngineTests
 		public void TestDraw(string fen, string description)
 		{
             m_emptyBoard.FromFen(fen);
-            Assert.True(m_emptyBoard.IsDraw(), "This position is a draw - " + description);
+            Assert.True(m_emptyBoard.StatusForBoard() == GameStatus.DrawInsufficientMaterial, "This position is a draw - " + description);
 		}
 
         [TestCase("6nk/8/8/8/8/6N1/8/K7/ w - - 0", "king and two knights")]
@@ -418,7 +418,7 @@ namespace Redchess.EngineTests
         public void TestNotDraw(string fen, string description)
         {
             m_emptyBoard.FromFen(fen);
-            Assert.False(m_emptyBoard.IsDraw(), "This position is not a draw - " + description);
+            Assert.True(m_emptyBoard.StatusForBoard() != GameStatus.DrawInsufficientMaterial, "This position is not a draw - " + description);
         }
 	}
 }

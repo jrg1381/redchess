@@ -9,7 +9,6 @@ namespace RedChess.ChessCommon.Interfaces
         PieceColor CurrentTurn { get; set; }
         bool KingInCheck();
         bool IsCheckmate(bool skipCheckTest);
-        bool IsDraw();
         string ToFen();
         void FromFen(string fen);
         bool Move(Location start, Location end);

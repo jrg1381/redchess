@@ -41,7 +41,7 @@ namespace Redchess.EngineTests
                             m_normalBoard.PromotePiece(promoteTo);
 						}
 
-                        if (m_normalBoard.IsDraw())
+                        if (m_normalBoard.StatusForBoard() == GameStatus.DrawInsufficientMaterial)
                         {
                             Console.WriteLine("Draw!");
                             goto GAME_OVER;
