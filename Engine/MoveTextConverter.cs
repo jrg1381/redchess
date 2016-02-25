@@ -187,11 +187,10 @@ namespace Redchess.Engine
         {
             return Task.Run(() =>
             {
-                var isCheck = m_moveToPlay.BoardAfter.KingInCheck();
-                var isMate = isCheck && m_moveToPlay.BoardAfter.IsCheckmate(skipCheckTest: true);
+                var gameStatus = m_moveToPlay.BoardAfter.StatusForBoard();
 
-                if (isMate) return "#";
-                if (isCheck) return "+";
+                if (gameStatus == GameStatus.CheckmateBlackWins || gameStatus == GameStatus.CheckmateWhiteWins) return "#";
+                if (gameStatus == GameStatus.Check) return "+";
 
                 return String.Empty;
             });
