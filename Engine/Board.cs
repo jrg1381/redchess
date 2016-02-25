@@ -183,11 +183,8 @@ namespace Redchess.Engine
         /// <returns></returns>
         public bool IsCheckmate(bool skipCheckTest = false)
         {
-            if (!skipCheckTest && !KingInCheck())
-                return false; // Can't be mate if the king is not in check
-
-            // The king is in check, and..
-            return !ValidMovesExist();
+            var x = StatusForBoard();
+            return x == GameStatus.CheckmateBlackWins || x == GameStatus.CheckmateWhiteWins;
         }
 
         public IEnumerable<Location> FindPieces(PieceType pieceType)
