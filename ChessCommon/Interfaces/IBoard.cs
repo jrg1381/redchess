@@ -6,7 +6,7 @@ namespace RedChess.ChessCommon.Interfaces
 {
     public interface IBoard : IDisposable
     {
-        PieceColor CurrentTurn { get; set; }
+        PieceColor CurrentTurn { get; }
         string ToFen();
         void FromFen(string fen);
         bool Move(Location start, Location end);
