@@ -258,19 +258,7 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter
-        {
-            get { return m_fiftyMoveRule.Value; }
-        }
-
-        /// <summary>
-        ///     Returns true if the king of the current player is in check right now
-        /// </summary>
-        /// <returns></returns>
-        public bool KingInCheck()
-        {
-            return m_checkCacheCurrentPlayer.Value;
-        }
+        public int FiftyMoveCounter => m_fiftyMoveRule.Value;
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
