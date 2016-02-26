@@ -10,39 +10,30 @@ namespace Redchess.Engine.Pieces.Abstract
 {
     internal abstract class Piece : IPiece
     {
-        private readonly static int s_parallelism = Environment.ProcessorCount;
+        private static readonly int s_parallelism = Environment.ProcessorCount;
         private readonly PieceType m_pieceType;
         private readonly PieceColor m_color;
-        private readonly Square m_position;
 
         protected Piece(Location loc, PieceType typeOfPiece)
         {
             m_pieceType = typeOfPiece;
             m_color = typeOfPiece.Color();
-            m_position = new Square(loc);
+            Position = new Square(loc);
         }
 
-        public PieceColor Color
-        {
-            get { return m_color; }
-        }
+        public PieceColor Color => m_color;
 
-        public PieceType Type
-        {
-            get { return m_pieceType; }
-        }
+        public PieceType Type => m_pieceType;
 
-        public override string ToString()
-        {
-            return String.Format("{0} {1}", base.ToString(), Position.Location);
-        }
+        public override string ToString() => $"{base.ToString()} {Position.Location}";
 
         public override int GetHashCode()
         {
             return (int) m_color + 10*(int) m_pieceType + 10000*(int) Position.Location;
         }
 
-        public Square Position { get { return m_position; } }
+        public Square Position { get; }
+
         public abstract IEnumerable<Location> ReachableSquares(IBoardExtended game);
 
         /// <summary>

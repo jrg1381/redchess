@@ -62,15 +62,9 @@ namespace Redchess.Engine
             }
         }
 
-        internal static IEnumerable<PieceType> WhitePieceTypes
-        {
-            get { return WhitePieceTypesSource.AsEnumerable(); }
-        }
+        internal static IEnumerable<PieceType> WhitePieceTypes => WhitePieceTypesSource.AsEnumerable();
 
-        internal static IEnumerable<PieceType> BlackPieceTypes
-        {
-            get { return BlackPieceTypesSource.AsEnumerable(); }
-        }
+        internal static IEnumerable<PieceType> BlackPieceTypes => BlackPieceTypesSource.AsEnumerable();
 
         internal static IEnumerable<Location> InitialPieceConfiguration(PieceType t)
         {

@@ -21,20 +21,11 @@ namespace Redchess.Engine.Structures
             m_location = (Location) (x + y*8);
         }
 
-        public Location Location
-        {
-            get { return m_location; }
-        }
+        public Location Location => m_location;
 
-        public int X
-        {
-            get { return ((int) m_location%8); }
-        }
+        public int X => (int) m_location%8;
 
-        public int Y
-        {
-            get { return ((int) m_location/8); }
-        }
+        public int Y => (int) m_location/8;
 
         #region IEquatable<Square> Members
 
@@ -57,10 +48,7 @@ namespace Redchess.Engine.Structures
             return s1.Equals(s2);
         }
 
-        public static bool operator !=(Square s1, Square s2)
-        {
-            return !(s1.Equals(s2));
-        }
+        public static bool operator !=(Square s1, Square s2) => !s1.Equals(s2);
 
         public override int GetHashCode()
         {

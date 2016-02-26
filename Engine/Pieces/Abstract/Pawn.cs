@@ -17,7 +17,7 @@ namespace Redchess.Engine.Pieces.Abstract
 
         public override IEnumerable<Location> AttackedSquares(IBoardExtended game)
         {
-            return ReachableSquares(game).Where(p => (new Square(p)).Y != Position.Y);
+            return ReachableSquares(game).Where(p => new Square(p).Y != Position.Y);
         }
 
         public override IEnumerable<Location> ReachableSquares(IBoardExtended game)

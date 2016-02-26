@@ -14,7 +14,7 @@ namespace Redchess.Engine.Structures
             var blackKingside = castlingOptions.HasFlag(CastlingOptions.BlackKingSide) ? "k" : "";
             var blackQueenside = castlingOptions.HasFlag(CastlingOptions.BlackQueenSide) ? "q" : "";
 
-            return String.Format("{0}{1}{2}{3}", whiteKingside, whiteQueenside, blackKingside, blackQueenside);
+            return $"{whiteKingside}{whiteQueenside}{blackKingside}{blackQueenside}";
         }
     }
 }

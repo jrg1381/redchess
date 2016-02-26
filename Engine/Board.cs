@@ -37,10 +37,7 @@ namespace Redchess.Engine
             return m_permanentCastlingRules.Value.Fen();
         }
 
-        public CastlingOptions PermanentCastlingOptions
-        {
-            get { return m_permanentCastlingRules.Value; }
-        }
+        public CastlingOptions PermanentCastlingOptions => m_permanentCastlingRules.Value;
 
         // Copy constructor
         internal Board(Board replacementBoard)
@@ -112,7 +109,7 @@ namespace Redchess.Engine
             foreach (char c in position)
             {
                 // A1 is square 0, H8 is square 63, but FEN reads from L->R, top to bottom
-                int trueIndex = 8*(7 - index/8) + (index%8);
+                int trueIndex = 8*(7 - index/8) + index%8;
                 if (Char.IsDigit(c))
                 {
                     index += c - '0'; // Faster than Int32.Parse 
@@ -302,14 +299,14 @@ namespace Redchess.Engine
         /// <returns></returns>
         public bool KingInCheck(PieceColor colorOfKing, Location kingPosition)
         {
-            return (new CheckTester(colorOfKing, kingPosition, this)).Check();
+            return new CheckTester(colorOfKing, kingPosition, this).Check();
         }
 
         private bool ValidMovesExist()
         {
             // Try the king first, because if we're doing a checkmate test, moving the king is the 
             // most likely way to get out of it.
-            var king = (CurrentTurn == PieceColor.White ? PieceType.WhiteKing : PieceType.BlackKing);
+            var king = CurrentTurn == PieceColor.White ? PieceType.WhiteKing : PieceType.BlackKing;
             if (GetContents(FindPieces(king).First()).ValidMoves(this).Any())
                 return true;
 
@@ -357,7 +354,7 @@ namespace Redchess.Engine
 
             if (piece.Type.IsOfType(PieceType.King))
             {
-                int distanceMoved = (new Square(newLocation)).X - originalLocation.X;
+                int distanceMoved = new Square(newLocation).X - originalLocation.X;
 
                 if (Math.Abs(distanceMoved) > 1)
                 {
@@ -391,7 +388,7 @@ namespace Redchess.Engine
             var verticalDistanceMoved = newSquare.Y - originalLocation.Y;
             if(Math.Abs(verticalDistanceMoved) > 1)
             {
-                    EnPassantTarget = (new Square(originalLocation.X, originalLocation.Y + Math.Sign(verticalDistanceMoved)).Location);
+                    EnPassantTarget = new Square(originalLocation.X, originalLocation.Y + Math.Sign(verticalDistanceMoved)).Location;
                     return;
             }
 
@@ -473,20 +470,13 @@ namespace Redchess.Engine
 
         private void Dispose(bool isDisposing)
         {
-            if (m_fen != null)
-                m_fen.Dispose();
-            if (m_transcriber != null)
-                m_transcriber.Dispose();
-            if (m_transientCastlingRules != null)
-                m_transientCastlingRules.Dispose();
-            if (m_fiftyMoveRule != null)
-                m_fiftyMoveRule.Dispose();
-            if (m_checkCacheCurrentPlayer != null)
-                m_checkCacheCurrentPlayer.Dispose();
-            if (m_checkCacheOtherPlayer != null)
-                m_checkCacheOtherPlayer.Dispose();
-            if((m_permanentCastlingRules != null))
-                m_permanentCastlingRules.Dispose();
+            m_fen?.Dispose();
+            m_transcriber?.Dispose();
+            m_transientCastlingRules?.Dispose();
+            m_fiftyMoveRule?.Dispose();
+            m_checkCacheCurrentPlayer?.Dispose();
+            m_checkCacheOtherPlayer?.Dispose();
+            m_permanentCastlingRules?.Dispose();
         }
 
         public void Dispose()

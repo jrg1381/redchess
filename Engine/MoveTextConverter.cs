@@ -58,9 +58,7 @@ namespace Redchess.Engine
 
         private string Promotion()
         {
-            return String.Format("{0}={1}",
-                PawnMove(),
-                m_moveToPlay.Promotion);
+            return $"{PawnMove()}={m_moveToPlay.Promotion}";
         }
 
         private string KingMove()
@@ -85,8 +83,7 @@ namespace Redchess.Engine
 
             if (m_moveToPlay.BoardBefore.GetContents(newLocation) != null || m_moveToPlay.BoardBefore.EnPassantTarget == newLocation)
             {
-                return String.Format("{0}x{1}", PieceColumn(piece), 
-                    LocationToLower(newLocation));
+                return $"{PieceColumn(piece)}x{LocationToLower(newLocation)}";
             }
 
             return LocationToLower(newLocation);
@@ -99,16 +96,10 @@ namespace Redchess.Engine
 
             if (m_moveToPlay.BoardBefore.GetContents(newLocation) != null)
             {
-                return String.Format("{0}{1}x{2}", 
-                    PieceSymbol(piece),
-                    DisambiguatorText,
-                    LocationToLower(newLocation));
+                return $"{PieceSymbol(piece)}{DisambiguatorText}x{LocationToLower(newLocation)}";
             }
 
-            return String.Format("{0}{1}{2}",
-                PieceSymbol(piece),
-                DisambiguatorText,
-                LocationToLower(newLocation));
+            return $"{PieceSymbol(piece)}{DisambiguatorText}{LocationToLower(newLocation)}";
         }
 
         private Task<string> DisambiguatorTask()
@@ -155,7 +146,7 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).X == piece.Position.X).
+            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && new Square(p).X == piece.Position.X).
                 Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
         }
 
@@ -164,7 +155,7 @@ namespace Redchess.Engine
             var piece = m_moveToPlay.MovedPiece;
             var newLocation = m_moveToPlay.Target;
 
-            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && (new Square(p)).Y == piece.Position.Y).
+            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && new Square(p).Y == piece.Position.Y).
                 Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
         }
 

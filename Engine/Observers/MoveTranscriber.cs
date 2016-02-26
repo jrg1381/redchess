@@ -12,7 +12,7 @@ namespace Redchess.Engine.Observers
 
         protected override void UpdateValue()
         {
-            Value = (new MoveTextConverter(m_previousState)).MoveAsText();
+            Value = new MoveTextConverter(m_previousState).MoveAsText();
         }
 
         public override void OnCompleted()

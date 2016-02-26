@@ -85,7 +85,7 @@ namespace Redchess.Engine.Structures
 
             while (dataCopy != 0)
             {
-                dataCopy &= (dataCopy - 1);
+                dataCopy &= dataCopy - 1;
                 ret++;
             }
 
