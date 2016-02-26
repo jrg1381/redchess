@@ -96,14 +96,24 @@ namespace Redchess.Engine.Observers
         {
             m_data = CastlingOptions.None;
 
-            if (fenSubstring.Contains("K"))
-                m_data |= CastlingOptions.WhiteKingSide;
-            if (fenSubstring.Contains("k"))
-                m_data |= CastlingOptions.BlackKingSide;
-            if (fenSubstring.Contains("Q"))
-                m_data |= CastlingOptions.WhiteQueenSide;
-            if (fenSubstring.Contains("q"))
-                m_data |= CastlingOptions.BlackQueenSide;
+            foreach (var c in fenSubstring)
+            {
+                switch (c)
+                {
+                    case 'K':
+                        m_data |= CastlingOptions.WhiteKingSide;
+                        break;
+                    case 'k':
+                        m_data |= CastlingOptions.BlackKingSide;
+                        break;
+                    case 'Q':
+                        m_data |= CastlingOptions.WhiteQueenSide;
+                        break;
+                    case 'q':
+                        m_data |= CastlingOptions.BlackQueenSide;
+                        break;
+                }
+            }
 
             DataIsCurrent = true;
         }
