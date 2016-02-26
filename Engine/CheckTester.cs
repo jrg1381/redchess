@@ -51,14 +51,14 @@ namespace Redchess.Engine
             // We need to use attacked squares because ReachableSquares includes squares reachable by castling
             return king.AttackedSquares(m_board)
                 .Select(m_board.GetContents)
-                .Any(p => p != null && p.Type == opponentKing);
+                .Any(p => p?.Type == opponentKing);
         }
 
         private bool PieceOnKingSquareCanTakeIdenticalOpponentPiece(IPiece fakePiece, PieceType opponentPieceType)
         {
             return fakePiece.ReachableSquares(m_board)
                 .Select(m_board.GetContents)
-                .Any(p => p != null && p.Type == opponentPieceType);
+                .Any(p => p?.Type == opponentPieceType);
         }
 
         private bool PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(IPiece fakePiece, PieceType opponentPieceType)
