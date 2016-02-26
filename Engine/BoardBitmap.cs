@@ -40,10 +40,7 @@ namespace Redchess.Engine
             m_setBits++;
         }
 
-        public int PieceCount
-        {
-            get { return m_setBits; }
-        }
+        public int PieceCount => m_setBits;
 
         public IEnumerable<Location> OccupiedSquares()
         {

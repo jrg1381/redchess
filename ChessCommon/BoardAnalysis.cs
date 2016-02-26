@@ -63,7 +63,7 @@ namespace RedChess.ChessCommon
         {
             unchecked
             {
-                var hashCode = (Analysis != null ? Analysis.GetHashCode() : 0);
+                var hashCode = Analysis?.GetHashCode() ?? 0;
                 hashCode = (hashCode*397) ^ BoardEvaluation;
                 hashCode = (hashCode*397) ^ (int) BoardEvaluationType;
                 return hashCode;

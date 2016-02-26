@@ -32,28 +32,26 @@ namespace Redchess.Engine.Observers
             // A white piece has moved, potentially taking the black rooks
             if (piece.Color == PieceColor.White)
             {
-                if (newLocation == Location.A8)
+                switch (newLocation)
                 {
+                    case Location.A8:
                         castlingFlags &= ~CastlingOptions.BlackQueenSide;
-                }
-
-                if (newLocation == Location.H8)
-                {
-                    castlingFlags &= ~CastlingOptions.BlackKingSide;
+                        break;
+                    case Location.H8:
+                        castlingFlags &= ~CastlingOptions.BlackKingSide;
+                        break;
                 }
             }
-
-            // A black piece has moved, potentially taking the white rooks
-            if (piece.Color == PieceColor.Black)
+            else // A black piece has moved, potentially taking the white rooks
             {
-                if (newLocation == Location.A1)
+                switch (newLocation)
                 {
-                    castlingFlags &= ~CastlingOptions.WhiteQueenSide;
-                }
-
-                if (newLocation == Location.H1)
-                {
-                    castlingFlags &= ~CastlingOptions.WhiteKingSide;
+                    case Location.A1:
+                        castlingFlags &= ~CastlingOptions.WhiteQueenSide;
+                        break;
+                    case Location.H1:
+                        castlingFlags &= ~CastlingOptions.WhiteKingSide;
+                        break;
                 }
             }
 
