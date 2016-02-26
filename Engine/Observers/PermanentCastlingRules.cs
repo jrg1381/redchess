@@ -29,30 +29,32 @@ namespace Redchess.Engine.Observers
             var originalLocation = piece.Position.Location;
             var newLocation = Board.PreviousState.Target;
 
-            // A white piece has moved, potentially taking the black rooks
-            if (piece.Color == PieceColor.White)
+            switch (piece.Color)
             {
-                switch (newLocation)
-                {
-                    case Location.A8:
-                        castlingFlags &= ~CastlingOptions.BlackQueenSide;
-                        break;
-                    case Location.H8:
-                        castlingFlags &= ~CastlingOptions.BlackKingSide;
-                        break;
-                }
-            }
-            else // A black piece has moved, potentially taking the white rooks
-            {
-                switch (newLocation)
-                {
-                    case Location.A1:
-                        castlingFlags &= ~CastlingOptions.WhiteQueenSide;
-                        break;
-                    case Location.H1:
-                        castlingFlags &= ~CastlingOptions.WhiteKingSide;
-                        break;
-                }
+                case PieceColor.Black: // A black piece has moved, potentially taking the white rooks
+                    switch (newLocation)
+                    {
+                        case Location.A1:
+                            castlingFlags &= ~CastlingOptions.WhiteQueenSide;
+                            break;
+                        case Location.H1:
+                            castlingFlags &= ~CastlingOptions.WhiteKingSide;
+                            break;
+                    }
+                    break;
+                case PieceColor.White: // A white piece has moved, potentially taking the black rooks
+                    switch (newLocation)
+                    {
+                        case Location.A8:
+                            castlingFlags &= ~CastlingOptions.BlackQueenSide;
+                            break;
+                        case Location.H8:
+                            castlingFlags &= ~CastlingOptions.BlackKingSide;
+                            break;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             // A rook or a king has moved, update castling options accordingly
