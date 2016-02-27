@@ -74,7 +74,7 @@ Chess.prototype.respondToDrawOffer = function(accepted) {
 };
 
 Chess.prototype.showDrawOffer = function (message) {
-    // Ignore your own draw offer coming back at you. TODO: show acknowledgement that it was sent
+    // Ignore your own draw offer coming back at you.
     if (message.Data.DrawOfferedBy !== this.currentPlayerColor) {
         $("#drawoffer").show();
     } else {
