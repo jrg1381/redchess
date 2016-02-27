@@ -8,11 +8,11 @@ namespace Chess.Controllers
     {
         private readonly IGameManager m_GameManager;
         private readonly ICurrentUser m_IdentityProvider;
-        private static readonly MruCache<Tuple<int, string>, bool> m_Cache;
+        private static readonly MruCache<Tuple<int, string>, bool> s_Cache;
 
         static AccessValidator()
         {
-            m_Cache = new MruCache<Tuple<int, string>, bool>(25);
+            s_Cache = new MruCache<Tuple<int, string>, bool>(25);
         }
 
         public AccessValidator(IGameManager gameManager, ICurrentUser identityProvider)
@@ -27,7 +27,7 @@ namespace Chess.Controllers
             bool allowed;
             var gameIdUserIdTuple = new Tuple<int, string>(gameId, userName);
 
-            if (m_Cache.TryGet(gameIdUserIdTuple, out allowed))
+            if (s_Cache.TryGet(gameIdUserIdTuple, out allowed))
             {
                 return allowed;
             }
@@ -37,7 +37,7 @@ namespace Chess.Controllers
                 if (game == null)
                     return false;
                 allowed = (game.UserProfileBlack.UserName == userName || game.UserProfileWhite.UserName == userName);
-                m_Cache.Set(gameIdUserIdTuple, allowed);
+                s_Cache.Set(gameIdUserIdTuple, allowed);
                 return allowed;
             }
         }
