@@ -39,11 +39,17 @@
 
         var theChess = new Chess(gameId, currentPlayerColor, myClock, analysisBoard);
 
-        $("#resignbutton").click(function() {
+        $("#resignbutton").click(function(event) {
+            if ($(event.target).attr("disabled") === "disabled") {
+                return;
+            }
             theChess.resignGame();
         });
 
-        $("#drawbutton").click(function() {
+        $("#drawbutton").click(function(event) {
+            if ($(event.target).attr("disabled") === "disabled") {
+                return;
+            }
             theChess.offerDraw();
         });
 
