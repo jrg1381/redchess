@@ -298,7 +298,8 @@ namespace RedChess.WebEngine.Repositories
             newBoard = m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
             if (status.GameOver())
             {
-                PostGameEndedMessage(gameId);
+                var winnerUserId = status == GameStatus.CheckmateBlackWins ? newBoard.UserIdBlack : newBoard.UserIdWhite;
+                EndGameWithMessage(gameId, status.FriendlyName(), winnerUserId);
             }
 
             return true;
