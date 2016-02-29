@@ -295,11 +295,18 @@ namespace RedChess.WebEngine.Repositories
 
             var fen = m_board.ToFen();
             var status = m_board.StatusForBoard();
-            newBoard = m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status);
+            int? winnerUserId = null;
+
+            if (status == GameStatus.CheckmateBlackWins)
+                winnerUserId = gameDto.UserIdBlack;
+            if (status == GameStatus.CheckmateWhiteWins)
+                winnerUserId = gameDto.UserIdWhite;
+
+            newBoard = m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status, winnerUserId);
+
             if (status.GameOver())
             {
-                var winnerUserId = status == GameStatus.CheckmateBlackWins ? newBoard.UserIdBlack : newBoard.UserIdWhite;
-                EndGameWithMessage(gameId, status.FriendlyName(), winnerUserId);
+                PostGameEndedMessage(gameId);
             }
 
             return true;

@@ -7,13 +7,15 @@ GO
 
 
 
+
 CREATE PROCEDURE [dbo].[RecordMove]
     @gameId INT ,
     @fen NVARCHAR(MAX) ,
     @lastMove NVARCHAR(10) ,
     @moveReceived DATETIME,
 	@status NVARCHAR(32),
-	@gameOver BIT
+	@gameOver BIT,
+	@userIdWinner INT
 AS
     BEGIN
         SET XACT_ABORT ON;
@@ -25,7 +27,8 @@ AS
                 MoveNumber = MoveNumber + 1,
 				Status = @status,
 				CompletionDate = CASE(@gameOver) WHEN 1 THEN @moveReceived ELSE CompletionDate END,
-				GameOver = @gameOver
+				GameOver = @gameOver,
+				UserIdWinner = @userIdWinner
         WHERE   GameId = @gameId;
 
         INSERT  INTO dbo.HistoryEntries
@@ -65,7 +68,9 @@ AS
     END;
 
 
+
 GO
+
 
 
 

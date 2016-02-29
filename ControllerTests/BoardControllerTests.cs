@@ -678,7 +678,8 @@ namespace RedChess.ControllerTests
                 Arg<string>.Is.Anything, 
                 Arg<string>.Is.Anything, 
                 Arg<DateTime>.Is.Anything, 
-                Arg<GameStatus>.Is.Anything));
+                Arg<GameStatus>.Is.Anything,
+                Arg<int>.Is.Anything));
 
             fakeRepo.VerifyAllExpectations();
 
@@ -796,7 +797,8 @@ namespace RedChess.ControllerTests
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0"),
                 Arg<string>.Is.Equal("e4"),
                 Arg<DateTime>.Is.Equal(firstMoveMade), 
-                Arg<GameStatus>.Is.Anything))
+                Arg<GameStatus>.Is.Anything,
+                Arg<int>.Is.Anything))
                 .Return(
                 new FakeGame().WithFen("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0")
                 );
@@ -805,7 +807,8 @@ namespace RedChess.ControllerTests
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0"),
                 Arg<string>.Is.Equal("d3"),
                 Arg<DateTime>.Is.Equal(secondMoveMade), 
-                Arg<GameStatus>.Is.Anything))
+                Arg<GameStatus>.Is.Anything,
+                Arg<int>.Is.Anything))
                 .Return(
                 new FakeGame().WithFen("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0")
                 );
