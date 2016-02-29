@@ -163,11 +163,6 @@ namespace RedChess.WebEngine.Repositories
             return pgnBuilder.ToString();
         }
 
-        public void SaveClock(IClock clock)
-        {
-            m_clockRepository.SaveClock(clock);
-        }
-
         public IClock Clock(int gameId)
         {
             return m_clockRepository.Clock(gameId);
