@@ -286,16 +286,21 @@ namespace RedChess.WebEngine.Repositories
             }
 
             // We post the move with the old fen and movenumber
-            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, LongAlgebraicMove(move));
+            PostGameToQueueForBestMove(gameId, gameDto.MoveNumber, gameDto.Fen, move);
 
             var fen = m_board.ToFen();
             var status = m_board.StatusForBoard();
             int? winnerUserId = null;
 
-            if (status == GameStatus.CheckmateBlackWins)
-                winnerUserId = gameDto.UserIdBlack;
-            if (status == GameStatus.CheckmateWhiteWins)
-                winnerUserId = gameDto.UserIdWhite;
+            switch (status)
+            {
+                case GameStatus.CheckmateBlackWins:
+                    winnerUserId = gameDto.UserIdBlack;
+                    break;
+                case GameStatus.CheckmateWhiteWins:
+                    winnerUserId = gameDto.UserIdWhite;
+                    break;
+            }
 
             newBoard = m_gameRepository.RecordMove(gameId, fen, m_board.LastMove(), moveReceivedAt, status, winnerUserId);
 
@@ -319,9 +324,9 @@ namespace RedChess.WebEngine.Repositories
             Task.Run(() => m_queueManager.PostGameEndedMessage(gameId));
         }
 
-        private void PostGameToQueueForBestMove(int gameId, int moveId, string fen, string move)
+        private void PostGameToQueueForBestMove(int gameId, int moveId, string fen, ChessMove move)
         {
-            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, moveId, fen, move));
+            Task.Run(() => m_queueManager.PostRequestBestMoveMessage(gameId, moveId, fen, LongAlgebraicMove(move)));
         }
 
         internal void EndGameWithMessage(GameDto gameDto, string message, int? userIdWinner = null)
