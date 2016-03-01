@@ -56,7 +56,7 @@ namespace Redchess.Engine.Observers
         /// <returns></returns>
         private bool SquaresNotAttacked(PieceColor color, IEnumerable<Location> squares)
         {
-            return squares.All(s => !Board.KingInCheck(color, s));
+            return squares.All(s => !new CheckTester(color,s,Board).Check());
         }
 
         /// <summary>

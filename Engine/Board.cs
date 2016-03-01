@@ -290,18 +290,6 @@ namespace Redchess.Engine
             return SimpleBoard.Pieces(color);
         }
 
-        /// <summary>
-        ///     Returns true if a king of color <paramref name="colorOfKing" /> placed on <paramref name="kingPosition" /> would be
-        ///     in check
-        /// </summary>
-        /// <param name="colorOfKing"></param>
-        /// <param name="kingPosition"></param>
-        /// <returns></returns>
-        public bool KingInCheck(PieceColor colorOfKing, Location kingPosition)
-        {
-            return new CheckTester(colorOfKing, kingPosition, this).Check();
-        }
-
         private bool ValidMovesExist()
         {
             // Try the king first, because if we're doing a checkmate test, moving the king is the 
