@@ -184,6 +184,26 @@ namespace Redchess.EngineTests
             Assert.AreEqual("exd3", move, "Pawn move was not correctly converted to text");
         }
 
+        [TestCase(Location.D5,Location.E6,"dxe6")]
+        [TestCase(Location.D4, Location.E5, "dxe5")]
+        public void PawnTakesEnPassantWithApparentAmbiguity(Location start, Location end, string expectedMoveText)
+        {
+            m_emptyBoard.FromFen("K7/8/8/3Pp3/3P4/8/8/7k w - E6 0 1");
+
+            var moveDefinition = new BoardStateTransition
+            {
+                MovedPiece = m_emptyBoard.GetContents(start),
+                Target = end,
+                BoardBefore = new InteractiveBoard(m_emptyBoard)
+            };
+
+            m_emptyBoard.Move(moveDefinition.MovedPiece.Position.Location, moveDefinition.Target);
+            moveDefinition.BoardAfter = new InteractiveBoard(m_emptyBoard);
+            var converter = new MoveTextConverter(moveDefinition);
+            string move = converter.MoveAsText();
+            Assert.AreEqual(expectedMoveText, move, "Pawn move was not correctly converted to text");
+        }
+
         [Test]
         public void PieceMovesWithCheck()
         {
