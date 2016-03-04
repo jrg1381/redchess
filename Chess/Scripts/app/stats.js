@@ -12,7 +12,7 @@
             drawGraph(data);
             updateLastUpdated(data.LastUpdated);
 
-            $.getJSON("/api/Boards?$filter=gameOver%20eq%20true&$select=fen,movenumber,useridwinner,useridwhite")
+            $.getJSON("/api/Boards?$filter=gameOver%20eq%20true&$select=fen,movenumber,useridwinner,useridwhite,gameid")
                 .always(function() {
                     spinny.stopLogoSpinner();
                 })
@@ -37,6 +37,7 @@
                             o.winnerUserName = "";
                         }
 
+                        o.id = d.gameid;
                         o.moves = d.movenumber;
                         o.pieceCount = d.fen.split(" ")[0].replace(/[1-8]|\//g, "").length;
 
@@ -78,6 +79,9 @@ function drawVisualization(data) {
     var color = d3.scale.category10();
 
     var circleAttributes = circles
+        .on("click", function(d) {
+            window.open("/History/ShowMove/" + d.id, '_blank');
+        })
         .attr("cx", function(d) { return width/2 })
         .attr("cy", function(d) { return height/2 })
         .attr("r", function(d) { return 4; })
