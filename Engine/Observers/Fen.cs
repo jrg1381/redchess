@@ -15,7 +15,7 @@ namespace Redchess.Engine.Observers
 
             var counter = 0; // number of consecutive empty squares seen
             var index = 0; // number of squares seen so far (0-63)
-            var sb = new StringBuilder();
+            var sb = new StringBuilder(128);
 
             for(var y=7; y >= 0; y--)
             {
