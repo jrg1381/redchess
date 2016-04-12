@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace RedChess.ChessboardRenderer
 {
@@ -16,8 +17,15 @@ namespace RedChess.ChessboardRenderer
             if(widthInPixels < 1 || widthInPixels > 2048)
                 throw new ArgumentOutOfRangeException(nameof(widthInPixels));
 
-            var generator = new PngGenerator(m_BoardRenderingOptions);
-            generator.SaveDrawingToFile(fen, filename, widthInPixels);
+            var renderingThread = new Thread(() =>
+            {
+                var generator = new PngGenerator(m_BoardRenderingOptions);
+                generator.SaveDrawingToFile(fen, filename, widthInPixels);
+            });
+
+            renderingThread.SetApartmentState(ApartmentState.STA);
+            renderingThread.Start();
+            renderingThread.Join();
         }
     }
 }

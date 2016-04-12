@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using NUnit.Framework;
 
 namespace RedChess.ChessboardRenderer
@@ -12,7 +7,6 @@ namespace RedChess.ChessboardRenderer
     public class Tests
     {
         [Test]
-        [STAThread]
         public void RenderPng()
         {
             var options = new BoardRenderingOptions(Colors.DimGray, Colors.AntiqueWhite, Colors.SaddleBrown, Colors.Black);
