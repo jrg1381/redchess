@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using RedChess.ChessboardRenderer;
 
 
 namespace RedChess.ChessboardRenderer
@@ -13,19 +11,20 @@ namespace RedChess.ChessboardRenderer
     internal class PngGenerator
     {
         private readonly BoardRenderingOptions m_Options;
-        private readonly DrawingGroup m_DrawingGroup;
+        private DrawingGroup m_DrawingGroup;
         private bool m_RenderCompleted;
 
         internal PngGenerator(BoardRenderingOptions options)
         {
             m_Options = options;
-            m_DrawingGroup = new DrawingGroup();
         }
 
         private void RenderBoard(string fen)
         {
             if(m_RenderCompleted)
                 throw new InvalidOperationException("Cannot render twice");
+
+            m_DrawingGroup = new DrawingGroup();
 
             using (var context = m_DrawingGroup.Open())
             {
@@ -76,27 +75,6 @@ namespace RedChess.ChessboardRenderer
                     }
                 }
 
-                for (var i = 0; i < 8; i++)
-                {
-                    var offset = BoardDimensions.BorderWidth + i* BoardDimensions.SquareSize + BoardDimensions.SquareSize/ 2.0;
-
-                    context.DrawText(
-                        new FormattedText("ABCDEFGH"[i].ToString(),
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            new Typeface("Arial"),
-                            15,
-                            m_Options.TextBrush), new Point(offset, BoardDimensions.FullWidth - BoardDimensions.BorderWidth));
-
-                    context.DrawText(
-                        new FormattedText("87654321"[i].ToString(),
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            new Typeface("Arial"),
-                            15,
-                            m_Options.TextBrush), new Point(BoardDimensions.BorderWidth/ 2.0, offset));
-                }
-
                 var pieceRenderer = new PieceRenderer(context);
                 var fenReader = new FenReader(fen);
 
@@ -113,8 +91,13 @@ namespace RedChess.ChessboardRenderer
                 RenderBoard(fen);
             }
 
+            WriteScaledBitmapToFile(fileName, outputWidthInPixels);
+        }
+
+        private void WriteScaledBitmapToFile(string fileName, int outputWidthInPixels)
+        {
             var drawingVisual = new DrawingVisual();
-            var scale = outputWidthInPixels / m_DrawingGroup.Bounds.Width;
+            var scale = outputWidthInPixels/m_DrawingGroup.Bounds.Width;
 
             using (var drawingContext = drawingVisual.RenderOpen())
             {
