@@ -84,17 +84,17 @@ namespace RedChess.ChessboardRenderer
             m_RenderCompleted = true;
         }
 
-        internal void SaveDrawingToFile(string fen, string fileName, int outputWidthInPixels)
+        internal void SaveDrawingToStream(string fen, Stream outputStream, int outputWidthInPixels)
         {
             if (!m_RenderCompleted)
             {
                 RenderBoard(fen);
             }
 
-            WriteScaledBitmapToFile(fileName, outputWidthInPixels);
+            WriteScaledBitmapToFile(outputStream, outputWidthInPixels);
         }
 
-        private void WriteScaledBitmapToFile(string fileName, int outputWidthInPixels)
+        private void WriteScaledBitmapToFile(Stream outputStream, int outputWidthInPixels)
         {
             var drawingVisual = new DrawingVisual();
             var scale = outputWidthInPixels/m_DrawingGroup.Bounds.Width;
@@ -113,11 +113,7 @@ namespace RedChess.ChessboardRenderer
 
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
-
-            using (var stream = new FileStream(fileName, FileMode.Create))
-            {
-                encoder.Save(stream);
-            }
+            encoder.Save(outputStream);
         }
     }
 }
