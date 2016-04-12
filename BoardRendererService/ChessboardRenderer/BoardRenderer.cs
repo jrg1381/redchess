@@ -24,6 +24,7 @@ namespace RedChess.ChessboardRenderer
             });
 
             renderingThread.SetApartmentState(ApartmentState.STA);
+            renderingThread.IsBackground = true;
             renderingThread.Start();
             renderingThread.Join();
         }

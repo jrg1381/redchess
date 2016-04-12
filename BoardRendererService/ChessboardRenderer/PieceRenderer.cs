@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Resources;
 using System.Windows;
 using System.Windows.Baml2006;
@@ -13,14 +15,13 @@ namespace RedChess.ChessboardRenderer
     {
         private readonly DrawingContext m_Context;
         private readonly ResourceManager m_ResourceManager;
-        private readonly Dictionary<string, VisualBrush> m_Brushes; 
+        private readonly Dictionary<string, VisualBrush> m_Brushes;
 
         internal PieceRenderer(DrawingContext context)
         {
+            m_Brushes = new Dictionary<string, VisualBrush>();
             m_Context = context;
             m_ResourceManager = new ResourceManager("Redchess.ChessboardRenderer.g", GetType().Assembly);
-
-            m_Brushes = new Dictionary<string, VisualBrush>();
         }
 
         private static string MapPieceToResourceName(string pieceName)
@@ -58,9 +59,23 @@ namespace RedChess.ChessboardRenderer
             return vb;
         }
 
+        /// <summary>
+        /// Render a piece on the drawing context at specified position 
+        /// </summary>
+        /// <param name="pieceName">piecename in FEN style (e.g. p = black pawn, Q = white queen)</param>
+        /// <param name="x">Between 0 and 7</param>
+        /// <param name="y">Between 0 and 7</param>
         internal void RenderPiece(string pieceName, int x, int y)
         {
+            if(x < 0 || x > 7)
+                throw new ArgumentOutOfRangeException(nameof(x));
+            if(y < 0 || y > 7)
+                throw new ArgumentOutOfRangeException(nameof(y));
+            if(pieceName.Length != 1 || !"rnkqpbRNKQPB".Contains(pieceName))
+                throw new ArgumentOutOfRangeException(nameof(pieceName), "Invalid piece identifier");
+
             var brush = ReadPiece(pieceName);
+
             m_Context.DrawRectangle(
                 brush,
                 null,
