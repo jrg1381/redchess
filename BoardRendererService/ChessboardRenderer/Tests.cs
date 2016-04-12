@@ -16,9 +16,8 @@ namespace RedChess.ChessboardRenderer
         public void RenderPng()
         {
             var options = new BoardRenderingOptions(Colors.DimGray, Colors.AntiqueWhite, Colors.SaddleBrown);
-            var renderer = new PngGenerator(options);
-            renderer.RenderBoard();
-            renderer.SaveDrawingToFile(@"c:\users\james.gilmore\out.png", 600);
+            var boardRenderer = new BoardRenderer(options);
+            boardRenderer.SaveDrawingToFile(@"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1", @"c:\users\james.gilmore\out.png", 600);
         }
     }
 }

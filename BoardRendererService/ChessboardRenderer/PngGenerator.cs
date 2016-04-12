@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -13,15 +14,19 @@ namespace RedChess.ChessboardRenderer
     {
         private readonly BoardRenderingOptions m_Options;
         private readonly DrawingGroup m_DrawingGroup;
+        private bool m_RenderCompleted;
 
-        public PngGenerator(BoardRenderingOptions options)
+        internal PngGenerator(BoardRenderingOptions options)
         {
             m_Options = options;
             m_DrawingGroup = new DrawingGroup();
         }
 
-        public void RenderBoard()
+        private void RenderBoard(string fen)
         {
+            if(m_RenderCompleted)
+                throw new InvalidOperationException("Cannot render twice");
+
             using (var context = m_DrawingGroup.Open())
             {
                 context.DrawRectangle(m_Options.SurroundBrush, null,
@@ -66,16 +71,23 @@ namespace RedChess.ChessboardRenderer
                 }
 
                 var pieceRenderer = new PieceRenderer(context);
-                var fenReader = new FenReader("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+                var fenReader = new FenReader(fen);
 
                 fenReader.CallForPieces(pieceRenderer.RenderPiece);
             }
+
+            m_RenderCompleted = true;
         }
 
-        public void SaveDrawingToFile(string fileName, int outputWidthInPixels)
+        internal void SaveDrawingToFile(string fen, string fileName, int outputWidthInPixels)
         {
+            if (!m_RenderCompleted)
+            {
+                RenderBoard(fen);
+            }
+
             var drawingVisual = new DrawingVisual();
-            var scale = (double)outputWidthInPixels / m_DrawingGroup.Bounds.Width;
+            var scale = outputWidthInPixels / m_DrawingGroup.Bounds.Width;
 
             using (var drawingContext = drawingVisual.RenderOpen())
             {
