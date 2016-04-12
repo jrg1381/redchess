@@ -29,10 +29,33 @@ namespace RedChess.ChessboardRenderer
 
             using (var context = m_DrawingGroup.Open())
             {
-                context.DrawRectangle(m_Options.SurroundBrush, null,
-                    new Rect(new Point(0, 0), new Point(BoardDimensions.FullWidth, BoardDimensions.FullWidth)));
-                context.DrawRectangle(m_Options.BlackSquaresBrush, null,
-                    new Rect(new Point(BoardDimensions.BorderWidth, BoardDimensions.BorderWidth), new Vector(BoardDimensions.BoardWidth, BoardDimensions.BoardWidth)));
+                context.DrawRectangle(
+                    m_Options.SurroundBrush,
+                    null,
+                    new Rect(
+                        new Point(0, 0),
+                        new Point(
+                            BoardDimensions.FullWidth,
+                            BoardDimensions.FullWidth)
+                        )
+                    );
+
+                context.DrawRectangle(
+                    m_Options.BlackSquaresBrush,
+                    null,
+                    new Rect(
+                        new Point(
+                            BoardDimensions.BorderWidth,
+                            BoardDimensions.BorderWidth
+                            ),
+                        new Vector(
+                            BoardDimensions.BoardWidth,
+                            BoardDimensions.BoardWidth
+                            )
+                        )
+                    );
+
+                var oneSquare = new Vector(BoardDimensions.SquareSize, BoardDimensions.SquareSize);
 
                 for (var x = 0; x < 8; x++)
                 {
@@ -41,8 +64,12 @@ namespace RedChess.ChessboardRenderer
                         if ((x + y)%2 == 0)
                         {
                             var rectangle = new Rect(
-                                new Point(x* BoardDimensions.SquareSize + BoardDimensions.BorderWidth, y* BoardDimensions.SquareSize + BoardDimensions.BorderWidth),
-                                new Vector(BoardDimensions.SquareSize, BoardDimensions.SquareSize));
+                                new Point(
+                                    x*BoardDimensions.SquareSize + BoardDimensions.BorderWidth,
+                                    y*BoardDimensions.SquareSize + BoardDimensions.BorderWidth
+                                    ),
+                                oneSquare
+                                );
 
                             context.DrawRectangle(m_Options.WhiteSquaresBrush, null, rectangle);
                         }
@@ -59,7 +86,7 @@ namespace RedChess.ChessboardRenderer
                             FlowDirection.LeftToRight,
                             new Typeface("Arial"),
                             15,
-                            Brushes.Black), new Point(offset, BoardDimensions.FullWidth - BoardDimensions.BorderWidth));
+                            m_Options.TextBrush), new Point(offset, BoardDimensions.FullWidth - BoardDimensions.BorderWidth));
 
                     context.DrawText(
                         new FormattedText("87654321"[i].ToString(),
@@ -67,7 +94,7 @@ namespace RedChess.ChessboardRenderer
                             FlowDirection.LeftToRight,
                             new Typeface("Arial"),
                             15,
-                            Brushes.Black), new Point(BoardDimensions.BorderWidth/ 2.0, offset));
+                            m_Options.TextBrush), new Point(BoardDimensions.BorderWidth/ 2.0, offset));
                 }
 
                 var pieceRenderer = new PieceRenderer(context);
