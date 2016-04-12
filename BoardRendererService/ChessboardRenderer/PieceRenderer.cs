@@ -52,8 +52,7 @@ namespace RedChess.ChessboardRenderer
             canvas.Arrange(new Rect(0, 0, 256, 256));
             canvas.UpdateLayout();
 
-            var vb = new VisualBrush(canvas);
-            vb.Stretch = Stretch.Uniform;
+            var vb = new VisualBrush(canvas) {Stretch = Stretch.Uniform};
             m_Brushes.Add(pieceName, vb);
 
             return vb;

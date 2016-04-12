@@ -91,10 +91,10 @@ namespace RedChess.ChessboardRenderer
                 RenderBoard(fen);
             }
 
-            WriteScaledBitmapToFile(outputStream, outputWidthInPixels);
+            WriteScaledBitmapToStream(outputStream, outputWidthInPixels);
         }
 
-        private void WriteScaledBitmapToFile(Stream outputStream, int outputWidthInPixels)
+        private void WriteScaledBitmapToStream(Stream outputStream, int outputWidthInPixels)
         {
             var drawingVisual = new DrawingVisual();
             var scale = outputWidthInPixels/m_DrawingGroup.Bounds.Width;
