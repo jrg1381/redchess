@@ -14,11 +14,11 @@ namespace RedChess.ChessboardRenderer
         internal Brush WhiteSquaresBrush => new SolidColorBrush(m_WhiteSquares);
         internal Brush SurroundBrush => new SolidColorBrush(m_SurroundColor);
 
-        public BoardRenderingOptions(Color blackSquares, Color whiteSquares, Color surroundColor)
+        public BoardRenderingOptions(string blackSquares, string whiteSquares, string surroundColor)
         {
-            m_BlackSquares = blackSquares;
-            m_WhiteSquares = whiteSquares;
-            m_SurroundColor = surroundColor;
+            m_BlackSquares = (Color)ColorConverter.ConvertFromString(blackSquares);
+            m_WhiteSquares = (Color)ColorConverter.ConvertFromString(whiteSquares);
+            m_SurroundColor = (Color)ColorConverter.ConvertFromString(surroundColor);
         }
     }
 }

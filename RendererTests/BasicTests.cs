@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Windows.Media;
 using NUnit.Framework;
+using RedChess.ChessboardRenderer;
 
-namespace RedChess.ChessboardRenderer
+namespace RedChess.RendererTests
 {
     [TestFixture]
-    public class Tests
+    public class BasicTests
     {
         private const string c_OutputFilename = "out.png";
         private const string c_FenData = @"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0";
@@ -43,7 +43,7 @@ namespace RedChess.ChessboardRenderer
         [Test]
         public void RenderPng()
         {
-            var options = new BoardRenderingOptions(Colors.DimGray, Colors.AntiqueWhite, Colors.SaddleBrown);
+            var options = new BoardRenderingOptions("DimGray", "AntiqueWhite", "SaddleBrown");
             WriteOutputFile(options, 600);
 
             Assert.AreEqual("nmwdiKD2xwfTJxinMkMjB//VYY7jUwlqHaqKuz4tgAM=", FileChecksum(c_OutputFilename), "Image checksum not as expected");
@@ -52,7 +52,7 @@ namespace RedChess.ChessboardRenderer
         [Test]
         public void RenderPngAlternativeColors()
         {
-            var options = new BoardRenderingOptions(Colors.DimGray, Colors.AntiqueWhite, Colors.Blue);
+            var options = new BoardRenderingOptions("DimGray", "AntiqueWhite", "Blue");
             WriteOutputFile(options, 800);
 
             Assert.AreEqual("RgsUvUztmq3y9/gjSIoIwN64Pb4BwZKpcgijwXa0zFc=", FileChecksum(c_OutputFilename), "Image checksum not as expected");
