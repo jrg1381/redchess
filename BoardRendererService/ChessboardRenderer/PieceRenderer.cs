@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Resources;
 using System.Windows;
 using System.Windows.Baml2006;
@@ -47,12 +46,16 @@ namespace RedChess.ChessboardRenderer
                 writer.WriteNode(reader);
             }
 
-            var canvas = writer.Result as Viewbox;
-            canvas.Measure(new Size(256, 256));
-            canvas.Arrange(new Rect(0, 0, 256, 256));
-            canvas.UpdateLayout();
+            var viewbox = writer.Result as Viewbox;
 
-            var vb = new VisualBrush(canvas) {Stretch = Stretch.Uniform};
+            if(viewbox == null)
+                throw new InvalidCastException("Piece XAML not castable to Viewbox");
+
+            viewbox.Measure(new Size(256, 256));
+            viewbox.Arrange(new Rect(0, 0, 256, 256));
+            viewbox.UpdateLayout();
+
+            var vb = new VisualBrush(viewbox) {Stretch = Stretch.Uniform};
             m_Brushes.Add(pieceName, vb);
 
             return vb;

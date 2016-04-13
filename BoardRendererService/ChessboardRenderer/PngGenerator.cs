@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -24,6 +23,9 @@ namespace RedChess.ChessboardRenderer
             if(m_RenderCompleted)
                 throw new InvalidOperationException("Cannot render twice");
 
+            // We have to do this here rather than in the constructor because later WPF methods only work when
+            // called in an STA thread, and WPF objects (like this one) are only usable in the thread 
+            // they're created on.
             m_DrawingGroup = new DrawingGroup();
 
             using (var context = m_DrawingGroup.Open())
