@@ -61,9 +61,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessboardRenderer\Redchess.ChessboardRenderer.csproj">
+    <ProjectReference Include="..\ChessboardRenderer\ChessboardRenderer.csproj">
       <Project>{df9e2e72-8ea6-4b31-8153-08856c602812}</Project>
-      <Name>Redchess.ChessboardRenderer</Name>
+      <Name>ChessboardRenderer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

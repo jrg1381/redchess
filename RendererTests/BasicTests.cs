@@ -57,5 +57,16 @@ namespace RedChess.RendererTests
 
             Assert.AreEqual("RgsUvUztmq3y9/gjSIoIwN64Pb4BwZKpcgijwXa0zFc=", FileChecksum(c_OutputFilename), "Image checksum not as expected");
         }
+
+        [TestCase(2049)]
+        [TestCase(0)]
+        public void CannotRenderOverlargeImage(int size)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var options = new BoardRenderingOptions("DimGray", "AntiqueWhite", "Blue");
+                WriteOutputFile(options, size);
+            });
+        }
     }
 }

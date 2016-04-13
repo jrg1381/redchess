@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalysisWorker", "AnalysisW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalysisEngineTests", "AnalysisEngineTests\AnalysisEngineTests.csproj", "{075B3457-8479-46A0-8457-6CD044C41241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redchess.ChessboardRenderer", "ChessboardRenderer\Redchess.ChessboardRenderer.csproj", "{DF9E2E72-8EA6-4B31-8153-08856C602812}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessboardRenderer", "ChessboardRenderer\ChessboardRenderer.csproj", "{DF9E2E72-8EA6-4B31-8153-08856C602812}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RendererTests", "RendererTests\RendererTests.csproj", "{5A30BA0E-75CB-47DF-8F99-9DE4F0DE53E2}"
 EndProject
