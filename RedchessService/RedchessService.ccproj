@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AnalysisWorkerContent" />
-    <Folder Include="RendererWebRoleContent\" />
+    <Folder Include="RendererWebRoleContent" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="AnalysisWorkerContent\diagnostics.wadcfgx" />
