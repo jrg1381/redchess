@@ -70,6 +70,12 @@
     <Content Include="AnalysisWorkerContent\NDP46-KB3045560-Web.exe">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="RendererWebRoleContent\install.cmd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="RendererWebRoleContent\NDP46-KB3045560-Web.exe">
+      <SubType>Content</SubType>
+    </Content>
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
