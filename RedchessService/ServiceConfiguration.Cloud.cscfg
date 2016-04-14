@@ -8,4 +8,10 @@
     </ConfigurationSettings>
     <Instances count="1" />
   </Role>
+  <Role name="RendererWebRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
+    </ConfigurationSettings>
+  </Role>
 </ServiceConfiguration>

@@ -39,9 +39,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AnalysisWorkerContent" />
+    <Folder Include="RendererWebRoleContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="AnalysisWorkerContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="RendererWebRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AnalysisWorker\AnalysisWorker.csproj">
@@ -50,6 +52,14 @@
       <Private>True</Private>
       <RoleType>Worker</RoleType>
       <RoleName>AnalysisWorker</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
+    <ProjectReference Include="..\RendererWebRole\RendererWebRole.csproj">
+      <Name>RendererWebRole</Name>
+      <Project>{bed9f53c-f361-425c-a686-22de5cc6c04a}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>RendererWebRole</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
   </ItemGroup>
