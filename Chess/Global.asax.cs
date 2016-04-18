@@ -20,6 +20,8 @@ namespace Chess
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			AuthConfig.RegisterAuth();
+            // Handled in web.config instead
+            System.Web.Helpers.AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
 
 #if !DEBUG
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
