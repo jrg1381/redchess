@@ -68,7 +68,7 @@ namespace RedChess.PgnProcessor
                 answer = PieceType.Pawn;
         }
 
-        private Tuple<Location,Location> MakePieceMove(PieceType pieceType, Location targetLocation, string disambiguation, string debug)
+        private ChessMove MakePieceMove(PieceType pieceType, Location targetLocation, string disambiguation, string promotedPiece)
         {
             m_moveCount++;
 
@@ -98,10 +98,10 @@ namespace RedChess.PgnProcessor
                 }
 
                 if (m_board.Move(location, targetLocation))
-                    return new Tuple<Location,Location>(location, targetLocation);
+                    return new ChessMove(location, targetLocation, promotedPiece);
             }
 
-            throw new InvalidDataException(debug);
+            throw new InvalidDataException();
         }
         
         private PieceType CalculatePieceTypeFromSymbol(char symbol)
@@ -190,22 +190,24 @@ namespace RedChess.PgnProcessor
                 }
             }
 
-            string debugMessage = String.Format("Line {0} Position {1} : {2}", token.Line, token.Column, tokenText);
-
-            var moveMade = MakePieceMove(movingPiece, targetLocation, disambiguationToken, debugMessage);
-
-            if (m_board.IsAwaitingPromotionDecision())
+            try
             {
-                m_board.PromotePiece(promotedPiece);
-                tokenText += "=" + promotedPiece;
+                var moveMade = MakePieceMove(movingPiece, targetLocation, disambiguationToken, promotedPiece);
+
+                if (m_board.IsAwaitingPromotionDecision())
+                {
+                    m_board.PromotePiece(promotedPiece);
+                    tokenText += "=" + promotedPiece;
+                }
+
+                tokenText += checkOrMate;
+                m_onMoveAction?.Invoke(m_board.ToFen(), tokenText, moveMade);
             }
-
-            tokenText += checkOrMate;
-
-            if (m_onMoveAction == null)
-                return;
-
-            m_onMoveAction(m_board.ToFen(), tokenText, new ChessMove(moveMade.Item1, moveMade.Item2,promotedPiece));
+            catch (InvalidOperationException e)
+            {
+                e.Data["ParseError"] = $"Line {token.Line} Position {token.Column} : {tokenText}";
+                throw;
+            }
         }
     }
 }
