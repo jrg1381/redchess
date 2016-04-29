@@ -14,15 +14,15 @@ namespace RedChess.ChessCommon
         /// <summary>
         /// Score in centipawns or mate-in-N moves. Positive indicates white advantage.
         /// </summary>
-        public int BoardEvaluation { get; private set; }
+        public int BoardEvaluation { get; }
         /// <summary>
         /// Kind of evaluation (mate in N or centipawn)
         /// </summary>
-        public EvaluationType BoardEvaluationType { get; private set; }
+        public EvaluationType BoardEvaluationType { get; }
         /// <summary>
         /// The best line computed by the engine
         /// </summary>
-        public IList<IHistoryEntry> Analysis { get; private set; }
+        public IList<IHistoryEntry> Analysis { get; }
 
         public ProcessedAnalysis(IBoardAnalysis boardAnalysis)
         {
@@ -60,7 +60,7 @@ namespace RedChess.ChessCommon
             {
                 var hashCode = BoardEvaluation;
                 hashCode = (hashCode*397) ^ (int) BoardEvaluationType;
-                hashCode = (hashCode*397) ^ (Analysis != null ? Analysis.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (Analysis?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

@@ -4,30 +4,31 @@ namespace RedChess.ChessCommon
 {
     public class MruCache<TK,TV>
     {
-        private readonly Dictionary<TK, TV> m_data;
-        private readonly TK[] m_orderedKeys;
-        private int m_index = 0;
-        private readonly int m_size;
+        private readonly Dictionary<TK, TV> m_Data;
+        private readonly TK[] m_OrderedKeys;
+        private int m_Index;
+        private readonly int m_Size;
 
         public MruCache(int size)
         {
-            m_data = new Dictionary<TK, TV>(size);
-            m_orderedKeys = new TK[size];
-            m_size = size;
+            m_Data = new Dictionary<TK, TV>(size);
+            m_OrderedKeys = new TK[size];
+            m_Size = size;
+            m_Index = 0;
         }
 
         public void Set(TK key, TV value)
         {
-            if (m_orderedKeys[m_index] != null)
-                m_data.Remove(m_orderedKeys[m_index]);
-            m_data[key] = value;
-            m_orderedKeys[m_index] = key;
-            m_index = (m_index + 1) % m_size;
+            if (m_OrderedKeys[m_Index] != null)
+                m_Data.Remove(m_OrderedKeys[m_Index]);
+            m_Data[key] = value;
+            m_OrderedKeys[m_Index] = key;
+            m_Index = (m_Index + 1) % m_Size;
         }
 
         public bool TryGet(TK key, out TV value)
         {
-            return m_data.TryGetValue(key, out value);
+            return m_Data.TryGetValue(key, out value);
         }
     }
 }
