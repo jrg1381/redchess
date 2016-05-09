@@ -9,9 +9,9 @@ namespace RedChess.WebEngine.Repositories
     [Table("Boards")]
     public class GameDto
     {
-        private DateTime m_creationDate;
-        private DateTime? m_completionDate;
-        private bool m_gameOver;
+        private DateTime m_CreationDate;
+        private DateTime? m_CompletionDate;
+        private bool m_GameOver;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,7 +22,7 @@ namespace RedChess.WebEngine.Repositories
         public int UserIdBlack { get; set; }
         public int? UserIdWinner { get; set; }
         public string Status { get; set; }
-        public bool GameOver { get { return m_gameOver; } set { m_gameOver |= value; } }
+        public bool GameOver { get { return m_GameOver; } set { m_GameOver |= value; } }
         public string Fen { get; set; }
         public string LastMove { get; set; }
         
@@ -35,14 +35,14 @@ namespace RedChess.WebEngine.Repositories
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationDate
         {
-            get { return new DateTime(m_creationDate.Ticks, DateTimeKind.Utc); }
-            set { m_creationDate = value; }
+            get { return new DateTime(m_CreationDate.Ticks, DateTimeKind.Utc); }
+            set { m_CreationDate = value; }
         }
 
         public DateTime CompletionDate
         {
-            get { return m_completionDate.HasValue ? new DateTime(m_completionDate.Value.Ticks, DateTimeKind.Utc) : SqlDateTime.MinValue.Value; }
-            set { m_completionDate = value; }
+            get { return m_CompletionDate.HasValue ? new DateTime(m_CompletionDate.Value.Ticks, DateTimeKind.Utc) : SqlDateTime.MinValue.Value; }
+            set { m_CompletionDate = value; }
         }
 
         [ForeignKey("UserIdWhite")]

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
-using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
 {

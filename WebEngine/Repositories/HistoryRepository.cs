@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using Microsoft.Azure;
 using RedChess.WebEngine.Models;

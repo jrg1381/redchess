@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using RedChess.ChessCommon.Enumerations;
 using RedChess.ChessCommon.Interfaces;
 
