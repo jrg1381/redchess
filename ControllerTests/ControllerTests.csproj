@@ -115,8 +115,9 @@
     <Compile Include="AnalysisSimplifierTests.cs" />
     <Compile Include="BoardControllerTests.cs" />
     <Compile Include="ChessApiTests.cs" />
-    <Compile Include="FakeGame.cs" />
+    <Compile Include="GameBuilder.cs" />
     <Compile Include="HistoryControllerTests.cs" />
+    <Compile Include="IdentityProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyUtils.cs" />
     <Compile Include="StatsControllerTests.cs" />

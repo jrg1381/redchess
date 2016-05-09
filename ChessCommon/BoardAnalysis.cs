@@ -39,7 +39,7 @@ namespace RedChess.ChessCommon
 
         public override string ToString()
         {
-            return String.Format("{0}:{1}:{2}", BoardEvaluation, BoardEvaluationType, Analysis);
+            return $"{BoardEvaluation}:{BoardEvaluationType}:{Analysis}";
         }
 
         public override bool Equals(object obj)
@@ -57,17 +57,6 @@ namespace RedChess.ChessCommon
         protected bool Equals(BoardAnalysis other)
         {
             return string.Equals(Analysis, other.Analysis) && BoardEvaluation == other.BoardEvaluation && BoardEvaluationType == other.BoardEvaluationType;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Analysis?.GetHashCode() ?? 0;
-                hashCode = (hashCode*397) ^ BoardEvaluation;
-                hashCode = (hashCode*397) ^ (int) BoardEvaluationType;
-                return hashCode;
-            }
         }
     }
 }

@@ -25,30 +25,30 @@ namespace RedChess.ControllerTests
     {
         private GameDto GetFakeGamePromotionImminent(int id)
         {
-            return new FakeGame().WithId(id).WithFen("8/P7/8/8/8/8/8/K6k w - - 0");
+            return new GameBuilder().WithId(id).WithFen("8/P7/8/8/8/8/8/K6k w - - 0");
         }
 
         private BoardController GetControllerForFakeEndedGameAsUser(string userName, out IGameRepository repository)
         {
-            GameDto fakeGame = new FakeGame().GameOver();
+            GameDto fakeGame = new GameBuilder().GameOver();
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            repository = FakeGame.MockRepoForGame(fakeGame);
+            repository = GameBuilder.MockRepoForGame(fakeGame);
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor(userName));
+            return new BoardController(manager, IdentityProviders.StubIdentityProviderFor(userName));
         }
 
         private BoardController GetControllerForFakeGameWithQueue(out IQueueManager fakeQueueManager, bool expectPostMessage)
         {
-            GameDto fakeGame = new FakeGame();
+            GameDto fakeGame = new GameBuilder();
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            var repository = FakeGame.StubRepoForDefaultFakeGame();
+            var repository = GameBuilder.StubRepoForDefaultFakeGame();
             fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
             if (expectPostMessage)
             {
@@ -60,12 +60,12 @@ namespace RedChess.ControllerTests
             }
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor("clive"));
+            return new BoardController(manager, IdentityProviders.StubIdentityProviderFor("clive"));
         }
 
         private IGameManager GetGameManagerForFakeGameWithQueueExpectingGameOver(int gameId, out IQueueManager fakeQueueManager, AutoResetEvent autoResetEvent)
         {
-            GameDto fakeGame = new FakeGame().WithId(gameId);
+            GameDto fakeGame = new GameBuilder().WithId(gameId);
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
@@ -84,7 +84,7 @@ namespace RedChess.ControllerTests
 
         private IGameManager GetGameManagerForFakeGameWithQueueAndClaimableDraw(int gameId, out IQueueManager fakeQueueManager, AutoResetEvent autoResetEvent)
         {
-            GameDto fakeGame = new FakeGame().WithId(gameId).WithClaimableDraw(true);
+            GameDto fakeGame = new GameBuilder().WithId(gameId).WithClaimableDraw(true);
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
@@ -103,29 +103,29 @@ namespace RedChess.ControllerTests
 
         private BoardController GetControllerForFakeGameWithQueueExpectingGameOver(IGameManager manager)
         {
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor("clive"));
+            return new BoardController(manager, IdentityProviders.StubIdentityProviderFor("clive"));
         }
 
 
         private BoardController GetControllerForFakeGameWithQueueWithPromotionImminent(out IQueueManager fakeQueueManager)
         {
-            var fakeGame = GetFakeGamePromotionImminent(FakeGame.DefaultGameId);
+            var fakeGame = GetFakeGamePromotionImminent(GameBuilder.DefaultGameId);
 
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
             var repository = MockRepository.GenerateMock<IGameRepository>();
-            repository.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(fakeGame);
+            repository.Expect(x => x.FindById(GameBuilder.DefaultGameId)).Return(fakeGame);
             fakeQueueManager = MockRepository.GenerateMock<IQueueManager>();
             fakeQueueManager.Expect(x => x.PostRequestBestMoveMessage(10, 0, fakeGame.Fen, "a7a8q")).Repeat.Once();
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, fakeQueueManager);
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor("clive"));
+            return new BoardController(manager, IdentityProviders.StubIdentityProviderFor("clive"));
         }
 
         private GameDto GetFakeGameAboutToPromote()
         {
-            return new FakeGame().WithFen("k6K/8/8/8/8/8/7p/8 b - - 0");
+            return new GameBuilder().WithFen("k6K/8/8/8/8/8/7p/8 b - - 0");
         }
 
         [Test]
@@ -149,12 +149,12 @@ namespace RedChess.ControllerTests
         [Test]
         public void DeleteRedirectsToDeleteConfirmationPage()
         {
-            GameDto fakeGame = new FakeGame();
-            var fakeRepo = FakeGame.MockRepoForGame(fakeGame);
+            GameDto fakeGame = new GameBuilder();
+            var fakeRepo = GameBuilder.MockRepoForGame(fakeGame);
             var manager = new GameManager(fakeRepo);
             var expectedModel = new GameBinding(fakeGame, manager);
             var controller = new BoardController(manager);
-            var result = controller.Delete(FakeGame.DefaultGameId) as ViewResult;
+            var result = controller.Delete(GameBuilder.DefaultGameId) as ViewResult;
             Assert.AreEqual(expectedModel.GameId, (result.Model as GameBinding).GameId, "Incorrect model passed to view");
             // Not sure this really tests the redirection to the correct view
             fakeRepo.VerifyAllExpectations();
@@ -175,7 +175,7 @@ namespace RedChess.ControllerTests
             var fakeUserProfileRepo = MockRepository.GenerateStub<IUserProfileRepository>();
             fakeUserProfileRepo.Expect(x => x.FindAll()).Return(users);
             var manager = new GameManager(userProfileRepository:fakeUserProfileRepo);
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor("CaptainDoom", myUserId));
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor("CaptainDoom", myUserId));
             var result = controller.Create() as ViewResult;
             CollectionAssert.AreEquivalent(users.Where(x => x.UserId != myUserId), result.Model as IEnumerable<UserProfile>, "List of users shown in Create is wrong");
         }
@@ -183,8 +183,8 @@ namespace RedChess.ControllerTests
         [Test]
         public void GetDetailsCallsFindById()
         {
-            GameDto fakeGame = new FakeGame().WithId(40);
-            var fakeRepo = FakeGame.MockRepoForGame(fakeGame);
+            GameDto fakeGame = new GameBuilder().WithId(40);
+            var fakeRepo = GameBuilder.MockRepoForGame(fakeGame);
             var manager = new GameManager(fakeRepo);
             var controller = new BoardController(manager);
             var result = controller.Details(40) as ViewResult;
@@ -240,7 +240,7 @@ namespace RedChess.ControllerTests
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
             var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor("james"));
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor("james"));
             controller.DeleteConfirmed(40);
 
             fakeRepo.VerifyAllExpectations();
@@ -252,13 +252,13 @@ namespace RedChess.ControllerTests
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
-            fakeRepo.Expect(x => x.Delete(FakeGame.DefaultGameId));
+            fakeRepo.Expect(x => x.Delete(GameBuilder.DefaultGameId));
             fakeRepo.Expect(x => x.Delete(20));
             fakeRepo.Expect(x => x.Delete(30));
             fakeRepo.Expect(x => x.Delete(40));
             var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor("james"));
-            controller.DeleteMultiple(FakeGame.DefaultGameId + ",20,30,40");
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor("james"));
+            controller.DeleteMultiple(GameBuilder.DefaultGameId + ",20,30,40");
 
             fakeRepo.VerifyAllExpectations();
         }
@@ -267,10 +267,10 @@ namespace RedChess.ControllerTests
         public void DeleteMultipleCannotDeleteArbitraryGames()
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
-            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(new FakeGame());
-            fakeRepo.AssertWasNotCalled(x => x.Delete(FakeGame.DefaultGameId));
+            fakeRepo.Expect(x => x.FindById(GameBuilder.DefaultGameId)).Return(new GameBuilder());
+            fakeRepo.AssertWasNotCalled(x => x.Delete(GameBuilder.DefaultGameId));
             var manager = new GameManager(fakeRepo);
-            var identityProvider = FakeGame.StubIdentityProviderFor("captain_bogus");
+            var identityProvider = IdentityProviders.StubIdentityProviderFor("captain_bogus");
             var controller = new BoardController(manager, identityProvider);
             var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, identityProvider, "DeleteMultiple");
             Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
@@ -282,12 +282,12 @@ namespace RedChess.ControllerTests
         {
             var fakeRepo = MockRepository.GenerateStrictMock<IGameRepository>();
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
-            fakeRepo.Expect(x => x.Delete(FakeGame.DefaultGameId));
+            fakeRepo.Expect(x => x.Delete(GameBuilder.DefaultGameId));
 
             var manager = new GameManager(fakeRepo, null, null, null, null, null, fakeStatsRepo);
 
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor("james"));
-            controller.DeleteMultiple(FakeGame.DefaultGameId.ToString());
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor("james"));
+            controller.DeleteMultiple(GameBuilder.DefaultGameId.ToString());
 
             fakeRepo.VerifyAllExpectations();
         }
@@ -297,10 +297,10 @@ namespace RedChess.ControllerTests
         [TestCase("jason", 3, false)]
         public void MayManipulateBoardTest(string userName, int userId, bool expectedResult)
         {
-            var fakeRepo = FakeGame.StubRepoForDefaultFakeGame();
+            var fakeRepo = GameBuilder.StubRepoForDefaultFakeGame();
             var manager = new GameManager(fakeRepo);
-            var accessValidator = new AccessValidator(manager, FakeGame.StubIdentityProviderFor(userName, userId));
-            bool ok = accessValidator.MayAccess(FakeGame.DefaultGameId);
+            var accessValidator = new AccessValidator(manager, IdentityProviders.StubIdentityProviderFor(userName, userId));
+            bool ok = accessValidator.MayAccess(GameBuilder.DefaultGameId);
             fakeRepo.VerifyAllExpectations();
             Assert.AreEqual(expectedResult, ok,"Permission to use board was not as expected");
         }
@@ -311,10 +311,10 @@ namespace RedChess.ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
-            repository = FakeGame.StubRepoForDefaultFakeGame();
+            repository = GameBuilder.StubRepoForDefaultFakeGame();
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, null, null, null, fakeStatsRepo);
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor(userName, userId));
+            return new BoardController(manager, IdentityProviders.StubIdentityProviderFor(userName, userId));
         }
 
         private ClockController GetClockControllerForFakeGameAsUser(ICurrentUser identity, out IGameRepository repository)
@@ -322,7 +322,7 @@ namespace RedChess.ControllerTests
             var fakeHistoryRepo = MockRepository.GenerateMock<IHistoryRepository>();
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
 
-            repository = FakeGame.StubRepoForDefaultFakeGame();
+            repository = GameBuilder.StubRepoForDefaultFakeGame();
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo);
             return new ClockController(manager, identity);
@@ -334,22 +334,22 @@ namespace RedChess.ControllerTests
             var fakeClockRepo = MockRepository.GenerateMock<IClockRepository>();
             var fakeStatsRepo = MockRepository.GenerateMock<IStatsRepository>();
 
-            repository = FakeGame.StubRepoForDefaultFakeGame();
-            fakeClockRepo.Expect(x => x.Clock(FakeGame.DefaultGameId)).Return(new Clock());
+            repository = GameBuilder.StubRepoForDefaultFakeGame();
+            fakeClockRepo.Expect(x => x.Clock(GameBuilder.DefaultGameId)).Return(new Clock());
 
             var manager = new GameManager(repository, fakeHistoryRepo, fakeClockRepo, null, null, null, fakeStatsRepo);
-            return new BoardController(manager, FakeGame.StubIdentityProviderFor(userName));
+            return new BoardController(manager, IdentityProviders.StubIdentityProviderFor(userName));
         }
 
         [TestCase(false, "FAIL")]
         [TestCase(true, "DRAW")]
         public void ClaimDrawReturnsCorrectStatus(bool drawClaimable, string expectedStatus)
         {
-            GameDto fakeGame = new FakeGame().WithClaimableDraw(drawClaimable);
+            GameDto fakeGame = new GameBuilder().WithClaimableDraw(drawClaimable);
             var manager = MockRepository.GenerateStub<IGameManager>();
-            manager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
+            manager.Expect(x => x.FetchGame(GameBuilder.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
             var controller = new BoardController(manager);
-            var result = controller.ClaimDraw(FakeGame.DefaultGameId) as JsonResult;
+            var result = controller.ClaimDraw(GameBuilder.DefaultGameId) as JsonResult;
             var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
             Assert.AreEqual(expectedStatus, status, $"Expected {expectedStatus} status when claiming draw");
         }
@@ -373,7 +373,7 @@ namespace RedChess.ControllerTests
             var fakeHistoryRepo = MockRepository.GenerateStub<IHistoryRepository>();
 
             var manager = new GameManager(fakeGameRepo, fakeHistoryRepo, userProfileRepository: fakeUserRepo);
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor("james"));
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor("james"));
 
             var result = controller.Create("77", timeLimit, true) as JsonResult;
             fakeGameRepo.VerifyAllExpectations();
@@ -407,7 +407,7 @@ namespace RedChess.ControllerTests
             var fakeClockRepo = MockRepository.GenerateStub<IClockRepository>();
 
             var manager = new GameManager(fakeGameRepo, fakeHistoryRepo, fakeClockRepo, userProfileRepository: fakeUserRepo);
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor("james"));
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor("james"));
 
             controller.Create(opponentUserId.ToString(), "5", useClock, playAsBlack, analysisBoard);
             fakeGameRepo.VerifyAllExpectations();
@@ -435,7 +435,7 @@ namespace RedChess.ControllerTests
         public void CannotStartClockOnOtherUsersGames(string userName, int userId, bool allowed)
         {
             IGameRepository fakeRepo;
-            var fakeIdentity = FakeGame.StubIdentityProviderFor(userName, userId);
+            var fakeIdentity = IdentityProviders.StubIdentityProviderFor(userName, userId);
             var controller = GetClockControllerForFakeGameAsUser(fakeIdentity, out fakeRepo);
             var manager = new GameManager(fakeRepo);
             var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, fakeIdentity, "PlayerReady");
@@ -460,13 +460,13 @@ namespace RedChess.ControllerTests
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, userId, out fakeRepo);
             var manager = new GameManager(fakeRepo);
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, FakeGame.StubIdentityProviderFor(userName, userId), "DeleteConfirmed");
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, IdentityProviders.StubIdentityProviderFor(userName, userId), "DeleteConfirmed");
 
             if (allowed)
             {
                 Assert.IsTrue(actionAllowedByFilter, "Filter should not have denied us");
-                fakeRepo.Expect(x => x.Delete(FakeGame.DefaultGameId)).Repeat.Once();
-                controller.DeleteConfirmed(FakeGame.DefaultGameId);
+                fakeRepo.Expect(x => x.Delete(GameBuilder.DefaultGameId)).Repeat.Once();
+                controller.DeleteConfirmed(GameBuilder.DefaultGameId);
             }
             else
             {
@@ -488,7 +488,7 @@ namespace RedChess.ControllerTests
         {
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             var httpRequest = MockRepository.GenerateMock<HttpRequestBase>();
-            var theParams = new NameValueCollection {["id"] = FakeGame.DefaultGameId.ToString()};
+            var theParams = new NameValueCollection {["id"] = GameBuilder.DefaultGameId.ToString()};
             httpRequest.Expect(x => x.Params).Return(theParams);
             httpContext.Expect(x => x.Request).Return(httpRequest);
 
@@ -514,7 +514,7 @@ namespace RedChess.ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUser(userName, userId, out fakeRepo);
-            var g = fakeRepo.FindById(FakeGame.DefaultGameId);
+            var g = fakeRepo.FindById(GameBuilder.DefaultGameId);
 
             if (allowed)
             {
@@ -525,7 +525,7 @@ namespace RedChess.ControllerTests
                 fakeRepo.Expect(x => x.AddOrUpdate(g)).Repeat.Never();
             }
 
-            controller.PlayMove(FakeGame.DefaultGameId, "E2", "E4", "");
+            controller.PlayMove(GameBuilder.DefaultGameId, "E2", "E4", "");
             fakeRepo.VerifyAllExpectations();
         }
         
@@ -540,8 +540,8 @@ namespace RedChess.ControllerTests
 
             var manager = new GameManager(fakeRepo,null, null, null, null, null, fakeStatsRepo);
 
-            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, FakeGame.StubIdentityProviderFor(userName, userId), "Resign");
-            var g = fakeRepo.FindById(FakeGame.DefaultGameId);
+            var actionAllowedByFilter = PerformParticipantFiltering(controller, manager, IdentityProviders.StubIdentityProviderFor(userName, userId), "Resign");
+            var g = fakeRepo.FindById(GameBuilder.DefaultGameId);
 
             if (allowed)
             {
@@ -553,7 +553,7 @@ namespace RedChess.ControllerTests
                 Assert.IsFalse(actionAllowedByFilter, "Filter should have denied us");
             }
 
-            controller.Resign(FakeGame.DefaultGameId);
+            controller.Resign(GameBuilder.DefaultGameId);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
 
@@ -579,7 +579,7 @@ namespace RedChess.ControllerTests
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeEndedGameAsUser("clive", out fakeRepo);
             fakeRepo.Expect(x => x.AddOrUpdate(null)).Repeat.Never();
-            var result = controller.PlayMove(FakeGame.DefaultGameId, "E2", "E4", "");
+            var result = controller.PlayMove(GameBuilder.DefaultGameId, "E2", "E4", "");
             dynamic res = ((System.Web.Mvc.JsonResult) (result)).Data;
             Assert.AreEqual("{ fen = rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0, message = , status = FAIL }", res.ToString(), "Result was not as expected");
             fakeRepo.VerifyAllExpectations();
@@ -591,9 +591,9 @@ namespace RedChess.ControllerTests
         {
             IGameRepository fakeRepo;
             var controller = GetControllerForFakeGameAsUserWithClock("james", out fakeRepo);
-            var g = fakeRepo.FindById(FakeGame.DefaultGameId);
+            var g = fakeRepo.FindById(GameBuilder.DefaultGameId);
 
-            controller.TimedOut(FakeGame.DefaultGameId, message, timedOutColor);
+            controller.TimedOut(GameBuilder.DefaultGameId, message, timedOutColor);
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.AddOrUpdate(g));
             if (args.Count > 0)
@@ -616,9 +616,9 @@ namespace RedChess.ControllerTests
         public void PlayingMoveOnDeletedBoardIsError()
         {
             var fakeManager = MockRepository.GenerateStub<IGameManager>();
-            fakeManager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(null);
+            fakeManager.Expect(x => x.FetchGame(GameBuilder.DefaultGameId)).Return(null);
             var controller = new BoardController(fakeManager);
-            var result = controller.PlayMove(FakeGame.DefaultGameId, "H2", "H1", "") as JsonResult;
+            var result = controller.PlayMove(GameBuilder.DefaultGameId, "H2", "H1", "") as JsonResult;
             var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
             Assert.AreEqual("AUTH", status, "Expected AUTH status when playing on deleted board");
         }
@@ -628,13 +628,13 @@ namespace RedChess.ControllerTests
         {
             const string canaryValue = "DoobyDoobyDoo";
 
-            GameDto fakeGame = new FakeGame().WithStatus(canaryValue);
+            GameDto fakeGame = new GameBuilder().WithStatus(canaryValue);
             var manager = MockRepository.GenerateStub<IGameManager>();
             manager.Expect(x => x.IsUsersTurn(Arg<IGameBinding>.Is.Anything, Arg<string>.Is.Equal("clive"))).Return(true);
-            manager.Expect(x => x.FetchGame(FakeGame.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
+            manager.Expect(x => x.FetchGame(GameBuilder.DefaultGameId)).Return(new GameBinding(fakeGame, manager));
 
             manager.Expect(x => x.Move(
-                Arg<int>.Is.Equal(FakeGame.DefaultGameId),
+                Arg<int>.Is.Equal(GameBuilder.DefaultGameId),
                 Arg<Location>.Is.Equal(Location.A1),
                 Arg<Location>.Is.Equal(Location.A2),
                 Arg<string>.Is.Anything,
@@ -642,8 +642,8 @@ namespace RedChess.ControllerTests
                 out Arg<GameDto>.Out(fakeGame).Dummy))
                 .Return(false);
 
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId));
-            var result = controller.PlayMove(FakeGame.DefaultGameId, "A1", "A2", "") as JsonResult;
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor(fakeGame.UserProfileWhite.UserName, fakeGame.UserProfileWhite.UserId));
+            var result = controller.PlayMove(GameBuilder.DefaultGameId, "A1", "A2", "") as JsonResult;
             var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
             Assert.AreEqual("FAIL", status, "Expected FAIL status when playing bad move");
             var message = PropertyUtils.ExtractPropertyValue<string>(result, "message");
@@ -659,7 +659,7 @@ namespace RedChess.ControllerTests
         {
             IGameRepository repo;
             var controller = GetControllerForFakeGameAsUser("clive", 27, out repo);
-            var result = controller.PlayMove(FakeGame.DefaultGameId, start, end, "") as JsonResult;
+            var result = controller.PlayMove(GameBuilder.DefaultGameId, start, end, "") as JsonResult;
             var status = PropertyUtils.ExtractPropertyValue<string>(result, "status");
             Assert.AreEqual("FAIL", status, $"Expected FAIL status when playing bogus moves {start}->{end}");
         }
@@ -669,10 +669,10 @@ namespace RedChess.ControllerTests
         {
             var fakeGame = GetFakeGameAboutToPromote();
 
-            var fakeRepo = FakeGame.MockRepoForGame(fakeGame);
+            var fakeRepo = GameBuilder.MockRepoForGame(fakeGame);
             var manager = new GameManager(fakeRepo);
-            var controller = new BoardController(manager, FakeGame.StubIdentityProviderFor(fakeGame.UserProfileBlack.UserName, fakeGame.UserIdBlack));
-            controller.PlayMove(FakeGame.DefaultGameId, "H2", "H1", "Q");
+            var controller = new BoardController(manager, IdentityProviders.StubIdentityProviderFor(fakeGame.UserProfileBlack.UserName, fakeGame.UserIdBlack));
+            controller.PlayMove(GameBuilder.DefaultGameId, "H2", "H1", "Q");
 
             var args = fakeRepo.GetArgumentsForCallsMadeOn(a => a.RecordMove(Arg<int>.Is.Anything,
                 Arg<string>.Is.Anything, 
@@ -693,8 +693,8 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var gameManager = GetGameManagerForFakeGameWithQueueExpectingGameOver(FakeGame.DefaultGameId, out fakeQueueManager, reset);
-            gameManager.EndGameWithMessage(FakeGame.DefaultGameId, "Ended by test");
+            var gameManager = GetGameManagerForFakeGameWithQueueExpectingGameOver(GameBuilder.DefaultGameId, out fakeQueueManager, reset);
+            gameManager.EndGameWithMessage(GameBuilder.DefaultGameId, "Ended by test");
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -704,9 +704,9 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(FakeGame.DefaultGameId, out fakeQueueManager, reset);
+            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(GameBuilder.DefaultGameId, out fakeQueueManager, reset);
             var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
-            controller.Resign(FakeGame.DefaultGameId);
+            controller.Resign(GameBuilder.DefaultGameId);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -716,11 +716,11 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(FakeGame.DefaultGameId, out fakeQueueManager, reset);
+            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(GameBuilder.DefaultGameId, out fakeQueueManager, reset);
             var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
             // This relies on the known bug that a user can accept their own draw requests, if the UI allowed them
-            controller.OfferDraw(FakeGame.DefaultGameId);
-            controller.AgreeDraw(FakeGame.DefaultGameId, true);
+            controller.OfferDraw(GameBuilder.DefaultGameId);
+            controller.AgreeDraw(GameBuilder.DefaultGameId, true);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -730,9 +730,9 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var manager = GetGameManagerForFakeGameWithQueueAndClaimableDraw(FakeGame.DefaultGameId, out fakeQueueManager, reset);
+            var manager = GetGameManagerForFakeGameWithQueueAndClaimableDraw(GameBuilder.DefaultGameId, out fakeQueueManager, reset);
             var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
-            controller.ClaimDraw(FakeGame.DefaultGameId);
+            controller.ClaimDraw(GameBuilder.DefaultGameId);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -757,8 +757,8 @@ namespace RedChess.ControllerTests
         {
             IGameRepository repo;
             var controller = GetControllerForFakeGameAsUser("james", 23, out repo);
-            controller.OfferDraw(FakeGame.DefaultGameId);
-            return controller.AgreeDraw(FakeGame.DefaultGameId, drawAccepted) as JsonResult;
+            controller.OfferDraw(GameBuilder.DefaultGameId);
+            return controller.AgreeDraw(GameBuilder.DefaultGameId, drawAccepted) as JsonResult;
         }
 
         [Test]
@@ -766,9 +766,9 @@ namespace RedChess.ControllerTests
         {
             var reset = new AutoResetEvent(false);
             IQueueManager fakeQueueManager;
-            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(FakeGame.DefaultGameId, out fakeQueueManager, reset);
+            var manager = GetGameManagerForFakeGameWithQueueExpectingGameOver(GameBuilder.DefaultGameId, out fakeQueueManager, reset);
             var controller = GetControllerForFakeGameWithQueueExpectingGameOver(manager);
-            controller.DeleteConfirmed(FakeGame.DefaultGameId);
+            controller.DeleteConfirmed(GameBuilder.DefaultGameId);
             reset.WaitOne(TimeSpan.FromSeconds(5));
             fakeQueueManager.VerifyAllExpectations();
         }
@@ -782,8 +782,8 @@ namespace RedChess.ControllerTests
 
             /* Move number increment is implemented via a stored procedure */
             var fakeRepo = MockRepository.GenerateMock<IGameRepository>();
-            GameDto withMoveNumber = new FakeGame().WithMoveNumber(0);
-            fakeRepo.Expect(x => x.FindById(FakeGame.DefaultGameId)).Return(withMoveNumber);
+            GameDto withMoveNumber = new GameBuilder().WithMoveNumber(0);
+            fakeRepo.Expect(x => x.FindById(GameBuilder.DefaultGameId)).Return(withMoveNumber);
 
             var stubDateTimeProvider = MockRepository.GenerateStub<IDateTimeProvider>();
             stubDateTimeProvider.Expect(x => x.UtcNow).Do(new Func<DateTime>(() =>
@@ -793,31 +793,31 @@ namespace RedChess.ControllerTests
                 return secondMoveMade;
             }));
 
-            fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
+            fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(GameBuilder.DefaultGameId),
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0"),
                 Arg<string>.Is.Equal("e4"),
                 Arg<DateTime>.Is.Equal(firstMoveMade), 
                 Arg<GameStatus>.Is.Anything,
                 Arg<int>.Is.Anything))
                 .Return(
-                new FakeGame().WithFen("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0")
+                new GameBuilder().WithFen("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq E3 0")
                 );
 
-            fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(FakeGame.DefaultGameId),
+            fakeRepo.Expect(x => x.RecordMove(Arg<int>.Is.Equal(GameBuilder.DefaultGameId),
                 Arg<string>.Is.Equal("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0"),
                 Arg<string>.Is.Equal("d3"),
                 Arg<DateTime>.Is.Equal(secondMoveMade), 
                 Arg<GameStatus>.Is.Anything,
                 Arg<int>.Is.Anything))
                 .Return(
-                new FakeGame().WithFen("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0")
+                new GameBuilder().WithFen("rnbqkbnr/pppppppp/8/8/8/3P4/PPP1PPPP/RNBQKBNR b KQkq - 0")
                 );
 
             var manager = new GameManager(fakeRepo, dateTimeProvider: stubDateTimeProvider);
 
             // The board does not change between moves because it's a fake. Both moves are made by white.
-            manager.Move(FakeGame.DefaultGameId, Location.E2, Location.E4, "", firstMoveMade, out withMoveNumber);
-            manager.Move(FakeGame.DefaultGameId, Location.D2, Location.D3, "", secondMoveMade, out withMoveNumber);
+            manager.Move(GameBuilder.DefaultGameId, Location.E2, Location.E4, "", firstMoveMade, out withMoveNumber);
+            manager.Move(GameBuilder.DefaultGameId, Location.D2, Location.D3, "", secondMoveMade, out withMoveNumber);
 
             fakeRepo.VerifyAllExpectations();
         }

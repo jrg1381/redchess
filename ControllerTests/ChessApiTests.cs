@@ -21,20 +21,20 @@ namespace RedChess.ControllerTests
         {
             yield return new TestCaseData(
                 @"{""Moves"":[{""Fen"":""rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""""},{""Fen"":""rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""e4""}],""Description"":""clive vs james"",""IsParticipant"":true,""Analysis"":null,""GameOver"":false,""Status"":null,""Winner"":""""}",
-                new FakeGame().Build()
+                new GameBuilder().Build()
                 );
 
             yield return new TestCaseData(
                 @"{""Moves"":[{""Fen"":""rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""""},{""Fen"":""rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""e4""}],""Description"":""clive vs james"",""IsParticipant"":true,""Analysis"":null,""GameOver"":true,""Status"":null,""Winner"":""""}",
-                new FakeGame().GameOver().Build()
+                new GameBuilder().GameOver().Build()
                 );
             yield return new TestCaseData(
                 @"{""Moves"":[{""Fen"":""rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""""},{""Fen"":""rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""e4""}],""Description"":""clive vs james"",""IsParticipant"":true,""Analysis"":null,""GameOver"":true,""Status"":null,""Winner"":""w""}",
-                new FakeGame().WhiteWins().Build()
+                new GameBuilder().WhiteWins().Build()
                 );
             yield return new TestCaseData(
                 @"{""Moves"":[{""Fen"":""rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""""},{""Fen"":""rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0"",""Move"":""e4""}],""Description"":""clive vs james"",""IsParticipant"":true,""Analysis"":null,""GameOver"":true,""Status"":null,""Winner"":""b""}",
-                new FakeGame().BlackWins().Build()
+                new GameBuilder().BlackWins().Build()
                 );
         }
 
@@ -48,7 +48,7 @@ namespace RedChess.ControllerTests
 
             mockManager.Expect(x => x.FetchGame(gameDto.GameId)).Return(gameBinding);
             mockManager.Expect(x => x.FindAllMoves(Arg<int>.Is.Equal(gameDto.GameId))).Return(historyEntries);
-            var controller = new ChessApiController(mockManager, FakeGame.StubIdentityProviderFor(gameDto.UserProfileWhite.UserName, gameDto.UserProfileWhite.UserId));
+            var controller = new ChessApiController(mockManager, IdentityProviders.StubIdentityProviderFor(gameDto.UserProfileWhite.UserName, gameDto.UserProfileWhite.UserId));
             var result = controller.Moves(gameDto.GameId) as JsonResult<ExpandoObject>;
             dynamic d = result.Content;
             mockManager.VerifyAllExpectations();
@@ -63,7 +63,7 @@ namespace RedChess.ControllerTests
 
             mockManager.Expect(x => x.FetchGame(Arg<int>.Is.Anything)).Return(null);
             mockManager.Expect(x => x.FindAllMoves(Arg<int>.Is.Anything)).Return(Enumerable.Empty<HistoryEntry>());
-            var controller = new ChessApiController(mockManager, FakeGame.StubIdentityProviderFor("james"));
+            var controller = new ChessApiController(mockManager, IdentityProviders.StubIdentityProviderFor("james"));
             var result = controller.Moves(1234) as StatusCodeResult;
             mockManager.VerifyAllExpectations();
             Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, "Expected 404 when game does not exist");
@@ -76,7 +76,7 @@ namespace RedChess.ControllerTests
                 new HistoryEntry()
                 {
                     Fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
-                    GameId = FakeGame.DefaultGameId,
+                    GameId = GameBuilder.DefaultGameId,
                     HistoryId = 0,
                     Move = "",
                     MoveNumber = 1
@@ -84,7 +84,7 @@ namespace RedChess.ControllerTests
                 new HistoryEntry()
                 {
                     Fen = "rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0",
-                    GameId = FakeGame.DefaultGameId,
+                    GameId = GameBuilder.DefaultGameId,
                     HistoryId = 1,
                     Move = "e4",
                     MoveNumber = 2

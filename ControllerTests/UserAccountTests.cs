@@ -19,7 +19,7 @@ namespace RedChess.ControllerTests
 
         private ICurrentUser IdentityProvider()
         {
-            return FakeGame.StubIdentityProviderFor(c_username);
+            return IdentityProviders.StubIdentityProviderFor(c_username);
         }
 
         [Test]
