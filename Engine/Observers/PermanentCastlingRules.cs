@@ -20,7 +20,7 @@ namespace Redchess.Engine.Observers
 
         protected override void UpdateValue()
         {
-            var castlingFlags = m_data;
+            var castlingFlags = Data;
 
             if (Board.PreviousState == null)
                 return;
@@ -86,7 +86,7 @@ namespace Redchess.Engine.Observers
                     break;
             }
 
-            m_data = castlingFlags;
+            Data = castlingFlags;
         }
 
         /// <summary>
@@ -96,23 +96,23 @@ namespace Redchess.Engine.Observers
         /// <param name="fenSubstring"></param>
         internal void UpdateFromFen(string fenSubstring)
         {
-            m_data = CastlingOptions.None;
+            Data = CastlingOptions.None;
 
             foreach (var c in fenSubstring)
             {
                 switch (c)
                 {
                     case 'K':
-                        m_data |= CastlingOptions.WhiteKingSide;
+                        Data |= CastlingOptions.WhiteKingSide;
                         break;
                     case 'k':
-                        m_data |= CastlingOptions.BlackKingSide;
+                        Data |= CastlingOptions.BlackKingSide;
                         break;
                     case 'Q':
-                        m_data |= CastlingOptions.WhiteQueenSide;
+                        Data |= CastlingOptions.WhiteQueenSide;
                         break;
                     case 'q':
-                        m_data |= CastlingOptions.BlackQueenSide;
+                        Data |= CastlingOptions.BlackQueenSide;
                         break;
                 }
             }

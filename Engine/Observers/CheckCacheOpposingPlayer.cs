@@ -10,7 +10,7 @@ namespace Redchess.Engine.Observers
 
         protected override void UpdateValue()
         {
-            m_data = new CheckTester(~Board.CurrentTurn, KingPosition(~Board.CurrentTurn), Board).Check();
+            Data = new CheckTester(~Board.CurrentTurn, KingPosition(~Board.CurrentTurn), Board).Check();
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Redchess.Engine.Observers
     abstract class AbstractBoardObserver<T> : IObserver<IBoardExtended>, IDisposable
     {
         protected readonly IBoardExtended Board;
-        private readonly IDisposable m_unsubscriber;
+        private readonly IDisposable m_Unsubscriber;
         protected bool DataIsCurrent;
-        protected T m_data;
+        protected T Data;
 
         protected abstract void UpdateValue();
 
@@ -19,17 +19,17 @@ namespace Redchess.Engine.Observers
             get
             {
                 if (DataIsCurrent)
-                    return m_data;
+                    return Data;
 
                 UpdateValue();
                 DataIsCurrent = true;
 
-                return m_data;
+                return Data;
             }
 
             protected set 
             { 
-                m_data = value;
+                Data = value;
                 DataIsCurrent = true;
             }
         }
@@ -37,7 +37,7 @@ namespace Redchess.Engine.Observers
         protected AbstractBoardObserver(IBoardExtended board)
         {
             Board = board;
-            m_unsubscriber = Board.Subscribe(this);
+            m_Unsubscriber = Board.Subscribe(this);
         }
 
         public virtual void OnError(Exception error)
@@ -55,7 +55,7 @@ namespace Redchess.Engine.Observers
 
         public virtual void Dispose()
         {
-            m_unsubscriber.Dispose();
+            m_Unsubscriber.Dispose();
         }
 
         protected Location KingPosition(PieceColor colorOfKing)
@@ -68,7 +68,7 @@ namespace Redchess.Engine.Observers
 
         public void ForceUpdate(T newValue)
         {
-            m_data = newValue;
+            Data = newValue;
             DataIsCurrent = true;
         }
     }

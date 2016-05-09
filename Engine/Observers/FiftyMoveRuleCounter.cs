@@ -26,7 +26,7 @@ namespace Redchess.Engine.Observers
             if (Board.PreviousState.BoardBefore.GetContents(Board.PreviousState.Target) != null)
                 Value = -1;
 
-            m_data++;
+            Data++;
         }
     }
 }

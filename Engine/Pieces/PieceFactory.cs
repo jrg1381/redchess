@@ -1,4 +1,3 @@
-using System;
 using RedChess.ChessCommon.Enumerations;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Pieces.Black;

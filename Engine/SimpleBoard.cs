@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RedChess.ChessCommon;
@@ -11,16 +10,16 @@ namespace Redchess.Engine
 {
     public sealed class SimpleBoard
     {
-        private IBoardBitmap m_blackPieces;
-        private IBoardBitmap m_whitePieces;
-        private IPiece [] m_squareContents;
+        private IBoardBitmap m_BlackPieces;
+        private IBoardBitmap m_WhitePieces;
+        private IPiece [] m_SquareContents;
 
         internal SimpleBoard(bool isEmpty)
         {
-            m_squareContents = new IPiece[64];
+            m_SquareContents = new IPiece[64];
 
-            m_whitePieces = new BoardBitmap();
-            m_blackPieces = new BoardBitmap();
+            m_WhitePieces = new BoardBitmap();
+            m_BlackPieces = new BoardBitmap();
 
             if (isEmpty) return;
 
@@ -28,8 +27,8 @@ namespace Redchess.Engine
             {
                 foreach (var loc in PieceData.InitialPieceConfiguration(pieceType))
                 {
-                    m_whitePieces.Add(loc);
-                    m_squareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);
+                    m_WhitePieces.Add(loc);
+                    m_SquareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);
                 }
             }
 
@@ -37,15 +36,15 @@ namespace Redchess.Engine
             {
                 foreach (var loc in PieceData.InitialPieceConfiguration(pieceType))
                 {
-                    m_blackPieces.Add(loc);
-                    m_squareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);
+                    m_BlackPieces.Add(loc);
+                    m_SquareContents[(int)loc] = PieceFactory.CreatePiece(pieceType, loc);
                 }
             }
         }
 
         internal IPiece GetContents(Location loc)
         {
-            return m_squareContents[(int)loc];
+            return m_SquareContents[(int)loc];
         }
 
         private void AddPiece(IPiece piece)
@@ -58,11 +57,11 @@ namespace Redchess.Engine
             }
             
             if(piece.Color == PieceColor.White)
-                m_whitePieces.Add(piece.Position.Location);
+                m_WhitePieces.Add(piece.Position.Location);
             else
-                m_blackPieces.Add(piece.Position.Location);
+                m_BlackPieces.Add(piece.Position.Location);
 
-            m_squareContents[(int)piece.Position.Location] = piece;
+            m_SquareContents[(int)piece.Position.Location] = piece;
         }
 
         internal void RemovePiece(IPiece piece)
@@ -71,11 +70,11 @@ namespace Redchess.Engine
                 return;
 
             if (piece.Color == PieceColor.White)
-                m_whitePieces.Remove(piece.Position.Location);
+                m_WhitePieces.Remove(piece.Position.Location);
             else
-                m_blackPieces.Remove(piece.Position.Location);
+                m_BlackPieces.Remove(piece.Position.Location);
 
-            m_squareContents[(int)piece.Position.Location] = null;
+            m_SquareContents[(int)piece.Position.Location] = null;
         }
 
         internal IEnumerable<Location> OccupiedSquares()
@@ -92,9 +91,9 @@ namespace Redchess.Engine
         {
             var copy = new SimpleBoard(true)
             {
-                m_whitePieces = m_whitePieces.DeepClone(),
-                m_blackPieces = m_blackPieces.DeepClone(),
-                m_squareContents = (IPiece[])m_squareContents.Clone()
+                m_WhitePieces = m_WhitePieces.DeepClone(),
+                m_BlackPieces = m_BlackPieces.DeepClone(),
+                m_SquareContents = (IPiece[])m_SquareContents.Clone()
             };
 
             return copy;
@@ -102,7 +101,7 @@ namespace Redchess.Engine
 
         internal IBoardBitmap Pieces(PieceColor color)
         {
-            return color == PieceColor.White ? m_whitePieces : m_blackPieces;
+            return color == PieceColor.White ? m_WhitePieces : m_BlackPieces;
         }
 
         /// <summary>
@@ -124,7 +123,7 @@ namespace Redchess.Engine
 
         internal bool IsDraw()
         {
-            var totalPieceCount = m_whitePieces.PieceCount + m_blackPieces.PieceCount;
+            var totalPieceCount = m_WhitePieces.PieceCount + m_BlackPieces.PieceCount;
             if (totalPieceCount > 3) return false; // There are enough pieces for it not to be an obvious draw
 
             if (totalPieceCount == 2)

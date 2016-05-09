@@ -4,7 +4,7 @@ namespace Redchess.Engine.Observers
 {
     internal sealed class MoveTranscriber : AbstractBoardObserver<string>
     {
-        private BoardStateTransition m_previousState;
+        private BoardStateTransition m_PreviousState;
 
         internal MoveTranscriber(IBoardExtended board) : base(board)
         {
@@ -12,12 +12,12 @@ namespace Redchess.Engine.Observers
 
         protected override void UpdateValue()
         {
-            Value = new MoveTextConverter(m_previousState).MoveAsText();
+            Value = new MoveTextConverter(m_PreviousState).MoveAsText();
         }
 
         public override void OnCompleted()
         {
-            m_previousState = Board.PreviousState;
+            m_PreviousState = Board.PreviousState;
             base.OnCompleted();
         }
     }

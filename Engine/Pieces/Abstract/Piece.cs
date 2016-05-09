@@ -10,26 +10,26 @@ namespace Redchess.Engine.Pieces.Abstract
 {
     internal abstract class Piece : IPiece
     {
-        private static readonly int s_parallelism = Environment.ProcessorCount;
-        private readonly PieceType m_pieceType;
-        private readonly PieceColor m_color;
+        private static readonly int s_Parallelism = Environment.ProcessorCount;
+        private readonly PieceType m_PieceType;
+        private readonly PieceColor m_Color;
 
         protected Piece(Location loc, PieceType typeOfPiece)
         {
-            m_pieceType = typeOfPiece;
-            m_color = typeOfPiece.Color();
+            m_PieceType = typeOfPiece;
+            m_Color = typeOfPiece.Color();
             Position = new Square(loc);
         }
 
-        public PieceColor Color => m_color;
+        public PieceColor Color => m_Color;
 
-        public PieceType Type => m_pieceType;
+        public PieceType Type => m_PieceType;
 
         public override string ToString() => $"{base.ToString()} {Position.Location}";
 
         public override int GetHashCode()
         {
-            return (int) m_color + 10*(int) m_pieceType + 10000*(int) Position.Location;
+            return (int) m_Color + 10*(int) m_PieceType + 10000*(int) Position.Location;
         }
 
         public Square Position { get; }
@@ -42,7 +42,7 @@ namespace Redchess.Engine.Pieces.Abstract
         /// <returns></returns>
         public IEnumerable<Location> ValidMoves(IBoardExtended game)
         {
-            return ReachableSquares(game).AsParallel().WithDegreeOfParallelism(s_parallelism).Where(s => game.ValidateMoveForCheck(this, s));
+            return ReachableSquares(game).AsParallel().WithDegreeOfParallelism(s_Parallelism).Where(s => game.ValidateMoveForCheck(this, s));
         }
 
         public virtual IEnumerable<Location> AttackedSquares(IBoardExtended game)
@@ -89,7 +89,7 @@ namespace Redchess.Engine.Pieces.Abstract
 
                     yield return generatedSquare.Location;
 
-                    if (m_pieceType.IsOfType(PieceType.King) || m_pieceType.IsOfType(PieceType.Knight))
+                    if (m_PieceType.IsOfType(PieceType.King) || m_PieceType.IsOfType(PieceType.Knight))
                     {
                         break; // Kings and Knights only get one application of their move in each direction
                     }

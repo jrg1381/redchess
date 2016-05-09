@@ -5,7 +5,7 @@ namespace Redchess.Engine.Structures
 {
     internal struct BitVector64
     {
-        private UInt64 m_data;
+        private UInt64 m_Data;
 
         #region NotUsed
 
@@ -62,7 +62,7 @@ namespace Redchess.Engine.Structures
         {
             get
             {
-                UInt64 initialValue = m_data;
+                UInt64 initialValue = m_Data;
                 int currentBit = 0;
 
                 while (initialValue > 0)
@@ -80,7 +80,7 @@ namespace Redchess.Engine.Structures
 
         public int CountSetBits()
         {
-            UInt64 dataCopy = m_data;
+            UInt64 dataCopy = m_Data;
             int ret = 0;
 
             while (dataCopy != 0)
@@ -94,16 +94,16 @@ namespace Redchess.Engine.Structures
 
         public bool this[int bit]
         {
-            get { return ((m_data >> bit) & 1) == 1; }
+            get { return ((m_Data >> bit) & 1) == 1; }
             set
             {
                 if (value)
                 {
-                    m_data |= (ulong) 1 << bit;
+                    m_Data |= (ulong) 1 << bit;
                 }
                 else
                 {
-                    m_data &= ~((ulong) 1 << bit);
+                    m_Data &= ~((ulong) 1 << bit);
                 }
             }
         }

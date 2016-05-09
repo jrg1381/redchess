@@ -10,23 +10,23 @@ namespace Redchess.Engine
 {
     internal class MoveTextConverter
     {
-        private readonly BoardStateTransition m_moveToPlay;
-        private Task<string> m_disambiguatorTask;
+        private readonly BoardStateTransition m_MoveToPlay;
+        private Task<string> m_DisambiguatorTask;
 
         private string DisambiguatorText
         {
             get
             {
-                if (m_disambiguatorTask == null)
+                if (m_DisambiguatorTask == null)
                     return String.Empty;
 
-                return m_disambiguatorTask.ConfigureAwait(false).GetAwaiter().GetResult();
+                return m_DisambiguatorTask.ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 
         internal MoveTextConverter(BoardStateTransition previousState)
         {
-            m_moveToPlay = previousState;
+            m_MoveToPlay = previousState;
         }
 
         internal string MoveAsText()
@@ -39,17 +39,17 @@ namespace Redchess.Engine
             var annotationTask = AnnotationTask().ConfigureAwait(false);
             string answer;
 
-            if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
+            if (m_MoveToPlay.MovedPiece.Type.IsOfType(PieceType.Pawn))
             {
-                answer = m_moveToPlay.Promotion != null ? Promotion() : PawnMove();
+                answer = m_MoveToPlay.Promotion != null ? Promotion() : PawnMove();
             }
-            else if (m_moveToPlay.MovedPiece.Type.IsOfType(PieceType.King))
+            else if (m_MoveToPlay.MovedPiece.Type.IsOfType(PieceType.King))
             {
                 answer = KingMove();
             }
             else
             {
-                m_disambiguatorTask = DisambiguatorTask();
+                m_DisambiguatorTask = DisambiguatorTask();
                 answer = PieceMove();
             }
 
@@ -58,12 +58,12 @@ namespace Redchess.Engine
 
         private string Promotion()
         {
-            return $"{PawnMove()}={m_moveToPlay.Promotion}";
+            return $"{PawnMove()}={m_MoveToPlay.Promotion}";
         }
 
         private string KingMove()
         {
-            int dX = new Square(m_moveToPlay.Target).X - m_moveToPlay.MovedPiece.Position.X;
+            int dX = new Square(m_MoveToPlay.Target).X - m_MoveToPlay.MovedPiece.Position.X;
 
             switch (dX)
             {
@@ -78,10 +78,10 @@ namespace Redchess.Engine
 
         private string PawnMove()
         {
-            var piece = m_moveToPlay.MovedPiece;
-            var newLocation = m_moveToPlay.Target;
+            var piece = m_MoveToPlay.MovedPiece;
+            var newLocation = m_MoveToPlay.Target;
 
-            if (m_moveToPlay.BoardBefore.GetContents(newLocation) != null || m_moveToPlay.BoardBefore.EnPassantTarget == newLocation)
+            if (m_MoveToPlay.BoardBefore.GetContents(newLocation) != null || m_MoveToPlay.BoardBefore.EnPassantTarget == newLocation)
             {
                 return $"{PieceColumn(piece)}x{LocationToLower(newLocation)}";
             }
@@ -91,10 +91,10 @@ namespace Redchess.Engine
 
         private string PieceMove()
         {
-            var piece = m_moveToPlay.MovedPiece;
-            var newLocation = m_moveToPlay.Target;
+            var piece = m_MoveToPlay.MovedPiece;
+            var newLocation = m_MoveToPlay.Target;
 
-            if (m_moveToPlay.BoardBefore.GetContents(newLocation) != null)
+            if (m_MoveToPlay.BoardBefore.GetContents(newLocation) != null)
             {
                 return $"{PieceSymbol(piece)}{DisambiguatorText}x{LocationToLower(newLocation)}";
             }
@@ -107,7 +107,7 @@ namespace Redchess.Engine
             return Task.Run(() =>
             {
                 var disambiguator = String.Empty;
-                var piece = m_moveToPlay.MovedPiece;
+                var piece = m_MoveToPlay.MovedPiece;
 
                 if (MoveIsAmbiguous())
                 {
@@ -134,29 +134,29 @@ namespace Redchess.Engine
 
         private bool MoveIsAmbiguous()
         {
-            var piece = m_moveToPlay.MovedPiece;
-            var newLocation = m_moveToPlay.Target;
+            var piece = m_MoveToPlay.MovedPiece;
+            var newLocation = m_MoveToPlay.Target;
 
-            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
-                Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
+            return m_MoveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location).
+                Any(p => m_MoveToPlay.BoardBefore.GetContents(p).ValidMoves(m_MoveToPlay.BoardBefore).Contains(newLocation));
         }
 
         private bool MoveIsAmbiguousWithColumn()
         {
-            var piece = m_moveToPlay.MovedPiece;
-            var newLocation = m_moveToPlay.Target;
+            var piece = m_MoveToPlay.MovedPiece;
+            var newLocation = m_MoveToPlay.Target;
 
-            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && new Square(p).X == piece.Position.X).
-                Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
+            return m_MoveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && new Square(p).X == piece.Position.X).
+                Any(p => m_MoveToPlay.BoardBefore.GetContents(p).ValidMoves(m_MoveToPlay.BoardBefore).Contains(newLocation));
         }
 
         private bool MoveIsAmbiguousWithRow()
         {
-            var piece = m_moveToPlay.MovedPiece;
-            var newLocation = m_moveToPlay.Target;
+            var piece = m_MoveToPlay.MovedPiece;
+            var newLocation = m_MoveToPlay.Target;
 
-            return m_moveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && new Square(p).Y == piece.Position.Y).
-                Any(p => m_moveToPlay.BoardBefore.GetContents(p).ValidMoves(m_moveToPlay.BoardBefore).Contains(newLocation));
+            return m_MoveToPlay.BoardBefore.FindPieces(piece.Type).Where(p => p != piece.Position.Location && new Square(p).Y == piece.Position.Y).
+                Any(p => m_MoveToPlay.BoardBefore.GetContents(p).ValidMoves(m_MoveToPlay.BoardBefore).Contains(newLocation));
         }
 
         private string LocationToLower(Location location)
@@ -178,9 +178,9 @@ namespace Redchess.Engine
         {
             return Task.Run(() =>
             {
-                if (m_moveToPlay.BoardAfter.Check)
+                if (m_MoveToPlay.BoardAfter.Check)
                 {
-                    var gameStatus = m_moveToPlay.BoardAfter.StatusForBoard();
+                    var gameStatus = m_MoveToPlay.BoardAfter.StatusForBoard();
                     if (gameStatus == GameStatus.CheckmateBlackWins || gameStatus == GameStatus.CheckmateWhiteWins) return "#";
                     return "+";
                 }

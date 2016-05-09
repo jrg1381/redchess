@@ -7,18 +7,18 @@ namespace Redchess.Engine
 {
     internal sealed class CheckTester
     {
-        private readonly PieceColor m_colorOfKing;
-        private readonly Location m_kingPosition;
-        private readonly IBoardExtended m_board;
-        private readonly PieceType m_opponentQueen;
+        private readonly PieceColor m_ColorOfKing;
+        private readonly Location m_KingPosition;
+        private readonly IBoardExtended m_Board;
+        private readonly PieceType m_OpponentQueen;
 
         internal CheckTester(PieceColor colorOfKing, Location kingPosition, IBoardExtended board)
         {
-            m_board = board;
-            m_kingPosition = kingPosition;
-            m_colorOfKing = colorOfKing;
+            m_Board = board;
+            m_KingPosition = kingPosition;
+            m_ColorOfKing = colorOfKing;
 
-            m_opponentQueen = m_colorOfKing == PieceColor.White ? PieceType.BlackQueen : PieceType.WhiteQueen;
+            m_OpponentQueen = m_ColorOfKing == PieceColor.White ? PieceType.BlackQueen : PieceType.WhiteQueen;
         }
 
         internal bool Check()
@@ -36,7 +36,7 @@ namespace Redchess.Engine
         {
             PieceType fakeKing, opponentKing;
 
-            if (m_colorOfKing == PieceColor.White)
+            if (m_ColorOfKing == PieceColor.White)
             {
                 fakeKing = PieceType.WhiteKing;
                 opponentKing = PieceType.BlackKing;
@@ -47,32 +47,32 @@ namespace Redchess.Engine
                 opponentKing = PieceType.WhiteKing;
             }
 
-            var king = PieceFactory.CreatePiece(fakeKing, m_kingPosition);
+            var king = PieceFactory.CreatePiece(fakeKing, m_KingPosition);
             // We need to use attacked squares because ReachableSquares includes squares reachable by castling
-            return king.AttackedSquares(m_board)
-                .Select(m_board.GetContents)
+            return king.AttackedSquares(m_Board)
+                .Select(m_Board.GetContents)
                 .Any(p => p?.Type == opponentKing);
         }
 
         private bool PieceOnKingSquareCanTakeIdenticalOpponentPiece(IPiece fakePiece, PieceType opponentPieceType)
         {
-            return fakePiece.ReachableSquares(m_board)
-                .Select(m_board.GetContents)
+            return fakePiece.ReachableSquares(m_Board)
+                .Select(m_Board.GetContents)
                 .Any(p => p?.Type == opponentPieceType);
         }
 
         private bool PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(IPiece fakePiece, PieceType opponentPieceType)
         {
-            return fakePiece.ReachableSquares(m_board)
-                .Select(m_board.GetContents)
-                .Any(p => p != null && (p.Type == opponentPieceType || p.Type == m_opponentQueen));
+            return fakePiece.ReachableSquares(m_Board)
+                .Select(m_Board.GetContents)
+                .Any(p => p != null && (p.Type == opponentPieceType || p.Type == m_OpponentQueen));
         }
 
         private bool CheckedByKnights()
         {
             PieceType fakeKnight, opponentKnight;
 
-            if (m_colorOfKing == PieceColor.White)
+            if (m_ColorOfKing == PieceColor.White)
             {
                 fakeKnight = PieceType.WhiteKnight;
                 opponentKnight = PieceType.BlackKnight;
@@ -83,7 +83,7 @@ namespace Redchess.Engine
                 opponentKnight = PieceType.WhiteKnight;
             }
 
-            var knight = PieceFactory.CreatePiece(fakeKnight, m_kingPosition);
+            var knight = PieceFactory.CreatePiece(fakeKnight, m_KingPosition);
             return PieceOnKingSquareCanTakeIdenticalOpponentPiece(knight, opponentKnight);
         }
 
@@ -91,7 +91,7 @@ namespace Redchess.Engine
         {
             PieceType fakeRook, opponentRook;
 
-            if (m_colorOfKing == PieceColor.White)
+            if (m_ColorOfKing == PieceColor.White)
             {
                 fakeRook = PieceType.WhiteRook;
                 opponentRook = PieceType.BlackRook;
@@ -102,7 +102,7 @@ namespace Redchess.Engine
                 opponentRook = PieceType.WhiteRook;
             }
 
-            var rook = PieceFactory.CreatePiece(fakeRook, m_kingPosition);
+            var rook = PieceFactory.CreatePiece(fakeRook, m_KingPosition);
             return PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(rook, opponentRook);
         }
 
@@ -110,7 +110,7 @@ namespace Redchess.Engine
         {
             PieceType fakeBishop, opponentBishop;
 
-            if (m_colorOfKing == PieceColor.White)
+            if (m_ColorOfKing == PieceColor.White)
             {
                 fakeBishop = PieceType.WhiteBishop;
                 opponentBishop = PieceType.BlackBishop;
@@ -121,7 +121,7 @@ namespace Redchess.Engine
                 opponentBishop = PieceType.WhiteBishop;
             }
 
-            var bishop = PieceFactory.CreatePiece(fakeBishop, m_kingPosition);
+            var bishop = PieceFactory.CreatePiece(fakeBishop, m_KingPosition);
             return PieceOnKingSquareCanTakeIdenticalOpponentPieceOrQueen(bishop, opponentBishop);
         }
 
@@ -129,7 +129,7 @@ namespace Redchess.Engine
         {
             PieceType fakePawn, opponentPawn;
 
-            if (m_colorOfKing == PieceColor.White)
+            if (m_ColorOfKing == PieceColor.White)
             {
                 fakePawn = PieceType.WhitePawn;
                 opponentPawn = PieceType.BlackPawn;
@@ -140,7 +140,7 @@ namespace Redchess.Engine
                 opponentPawn = PieceType.WhitePawn;
             }
 
-            var pawn = PieceFactory.CreatePiece(fakePawn, m_kingPosition);
+            var pawn = PieceFactory.CreatePiece(fakePawn, m_KingPosition);
             return PieceOnKingSquareCanTakeIdenticalOpponentPiece(pawn, opponentPawn);
         }
     }

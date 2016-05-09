@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using log4net.Core;
 using Redchess.Engine.Exceptions;
 using Redchess.Engine.Interfaces;
 using Redchess.Engine.Observers;
-using Redchess.Engine.Pieces;
 using Redchess.Engine.Pieces.Abstract;
 using Redchess.Engine.Structures;
 using RedChess.ChessCommon;
@@ -16,28 +13,28 @@ namespace Redchess.Engine
 {
     public class Board : IBoardExtended
     {
-        private static readonly int s_parallelism = Environment.ProcessorCount;
+        private static readonly int s_Parallelism = Environment.ProcessorCount;
         // Observers
-        private readonly TransientCastlingRules m_transientCastlingRules;
-        private readonly PermanentCastlingRules m_permanentCastlingRules;
-        private readonly Fen m_fen;
-        private readonly MoveTranscriber m_transcriber;
-        private readonly CheckCacheCurrentPlayer m_checkCacheCurrentPlayer;
-        private readonly CheckCacheOpposingPlayer m_checkCacheOtherPlayer;
-        private readonly FiftyMoveRuleCounter m_fiftyMoveRule;
+        private readonly TransientCastlingRules m_TransientCastlingRules;
+        private readonly PermanentCastlingRules m_PermanentCastlingRules;
+        private readonly Fen m_Fen;
+        private readonly MoveTranscriber m_Transcriber;
+        private readonly CheckCacheCurrentPlayer m_CheckCacheCurrentPlayer;
+        private readonly CheckCacheOpposingPlayer m_CheckCacheOtherPlayer;
+        private readonly FiftyMoveRuleCounter m_FiftyMoveRule;
 
-        private Pawn m_promotedPawn;
-        private readonly List<IObserver<IBoardExtended>> m_observers = new List<IObserver<IBoardExtended>>();
+        private Pawn m_PromotedPawn;
+        private readonly List<IObserver<IBoardExtended>> m_Observers = new List<IObserver<IBoardExtended>>();
         protected SimpleBoard SimpleBoard { get; set; }
 
         public BoardStateTransition PreviousState { get; private set; }
 
         public string FenCastleString()
         {
-            return m_permanentCastlingRules.Value.Fen();
+            return m_PermanentCastlingRules.Value.Fen();
         }
 
-        public CastlingOptions PermanentCastlingOptions => m_permanentCastlingRules.Value;
+        public CastlingOptions PermanentCastlingOptions => m_PermanentCastlingRules.Value;
 
         // Copy constructor
         internal Board(Board replacementBoard)
@@ -47,13 +44,13 @@ namespace Redchess.Engine
 
             SimpleBoard = replacementBoard.SimpleBoard.DeepClone();
 
-            m_permanentCastlingRules = new PermanentCastlingRules(this, replacementBoard);
-            m_transientCastlingRules = new TransientCastlingRules(this);
-            m_fiftyMoveRule = new FiftyMoveRuleCounter(this, replacementBoard);
-            m_fen = new Fen(this);
-            m_transcriber = new MoveTranscriber(this);
-            m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
-            m_checkCacheOtherPlayer = new CheckCacheOpposingPlayer(this);
+            m_PermanentCastlingRules = new PermanentCastlingRules(this, replacementBoard);
+            m_TransientCastlingRules = new TransientCastlingRules(this);
+            m_FiftyMoveRule = new FiftyMoveRuleCounter(this, replacementBoard);
+            m_Fen = new Fen(this);
+            m_Transcriber = new MoveTranscriber(this);
+            m_CheckCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
+            m_CheckCacheOtherPlayer = new CheckCacheOpposingPlayer(this);
         }
 
         public Board(PieceColor whoseTurn = PieceColor.White, bool isEmpty = false)
@@ -63,25 +60,25 @@ namespace Redchess.Engine
 
             SimpleBoard = new SimpleBoard(isEmpty);
 
-            m_permanentCastlingRules = new PermanentCastlingRules(this);
-            m_transientCastlingRules = new TransientCastlingRules(this);
-            m_fiftyMoveRule = new FiftyMoveRuleCounter(this);
-            m_fen = new Fen(this);
-            m_transcriber = new MoveTranscriber(this);
-            m_checkCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
-            m_checkCacheOtherPlayer = new CheckCacheOpposingPlayer(this);
+            m_PermanentCastlingRules = new PermanentCastlingRules(this);
+            m_TransientCastlingRules = new TransientCastlingRules(this);
+            m_FiftyMoveRule = new FiftyMoveRuleCounter(this);
+            m_Fen = new Fen(this);
+            m_Transcriber = new MoveTranscriber(this);
+            m_CheckCacheCurrentPlayer = new CheckCacheCurrentPlayer(this);
+            m_CheckCacheOtherPlayer = new CheckCacheOpposingPlayer(this);
         }
 
         public string LastMove()
         {
-            return m_transcriber.Value;
+            return m_Transcriber.Value;
         }
 
         public PieceColor CurrentTurn { get; private set; }
 
         public string ToFen()
         {
-            return m_fen.Value;
+            return m_Fen.Value;
         }
 
         public virtual void FromFen(string fen)
@@ -95,14 +92,14 @@ namespace Redchess.Engine
             int index = 0;
 
             CurrentTurn = currentTurn == "b" ? PieceColor.Black : PieceColor.White;
-            m_permanentCastlingRules.UpdateFromFen(castling);
+            m_PermanentCastlingRules.UpdateFromFen(castling);
 
             if (enPassantTarget != "-")
             {
                 EnPassantTarget = (Location) Enum.Parse(typeof (Location), enPassantTarget.ToUpper());
             }
 
-            m_fiftyMoveRule.ForceUpdate(Int32.Parse(halfMoveClock));
+            m_FiftyMoveRule.ForceUpdate(Int32.Parse(halfMoveClock));
 
             SimpleBoard = new SimpleBoard(true);
 
@@ -126,8 +123,8 @@ namespace Redchess.Engine
                 index++;
             }
 
-            m_fen.ForceUpdate(fen);
-            m_checkCacheCurrentPlayer.OnCompleted();
+            m_Fen.ForceUpdate(fen);
+            m_CheckCacheCurrentPlayer.OnCompleted();
         }
 
         public virtual bool Move(Location start, Location end)
@@ -161,15 +158,15 @@ namespace Redchess.Engine
 
         private void NotifyObservers()
         {
-            if (m_observers == null) return;
+            if (m_Observers == null) return;
 
-            foreach (var o in m_observers)
+            foreach (var o in m_Observers)
                 o.OnCompleted();
         }
 
         public bool IsAwaitingPromotionDecision()
         {
-            return m_promotedPawn != null;
+            return m_PromotedPawn != null;
         }
 
         public IEnumerable<Location> FindPieces(PieceType pieceType)
@@ -177,11 +174,11 @@ namespace Redchess.Engine
             return SimpleBoard.OccupiedSquares().Where(x => GetContents(x).Type == pieceType);
         }
 
-        public bool Check => m_checkCacheCurrentPlayer.Value;
+        public bool Check => m_CheckCacheCurrentPlayer.Value;
 
         public GameStatus StatusForBoard()
         {
-            if (m_checkCacheCurrentPlayer.Value)
+            if (m_CheckCacheCurrentPlayer.Value)
             {
                 if (!ValidMovesExist())
                 {
@@ -245,15 +242,15 @@ namespace Redchess.Engine
             NotifyObservers();
         }
 
-        public int FiftyMoveCounter => m_fiftyMoveRule.Value;
+        public int FiftyMoveCounter => m_FiftyMoveRule.Value;
 
         public bool ValidateMoveForCheck(IPiece piece, Location newLocation)
         {
             var boardCopy = new Board(this);
             boardCopy.MovePiece(piece, newLocation);
-            boardCopy.m_checkCacheOtherPlayer.OnCompleted(); // only need to tell one observer
+            boardCopy.m_CheckCacheOtherPlayer.OnCompleted(); // only need to tell one observer
 
-            return !boardCopy.m_checkCacheOtherPlayer.Value;
+            return !boardCopy.m_CheckCacheOtherPlayer.Value;
         }
 
         public IPiece GetContents(Location loc)
@@ -266,17 +263,17 @@ namespace Redchess.Engine
         public bool MayCastle(IPiece king, Side side)
         {
             if (king.Color == PieceColor.Black && side == Side.KingSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide)
-                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
+                return m_PermanentCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide)
+                       && m_TransientCastlingRules.Value.HasFlag(CastlingOptions.BlackKingSide);
             if (king.Color == PieceColor.Black && side == Side.QueenSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide)
-                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
+                return m_PermanentCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide)
+                       && m_TransientCastlingRules.Value.HasFlag(CastlingOptions.BlackQueenSide);
             if (king.Color == PieceColor.White && side == Side.KingSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide)
-                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
+                return m_PermanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide)
+                       && m_TransientCastlingRules.Value.HasFlag(CastlingOptions.WhiteKingSide);
             if (king.Color == PieceColor.White && side == Side.QueenSide)
-                return m_permanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide)
-                       && m_transientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
+                return m_PermanentCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide)
+                       && m_TransientCastlingRules.Value.HasFlag(CastlingOptions.WhiteQueenSide);
 
             throw new ArgumentException("Asked for impossible combination of castling");
         }
@@ -308,24 +305,24 @@ namespace Redchess.Engine
 
             return friends
                 .AsParallel()
-                .WithDegreeOfParallelism(s_parallelism)
+                .WithDegreeOfParallelism(s_Parallelism)
                 .SelectMany(x => x.ValidMoves(this))
                 .Any();
         }
 
         void PromotePiece(PieceType promotionTarget)
         {
-            if (m_promotedPawn == null)
+            if (m_PromotedPawn == null)
                 throw new CannotPromoteException();
-            SimpleBoard.RemovePiece(m_promotedPawn);
-            SimpleBoard.AddPiece(promotionTarget, m_promotedPawn.Position.Location);
+            SimpleBoard.RemovePiece(m_PromotedPawn);
+            SimpleBoard.AddPiece(promotionTarget, m_PromotedPawn.Position.Location);
 
-            m_promotedPawn = null;
+            m_PromotedPawn = null;
         }
 
         void MovePiece(IPiece piece, Location newLocation)
         {
-            if (m_promotedPawn != null)
+            if (m_PromotedPawn != null)
                 throw new InvalidMoveException("The previous player has not decided what to promote their pawn to");
 
             // Delete any piece on the target square
@@ -370,7 +367,7 @@ namespace Redchess.Engine
             if ((newSquare.Y == 7 && CurrentTurn == PieceColor.White) ||
                 (newSquare.Y == 0 && CurrentTurn == PieceColor.Black))
             {
-                m_promotedPawn = piece;
+                m_PromotedPawn = piece;
             }
 
             var verticalDistanceMoved = newSquare.Y - originalLocation.Y;
@@ -429,7 +426,7 @@ namespace Redchess.Engine
 
         public IDisposable Subscribe(IObserver<IBoardExtended> observer)
         {
-            m_observers.Add(observer);
+            m_Observers.Add(observer);
             return new Unsubscriber(this, observer);
         }
 
@@ -441,30 +438,30 @@ namespace Redchess.Engine
 
         sealed class Unsubscriber : IDisposable
         {
-            private readonly Board m_board;
-            private readonly IObserver<IBoardExtended> m_observer; 
+            private readonly Board m_Board;
+            private readonly IObserver<IBoardExtended> m_Observer; 
 
             internal Unsubscriber(Board b, IObserver<IBoardExtended> observer)
             {
-                m_board = b;
-                m_observer = observer;
+                m_Board = b;
+                m_Observer = observer;
             }
 
             public void Dispose()
             {
-                m_board.m_observers.Remove(m_observer);
+                m_Board.m_Observers.Remove(m_Observer);
             }
         }
 
         private void Dispose(bool isDisposing)
         {
-            m_fen?.Dispose();
-            m_transcriber?.Dispose();
-            m_transientCastlingRules?.Dispose();
-            m_fiftyMoveRule?.Dispose();
-            m_checkCacheCurrentPlayer?.Dispose();
-            m_checkCacheOtherPlayer?.Dispose();
-            m_permanentCastlingRules?.Dispose();
+            m_Fen?.Dispose();
+            m_Transcriber?.Dispose();
+            m_TransientCastlingRules?.Dispose();
+            m_FiftyMoveRule?.Dispose();
+            m_CheckCacheCurrentPlayer?.Dispose();
+            m_CheckCacheOtherPlayer?.Dispose();
+            m_PermanentCastlingRules?.Dispose();
         }
 
         public void Dispose()

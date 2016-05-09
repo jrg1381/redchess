@@ -63,7 +63,7 @@ namespace Redchess.Engine.Observers
                                             Board.EnPassantTarget == Location.InvalidSquare ? "-" : Board.EnPassantTarget.ToString(),
                                             Board.FiftyMoveCounter);
 
-            m_data = sb.ToString();
+            Data = sb.ToString();
         }
     }
 }

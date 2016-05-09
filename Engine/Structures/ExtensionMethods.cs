@@ -1,5 +1,3 @@
-using System;
-
 namespace Redchess.Engine.Structures
 {
     public static class ExtensionMethods

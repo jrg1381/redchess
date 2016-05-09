@@ -8,19 +8,19 @@ namespace Redchess.Engine
 {
     sealed class BoardBitmap : IBoardBitmap
     {
-        private BitVector64 m_data;
-        private int m_setBits;
+        private BitVector64 m_Data;
+        private int m_SetBits;
 
         internal BoardBitmap()
         {
-            m_data = new BitVector64();
-            m_setBits = 0;
+            m_Data = new BitVector64();
+            m_SetBits = 0;
         }
 
         private BoardBitmap(BoardBitmap source)
         {
-            m_data = source.m_data;
-            m_setBits = m_data.CountSetBits();
+            m_Data = source.m_Data;
+            m_SetBits = m_Data.CountSetBits();
         }
 
         /// <summary>
@@ -30,26 +30,26 @@ namespace Redchess.Engine
         /// <returns></returns>
         public void Remove(Location loc)
         {
-            m_data[(int) loc] = false;
-            m_setBits--;
+            m_Data[(int) loc] = false;
+            m_SetBits--;
         }
 
         public void Add(Location loc)
         {
-            m_data[(int) loc] = true;
-            m_setBits++;
+            m_Data[(int) loc] = true;
+            m_SetBits++;
         }
 
-        public int PieceCount => m_setBits;
+        public int PieceCount => m_SetBits;
 
         public IEnumerable<Location> OccupiedSquares()
         {
-            return m_data.SetBits.Cast<Location>();
+            return m_Data.SetBits.Cast<Location>();
         }
 
         public bool IsOccupied(Location loc)
         {
-            return m_data[(int) loc];
+            return m_Data[(int) loc];
         }
 
         public IBoardBitmap DeepClone()
