@@ -140,6 +140,12 @@
         @if (@Model.ShouldLockUi) {
             <text>theChess.lockBoard();</text>
         }
+
+        if (currentPlayerColor === "") {
+            $("#resignbutton").hide();
+            $("#drawbutton").hide();
+        }
+
     });
 </script>  
 
