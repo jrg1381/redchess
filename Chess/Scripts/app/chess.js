@@ -120,7 +120,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
         return true;
     };
 
-    var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: false, draggable: true, onDrop: this.onDrop.bind(this), onDragStart : this.onDragStart };
+    var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: true, draggable: true, onDrop: this.onDrop.bind(this), onDragStart : this.onDragStart };
     this.chessBoard = new ChessBoard('board', cfg);
 
     if (this.currentPlayerColor === 'b' && !this.isAnalysisBoard) {
