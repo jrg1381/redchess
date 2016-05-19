@@ -1,4 +1,5 @@
 using System;
+using RedChess.ChessCommon.Enumerations;
 using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories.Interfaces
@@ -17,6 +18,8 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         UserProfile UserProfileWhite { get; }
         bool MayClaimDraw { get; }
         string LastMove { get; }
+        Location LastMoveStart { get; }
+        Location LastMoveEnd { get; }
         IClock Clock { get; }
         string CurrentPlayerColor(string userName);
         UserProfile UserProfileWinner { get; }

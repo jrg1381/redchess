@@ -1,4 +1,5 @@
 using System;
+using RedChess.ChessCommon.Enumerations;
 using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories.Interfaces;
 
@@ -67,6 +68,9 @@ namespace RedChess.WebEngine.Repositories
         /// The move last played in PGN short algebraic format, eg "Re4", "e8(=Q)", "Qa1#"
         /// </summary>
         public string LastMove => m_GameDto.LastMove;
+
+        public Location LastMoveStart => m_GameDto.LastMoveStart;
+        public Location LastMoveEnd => m_GameDto.LastMoveEnd;
 
         public IClock Clock => m_GameDto.Clock;
 
