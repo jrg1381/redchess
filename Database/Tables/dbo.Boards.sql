@@ -12,7 +12,9 @@ CREATE TABLE [dbo].[Boards]
 [LastMove] [nvarchar] (10) NULL,
 [UserIdWinner] [int] NULL,
 [MoveNumber] [int] NOT NULL CONSTRAINT [MoveNumberDefaultConstraint] DEFAULT ((0)),
-[ClockId] [int] NULL
+[ClockId] [int] NULL,
+[LastMoveStart] [int] NOT NULL DEFAULT ((64)),
+[LastMoveEnd] [int] NOT NULL DEFAULT ((64))
 )
 GO
 ALTER TABLE [dbo].[Boards] ADD CONSTRAINT [PK_dbo.BoardDtoes] PRIMARY KEY CLUSTERED  ([GameId])

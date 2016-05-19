@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
+using RedChess.ChessCommon.Enumerations;
 using RedChess.WebEngine.Models;
 
 namespace RedChess.WebEngine.Repositories
@@ -25,6 +26,8 @@ namespace RedChess.WebEngine.Repositories
         public bool GameOver { get { return m_GameOver; } set { m_GameOver |= value; } }
         public string Fen { get; set; }
         public string LastMove { get; set; }
+        public Location LastMoveStart { get; set; }
+        public Location LastMoveEnd { get; set; }
         
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)] // Not really computed, actually set by a trigger
         public int MoveNumber { get; set; }

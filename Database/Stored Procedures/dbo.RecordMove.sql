@@ -1,8 +1,9 @@
-
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
+
 
 
 
@@ -15,7 +16,9 @@ CREATE PROCEDURE [dbo].[RecordMove]
     @moveReceived DATETIME,
 	@status NVARCHAR(32),
 	@gameOver BIT,
-	@userIdWinner INT
+	@userIdWinner INT,
+	@start INT,
+    @end INT
 AS
     BEGIN
         SET XACT_ABORT ON;
@@ -28,7 +31,9 @@ AS
 				Status = @status,
 				CompletionDate = CASE(@gameOver) WHEN 1 THEN @moveReceived ELSE CompletionDate END,
 				GameOver = @gameOver,
-				UserIdWinner = @userIdWinner
+				UserIdWinner = @userIdWinner,
+				LastMoveStart = @start,
+				LastMoveEnd = @end
         WHERE   GameId = @gameId;
 
         INSERT  INTO dbo.HistoryEntries
@@ -67,15 +72,6 @@ AS
 		SELECT TOP 1 * FROM dbo.Boards WHERE GameId = @gameId
     END;
 
-
-
 GO
-
-
-
-
-
-
-
-GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
+  GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
 GO

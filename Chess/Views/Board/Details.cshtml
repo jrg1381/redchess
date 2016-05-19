@@ -1,4 +1,5 @@
-﻿@model RedChess.WebEngine.Repositories.Interfaces.IGameBinding
+﻿@using RedChess.ChessCommon.Enumerations
+@model RedChess.WebEngine.Repositories.Interfaces.IGameBinding
 
 @{
     ViewBag.Title = "Game";
@@ -139,6 +140,11 @@
 
         @if (@Model.ShouldLockUi) {
             <text>theChess.lockBoard();</text>
+        }
+
+        @if (!String.IsNullOrEmpty(Model.LastMove))
+        {
+            <text>theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');</text>
         }
 
         if (currentPlayerColor === "") {
