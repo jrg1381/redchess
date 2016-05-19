@@ -71,7 +71,6 @@ AS
 		SELECT TOP 1 * FROM dbo.Boards WHERE GameId = @gameId
     END;
 
-
-
-
+GO
+ - GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
 GO
