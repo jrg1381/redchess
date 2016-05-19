@@ -45,19 +45,21 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
-        public GameDto RecordMove(int gameId, string fen, string lastMove, DateTime moveReceivedAt, GameStatus status, int? winnerUserId)
+        public GameDto RecordMove(int gameId, string fen, string lastMove, DateTime moveReceivedAt, GameStatus status, int? winnerUserId, Location start, Location end)
         {
             using (var context = new ChessContext())
             {
                 var query = context.Database.SqlQuery<GameDto>( 
-                    "EXEC dbo.RecordMove @p0, @p1, @p2, @p3, @p4, @p5, @p6", 
+                    "EXEC dbo.RecordMove @p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8", 
                     gameId, 
                     fen, 
                     lastMove,
                     moveReceivedAt,
                     status.FriendlyName(),
                     status.GameOver(),
-                    winnerUserId);
+                    winnerUserId,
+                    start,
+                    end);
 
                 return query.First();
             }

@@ -303,7 +303,7 @@ namespace RedChess.WebEngine.Repositories
                     break;
             }
 
-            newBoard = m_GameRepository.RecordMove(gameId, fen, Board.LastMove(), moveReceivedAt, status, winnerUserId);
+            newBoard = m_GameRepository.RecordMove(gameId, fen, Board.LastMove(), moveReceivedAt, status, winnerUserId, start, end);
 
             if (status.GameOver())
             {

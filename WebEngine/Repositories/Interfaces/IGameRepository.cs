@@ -12,6 +12,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void AddAnalysis(int id, int moveNumber, IProcessedAnalysis boardAnalysis);
         string Fen(int gameId);
         object FindWhere(string queryString);
-        GameDto RecordMove(int gameId, string fen, string lastMove, DateTime moveReceivedAt, GameStatus status, int? winnerUserId);
+        GameDto RecordMove(int gameId, string fen, string lastMove, DateTime moveReceivedAt, GameStatus status, int? winnerUserId, Location start, Location end);
     }
 }
