@@ -8,6 +8,7 @@ GO
 
 
 
+
 CREATE PROCEDURE [dbo].[RecordMove]
     @gameId INT ,
     @fen NVARCHAR(MAX) ,
@@ -16,8 +17,8 @@ CREATE PROCEDURE [dbo].[RecordMove]
 	@status NVARCHAR(32),
 	@gameOver BIT,
 	@userIdWinner INT,
-	@start NVARCHAR(3),
-    @end NVARCHAR(3)
+	@start INT,
+    @end INT
 AS
     BEGIN
         SET XACT_ABORT ON;

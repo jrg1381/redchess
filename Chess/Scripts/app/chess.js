@@ -52,7 +52,7 @@
     $("#fen").text(data.fen);
     this.updateTakenPieces(data.fen);
 
-    highlightLastMove(data.movefrom, data.moveTo);
+    this.highlightLastMove(data.movefrom, data.moveto);
 
     //crappy
     if (data.message.match(/(draw)|(mate)/i) != null) {

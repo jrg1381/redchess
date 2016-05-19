@@ -144,7 +144,7 @@
 
         @if (!String.IsNullOrEmpty(Model.LastMove))
         {
-            <text>theChess.highlightLastMove(@Model.LastMoveStart, @Model.LastMoveEnd);</text>
+            <text>theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');</text>
         }
 
         if (currentPlayerColor === "") {
