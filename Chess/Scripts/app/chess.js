@@ -52,11 +52,7 @@
     $("#fen").text(data.fen);
     this.updateTakenPieces(data.fen);
 
-    var board = $('#board');
-
-    board.find('.square-55d63').removeClass('highlight-white');
-    board.find('.square-' + data.movefrom.toLowerCase()).addClass('highlight-white');
-    board.find('.square-' + data.moveto.toLowerCase()).addClass('highlight-white');
+    highlightLastMove(data.movefrom, data.moveTo);
 
     //crappy
     if (data.message.match(/(draw)|(mate)/i) != null) {
@@ -64,6 +60,14 @@
         return;
     }
 };
+
+Chess.prototype.highlightLastMove = function(moveFrom, moveTo) {
+    var board = $('#board');
+
+    board.find('.square-55d63').removeClass('highlight-white');
+    board.find('.square-' + moveFrom.toLowerCase()).addClass('highlight-white');
+    board.find('.square-' + moveTo.toLowerCase()).addClass('highlight-white');
+}
 
 Chess.prototype.respondToDrawOffer = function(accepted) {
     $.post("/Board/AgreeDraw", {
