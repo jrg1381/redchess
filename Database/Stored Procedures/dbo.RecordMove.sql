@@ -72,5 +72,5 @@ AS
     END;
 
 GO
- - GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
+  GRANT EXECUTE ON  [dbo].[RecordMove] TO [chessdb]
 GO
