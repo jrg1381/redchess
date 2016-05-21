@@ -100,6 +100,10 @@
             </text>
         }
 
+        @if (Model.GameOver) {
+            <text>theChess.endGame();</text>
+        }
+
         theChess.updateUi('@Model.Fen');
 
         // Draw any user messages, and update the set of taken pieces
@@ -132,11 +136,6 @@
         });
         </text>
         }
-
-        @if (Model.GameOver) {
-            <text>theChess.endGame();</text>
-        }
-        
 
         @if (@Model.ShouldLockUi) {
             <text>theChess.lockBoard();</text>

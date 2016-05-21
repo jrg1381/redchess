@@ -61,6 +61,14 @@
     }
 };
 
+Chess.prototype.setFaviconTag = function (tagIcon) {
+    if (tagIcon) {
+        $("link[rel='shortcut icon']").attr("href", "/favicon-tagged.ico");
+    } else {
+        $("link[rel='shortcut icon']").attr("href", "/favicon.ico");
+    }
+}
+
 Chess.prototype.highlightLastMove = function(moveFrom, moveTo) {
     var board = $('#board');
 
@@ -93,6 +101,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.spinner = null;
     this.source = "";
     this.target = "";
+    this.gameOver = false;
     this.pendingPromotion = false;
     this.isTimedGame = (clock != null);
     this.isAnalysisBoard = analysisBoard;
@@ -254,6 +263,8 @@ Chess.prototype.endGame = function() {
     $("#drawbutton").hide();
     $("#drawoffer").hide();
     $("#drawoffer-sent").hide();
+
+    this.gameOver = true;
 };
 
 Chess.prototype.updateUi = function(fen) {
@@ -262,7 +273,7 @@ Chess.prototype.updateUi = function(fen) {
     var splitFen = fen.split(" ");
     var turn = splitFen[1];
 
-    if ($("#turnindicator").text() != "GAME OVER") {
+    if (!this.gameOver) {
         this.currentTurn = turn;
         $("#turnindicator").text((turn == "b" ? "Black" : "White") + " to play");
     }
@@ -270,6 +281,9 @@ Chess.prototype.updateUi = function(fen) {
     if (this.parentOfSpinny()[0].hasChildNodes()) {
         this.getSpinner().stop();
     }
+
+    // Set the marker unless it's game over in which case always remove the marker
+    this.setFaviconTag((turn === this.currentPlayerColor) && !this.gameOver);
 };
 
 Chess.prototype.lockBoard = function() {
