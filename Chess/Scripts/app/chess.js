@@ -155,6 +155,29 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     $.connection.hub.start(function () {
         $.connection.hub.proxies.updateserver.server.join(gameId);
     });
+
+    var tryingToReconnect = false;
+
+    $.connection.hub.reconnecting(function () {
+        $("#messages").parent().css('visibility', 'visible');
+        $("#messages").text("SignalR reconnecting...");
+
+        tryingToReconnect = true;
+    });
+
+    $.connection.hub.reconnected(function() {
+        $("#messages").parent().css('visibility', 'hidden');
+        $("#messages").html('&nbsp;');
+
+        tryingToReconnect = false;
+    });
+
+    $.connection.hub.disconnected(function() {
+        if (tryingToReconnect) {
+            $("#messages").parent().css('visibility', 'visible');
+            $("#messages").text("SignalR disconnected :-(");
+        }
+    });
 };
 
 Chess.prototype.offerDraw = function() {
