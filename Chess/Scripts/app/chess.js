@@ -184,12 +184,19 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
         tryingToReconnect = false;
     });
 
-    $.connection.hub.disconnected(function() {
+    var disconnectionFunction = function () {
         if (tryingToReconnect) {
-            $("#messages").parent().css('visibility', 'visible');
-            $("#messages").text("SignalR disconnected :-(");
+            $.connection.hub.start(function() {
+                $.connection.hub.proxies.updateserver.server.join(gameId);
+                $("#messages").parent().css('visibility', 'hidden');
+                $("#messages").html('&nbsp;');
+                tryingToReconnect = false;
+            });
+            setTimeout(disconnectionFunction, 30000);
         }
-    });
+    }
+
+    $.connection.hub.disconnected(disconnectionFunction);
 };
 
 Chess.prototype.offerDraw = function() {
