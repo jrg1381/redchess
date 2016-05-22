@@ -62,10 +62,15 @@
 };
 
 Chess.prototype.setFaviconTag = function (tagIcon) {
+    // IE caches the favicon so we need a text change to the page title too
+    var titleWithoutAnnotation = $("head > title").text().replace(/^\* /, "");
+
     if (tagIcon) {
         $("link[rel='shortcut icon']").attr("href", "/favicon-tagged.ico");
+        $("head > title").text("* " + titleWithoutAnnotation);
     } else {
         $("link[rel='shortcut icon']").attr("href", "/favicon.ico");
+        $("head > title").text(titleWithoutAnnotation);
     }
 }
 
