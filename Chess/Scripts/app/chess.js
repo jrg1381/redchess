@@ -62,7 +62,7 @@
 };
 
 Chess.prototype.setFaviconTag = function (tagIcon) {
-    // IE caches the favicon so we need a text change to the page title too
+    // IE < 11 caches the favicon so we need a text change to the page title too
     var titleWithoutAnnotation = $("head > title").text().replace(/^\* /, "");
 
     if (tagIcon) {
@@ -77,7 +77,9 @@ Chess.prototype.setFaviconTag = function (tagIcon) {
 Chess.prototype.highlightLastMove = function(moveFrom, moveTo) {
     var board = $('#board');
 
+    // This is the class assigned by chessboard.js to all squares
     board.find('.square-55d63').removeClass('highlight-white');
+    // These classes let you find a particular square
     board.find('.square-' + moveFrom.toLowerCase()).addClass('highlight-white');
     board.find('.square-' + moveTo.toLowerCase()).addClass('highlight-white');
 }
@@ -91,7 +93,12 @@ Chess.prototype.respondToDrawOffer = function(accepted) {
 };
 
 Chess.prototype.showDrawOffer = function (message) {
-    // Ignore your own draw offer coming back at you.
+    if (this.currentPlayerColor === "") {
+        // Not a participant, so do nothing
+        return;
+    }
+
+    // Ignore your own draw offer coming back at you, and if you're not a participant
     if (message.Data.DrawOfferedBy !== this.currentPlayerColor) {
         $("#drawoffer").show();
     } else {
