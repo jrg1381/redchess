@@ -40,58 +40,65 @@
 
         var theChess = new Chess(gameId, currentPlayerColor, myClock, analysisBoard);
 
-        $("#resignbutton").click(function(event) {
-            if ($(event.target).attr("disabled") === "disabled") {
-                return;
-            }
-            theChess.resignGame();
-        });
+        $("#resignbutton")
+            .click(function(event) {
+                if ($(event.target).attr("disabled") === "disabled") {
+                    return;
+                }
+                theChess.resignGame();
+            });
 
-        $("#drawbutton").click(function(event) {
-            if ($(event.target).attr("disabled") === "disabled") {
-                return;
-            }
-            theChess.offerDraw();
-        });
+        $("#drawbutton")
+            .click(function(event) {
+                if ($(event.target).attr("disabled") === "disabled") {
+                    return;
+                }
+                theChess.offerDraw();
+            });
 
         $("#drawoffer").hide();
         $("#drawoffer-sent").hide();
         $("#promotion-selection").hide();
 
-        $("#accept-draw-request").click(function() {
-            theChess.respondToDrawOffer(true);
-            $("#drawoffer").hide();
-        });
-
-        $("#reject-draw-request").click(function() {
-            theChess.respondToDrawOffer(false);
-            $("#drawoffer").hide();
-        });
-
-        // Configure the promotion dialog
-
-        $(".thumbnail").click(function(e) {
-            theChess.postMove(this.id);
-        });
-
-        var pieces = ['Q', 'R', 'N', 'B'];
-        for(var pIndex = 0;pIndex<pieces.length; pIndex++) {
-            var tnail = $(".thumbnail#" + pieces[pIndex]);
-            var img = $("<img></img>");
-            img.attr("width", "64px");
-            img.attr("src", "/Images/" + theChess.currentPlayerColor + pieces[pIndex] + ".png");
-            tnail.append(img);
-        }
-
-        // Hover behaviour
-        $('.thumbnail').hover(
-            function() {
-                $(this).addClass("thick-thumbnail");
-            },
-            function() {
-                $(this).removeClass("thick-thumbnail");
+        $("#accept-draw-request")
+            .click(function() {
+                theChess.respondToDrawOffer(true);
+                $("#drawoffer").hide();
             });
 
+        $("#reject-draw-request")
+            .click(function() {
+                theChess.respondToDrawOffer(false);
+                $("#drawoffer").hide();
+            });
+
+        // Configure the promotion dialog, if the player is a participant
+
+        if (currentPlayerColor !== "") {
+            $(".thumbnail")
+                .click(function(e) {
+                    theChess.postMove(this.id);
+                });
+
+            var pieces = ['Q', 'R', 'N', 'B'];
+            for (var pIndex = 0; pIndex < pieces.length; pIndex++) {
+                var tnail = $(".thumbnail#" + pieces[pIndex]);
+                var img = $("<img></img>");
+                img.attr("width", "64px");
+                img.attr("src", "/Images/" + theChess.currentPlayerColor + pieces[pIndex] + ".png");
+                tnail.append(img);
+            }
+
+            // Hover behaviour
+            $('.thumbnail')
+                .hover(
+                    function() {
+                        $(this).addClass("thick-thumbnail");
+                    },
+                    function() {
+                        $(this).removeClass("thick-thumbnail");
+                    });
+        }
 
         @if (clockModel != null)
         {
