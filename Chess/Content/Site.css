@@ -115,3 +115,8 @@ footer {
     stroke: #000;
     stroke-width: 1.5px;
 }
+
+.thick-thumbnail {
+    border : 1px solid #337ab7
+}
+
