@@ -49,7 +49,7 @@ namespace Chess.Controllers
 			}
 
 			// If we got this far, something failed
-			return Json(new { errors = GetErrorsFromModelState() });
+			return Json(new { success = false, errors = GetErrorsFromModelState() });
 		}
 
 		//

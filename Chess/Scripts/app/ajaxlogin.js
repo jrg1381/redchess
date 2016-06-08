@@ -30,13 +30,14 @@
                     if (json.success) {
                         window.location = json.redirect || location.href;
                     } else if (json.errors) {
-                        getSpinController().stopLogoSpinner();
                         displayErrors($form, json.errors);
                     }
                 })
-                .error(function () {
-                    displayErrors($form, ['An unknown error happened.']);
+                .always(function() {
                     getSpinController().stopLogoSpinner();
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    displayErrors($form, [textStatus]);
                 });
         }
 
