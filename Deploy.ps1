@@ -147,7 +147,7 @@ try {
     }
     
     $storageContext = New-AzureStorageContext -StorageAccountName $StorageAccount -StorageAccountKey $ENV:StorageAccountKey
-	# Set-AzureServiceDiagnosticsExtension -StorageContext $storageContext -DiagnosticsConfigurationPath .\RedchessService\AnalysisWorkerContent\diagnostics.wadcfgx -ServiceName $ServiceName -Slot $Slot
+	Set-AzureServiceDiagnosticsExtension -StorageContext $storageContext -DiagnosticsConfigurationPath .\RedchessService\AnalysisWorkerContent\diagnostics.wadcfgx -ServiceName $ServiceName -Slot $Slot -Role AnalysisWorker
 
     if ($SwapVips -eq $true) {
         Write-Host "swapping VIPs..."
