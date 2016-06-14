@@ -182,7 +182,7 @@ namespace RedChess.ControllerTests
             var result = controller.JsonLogin(loginModel, "http://localhost/") as JsonResult;
             mockSecurity.VerifyAllExpectations();
 
-            Assert.Throws<ArgumentException>(() => PropertyUtils.ExtractPropertyValue<bool>(result, "success"));
+            Assert.IsFalse(PropertyUtils.ExtractPropertyValue<bool>(result, "success"), "Expected login to fail");
         }
 
         private void SetupCreateUserMock(IWebSecurityProvider mockSecurity, Action<string> hashCapturer)
