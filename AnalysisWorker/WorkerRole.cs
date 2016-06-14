@@ -52,6 +52,8 @@ namespace Redchess.AnalysisWorker
                     var body = receivedMessage.GetBody<BasicMessage>();
                     var json = body.Json;
 
+                    Trace.WriteLine($"Message type : {body.MessageType}");
+
                     switch (body.MessageType)
                     {
                         case GameEndedMessage.MessageType:
