@@ -20,7 +20,7 @@
         var myClock = null;
         var analysisBoard = false;
 
-        @if (clockModel != null)
+        @if (clockModel != null && Model.Clock.IsTimedGame)
         {
             <text>
                 myClock = new Clock(gameId, @clockModel.TimeLimitMs);
@@ -53,6 +53,7 @@
         $("#drawoffer").hide();
         $("#drawoffer-sent").hide();
         $("#promotion-selection").hide();
+        $("#moveplayedat").hide();
 
         $("#accept-draw-request")
             .click(function() {
@@ -94,7 +95,7 @@
                     });
         }
 
-        @if (clockModel != null)
+        @if (@Model.Clock.IsTimedGame)
         {
             <text>
             myClock.ClockDocumentReady();
@@ -144,7 +145,15 @@
 
         @if (!String.IsNullOrEmpty(Model.LastMove))
         {
-            <text>theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');</text>
+        <text>
+        theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
+        if (Date.prototype.toJSON !== undefined) {
+            // Because of some related code in chess.js, we don't want to show the time lapse if toJSON won't work
+            // This stops the functionality working in IE8 and below.
+            $("#moveplayedat time.timeago").timeago();
+            $("#moveplayedat").show();
+        }
+        </text>
         }
 
         if (currentPlayerColor === "") {
@@ -186,13 +195,18 @@
                 </div>
             </div>
 
-            @if (clockModel != null)
+            @if (@Model.Clock.IsTimedGame)
             {
                 @Html.Partial("_Clock", clockModel)
             }
 
+            @{
+                var timestampText = new DateTime(@Math.Max(Model.Clock.LastActionBlack.Ticks, Model.Clock.LastActionWhite.Ticks)).ToString("u");
+            }
+
             <div class="well">
                 <div id="lastmove"></div>
+                <div id="moveplayedat"><time class="timeago" datetime="@timestampText"></time></div>
                 <div id="turnindicator"></div>
             </div>
 

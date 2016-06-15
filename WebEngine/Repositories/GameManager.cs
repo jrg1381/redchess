@@ -236,6 +236,9 @@ namespace RedChess.WebEngine.Repositories
             if (clock == null)
                 return false;
 
+            if (!clock.IsTimedGame)
+                return false;
+
             if (clock.PlayersReady != PlayerReadyStatus.Both)
                 return true;
 
@@ -369,6 +372,10 @@ namespace RedChess.WebEngine.Repositories
             };
 
             m_GameRepository.AddOrUpdate(newGame);
+            var clockId = m_ClockRepository.AddClock(newGame.GameId, 0);
+            newGame.ClockId = clockId;
+            // Update again to force save of the clockId in the GameDto
+            m_GameRepository.AddOrUpdate(newGame);
             m_HistoryRepository.Add(new HistoryEntry {Fen = newGame.Fen, GameId = newGame.GameId, Move = ""});
 
             return newGame.GameId;
@@ -393,11 +400,8 @@ namespace RedChess.WebEngine.Repositories
             // Update to get the id for the newly created game
             m_GameRepository.AddOrUpdate(newGame);
 
-            if (timeLimitMs != 0)
-            {
-                var clockId = m_ClockRepository.AddClock(newGame.GameId, timeLimitMs);
-                newGame.ClockId = clockId;
-            }
+            var clockId = m_ClockRepository.AddClock(newGame.GameId, timeLimitMs);
+            newGame.ClockId = clockId;
 
             // Update again to force save of the clockId in the GameDto
             m_GameRepository.AddOrUpdate(newGame);

@@ -50,6 +50,15 @@
 
     $("#lastmove").text(data.lastmove);
     $("#fen").text(data.fen);
+
+    if (Date.prototype.toJSON !== undefined) {
+        $("#moveplayedat").show();
+        var now = (new Date()).toJSON();
+        $("#moveplayedat time").text(now);
+        $("#moveplayedat time").attr("datetime", now);
+        $("#moveplayedat time").timeago();
+    }
+
     this.updateTakenPieces(data.fen);
 
     this.highlightLastMove(data.movefrom, data.moveto);

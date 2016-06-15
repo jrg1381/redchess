@@ -13,5 +13,6 @@ namespace RedChess.WebEngine.Models
         int TimeElapsedWhiteMs { get; set; }
         int TimeLimitMs { get; set; }
         PlayerReadyStatus PlayersReady { get; set; }
+        bool IsTimedGame { get; }
     }
 }

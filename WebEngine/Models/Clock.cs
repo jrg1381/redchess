@@ -8,22 +8,15 @@ namespace RedChess.WebEngine.Models
     [Table("Clocks")]
     public class Clock : IClock
     {
-		public static readonly DateTime MinimumDateTime;
-
-		static Clock()
-		{
-			MinimumDateTime = new DateTime(1900, 1, 1);
-		}
-
 		public Clock()
-		{			
+		{
 		}
 
-		public Clock(int id, int timeLimitMs)
+		public Clock(int id, int timeLimitMs = 0)
 		{
 			GameId = id;
-			LastActionBlack = MinimumDateTime;
-			LastActionWhite = MinimumDateTime;
+			LastActionBlack = DateTime.UtcNow;
+			LastActionWhite = DateTime.UtcNow;
 			TimeElapsedBlackMs = 0;
 			TimeElapsedWhiteMs = 0;
 			TimeLimitMs = timeLimitMs;
@@ -40,5 +33,6 @@ namespace RedChess.WebEngine.Models
 		public int TimeElapsedWhiteMs { get; set; }
 		public int TimeLimitMs { get; set; }
 		public PlayerReadyStatus PlayersReady { get; set; }
-	}
+        public bool IsTimedGame => TimeLimitMs != 0;
+    }
 }
