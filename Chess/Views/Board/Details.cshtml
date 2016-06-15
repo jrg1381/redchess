@@ -23,8 +23,8 @@
         @if (clockModel != null && Model.Clock.IsTimedGame)
         {
             <text>
-                myClock = new Clock(gameId, @clockModel.TimeLimitMs);
-            </text>
+        myClock = new Clock(gameId, @clockModel.TimeLimitMs);
+        </text>
         }
 
         @if (Model.UserProfileBlack.UserId == Model.UserProfileWhite.UserId)
@@ -98,8 +98,8 @@
         @if (@Model.Clock.IsTimedGame)
         {
             <text>
-            myClock.ClockDocumentReady();
-            </text>
+        myClock.ClockDocumentReady();
+        </text>
         }
 
         @if (Model.GameOver) {
@@ -112,16 +112,16 @@
         @if (!String.IsNullOrEmpty(@Model.Status))
         {
             <text>
-                $("#messages").text('@Model.Status');
-                $("#messages").parent().css('visibility', 'visible');
-            </text>
+        $("#messages").text('@Model.Status');
+        $("#messages").parent().css('visibility', 'visible');
+        </text>
         }
         else
         {
             <text>
-                $("#messages").html('&nbsp;');
-                $("#messages").parent().css('visibility', 'hidden');
-            </text>
+        $("#messages").html('&nbsp;');
+        $("#messages").parent().css('visibility', 'hidden');
+        </text>
         }
 
         $("#lastmove").text('@Model.LastMove');
@@ -145,16 +145,23 @@
 
         @if (!String.IsNullOrEmpty(Model.LastMove))
         {
-        <text>
+            <text>
         theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
-        if (Date.prototype.toJSON !== undefined) {
+        </text>
+            if (!Model.Clock.IsTimedGame)
+            {
+                <text>
+        if (Date.prototype.toJSON !== undefined && theChess.isTimedGame) {
             // Because of some related code in chess.js, we don't want to show the time lapse if toJSON won't work
             // This stops the functionality working in IE8 and below.
             $("#moveplayedat time.timeago").timeago();
             $("#moveplayedat").show();
         }
         </text>
+            }
         }
+
+
 
         if (currentPlayerColor === "") {
             $("#resignbutton").hide();
