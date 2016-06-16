@@ -51,7 +51,7 @@
     $("#lastmove").text(data.lastmove);
     $("#fen").text(data.fen);
 
-    if (Date.prototype.toJSON !== undefined && this.isTimedGame) {
+    if (Date.prototype.toJSON !== undefined && !this.isTimedGame) {
         $("#moveplayedat").show();
         var now = (new Date()).toJSON();
         $("#moveplayedat time").text(now);

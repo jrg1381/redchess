@@ -151,7 +151,7 @@
             if (Model.Clock != null && !Model.Clock.IsTimedGame)
             {
                 <text>
-        if (Date.prototype.toJSON !== undefined && theChess.isTimedGame) {
+        if (Date.prototype.toJSON !== undefined && !theChess.isTimedGame) {
             // Because of some related code in chess.js, we don't want to show the time lapse if toJSON won't work
             // This stops the functionality working in IE8 and below.
             $("#moveplayedat time.timeago").timeago();
