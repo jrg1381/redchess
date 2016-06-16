@@ -95,7 +95,7 @@
                     });
         }
 
-        @if (@Model.Clock.IsTimedGame)
+        @if (@Model.Clock != null && @Model.Clock.IsTimedGame)
         {
             <text>
         myClock.ClockDocumentReady();
@@ -148,7 +148,7 @@
             <text>
         theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
         </text>
-            if (!Model.Clock.IsTimedGame)
+            if (Model.Clock != null && !Model.Clock.IsTimedGame)
             {
                 <text>
         if (Date.prototype.toJSON !== undefined && theChess.isTimedGame) {
@@ -202,14 +202,19 @@
                 </div>
             </div>
 
-            @if (@Model.Clock.IsTimedGame)
+            @if (@Model.Clock != null && @Model.Clock.IsTimedGame)
             {
                 @Html.Partial("_Clock", clockModel)
             }
 
-            @{
-                var timestampText = new DateTime(@Math.Max(Model.Clock.LastActionBlack.Ticks, Model.Clock.LastActionWhite.Ticks)).ToString("u");
+        @{
+            string timestampText = "";
+
+            if (@Model.Clock != null)
+            {
+                timestampText = new DateTime(@Math.Max(Model.Clock.LastActionBlack.Ticks, Model.Clock.LastActionWhite.Ticks)).ToString("u");
             }
+        }
 
             <div class="well">
                 <div id="lastmove"></div>
