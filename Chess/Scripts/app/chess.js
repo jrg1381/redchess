@@ -50,6 +50,15 @@
 
     $("#lastmove").text(data.lastmove);
     $("#fen").text(data.fen);
+
+    if (Date.prototype.toJSON !== undefined && !this.isTimedGame) {
+        $("#moveplayedat").show();
+        var now = (new Date()).toJSON();
+        $("#moveplayedat time").text(now);
+        $("#moveplayedat time").attr("datetime", now);
+        $("#moveplayedat time").timeago();
+    }
+
     this.updateTakenPieces(data.fen);
 
     this.highlightLastMove(data.movefrom, data.moveto);
@@ -115,7 +124,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.target = "";
     this.gameOver = false;
     this.pendingPromotion = false;
-    this.isTimedGame = (clock != null);
+    this.isTimedGame = (clock != null && clock.IsTimedGame);
     this.isAnalysisBoard = analysisBoard;
     this.myClock = clock;
     if (clock != null) {

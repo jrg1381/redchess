@@ -2,10 +2,15 @@
     this.gameId = gameId;
     this.lastServerBlackTimeRemaining = initialTimelimit;
     this.lastServerWhiteTimeRemaining = initialTimelimit;
+    this.initialTimeLimit = initialTimelimit;
     this.isTimerEnabled = false;
     this.timerId = -1;
     this.theChess = null;
     var that = this;
+
+    this.IsTimedGame = function() {
+        return this.initialTimeLimit > 0;
+    }
 
     this.GetLastSyncTime = function() {
         return $.cookie("PageLastSeen" + this.gameId);

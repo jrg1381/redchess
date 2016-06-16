@@ -20,11 +20,11 @@
         var myClock = null;
         var analysisBoard = false;
 
-        @if (clockModel != null)
+        @if (clockModel != null && Model.Clock.IsTimedGame)
         {
             <text>
-                myClock = new Clock(gameId, @clockModel.TimeLimitMs);
-            </text>
+        myClock = new Clock(gameId, @clockModel.TimeLimitMs);
+        </text>
         }
 
         @if (Model.UserProfileBlack.UserId == Model.UserProfileWhite.UserId)
@@ -53,6 +53,7 @@
         $("#drawoffer").hide();
         $("#drawoffer-sent").hide();
         $("#promotion-selection").hide();
+        $("#moveplayedat").hide();
 
         $("#accept-draw-request")
             .click(function() {
@@ -94,11 +95,11 @@
                     });
         }
 
-        @if (clockModel != null)
+        @if (@Model.Clock != null && @Model.Clock.IsTimedGame)
         {
             <text>
-            myClock.ClockDocumentReady();
-            </text>
+        myClock.ClockDocumentReady();
+        </text>
         }
 
         @if (Model.GameOver) {
@@ -111,16 +112,16 @@
         @if (!String.IsNullOrEmpty(@Model.Status))
         {
             <text>
-                $("#messages").text('@Model.Status');
-                $("#messages").parent().css('visibility', 'visible');
-            </text>
+        $("#messages").text('@Model.Status');
+        $("#messages").parent().css('visibility', 'visible');
+        </text>
         }
         else
         {
             <text>
-                $("#messages").html('&nbsp;');
-                $("#messages").parent().css('visibility', 'hidden');
-            </text>
+        $("#messages").html('&nbsp;');
+        $("#messages").parent().css('visibility', 'hidden');
+        </text>
         }
 
         $("#lastmove").text('@Model.LastMove');
@@ -144,8 +145,23 @@
 
         @if (!String.IsNullOrEmpty(Model.LastMove))
         {
-            <text>theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');</text>
+            <text>
+        theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
+        </text>
+            if (Model.Clock != null && !Model.Clock.IsTimedGame)
+            {
+                <text>
+        if (Date.prototype.toJSON !== undefined && !theChess.isTimedGame) {
+            // Because of some related code in chess.js, we don't want to show the time lapse if toJSON won't work
+            // This stops the functionality working in IE8 and below.
+            $("#moveplayedat time.timeago").timeago();
+            $("#moveplayedat").show();
         }
+        </text>
+            }
+        }
+
+
 
         if (currentPlayerColor === "") {
             $("#resignbutton").hide();
@@ -186,13 +202,23 @@
                 </div>
             </div>
 
-            @if (clockModel != null)
+            @if (@Model.Clock != null && @Model.Clock.IsTimedGame)
             {
                 @Html.Partial("_Clock", clockModel)
             }
 
+        @{
+            string timestampText = "";
+
+            if (@Model.Clock != null)
+            {
+                timestampText = new DateTime(@Math.Max(Model.Clock.LastActionBlack.Ticks, Model.Clock.LastActionWhite.Ticks)).ToString("u");
+            }
+        }
+
             <div class="well">
                 <div id="lastmove"></div>
+                <div id="moveplayedat"><time class="timeago" datetime="@timestampText"></time></div>
                 <div id="turnindicator"></div>
             </div>
 
