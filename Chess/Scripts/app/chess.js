@@ -54,9 +54,8 @@
     if (Date.prototype.toJSON !== undefined && !this.isTimedGame) {
         $("#moveplayedat").show();
         var now = (new Date()).toJSON();
-        $("#moveplayedat time").text(now);
         $("#moveplayedat time").attr("datetime", now);
-        $("#moveplayedat time").timeago();
+        $("#moveplayedat time").timeago('update',now);
     }
 
     this.updateTakenPieces(data.fen);
