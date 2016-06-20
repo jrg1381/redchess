@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RedchessService" schemaVersion="2015-04.2.6" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
-  <WorkerRole name="AnalysisWorker">
+  <WorkerRole name="AnalysisWorker" vmsize="Medium">
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
@@ -22,7 +22,7 @@
       </Task>
     </Startup>
   </WorkerRole>
-  <WebRole name="RendererWebRole" vmsize="Small">
+  <WebRole name="RendererWebRole" vmsize="Medium">
     <Sites>
       <Site name="Web">
         <Bindings>

@@ -12,7 +12,7 @@ namespace Redchess.AnalysisWorker
     class LogTruncator
     {
         const int c_timerIntervalInHours = 3;
-        const int c_maxLogAgeInHours = 6;
+        const int c_maxLogAgeInHours = 48;
         const string c_logTable = "WADLogsTable";
 
         private Timer m_timer;
