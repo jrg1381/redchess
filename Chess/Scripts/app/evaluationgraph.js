@@ -210,6 +210,14 @@ function onDocumentReady(gameId) {
             $("#pgn-button").click(function() {
                 location.href = "/History/Pgn/" + gameId;
             });
+
+            $('#fen-button')
+            .popover({
+                    content: function() {
+                        return boardViewer.positions.Moves[boardViewer.currentMove].Fen;
+                    }
+                });
+
         }).fail(function(jqXHR, textStatus, errorThrown) {
             $('span#desc').text(jqXHR.status + " " + errorThrown);
             if (jqXHR.responsejSON !== undefined) {
