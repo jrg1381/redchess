@@ -77,6 +77,15 @@
             that.board.flip();
         });
 
+        $("#download-image")
+            .on("click",
+                function() {
+                    var fen = "foo";
+                    $.post("http://redchess.cloudapp.net/api/render",
+                        { 'fen': fen, width: 512 },
+                        function() {});
+                });
+
         $("#playFromHere").on("click", function () {
             window.location = "/History/PlayFromHere?move=" + that.currentMove + "&gameId=" + that.gameId;
         });

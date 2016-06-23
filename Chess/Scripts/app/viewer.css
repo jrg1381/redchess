@@ -88,6 +88,11 @@ table#analysisMoves td {
     float : left;
 }
 
+.button#download-image {
+    background: url("/Images/icon-image.png");
+    float: right;
+}
+
 .button#goForward {
     background: url("/Images/arrow_right.png");
     float : right;
