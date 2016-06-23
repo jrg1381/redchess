@@ -81,7 +81,7 @@
             .on("click",
                 function() {
                     var fen = "foo";
-                    $.post("http://redchess.cloudapp.net/api/render",
+                    $.post("https://redchess.cloudapp.net/api/render",
                         { 'fen': fen, width: 512 },
                         function() {});
                 });
