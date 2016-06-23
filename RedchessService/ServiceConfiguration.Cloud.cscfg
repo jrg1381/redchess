@@ -13,5 +13,10 @@
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
     </ConfigurationSettings>
+      <Certificates>
+        <Certificate name="SampleCertificate" 
+            thumbprint="‎3893EBE21C75E67DC674AB44DC3D833CBCA117DC" 
+            thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
 </ServiceConfiguration>

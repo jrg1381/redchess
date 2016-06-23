@@ -23,10 +23,24 @@
     </Startup>
   </WorkerRole>
   <WebRole name="RendererWebRole" vmsize="Medium">
+    <Certificates>
+      <Certificate name="SampleCertificate"
+                   storeLocation="LocalMachine"
+                   storeName="My"
+                   permissionLevel="limitedOrElevated" />
+      <!-- IMPORTANT! Unless your certificate is either
+        self-signed or signed directly by the CA root, you
+        must include all the intermediate certificates
+        here. You must list them here, even if they are
+        not bound to any endpoints. Failing to list any of
+        the intermediate certificates may cause hard-to-reproduce
+        interoperability problems on some clients.-->
+    </Certificates>
     <Sites>
       <Site name="Web">
         <Bindings>
-          <Binding name="Endpoint1" endpointName="Endpoint1" />
+          <Binding name="Endpoint1" endpointName="HttpIn" />
+          <Binding name="Endpoint2" endpointName="HttpsIn" />
         </Bindings>
       </Site>
     </Sites>
@@ -34,9 +48,10 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
+      <InputEndpoint name="HttpIn" protocol="http" port="80" />
+      <InputEndpoint name="HttpsIn" protocol="https" port="443" certificate="SampleCertificate"/>
     </Endpoints>
-      <LocalResources>
+    <LocalResources>
       <LocalStorage name="InstallLogs" sizeInMB="5" cleanOnRoleRecycle="false" />
     </LocalResources>
     <Startup>
