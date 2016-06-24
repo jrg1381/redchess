@@ -48,6 +48,7 @@
         $("#goStart").off();
         $("#goFlip").off();
         $("#goEnd").off();
+        $("#download-image").off();
 
         $("span.button").mouseover(function () {
             $(this).parent().fadeTo(40, 1.0);
