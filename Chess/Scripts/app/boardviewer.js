@@ -81,21 +81,7 @@
         $("#download-image")
             .on("click",
                 function() {
-                    $.post("https://redchess.cloudapp.net/api/render",
-                            { 'fen': that.board.fen(), width: 512 },
-                            function(data, status, jqXHR) {
-                                alert(status);
-                            },
-                            "image/png")
-                        .done(function (data, textStatus, jqXHR) {
-                            alert("second success");
-                        })
-                        .fail(function (jqXHR, textStatus, errorThrown) {
-                            alert("error");
-                        })
-                        .always(function(data) {
-                            alert("finished");
-                        });
+                    window.location = "https://redchess.cloudapp.net/api/render/simplebitmap?width=512&fen=" + encodeURIComponent(that.board.fen());
                 });
 
         $("#playFromHere").on("click", function () {

@@ -13,8 +13,13 @@ namespace RendererWebRole.Controllers
 {
     public class RenderController : ApiController
     {
-        [HttpPost]
         [HttpGet]
+        public HttpResponseMessage SimpleBitmap(string fen, int width)
+        {
+            return Bitmap(new RenderRequest() {Fen = fen, Width = width});
+        }
+
+        [HttpPost]
         public HttpResponseMessage Bitmap(RenderRequest request)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
