@@ -82,9 +82,10 @@
                 function() {
                     $.post("https://redchess.cloudapp.net/api/render",
                         { 'fen': that.board.fen(), width: 512 },
-                        function(data) {
-                            
-                        });
+                        function (data, status, jqXHR) {
+                            alert(status);
+                        },
+                        "image/png");
                 });
 
         $("#playFromHere").on("click", function () {
