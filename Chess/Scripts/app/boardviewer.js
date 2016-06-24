@@ -80,10 +80,11 @@
         $("#download-image")
             .on("click",
                 function() {
-                    var fen = "foo";
                     $.post("https://redchess.cloudapp.net/api/render",
-                        { 'fen': fen, width: 512 },
-                        function() {});
+                        { 'fen': that.board.fen(), width: 512 },
+                        function(data) {
+                            
+                        });
                 });
 
         $("#playFromHere").on("click", function () {
