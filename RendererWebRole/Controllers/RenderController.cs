@@ -14,6 +14,7 @@ namespace RendererWebRole.Controllers
     public class RenderController : ApiController
     {
         [HttpPost]
+        [HttpGet]
         public HttpResponseMessage Bitmap(RenderRequest request)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
