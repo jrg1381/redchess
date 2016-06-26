@@ -21,4 +21,4 @@ https://github.com/jrg1381/redchess/tree/master/Database
 
 and can be restored using Redgate's SQL Compare tool (commercial) or executed manually. Run order is probably important :smile:
 
-## [Fake edit]
+
