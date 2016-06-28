@@ -81,7 +81,7 @@
         $("#download-image")
             .on("click",
                 function() {
-                    window.location = "https://redchess.cloudapp.net/api/render/simplebitmap?width=512&fen=" + encodeURIComponent(that.board.fen());
+                    window.location = "https://redchess2.cloudapp.net/api/render/simplebitmap?width=512&fen=" + encodeURIComponent(that.board.fen());
                 });
 
         $("#playFromHere").on("click", function () {
