@@ -31,12 +31,12 @@ namespace RedChess.RendererTests
             File.Delete(c_OutputFilename);
         }
 
-        private void WriteOutputFile(BoardRenderingOptions options, int width)
+        private void WriteOutputFile(BoardRenderingOptions options, int width, string fen = c_FenData)
         {
             var boardRenderer = new BoardRenderer(options);
             using (var stream = new FileStream(c_OutputFilename, FileMode.Create))
             {
-                boardRenderer.SaveDrawingToStream(c_FenData, stream, width);
+                boardRenderer.SaveDrawingToStream(fen, stream, width);
             }
         }
 
@@ -66,6 +66,17 @@ namespace RedChess.RendererTests
             {
                 var options = new BoardRenderingOptions("DimGray", "AntiqueWhite", "Blue");
                 WriteOutputFile(options, size);
+            });
+        }
+
+        [TestCase("abcdefghijkl")]
+        [TestCase("90")]
+        public void InvalidFenCharactersThrowException(string fen)
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var options = new BoardRenderingOptions("DimGray", "AntiqueWhite", "Blue");
+                WriteOutputFile(options, 512, fen);
             });
         }
     }

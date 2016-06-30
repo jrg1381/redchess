@@ -16,7 +16,7 @@ namespace RendererWebRole.Controllers
         [HttpGet]
         public HttpResponseMessage SimpleBitmap(string fen, int width)
         {
-            return Bitmap(new RenderRequest() {Fen = fen, Width = width});
+            return Bitmap(new RenderRequest {Fen = fen, Width = width});
         }
 
         [HttpPost]
