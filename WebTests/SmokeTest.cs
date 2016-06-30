@@ -43,8 +43,8 @@ namespace RedChess.WebTests
 
             WarmTheWebServer(m_baseUrl);
 
-            m_clivePlayer = new Player(PieceColor.Black, "clivetong", "grandmaster", driverPlayerTwo);
-            m_jamesPlayer = new Player(PieceColor.White, "james", "doomlord", driverPlayerOne);
+            m_clivePlayer = new Player(PieceColor.Black, "player1", "password1", driverPlayerTwo);
+            m_jamesPlayer = new Player(PieceColor.White, "player2", "password2", driverPlayerOne);
 
             m_verificationErrors = new StringBuilder();
         }
