@@ -50,6 +50,28 @@
         $("#goEnd").off();
         $("#download-image").off();
 
+        $(".board-b72b1").off();
+
+        $(".board-b72b1")
+            .on("click",
+                function(event) {
+                    var dataSquare = event.target.getAttribute("data-square");
+                    if (dataSquare == null) {
+                        dataSquare = event.target.parentElement.getAttribute("data-square");
+                    }
+                    if (dataSquare == null) {
+                        console.log("dataSquare was null")
+                        return;
+                    }
+                    if (dataSquare.substr(0, 1) <= "d") {
+                        if (that.currentMove === 0) return;
+                        that.fakeClick(that.currentMove - 1);
+                    } else {
+                        if (that.currentMove === lastMove - 1) return;
+                        that.fakeClick(that.currentMove + 1);
+                    }
+                });
+
         $("span.button").mouseover(function () {
             $(this).parent().fadeTo(40, 1.0);
         }).mouseout(function () {
