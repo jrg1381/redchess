@@ -52,6 +52,16 @@
 
         $(".board-b72b1").off();
 
+        function goBack() {
+            if (that.currentMove === 0) return;
+            that.fakeClick(that.currentMove - 1);
+        }
+
+        function goForward() {
+            if (that.currentMove === lastMove - 1) return;
+            that.fakeClick(that.currentMove + 1);
+        }
+
         $(".board-b72b1")
             .on("click",
                 function(event) {
@@ -60,15 +70,21 @@
                         dataSquare = event.target.parentElement.getAttribute("data-square");
                     }
                     if (dataSquare == null) {
-                        console.log("dataSquare was null")
+                        console.log("dataSquare was null");
                         return;
                     }
                     if (dataSquare.substr(0, 1) <= "d") {
-                        if (that.currentMove === 0) return;
-                        that.fakeClick(that.currentMove - 1);
+                        if (that.board.orientation() === "white") {
+                            goBack();
+                        } else {
+                            goForward();
+                        }
                     } else {
-                        if (that.currentMove === lastMove - 1) return;
-                        that.fakeClick(that.currentMove + 1);
+                        if (that.board.orientation() === "white") {
+                            goForward();
+                        } else {
+                            goBack();
+                        }
                     }
                 });
 
@@ -78,15 +94,8 @@
             $(this).parent().fadeTo(40, 0.7);
         });
 
-        $("#goForward").on("click", function () {
-            if (that.currentMove === lastMove - 1) return;
-            that.fakeClick(that.currentMove + 1);
-        });
-
-        $("#goBack").on("click", function () {
-            if (that.currentMove === 0) return;
-            that.fakeClick(that.currentMove - 1);
-        });
+        $("#goForward").on("click", goForward);
+        $("#goBack").on("click", goBack);
 
         $("#goStart").on("click", function () {
             that.fakeClick(1);
@@ -165,7 +174,7 @@ BoardViewer.prototype.updateBoard = function(newMove) {
     $("span#goBack").show();
     $("span#goForward").show();
 
-    if (newMove === 0) {
+    if (newMove === 1) {
         $("span#goBack").hide();
     }
 
