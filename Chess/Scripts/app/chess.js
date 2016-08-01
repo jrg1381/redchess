@@ -156,7 +156,9 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: true, draggable: true, onDrop: this.onDrop.bind(this), onDragStart : this.onDragStart };
     this.chessBoard = new ChessBoard('board', cfg);
 
-    $(window).resize(this.chessBoard.resize);
+    $(window).resize(function() {
+        that.chessBoard.resize();
+    });
 
     if (this.currentPlayerColor === 'b' && !this.isAnalysisBoard) {
         this.chessBoard.flip();

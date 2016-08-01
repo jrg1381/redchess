@@ -147,6 +147,9 @@
         {
             <text>
         theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
+        $(window).resize(function() {
+            theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
+        });
         </text>
             if (Model.Clock != null && !Model.Clock.IsTimedGame)
             {
