@@ -345,7 +345,9 @@ Chess.prototype.lockBoard = function() {
         return;
     this.boardLocked = true;
     $("#board-controls > a").attr("disabled", true);
-    this.parentOfSpinny().prepend('<div class="lockIcon"></div>');
+    var lockIconParentSquare = this.parentOfSpinny().prepend('<div class="lockIcon"></div>');
+    $(".lockIcon").width(lockIconParentSquare.width() * 2);
+    $(".lockIcon").height(lockIconParentSquare.height() * 2);
 };
 
 Chess.prototype.unlockBoard = function() {
