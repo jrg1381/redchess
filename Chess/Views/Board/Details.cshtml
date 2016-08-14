@@ -149,6 +149,11 @@
         theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
         $(window).resize(function() {
             theChess.highlightLastMove('@Model.LastMoveStart', '@Model.LastMoveEnd');
+            if (theChess.gameOver) {
+                // Because locking the board is a no-op if it thinks the board is already locked
+                theChess.unlockBoard();
+                theChess.lockBoard();
+            }
         });
         </text>
             if (Model.Clock != null && !Model.Clock.IsTimedGame)
