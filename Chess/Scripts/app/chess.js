@@ -59,8 +59,9 @@
     }
 
     this.updateTakenPieces(data.fen);
-
-    this.highlightLastMove(data.movefrom, data.moveto);
+    this.moveFrom = data.movefrom;
+    this.moveTo = data.moveto;
+    this.highlightLastMove();
 
     //crappy
     if (data.message.match(/(draw)|(mate)/i) != null) {
@@ -82,14 +83,15 @@ Chess.prototype.setFaviconTag = function (tagIcon) {
     }
 }
 
-Chess.prototype.highlightLastMove = function(moveFrom, moveTo) {
+Chess.prototype.highlightLastMove = function() {
+    console.info("Highlighting move " + this.moveFrom + " " + this.moveTo);
     var board = $('#board');
 
     // This is the class assigned by chessboard.js to all squares
     board.find('.square-55d63').removeClass('highlight-white');
     // These classes let you find a particular square
-    board.find('.square-' + moveFrom.toLowerCase()).addClass('highlight-white');
-    board.find('.square-' + moveTo.toLowerCase()).addClass('highlight-white');
+    board.find('.square-' + this.moveFrom.toLowerCase()).addClass('highlight-white');
+    board.find('.square-' + this.moveTo.toLowerCase()).addClass('highlight-white');
 }
 
 Chess.prototype.respondToDrawOffer = function(accepted) {
@@ -121,6 +123,8 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.spinner = null;
     this.source = "";
     this.target = "";
+    this.moveFrom = "";
+    this.moveTo = "";
     this.gameOver = false;
     this.pendingPromotion = false;
     this.isTimedGame = (clock != null && clock.IsTimedGame);
