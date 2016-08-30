@@ -1,6 +1,8 @@
 ﻿div.lockIcon {
-    position:absolute;
+    position: absolute;
     background-size: contain;
+    width: 100%;
+    height: auto;
     background: url("/Images/lock.png") no-repeat;
     background-position: center center;
     z-index: 1;

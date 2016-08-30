@@ -352,6 +352,9 @@ Chess.prototype.lockBoard = function() {
     var lockIconParentSquare = this.parentOfSpinny().prepend('<div class="lockIcon"></div>');
     $(".lockIcon").width(lockIconParentSquare.width() * 2);
     $(".lockIcon").height(lockIconParentSquare.height() * 2);
+    // Madness. Without this, apparently the browser doesn't notice the resize and doesn't rescale the background image
+    $(".lockIcon").css("background-size", "");
+    $(".lockIcon").css("background-size", "contain");
 };
 
 Chess.prototype.unlockBoard = function() {
