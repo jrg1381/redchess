@@ -63,11 +63,11 @@ function drawVisualization(data) {
         fill: "#fffff0"
     });
 
-    var xScale = d3.scale.linear()
+    var xScale = d3.scaleLinear()
         .domain([d3.min(data.map(function(x) { return x.moves; })) - 5, d3.max(data.map(function(x) { return x.moves; })) + 5])
         .range([0, width]);
 
-    var yScale = d3.scale.linear()
+    var yScale = d3.scaleLinear()
         .domain([d3.min(data.map(function(x) { return x.pieceCount; })) - 5, d3.max(data.map(function(x) { return x.pieceCount; })) + 5])
         .range([height, 0]);
 
@@ -76,7 +76,7 @@ function drawVisualization(data) {
         .enter()
         .append("circle");
 
-    var color = d3.scale.category10();
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     var circleAttributes = circles
         .on("click", function(d) {
@@ -168,11 +168,11 @@ function sortTable(tableName, columnIndex) {
 
 function drawEloTable(data) {
     var eloData = data.EloData;
-    var color = d3.scale.category10();
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    for (var username in eloData) {
-        if (eloData.hasOwnProperty(username)) {
-            var userElo = eloData[username];
+    for (var userid in eloData) {
+        if (eloData.hasOwnProperty(userid)) {
+            var userElo = eloData[userid];
 
             // The server guarantees that the data comes back already sorted
             var latestElo = userElo[userElo.length - 1].Elo;
@@ -181,7 +181,7 @@ function drawEloTable(data) {
             if (userElo.length > 1) {
                 previousElo = userElo[userElo.length - 2].Elo;
             }
-            var filterFunction = function (x) { return x.UserId == username; };
+            var filterFunction = function (x) { return x.UserId == userid; };
             var userName = data.Profiles.filter(filterFunction)[0].UserName;
             var row = $("<tr></tr>");
             row.append($('<td><span class="glyphicon glyphicon-user" style="padding-right:0.5em;color :' + color(userName) + '" aria-hidden="true"></span>' + userName + "</td>"));
@@ -213,20 +213,20 @@ function drawGraph(data) {
     var height = window.screen.availHeight / 1.5;
     var svg = d3.select("#svg").append("svg").attr("width", width).attr("height", height);
 
-    var x = d3.time.scale().domain([dateMin, dateMax]).range([0, width]);
-    var y = d3.scale.linear().domain([eloMin - 200, eloMax + 100]).range([height, 0]);
-    var xAxis = d3.svg.axis().scale(x).orient("bottom");
-    var yAxis = d3.svg.axis().scale(y).orient("right");
+    var x = d3.scaleTime().domain([dateMin, dateMax]).range([0, width]);
+    var y = d3.scaleLinear().domain([eloMin - 200, eloMax + 100]).range([height, 0]);
+    var xAxis = d3.axisBottom().scale(x);
+    var yAxis = d3.axisRight().scale(y);
     svg.append("g").attr("class", "x-axis").attr("transform", "translate(0," + (height - 32) + ")").call(xAxis);
     svg.append("g").attr("class", "x-axis").call(yAxis);
-    var color = d3.scale.category10();
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     for (var prop in data.EloData) {
         if (data.EloData.hasOwnProperty(prop)) {
             var mappedData = data.EloData[prop].map(function (x) { return { Date: new Date(x.Date), Elo: x.Elo } });
 
-            var line = d3.svg.line().x(function (d, i) { return x(d.Date); }).y(function (d, i) { return y(d.Elo); }).interpolate("step-after");
-            svg.append("path").attr("d", line(mappedData)).style("stroke", function (d) { return color(prop); }).attr("class","nofill-line");
+            var line = d3.line().x(function(d, i) { return x(d.Date); }).y(function(d, i) { return y(d.Elo); }); // .curve(d3.curveStepAfter(null));
+            svg.append("path").datum(mappedData).attr("d", line.curve(d3.curveStepAfter)).style("stroke", function (d) { return color(prop); }).attr("class","nofill-line");
         }
     }
 }
