@@ -22,10 +22,10 @@ function showGraph(boardViewer, evaluationData, gameOver, status) { // domain([d
     var absoluteMax = Math.min(2500, d3.max(evaluationData, function (p) { return Math.abs(p.score); }));
 
     var svg = d3.select("#svg").append("svg").attr("width", width).attr("height", height).append("g").data(evaluationData);
-    var x = d3.scale.linear().domain([0, evaluationData.length]).range([0, width]);
-    var y = d3.scale.linear().domain([-absoluteMax, absoluteMax]).range([height, 0]);
-    var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format("d"));
-    var line = d3.svg.line().x(function (d, i) { return x(d.move); }).y(function (d, i) { return y(d.score); });
+    var x = d3.scaleLinear().domain([0, evaluationData.length]).range([0, width]);
+    var y = d3.scaleLinear().domain([-absoluteMax, absoluteMax]).range([height, 0]);
+    var xAxis = d3.axisBottom().scale(x).tickFormat(d3.format("d"));
+    var line = d3.line().x(function (d, i) { return x(d.move); }).y(function (d, i) { return y(d.score); });
 
     svg.append("g").attr("class", "x-axis").attr("transform", "translate(0,32)").call(xAxis);
     svg.append("path").attr("d", line(evaluationData));
