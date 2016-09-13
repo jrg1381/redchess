@@ -1,9 +1,4 @@
-﻿#board {
-    width : 512px;
-    height : 512px;
-}
-
-.left {
+﻿.left {
  float : left;   
 }
 
