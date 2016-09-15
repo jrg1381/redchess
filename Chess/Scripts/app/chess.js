@@ -125,6 +125,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
     this.target = "";
     this.moveFrom = "";
     this.moveTo = "";
+    this.latestFen = "";
     this.gameOver = false;
     this.pendingPromotion = false;
     this.isTimedGame = (clock != null && clock.IsTimedGame);
@@ -159,9 +160,15 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
 
     var cfg = { pieceTheme: '/Images/{piece}.png', showNotation: true, draggable: true, onDrop: this.onDrop.bind(this), onDragStart : this.onDragStart };
     this.chessBoard = new ChessBoard('board', cfg);
+    this.latestFen = this.chessBoard.fen();
 
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         that.chessBoard.resize();
+        // Attempt to protect from resize events happening 'asynchronously'
+        if (!that.latestFen.startsWith(that.chessBoard.fen())) {
+            console.log("Caught unexpected fen difference, redrawing");
+            that.chessBoard.fen(that.latestFen);
+        }
     });
 
     if (this.currentPlayerColor === 'b' && !this.isAnalysisBoard) {
@@ -325,7 +332,8 @@ Chess.prototype.endGame = function() {
     this.gameOver = true;
 };
 
-Chess.prototype.updateUi = function(fen) {
+Chess.prototype.updateUi = function (fen) {
+    this.latestFen = fen;
     this.chessBoard.position(fen);
 
     var splitFen = fen.split(" ");
