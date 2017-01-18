@@ -21,4 +21,8 @@ https://github.com/jrg1381/redchess/tree/master/Database
 
 and can be restored using Redgate's SQL Compare tool (commercial) or executed manually. Run order is probably important :smile:
 
+# CI
 
+Commits to master are deployed to Azure.
+
+Tests are run in Teamcity on all commits on all branches.
