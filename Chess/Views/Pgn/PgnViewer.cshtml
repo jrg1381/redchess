@@ -49,7 +49,7 @@
                         "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
                     }
                 ).done(ProcessServerResponse)
-                .error(ServerError);
+                .fail(ServerError);
         });
 
         // Get all the links.
