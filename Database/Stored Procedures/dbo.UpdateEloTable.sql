@@ -1,4 +1,3 @@
-
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -32,7 +31,7 @@ FOR
             JOIN dbo.Clocks ON Clocks.GameId = Boards.GameId
     WHERE   GameOver = 1
             AND UserIdBlack != UserIdWhite -- Ignore analysis boards
-            AND TimeLimitMs = 300000 -- Only care about 5 minute games
+            AND TimeLimitMs = 0 -- Only care about 5 minute games
     ORDER BY CompletionDate FOR READ ONLY;
 
 /* Data from the Boards table */
