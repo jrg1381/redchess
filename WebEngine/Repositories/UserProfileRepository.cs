@@ -15,6 +15,14 @@ namespace RedChess.WebEngine.Repositories
             }
         }
 
+        public bool IsAdministrator(int userId)
+        {
+            using (var context = new ChessContext())
+            {
+                return context.Administrators.Any(u => u.AdministratorId == userId);
+            }
+        }
+
         public int UserId(string currentUser)
         {
             using (var context = new ChessContext())

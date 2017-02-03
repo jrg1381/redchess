@@ -7,7 +7,7 @@
     {
         string cookieToken, formToken;
         AntiForgery.GetTokens(null, out cookieToken, out formToken);
-        return cookieToken + ":" + formToken;                
+        return cookieToken + ":" + formToken;
     }
 }
 
@@ -16,43 +16,9 @@
     <script>window.location.href = "/Board"</script>
 }
 
-<script>
-    function ShowRegister() {
-        $("div#login").hide();
-        $("div#register").show();
-        var link = $("a#showRegister");
-
-        link.text("Log in");
-        $("span#preface").text("Already a user?");
-        link.off("click");
-        link.click(ShowLogin);
-    }
-
-    function ShowLogin() {
-        $("div#register").hide();
-        $("div#login").show();
-        var link = $("a#showRegister");
-
-        link.text("Sign up");
-        $("span#preface").text("First time here?");
-        link.off("click");
-        link.click(ShowRegister);
-    }
-
-    $(document).ready(function () {
-        var link = $("a#showRegister");
-        link.click(ShowRegister);
-    });
-</script>
-
 <div id="login">
     @Html.Partial("_Login")
 </div>
-<div style="display: none" id="register">
-    @Html.Partial("_Register")
-</div>
-<div class="row">
-    <p class="col-lg-3"><span id="preface">First time here?</span> <a id="showRegister">Sign up</a>
-    </p>
-</div>
+
+
 

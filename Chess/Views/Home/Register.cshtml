@@ -1,0 +1,19 @@
+﻿@model Chess.Models.LoginModel
+@{
+    ViewBag.Title = "Redchess";
+}
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;
+    }
+}
+
+<div id="register">
+    @Html.Partial("_Register")
+</div>
+
+
+

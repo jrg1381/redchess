@@ -49,7 +49,7 @@ namespace RedChess.WebEngine.Repositories
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<Chess.Models.ChessContext>());
 
-	    public ChessContext(string connectionString) : base(connectionString)
+        public ChessContext(string connectionString) : base(connectionString)
 	    {
 	    }
 
@@ -61,6 +61,7 @@ namespace RedChess.WebEngine.Repositories
 		public DbSet<Clock> Clocks { get; set; }
         public DbSet<HistoryEntry> HistoryEntries { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
         public DbSet<AnalysisEntry> AnalysisEntries { get; set; }
         public DbSet<AnalysisLine> AnalysisLines { get; set; }
         public DbSet<Stats> Stats { get; set; }

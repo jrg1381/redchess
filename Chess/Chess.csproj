@@ -393,6 +393,7 @@
     <Content Include="Views\Pgn\PgnViewer.cshtml" />
     <Content Include="Views\Home\Config.cshtml" />
     <Content Include="Views\Stats\Index.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

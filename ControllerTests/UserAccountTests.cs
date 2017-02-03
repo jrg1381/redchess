@@ -7,6 +7,7 @@ using Chess.Controllers;
 using Chess.Models;
 using NUnit.Framework;
 using RedChess.ChessCommon.Interfaces;
+using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
 
 namespace RedChess.ControllerTests
@@ -197,8 +198,6 @@ namespace RedChess.ControllerTests
                         var capturedEmailHash = PropertyUtils.ExtractPropertyValue<string>(anonymousTypeObject, "EmailHash");
                         hashCapturer(capturedEmailHash);
                     });
-            mockSecurity.Expect(x => x.Login(c_username, c_password, false)).Return(true);
-            mockSecurity.Expect(x => x.SetAuthCookie(c_username, false));
         }
 
         private void SetupFailingCreateUserMock(IWebSecurityProvider mockSecurity)
@@ -219,7 +218,10 @@ namespace RedChess.ControllerTests
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
             SetupCreateUserMock(mockSecurity, (s) => { capturedEmailHash = s; });
 
-            var controller = new AccountController(IdentityProvider(), mockSecurity);
+            var mockGameManager = MockRepository.GenerateMock<IGameManager>();
+            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(true);
+
+            var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
 
             var registerModel = new RegisterModel()
             {
@@ -247,6 +249,25 @@ namespace RedChess.ControllerTests
             return Enum.GetValues(typeof (MembershipCreateStatus)).Cast<MembershipCreateStatus>().Where(p => p != MembershipCreateStatus.ProviderError);
         }
 
+        [Test]
+        public void NonAdminCannotRegisterNewUser()
+        {
+            var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
+
+            var mockGameManager = MockRepository.GenerateMock<IGameManager>();
+            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(false);
+
+            var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
+            var registerModel = new RegisterModel();
+
+            var result = controller.JsonRegister(registerModel, "http://localhost/") as JsonResult;
+            mockSecurity.VerifyAllExpectations();
+
+            Assert.Throws<ArgumentException>(() => PropertyUtils.ExtractPropertyValue<bool>(result, "success"));
+            var errors = PropertyUtils.ExtractPropertyValue<IEnumerable<string>>(result.Data, "errors");
+            Assert.AreEqual("Only administrators can perform this operation", errors.First(), "Expected error when non-admin created new user");
+        }
+
         [TestCaseSource(nameof(MembershipCreateStatusSource))]
         public void ErrorCodeToStringCoversAllEnum(MembershipCreateStatus status)
         {
@@ -258,7 +279,10 @@ namespace RedChess.ControllerTests
                 Arg<string>.Is.Anything,
                 Arg<object>.Is.Anything)).Throw(exceptionToThrow);
 
-            var controller = new AccountController(IdentityProvider(), mockSecurity);
+            var mockGameManager = MockRepository.GenerateMock<IGameManager>();
+            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(true);
+
+            var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
             var registerModel = new RegisterModel();
 
             var result = controller.JsonRegister(registerModel, "http://localhost/") as JsonResult;
@@ -275,7 +299,10 @@ namespace RedChess.ControllerTests
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
             SetupFailingCreateUserMock(mockSecurity);
 
-            var controller = new AccountController(IdentityProvider(), mockSecurity);
+            var mockGameManager = MockRepository.GenerateMock<IGameManager>();
+            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(true);
+
+            var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
 
             var registerModel = new RegisterModel()
             {
