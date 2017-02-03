@@ -9,6 +9,7 @@ using System.Web.Security;
 using Chess.Models;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Repositories;
+using RedChess.WebEngine.Repositories.Interfaces;
 
 //using RedChess.WebEngine.Repositories;
 
@@ -19,14 +20,16 @@ namespace Chess.Controllers
 	{
         private readonly ICurrentUser m_userProvider;
         private readonly IWebSecurityProvider m_webSecurityProvider;
+	    private readonly IGameManager m_gameManager;
 
         public AccountController() : this(null, null)
         { }
 
-	    public AccountController(ICurrentUser userProvider = null, IWebSecurityProvider webSecurity = null)
+	    public AccountController(ICurrentUser userProvider = null, IWebSecurityProvider webSecurity = null, IGameManager gameManager = null)
 	    {
 	        m_userProvider = userProvider ?? new CurrentUserProvider();
 	        m_webSecurityProvider = webSecurity ?? new DefaultWebSecurityProvider(m_userProvider);
+	        m_gameManager = gameManager ?? new GameManager();
 	    }
 
         //
@@ -67,19 +70,21 @@ namespace Chess.Controllers
 		//
 		// POST: /Account/JsonRegister
 		[HttpPost]
-		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
 		public ActionResult JsonRegister(RegisterModel model, string returnUrl)
 		{
+		    if (!m_gameManager.UserIdIsAdministrator(m_userProvider.CurrentUserId))
+		    {
+                ModelState.AddModelError("", "Only administrators can perform this operation");
+                return Json(new { errors = GetErrorsFromModelState() });
+		    }
+
 			if (ModelState.IsValid)
 			{
 				// Attempt to register the user
 				try
 				{
 					m_webSecurityProvider.CreateUserAndAccount(model.UserName, model.Password, new { EmailHash = EmailHashForAddress(model.Email)});
-                    m_webSecurityProvider.Login(model.UserName, model.Password);
-
-                    m_webSecurityProvider.SetAuthCookie(model.UserName, rememberMe: false);
 					return Json(new { success = true, redirect = returnUrl });
 				}
 				catch (MembershipCreateUserException e)

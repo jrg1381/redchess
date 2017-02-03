@@ -15,6 +15,8 @@ namespace Chess.Controllers
             return View();
         }
 
+        public ActionResult Register(string returnUrl) => View("Register");
+
         // This is a bit of a misuse of 'id' parameter
         public ActionResult Config(int? id) => View("Config", LogEntry.FetchLogEntries(id ?? 250));
     }

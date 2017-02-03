@@ -9,5 +9,6 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         int UserId(string currentUser);
         string GetEmailHashForUsername(string username);
         void SetEmailHashForUserId(int userId, string emailHash);
+        bool IsAdministrator(int userId);
     }
 }
