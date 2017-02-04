@@ -323,9 +323,14 @@ namespace RedChess.WebEngine.Repositories
             PostGameEndedMessage(gameId);
         }
 
-        public bool UserIdIsAdministrator(int userId)
+        public bool UserIsAdministrator(int userId)
         {
             return m_UserRepository.IsAdministrator(userId);
+        }
+
+        public bool UserIsAdministrator(string username)
+        {
+            return m_UserRepository.IsAdministrator(m_UserRepository.UserId(username));
         }
 
         private void PostGameEndedMessage(int gameId)

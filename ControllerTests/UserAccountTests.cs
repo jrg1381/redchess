@@ -220,7 +220,7 @@ namespace RedChess.ControllerTests
             SetupCreateUserMock(mockSecurity, (s) => { capturedEmailHash = s; });
 
             var mockGameManager = MockRepository.GenerateMock<IGameManager>();
-            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(true);
+            mockGameManager.Expect(x => x.UserIsAdministrator(33)).Return(true);
 
             var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
 
@@ -256,7 +256,7 @@ namespace RedChess.ControllerTests
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
 
             var mockGameManager = MockRepository.GenerateMock<IGameManager>();
-            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(false);
+            mockGameManager.Expect(x => x.UserIsAdministrator(33)).Return(false);
 
             var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
             var registerModel = new RegisterModel();
@@ -281,7 +281,7 @@ namespace RedChess.ControllerTests
                 Arg<object>.Is.Anything)).Throw(exceptionToThrow);
 
             var mockGameManager = MockRepository.GenerateMock<IGameManager>();
-            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(true);
+            mockGameManager.Expect(x => x.UserIsAdministrator(33)).Return(true);
 
             var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
             var registerModel = new RegisterModel();
@@ -301,7 +301,7 @@ namespace RedChess.ControllerTests
             SetupFailingCreateUserMock(mockSecurity);
 
             var mockGameManager = MockRepository.GenerateMock<IGameManager>();
-            mockGameManager.Expect(x => x.UserIdIsAdministrator(33)).Return(true);
+            mockGameManager.Expect(x => x.UserIsAdministrator(33)).Return(true);
 
             var controller = new AccountController(IdentityProvider(), mockSecurity, mockGameManager);
 
