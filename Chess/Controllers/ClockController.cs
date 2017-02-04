@@ -20,7 +20,7 @@ namespace Chess.Controllers
             m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         [VerifyIsParticipant]
         public ActionResult PlayerReady(int id)
         {
@@ -40,7 +40,7 @@ namespace Chess.Controllers
             return Json(new {status = jsonStatus });
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult RefreshClock(int id)
         {
             var clock = m_GameManager.Clock(id);

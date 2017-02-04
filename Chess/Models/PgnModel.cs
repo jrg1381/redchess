@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using RedChess.ChessCommon;
-using RedChess.ChessCommon.Enumerations;
 
 namespace Chess.Models
 {

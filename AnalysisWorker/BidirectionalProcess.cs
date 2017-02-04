@@ -179,14 +179,8 @@ namespace Redchess.AnalysisWorker
 
         public void Dispose()
         {
-            if (m_Process != null)
-            {
-                m_Process.Dispose();
-            }
-            if (m_WaitForEvent != null)
-            {
-                m_WaitForEvent.Dispose();
-            }
+            m_Process?.Dispose();
+            m_WaitForEvent?.Dispose();
         }
     }
 }

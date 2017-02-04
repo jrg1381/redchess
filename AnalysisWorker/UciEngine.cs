@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -39,7 +38,7 @@ namespace Redchess.AnalysisWorker
             Trace.WriteLine("Waiting for engine to be ready");
             m_Engine.WaitForReady();
             Trace.WriteLine("Putting engine in UCI mode");
-            var options = m_Engine.Write("uci", "uciok");
+            m_Engine.Write("uci", "uciok");
             Trace.WriteLine("Engine in UCI mode");
             Trace.WriteLine("Firing 'isready'");
             m_Engine.Write("isready", "readyok");
@@ -78,7 +77,7 @@ namespace Redchess.AnalysisWorker
         private void BestMove(WorkItem workItem)
         {
             Trace.WriteLine("Bestmove on "+ workItem.Fen);
-            var cmd = String.Format("position fen {0} {1}\r\ngo movetime {2}", workItem.Fen, workItem.Move, MaxAnalysisTimeSeconds * 1000);
+            var cmd = $"position fen {workItem.Fen} {workItem.Move}\r\ngo movetime {MaxAnalysisTimeSeconds * 1000}";
             var analysis = m_Engine.Write(cmd, "bestmove");
             workItem.Result.Analysis = analysis;
         }

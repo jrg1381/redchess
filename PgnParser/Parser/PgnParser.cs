@@ -30,7 +30,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.5.1")]
 [System.CLSCompliant(false)]
-public partial class PgnParser : Parser {
+public sealed partial class PgnParser : Parser {
 	public const int
 		LEFT_TAG=1, RIGHT_TAG=2, LEFT_CURLY_BRACKET=3, RIGHT_CURLY_BRACKET=4, 
 		LEFT_BRACKET=5, RIGHT_BRACKET=6, QUOTE=7, EVENT=8, SITE=9, DATE=10, ROUND=11, 

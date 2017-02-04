@@ -218,11 +218,11 @@ function onDocumentReady(gameId) {
                     }
                 });
 
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            $('span#desc').text(jqXHR.status + " " + errorThrown);
-            if (jqXHR.responsejSON !== undefined) {
-                $("table#moves").append("<tr><td>" + jqXHR.responseJSON.message + "</td></tr>");
-                $("table#moves").append("<tr><td>" + jqXHR.responseJSON.messageDetail + "</td></tr>");
+        }).fail(function(jqXhr, textStatus, errorThrown) {
+            $('span#desc').text(jqXhr.status + " " + errorThrown);
+            if (jqXhr.responsejSON !== undefined) {
+                $("table#moves").append("<tr><td>" + jqXhr.responseJSON.message + "</td></tr>");
+                $("table#moves").append("<tr><td>" + jqXhr.responseJSON.messageDetail + "</td></tr>");
             }
             $("#pgn-button").hide();
         });

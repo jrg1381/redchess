@@ -4,15 +4,8 @@
 }
 
   <section>
-    @if (ViewBag.HasLocalPassword)
-    {
-        @Html.Partial("_ChangePasswordPartial")
-    }
-    else
-    { 
-        @Html.Partial("_SetPasswordPartial")
-    }
-    </section>
+      @(ViewBag.HasLocalPassword ? Html.Partial("_ChangePasswordPartial") : Html.Partial("_SetPasswordPartial"))
+  </section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

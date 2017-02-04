@@ -32,7 +32,7 @@ namespace Redchess.EngineTests
                     if (validMovesArray.Any())
 					{
                         // Take a random valid move
-                        Location targetSquare = validMovesArray.Skip(random.Next(validMovesArray.Count() - 1)).First();
+                        Location targetSquare = validMovesArray.Skip(random.Next(validMovesArray.Length - 1)).First();
 						Console.WriteLine("[{0}] Moving {1} from {2} to {3}", i, piece, piece.Position.Location, targetSquare);
                         NormalBoard.Move(piece.Position.Location, targetSquare);
                         if (NormalBoard.IsAwaitingPromotionDecision())

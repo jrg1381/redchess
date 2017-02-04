@@ -18,14 +18,14 @@ namespace RedChess.CombinedTests
             m_Board = BoardFactory.CreateInstance();
         }
 
-        [TestCaseSource(typeof(GameSource),"Games")]
+        [TestCaseSource(typeof(GameSource),nameof(GameSource.Games))]
         public void PlayMoves(string text)
         {
             text = "[Opening \"something\"]\r\n\r\n" + text;
             CheckIdentical(text);
         }
 
-        [TestCaseSource(typeof(FilenameSource), "PgnFile")]
+        [TestCaseSource(typeof(FilenameSource), nameof(FilenameSource.PgnFile))]
         public void RealTestData(string filename)
         {
             string inputData = File.ReadAllText(filename);
@@ -56,7 +56,7 @@ namespace RedChess.CombinedTests
                 var lastMove = m_Board.LastMove();
                 var areEqual = MovesIdenticalWithoutDisambiguator(m, lastMove, x);
 
-                Assert.IsTrue(areEqual, String.Format("Expected parser and move generator to agree: {0} {1}", m, lastMove));
+                Assert.IsTrue(areEqual, $"Expected parser and move generator to agree: {m} {lastMove}");
             }, s =>
             {
                 Console.WriteLine(s);

@@ -16,7 +16,8 @@ namespace Redchess.EngineTests
             var actual = new InteractiveBoard(PieceColor.White, true);
             actual.FromFen(actualFen);
 
-            string message = String.Format("{0}\nExpected:\n{1}\nActual:\n{2}\nExpected: {3}\nActual:   {4}", userMessage, expected, actual, expectedFen, actualFen);
+            string message =
+                $"{userMessage}\nExpected:\n{expected}\nActual:\n{actual}\nExpected: {expectedFen}\nActual:   {actualFen}";
             Assert.Fail(message);
         }
     }

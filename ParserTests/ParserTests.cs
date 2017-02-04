@@ -55,6 +55,7 @@ namespace Redchess.ParserTests
         public void SimpleNestedVariants(string text)
         {
             string z = c_StandardTags + " " + text + " 1-0";
+            // ReSharper disable once UnusedVariable
             var parser = ParseText(z);
         }
 
@@ -191,7 +192,7 @@ b6 9.b3 Nc5 10.Ba3 Nbd7 11.Bb5 a6 12.Bc6 Nd3+ 13.Kf1 g6) 8. ... g6";
             Assert.AreEqual(expectedResult, parser.Tag("Result"), "Failed to extract game result");
         }
 
-        [TestCaseSource(typeof (FilenameSource), "PgnFile")]
+        [TestCaseSource(typeof (FilenameSource), nameof(FilenameSource.PgnFile))]
         public void RealTestData(string filename)
         {
             string inputData = File.ReadAllText(filename);

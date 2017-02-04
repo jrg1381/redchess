@@ -8,8 +8,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web.Http.Results;
-using System.Web.Mvc;
-using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Repositories;
 
 namespace RedChess.ControllerTests

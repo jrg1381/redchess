@@ -36,9 +36,6 @@ namespace RedChess.PgnProcessor
             return m_Tags[key];
         }
 
-        public IDictionary<string, string> Tags
-        {
-            get { return m_Tags; }
-        }
+        public IDictionary<string, string> Tags => m_Tags;
     }
 }

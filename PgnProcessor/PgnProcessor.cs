@@ -21,13 +21,15 @@ namespace RedChess.PgnProcessor
 
         static PgnProcessor()
         {
-            Lookup = new Dictionary<char, PieceType>();
-            Lookup['Q'] = PieceType.Queen;
-            Lookup['K'] = PieceType.King;
-            Lookup['N'] = PieceType.Knight;
-            Lookup['R'] = PieceType.Rook;
-            Lookup['B'] = PieceType.Bishop;
-            Lookup['P'] = PieceType.Pawn;
+            Lookup = new Dictionary<char, PieceType>
+            {
+                ['Q'] = PieceType.Queen,
+                ['K'] = PieceType.King,
+                ['N'] = PieceType.Knight,
+                ['R'] = PieceType.Rook,
+                ['B'] = PieceType.Bishop,
+                ['P'] = PieceType.Pawn
+            };
         }
 
         internal PgnProcessor(Action<string, string, ChessMove> onMoveAction, Action onGameOverAction)
@@ -37,10 +39,8 @@ namespace RedChess.PgnProcessor
             m_Board = BoardFactory.CreateInstance();
             m_Start = DateTime.UtcNow;
             m_MoveCount = 0;
-            if (m_OnMoveAction == null)
-                return;
 
-            m_OnMoveAction(m_Board.ToFen(), String.Empty, null);
+            m_OnMoveAction?.Invoke(m_Board.ToFen(), String.Empty, null);
         }
 
         public void DoFen(string fen)
@@ -51,14 +51,13 @@ namespace RedChess.PgnProcessor
         internal string Stats()
         {
             var timeTaken = DateTime.UtcNow - m_Start;
-            return String.Format("{0} moves in {1} ({2} moves per second)", m_MoveCount, timeTaken, m_MoveCount / timeTaken.TotalSeconds);
+            return $"{m_MoveCount} moves in {timeTaken} ({m_MoveCount / timeTaken.TotalSeconds} moves per second)";
         }
 
         public void ResetGame()
         {
             m_Board = BoardFactory.CreateInstance();
-            if(m_OnGameOverAction != null)
-                m_OnGameOverAction();
+            m_OnGameOverAction?.Invoke();
         }
 
         private static void SymbolToBasicPieceType(char symbol, out PieceType answer)

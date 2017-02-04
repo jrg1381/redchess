@@ -24,6 +24,7 @@ namespace Chess.Controllers
             public int Elo;
         }
 
+        // ReSharper disable once RedundantArgumentDefaultValue
         public ChessApiController() : this(null, null)
         {
         }

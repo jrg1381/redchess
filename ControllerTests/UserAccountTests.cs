@@ -9,6 +9,7 @@ using NUnit.Framework;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
+// ReSharper disable PossibleNullReferenceException
 
 namespace RedChess.ControllerTests
 {
@@ -205,7 +206,7 @@ namespace RedChess.ControllerTests
             mockSecurity.Expect(x => x.CreateUserAndAccount(
                 Arg<string>.Is.Equal(c_Username),
                 Arg<string>.Is.Equal(c_Password),
-                Arg<object>.Is.Anything)).Throw(new System.Web.Security.MembershipCreateUserException("Something went wrong"));
+                Arg<object>.Is.Anything)).Throw(new MembershipCreateUserException("Something went wrong"));
         }
 
         [TestCase("", "")]
