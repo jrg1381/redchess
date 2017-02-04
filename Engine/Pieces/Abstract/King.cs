@@ -6,7 +6,7 @@ namespace Redchess.Engine.Pieces.Abstract
 {
     internal abstract class King : Piece
     {
-        private static readonly Vector2[] s_MoveSet =
+        private static readonly Vector2[] MoveSet =
         {
             new Vector2(0, 1),
             new Vector2(0, -1),
@@ -26,12 +26,12 @@ namespace Redchess.Engine.Pieces.Abstract
         public override IEnumerable<Location> AttackedSquares(IBoardExtended game)
         {
             // Important not to use the WhiteKing / BlackKing implementation of ReachableSquares, because that includes squares reachable by castling
-            return ReachableSquares(s_MoveSet, game);
+            return ReachableSquares(MoveSet, game);
         }
 
         public override IEnumerable<Location> ReachableSquares(IBoardExtended game)
         {
-            return ReachableSquares(s_MoveSet, game);
+            return ReachableSquares(MoveSet, game);
         }
     }
 }

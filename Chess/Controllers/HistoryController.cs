@@ -14,16 +14,16 @@ namespace Chess.Controllers
 {
     public class HistoryController : Controller
     {
-        readonly IGameManager m_gameManager;
-        private readonly ICurrentUser m_identityProvider;
+        readonly IGameManager m_GameManager;
+        private readonly ICurrentUser m_IdentityProvider;
 
         public HistoryController(): this(null, null)
         { }
 
         public HistoryController(IGameManager gameManager = null, ICurrentUser identityProvider = null)
         {
-            m_gameManager = gameManager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserProvider();
+            m_GameManager = gameManager ?? new GameManager();
+            m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         public ActionResult Index()
@@ -38,14 +38,14 @@ namespace Chess.Controllers
             int game = Int32.Parse(gameId);
             int opponent;
 
-            var thisGame = m_gameManager.FetchGame(game);
+            var thisGame = m_GameManager.FetchGame(game);
 
             if (thisGame == null)
             {
                 return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in database"), "History", "PlayFromHere"));
             }
 
-            if (thisGame.UserProfileBlack.UserId == m_identityProvider.CurrentUserId)
+            if (thisGame.UserProfileBlack.UserId == m_IdentityProvider.CurrentUserId)
             {
                 opponent = thisGame.UserProfileWhite.UserId;
                 playAsBlack = true;
@@ -55,7 +55,7 @@ namespace Chess.Controllers
                 opponent = thisGame.UserProfileBlack.UserId;
             }
 
-            var historyEntry = m_gameManager.FindByGameIdAndMoveNumber(game, moveNumber);
+            var historyEntry = m_GameManager.FindByGameIdAndMoveNumber(game, moveNumber);
             if (historyEntry == null)
             {
                 return View("Error", new HandleErrorInfo(new ArgumentException("Source game not found in history"), "History", "PlayFromHere"));
@@ -64,14 +64,14 @@ namespace Chess.Controllers
             var newBoard = BoardFactory.CreateInstance();
             newBoard.FromFen(historyEntry.Fen);
 
-            int gameIdOfNewGame = m_gameManager.CloneBoard(newBoard, opponent, m_identityProvider.CurrentUser, playAsBlack, game, historyEntry.MoveNumber);
+            int gameIdOfNewGame = m_GameManager.CloneBoard(newBoard, opponent, m_IdentityProvider.CurrentUser, playAsBlack, game, historyEntry.MoveNumber);
 
             return RedirectToAction("Details", "Board", new { id = gameIdOfNewGame});
         }
 
         public ActionResult ShowMove(int id)
 		{
-            var entries = m_gameManager.FindAllMoves(id);
+            var entries = m_GameManager.FindAllMoves(id);
 
             if (!entries.Any())
             {
@@ -87,7 +87,7 @@ namespace Chess.Controllers
             var content = new ContentResult
             {
                 ContentType = @"text\plain",
-                Content = m_gameManager.PgnText(id)
+                Content = m_GameManager.PgnText(id)
             };
 
             return content;

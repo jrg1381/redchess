@@ -11,22 +11,22 @@ namespace Redchess.EngineTests
 		[TestFixtureSetUp]
 		public void SetupGame()
 		{
-			m_normalBoard = new InteractiveBoard(PieceColor.White, false);
-			m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
+			NormalBoard = new InteractiveBoard(PieceColor.White, false);
+			EmptyBoard = new InteractiveBoard(PieceColor.White, true);
 		}
 
 		[Test]
 		public void StartPosition()
 		{
-		    string fen = new Fen(m_normalBoard).Value;
+		    string fen = new Fen(NormalBoard).Value;
 			FenAssert.AreEqual("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0", fen, "Fen representation of start position not as expected");
 		}
 
         [Test]
         public void FenCaching()
         {
-            string fen = m_normalBoard.ToFen();
-            string fromBoard = m_normalBoard.ToFen();
+            string fen = NormalBoard.ToFen();
+            string fromBoard = NormalBoard.ToFen();
             Assert.AreEqual(fromBoard, fen, "Expected two fen strings to be equal");
         }
 
@@ -34,9 +34,9 @@ namespace Redchess.EngineTests
 		[Test]
 		public void TwoKingsPosition()
 		{
-            m_emptyBoard.FromFen("8/2K5/8/8/8/8/8/k7 w KQkq - 0");
+            EmptyBoard.FromFen("8/2K5/8/8/8/8/8/k7 w KQkq - 0");
 
-		    string fen = new Fen(m_emptyBoard).Value;
+		    string fen = new Fen(EmptyBoard).Value;
 			// Castling settings are invalid here, ignore this
 			FenAssert.AreEqual("8/2K5/8/8/8/8/8/k7 w KQkq - 0", fen, "Fen representation of position with two kings not as expected");
 		}
@@ -44,12 +44,12 @@ namespace Redchess.EngineTests
 		[Test]
 		public void NoCastling()
 		{
-			m_normalBoard.Move(Location.E2,Location.E3);
-            m_normalBoard.Move(Location.E7, Location.E6);
-            m_normalBoard.Move(Location.E1, Location.E2);
-            m_normalBoard.Move(Location.E8, Location.E7);
+			NormalBoard.Move(Location.E2,Location.E3);
+            NormalBoard.Move(Location.E7, Location.E6);
+            NormalBoard.Move(Location.E1, Location.E2);
+            NormalBoard.Move(Location.E8, Location.E7);
 
-            string fen = m_normalBoard.ToFen();
+            string fen = NormalBoard.ToFen();
 			// Castling settings are invalid here, ignore this
 			FenAssert.AreEqual("rnbq1bnr/ppppkppp/4p3/8/8/4P3/PPPPKPPP/RNBQ1BNR w - - 2", fen, "Fen with no castling allowed not as expected");
 		}
@@ -58,8 +58,8 @@ namespace Redchess.EngineTests
 		public void WithEnPassantPosition()
 		{
 			// Move a pawn to make it an EP target
-            m_normalBoard.Move(Location.A2, Location.A4);
-		    string fen = new Fen(m_normalBoard).Value;
+            NormalBoard.Move(Location.A2, Location.A4);
+		    string fen = new Fen(NormalBoard).Value;
 			FenAssert.AreEqual("rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq A3 0", fen, "Fen representation of start position not as expected");
 		}
 	}

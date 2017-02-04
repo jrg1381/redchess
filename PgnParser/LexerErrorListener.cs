@@ -5,16 +5,16 @@ namespace Redchess.Pgn
 {
     internal class LexerErrorListener : IAntlrErrorListener<int>
     {
-        private readonly Action<string> m_onErrorAction;
+        private readonly Action<string> m_OnErrorAction;
 
         public LexerErrorListener(Action<string> onErrorAction)
         {
-            m_onErrorAction = onErrorAction;
+            m_OnErrorAction = onErrorAction;
         }
 
         public void SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            m_onErrorAction(msg);
+            m_OnErrorAction(msg);
         }
     }
 }

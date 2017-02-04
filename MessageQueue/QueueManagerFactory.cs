@@ -10,25 +10,25 @@ namespace RedChess.MessageQueue
     {
         public const string QueueName = "engine";
 
-        private static readonly object s_lock = new object();
-        private static IQueueManager s_queueManager;
+        private static readonly object Lock = new object();
+        private static IQueueManager s_QueueManager;
 
         public static IQueueManager CreateInstance()
         {
 #if DEBUG
             return new NullQueue();
 #endif
-            lock (s_lock)
+            lock (Lock)
             {
-                if (s_queueManager == null)
+                if (s_QueueManager == null)
                 {
                     var connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
                     if (String.IsNullOrEmpty(connectionString)) return new NullQueue();
-                    s_queueManager = new QueueManager(connectionString);
+                    s_QueueManager = new QueueManager(connectionString);
                 }
             }
 
-            return s_queueManager;
+            return s_QueueManager;
         }
     }
 

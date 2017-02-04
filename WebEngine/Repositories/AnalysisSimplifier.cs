@@ -15,7 +15,7 @@ namespace RedChess.WebEngine.Repositories
     internal class AnalysisSimplifier
     {
         private readonly IHistoryRepository m_HistoryRepository;
-        private static readonly Regex s_MateSequenceRegex, s_CentipawnSequenceRegex;
+        private static readonly Regex MateSequenceRegex, CentipawnSequenceRegex;
 
         public AnalysisSimplifier(IHistoryRepository historyRepository)
         {
@@ -25,8 +25,8 @@ namespace RedChess.WebEngine.Repositories
         static AnalysisSimplifier()
         {
             var common = @"\s+nodes\s+\d+\s+nps\s+\d+\s+tbhits\s+\d+\s+time\s+\d+\s+pv\s+";
-            s_MateSequenceRegex = new Regex(@"score\s+mate\s+-?\d+" +    common +  @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)info\s+depth");
-            s_CentipawnSequenceRegex = new Regex(@"score\s+cp\s+-?\d+" + common + @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)(info|bestmove)");
+            MateSequenceRegex = new Regex(@"score\s+mate\s+-?\d+" +    common +  @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)info\s+depth");
+            CentipawnSequenceRegex = new Regex(@"score\s+cp\s+-?\d+" + common + @"(([a-h][1-8][a-h][1-8][rqbn]?\s+)*)(info|bestmove)");
         }
 
         public IProcessedAnalysis ProcessBoardAnalysis(int gameId, int moveNumber, IBoardAnalysis inputAnalysis)
@@ -39,13 +39,13 @@ namespace RedChess.WebEngine.Repositories
                      * c4e2 d7b5 g1e1 b2d2 f2f1 d2f4 f1g2 b5e2 e1e2 f4f3 g2h2 f3e2 h2g3 
                      * e2f3 g3h2 e4e3 h2g1 e3e2 g1h2 e2e1n h2g1 f3g2 info depth 34 */
                     Trace.WriteLine("Mate in N detected");
-                    return ProcessAnalysis(gameId, moveNumber, inputAnalysis, s_MateSequenceRegex);
+                    return ProcessAnalysis(gameId, moveNumber, inputAnalysis, MateSequenceRegex);
                 }
                 if (inputAnalysis.BoardEvaluationType == EvaluationType.Centipawn)
                 {
                     /* info depth 6 seldepth 6 multipv 1 score cp 21 nodes 4562 nps 350923 tbhits 0 time 13 pv g1f3 g8f6 d2d4 d7d5 b1c3 e7e6 */
                     Trace.WriteLine("Centipawn score detected");
-                    return ProcessAnalysis(gameId, moveNumber, inputAnalysis, s_CentipawnSequenceRegex);
+                    return ProcessAnalysis(gameId, moveNumber, inputAnalysis, CentipawnSequenceRegex);
                 }
             }
             catch (Exception e)

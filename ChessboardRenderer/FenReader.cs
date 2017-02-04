@@ -5,7 +5,7 @@ namespace RedChess.ChessboardRenderer
 {
     internal class FenReader
     {
-        private static readonly HashSet<char> s_ValidCharacters = new HashSet<char>("/12345678RNBQKPrnbqkp");
+        private static readonly HashSet<char> ValidCharacters = new HashSet<char>("/12345678RNBQKPrnbqkp");
         private readonly string m_Position;
 
         internal FenReader(string fen)
@@ -19,7 +19,7 @@ namespace RedChess.ChessboardRenderer
 
             foreach (var c in m_Position)
             {
-                if(!s_ValidCharacters.Contains(c))
+                if(!ValidCharacters.Contains(c))
                     throw new ArgumentException("Invalid character in FEN");
 
                 if (Char.IsDigit(c))

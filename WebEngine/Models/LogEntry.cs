@@ -16,12 +16,12 @@ namespace RedChess.WebEngine.Models
         public int Pid { get; set; }
         public int Tid { get; set; }
 
-        private static readonly Regex s_MessageRegex = new Regex(@"Message=""(.*)""$");
+        private static readonly Regex MessageRegex = new Regex(@"Message=""(.*)""$");
 
         public void ReadEntity(IDictionary<string, EntityProperty> properties, OperationContext operationContext)
         {
             var msg = properties["Message"].StringValue;
-            var matches = s_MessageRegex.Match(msg);
+            var matches = MessageRegex.Match(msg);
             Message = matches.Success ? matches.Groups[1].Value : msg;
             Pid = properties["Pid"].Int32Value.Value;
             Tid = properties["Tid"].Int32Value.Value;

@@ -15,19 +15,19 @@ namespace Redchess.AnalysisWorker
     public sealed class WorkerRole : RoleEntryPoint, IDisposable
     {
         // The name of your queue
-        private const string c_queueName = QueueManagerFactory.QueueName;
+        private const string c_QueueName = QueueManagerFactory.QueueName;
 
         // QueueClient is thread-safe. Recommended that you cache 
         // rather than recreating it on every request
-        QueueClient m_client;
-        readonly ManualResetEvent m_completedEvent = new ManualResetEvent(false);
-        private readonly IQueueManager m_queueManager = QueueManagerFactory.CreateInstance();
-        private UciEngineFarm m_engineFarm;
-        private static LogTruncator s_logTruncator;
+        QueueClient m_Client;
+        readonly ManualResetEvent m_CompletedEvent = new ManualResetEvent(false);
+        private readonly IQueueManager m_QueueManager = QueueManagerFactory.CreateInstance();
+        private UciEngineFarm m_EngineFarm;
+        private static LogTruncator s_LogTruncator;
 
         public override void Run()
         {
-            m_engineFarm = new UciEngineFarm();
+            m_EngineFarm = new UciEngineFarm();
             Trace.WriteLine("Starting processing of messages");
 
             var messageOptions = new OnMessageOptions
@@ -43,7 +43,7 @@ namespace Redchess.AnalysisWorker
             };
 
             // Initiates the message pump and callback is invoked for each message that is received, calling close on the client will stop the pump.
-            m_client.OnMessage(receivedMessage =>
+            m_Client.OnMessage(receivedMessage =>
             {
                 try
                 {
@@ -94,7 +94,7 @@ namespace Redchess.AnalysisWorker
                 }
             }, messageOptions);
 
-            m_completedEvent.WaitOne();
+            m_CompletedEvent.WaitOne();
         }
 
         private static void ProcessBestMoveResponseMessage(string json)
@@ -108,15 +108,15 @@ namespace Redchess.AnalysisWorker
         private void ProcessBestMoveRequestMessage(string json)
         {
             var message = JsonConvert.DeserializeObject<BestMoveRequestMessage>(json);
-            var boardAnalysis = m_engineFarm.EvaluateMove(message.GameId, message.Fen, message.Move);
-            m_queueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, boardAnalysis);
+            var boardAnalysis = m_EngineFarm.EvaluateMove(message.GameId, message.Fen, message.Move);
+            m_QueueManager.PostBestMoveResponseMessage(message.GameId, message.MoveNumber, boardAnalysis);
         }
 
         private void ProcessGameEndedMessage(string json)
         {
             var message = JsonConvert.DeserializeObject<GameEndedMessage>(json);
             Trace.WriteLine("Telling engine farm to delete worker for game "  + message.GameId);
-            m_engineFarm.GameOver(message.GameId);
+            m_EngineFarm.GameOver(message.GameId);
             Trace.WriteLine("Telling database to recalculate ELO table");
             (new GameManager()).UpdateEloTable();
         }
@@ -128,7 +128,7 @@ namespace Redchess.AnalysisWorker
 
             var connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
             // Initialize the connection to Service Bus Queue
-            m_client = QueueClient.CreateFromConnectionString(connectionString, c_queueName);
+            m_Client = QueueClient.CreateFromConnectionString(connectionString, c_QueueName);
 
 #if !DEBUG
             s_logTruncator = new LogTruncator();
@@ -138,17 +138,17 @@ namespace Redchess.AnalysisWorker
 
         public override void OnStop()
         {
-            m_engineFarm.Dispose();
+            m_EngineFarm.Dispose();
             // Close the connection to Service Bus Queue
-            m_client.Close();
-            m_completedEvent.Set();
+            m_Client.Close();
+            m_CompletedEvent.Set();
             base.OnStop();
         }
 
         public void Dispose()
         {
-            m_engineFarm.Dispose();
-            m_completedEvent.Dispose();
+            m_EngineFarm.Dispose();
+            m_CompletedEvent.Dispose();
         }
     }
 }

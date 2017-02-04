@@ -8,16 +8,16 @@ namespace Chess.Filters
 {
     public class VerifyIsParticipantAttribute : FilterAttribute, IAuthorizationFilter
     {
-        private readonly IGameManager m_manager;
-        private readonly ICurrentUser m_identityProvider;
+        private readonly IGameManager m_Manager;
+        private readonly ICurrentUser m_IdentityProvider;
 
         public VerifyIsParticipantAttribute() : this(null, null)
         { }
 
         public VerifyIsParticipantAttribute(IGameManager manager, ICurrentUser identityProvider)
         {
-            m_manager = manager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserProvider();
+            m_Manager = manager ?? new GameManager();
+            m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         public void OnAuthorization(AuthorizationContext filterContext)
@@ -30,7 +30,7 @@ namespace Chess.Filters
             if (!Int32.TryParse(idText, out id))
                 return;
 
-            var accessValidator = new AccessValidator(m_manager, m_identityProvider);
+            var accessValidator = new AccessValidator(m_Manager, m_IdentityProvider);
             if (accessValidator.MayAccess(id))
                 return;
 

@@ -11,24 +11,24 @@ namespace Redchess.AnalysisWorker
 {
     class LogTruncator
     {
-        const int c_timerIntervalInHours = 3;
-        const int c_maxLogAgeInHours = 48;
-        const string c_logTable = "WADLogsTable";
+        const int c_TimerIntervalInHours = 3;
+        const int c_MaxLogAgeInHours = 48;
+        const string c_LogTable = "WADLogsTable";
 
-        private Timer m_timer;
-        private readonly CloudStorageAccount m_storageAccount;
+        private Timer m_Timer;
+        private readonly CloudStorageAccount m_StorageAccount;
 
         public LogTruncator()
         {
             Trace.WriteLine("Initializing log truncator");
-            m_storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
-            m_timer = new Timer(TruncateLogsTimerCallback, null, 0, (int)TimeSpan.FromHours(c_timerIntervalInHours).TotalMilliseconds);
+            m_StorageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
+            m_Timer = new Timer(TruncateLogsTimerCallback, null, 0, (int)TimeSpan.FromHours(c_TimerIntervalInHours).TotalMilliseconds);
         }
 
         public void TruncateLogsTimerCallback(object obj)
         {
-            Trace.WriteLine($"Truncating logs. Max log age {c_maxLogAgeInHours} hours.");
-            TruncateDiagnostics(m_storageAccount, DateTime.UtcNow.Subtract(TimeSpan.FromHours(c_maxLogAgeInHours)));
+            Trace.WriteLine($"Truncating logs. Max log age {c_MaxLogAgeInHours} hours.");
+            TruncateDiagnostics(m_StorageAccount, DateTime.UtcNow.Subtract(TimeSpan.FromHours(c_MaxLogAgeInHours)));
         }
 
         private void TruncateDiagnostics(CloudStorageAccount storageAccount, DateTime keepThreshold)
@@ -36,7 +36,7 @@ namespace Redchess.AnalysisWorker
             try
             {
                 var tableClient = storageAccount.CreateCloudTableClient();
-                var cloudTable = tableClient.GetTableReference(c_logTable);
+                var cloudTable = tableClient.GetTableReference(c_LogTable);
 
                 var filter = TableQuery.GenerateFilterConditionForDate("Timestamp", QueryComparisons.LessThanOrEqual, keepThreshold);
                 var query = new TableQuery {FilterString = filter};

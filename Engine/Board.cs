@@ -13,7 +13,7 @@ namespace Redchess.Engine
 {
     public class Board : IBoardExtended
     {
-        private static readonly int s_Parallelism = Environment.ProcessorCount;
+        private static readonly int Parallelism = Environment.ProcessorCount;
         // Observers
         private readonly TransientCastlingRules m_TransientCastlingRules;
         private readonly PermanentCastlingRules m_PermanentCastlingRules;
@@ -305,7 +305,7 @@ namespace Redchess.Engine
 
             return friends
                 .AsParallel()
-                .WithDegreeOfParallelism(s_Parallelism)
+                .WithDegreeOfParallelism(Parallelism)
                 .SelectMany(x => x.ValidMoves(this))
                 .Any();
         }

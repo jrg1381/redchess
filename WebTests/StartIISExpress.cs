@@ -6,12 +6,12 @@ namespace RedChess.WebTests
 {
     class IisExpressStarter
     {
-        private Process m_iisProcess;
-        private readonly ProcessStartInfo m_processStartInfo;
+        private Process m_IisProcess;
+        private readonly ProcessStartInfo m_ProcessStartInfo;
 
         public IisExpressStarter(int port = 60898)
         {
-            m_processStartInfo = new ProcessStartInfo
+            m_ProcessStartInfo = new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Normal,
                 ErrorDialog = true,
@@ -21,11 +21,11 @@ namespace RedChess.WebTests
                 Arguments = $"/path:\"{PathToWebsite()}\" /port:{port}"
             };
 
-            var programfiles = string.IsNullOrEmpty(m_processStartInfo.EnvironmentVariables["programfiles"])
-                ? m_processStartInfo.EnvironmentVariables["programfiles(x86)"]
-                : m_processStartInfo.EnvironmentVariables["programfiles"];
+            var programfiles = string.IsNullOrEmpty(m_ProcessStartInfo.EnvironmentVariables["programfiles"])
+                ? m_ProcessStartInfo.EnvironmentVariables["programfiles(x86)"]
+                : m_ProcessStartInfo.EnvironmentVariables["programfiles"];
 
-            m_processStartInfo.FileName = Path.Combine(programfiles, @"IIS Express\iisexpress.exe");
+            m_ProcessStartInfo.FileName = Path.Combine(programfiles, @"IIS Express\iisexpress.exe");
         }
 
         private string PathToWebsite()
@@ -42,15 +42,15 @@ namespace RedChess.WebTests
             {
                 Task.Factory.StartNew(() =>
                 {
-                    m_iisProcess = new Process {StartInfo = m_processStartInfo};
-                    m_iisProcess.Start();
-                    m_iisProcess.WaitForExit();
+                    m_IisProcess = new Process {StartInfo = m_ProcessStartInfo};
+                    m_IisProcess.Start();
+                    m_IisProcess.WaitForExit();
                 });
             }
             catch
             {
-                m_iisProcess.CloseMainWindow();
-                m_iisProcess.Dispose();
+                m_IisProcess.CloseMainWindow();
+                m_IisProcess.Dispose();
             }
         }
 
@@ -58,10 +58,10 @@ namespace RedChess.WebTests
         {
             try
             {
-                m_iisProcess.CloseMainWindow();
-                bool hasExited = m_iisProcess.WaitForExit(1000);
+                m_IisProcess.CloseMainWindow();
+                bool hasExited = m_IisProcess.WaitForExit(1000);
                 if(!hasExited)
-                    m_iisProcess.Kill();
+                    m_IisProcess.Kill();
             }
             catch
             {

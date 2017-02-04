@@ -10,30 +10,30 @@ namespace Chess.Controllers
 {
     public class ClockController : Controller
     {
-        private readonly IGameManager m_gameManager;
-        private readonly ICurrentUser m_identityProvider;
+        private readonly IGameManager m_GameManager;
+        private readonly ICurrentUser m_IdentityProvider;
 
         public ClockController() : this(null,null)
         { }
 
         public ClockController(IGameManager manager = null, ICurrentUser identityProvider = null)
         {
-            m_gameManager = manager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserProvider();
+            m_GameManager = manager ?? new GameManager();
+            m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         [System.Web.Mvc.HttpPost]
         [VerifyIsParticipant]
         public ActionResult PlayerReady(int id)
         {
-            var game = m_gameManager.FetchGame(id);
-            var clock = m_gameManager.Clock(id);
+            var game = m_GameManager.FetchGame(id);
+            var clock = m_GameManager.Clock(id);
 
             if (game == null || clock == null)
                 return Json(new {status = "NULL"});
 
-            var playerColor = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
-            var status = m_gameManager.PlayerReady(id, playerColor);
+            var playerColor = game.CurrentPlayerColor(m_IdentityProvider.CurrentUser);
+            var status = m_GameManager.PlayerReady(id, playerColor);
             var jsonStatus = (status == PlayerReadyStatus.Both ? "OK" : "WAIT");
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
@@ -45,7 +45,7 @@ namespace Chess.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult RefreshClock(int id)
         {
-            var clock = m_gameManager.Clock(id);
+            var clock = m_GameManager.Clock(id);
 
             if (clock == null)
                 return Json(new {status = "NULL"});

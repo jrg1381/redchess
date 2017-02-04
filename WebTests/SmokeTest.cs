@@ -12,24 +12,24 @@ namespace RedChess.WebTests
     [TestFixture]
     public class SmokeTest
     {
-        private const int Port = 60898;
+        private const int c_Port = 60898;
 
-        private StringBuilder m_verificationErrors;
-        private string m_baseUrl;
-        private IisExpressStarter m_iisStarter;
-        private Player m_clivePlayer, m_jamesPlayer;
+        private StringBuilder m_VerificationErrors;
+        private string m_BaseUrl;
+        private IisExpressStarter m_IisStarter;
+        private Player m_ClivePlayer, m_JamesPlayer;
 
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            m_iisStarter = new IisExpressStarter(Port);
-            m_iisStarter.Start(); 
+            m_IisStarter = new IisExpressStarter(c_Port);
+            m_IisStarter.Start(); 
         }
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
-            m_iisStarter.Stop();
+            m_IisStarter.Stop();
         }
 
         [SetUp]
@@ -39,14 +39,14 @@ namespace RedChess.WebTests
             IWebDriver driverPlayerTwo = new ChromeDriver();
             driverPlayerOne.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(8));
             driverPlayerTwo.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(8));
-            m_baseUrl = (new UriBuilder("http", "localhost", Port)).ToString();
+            m_BaseUrl = (new UriBuilder("http", "localhost", c_Port)).ToString();
 
-            WarmTheWebServer(m_baseUrl);
+            WarmTheWebServer(m_BaseUrl);
 
-            m_clivePlayer = new Player(PieceColor.Black, "player1", "password1", driverPlayerTwo);
-            m_jamesPlayer = new Player(PieceColor.White, "player2", "password2", driverPlayerOne);
+            m_ClivePlayer = new Player(PieceColor.Black, "player1", "password1", driverPlayerTwo);
+            m_JamesPlayer = new Player(PieceColor.White, "player2", "password2", driverPlayerOne);
 
-            m_verificationErrors = new StringBuilder();
+            m_VerificationErrors = new StringBuilder();
         }
         
         [TearDown]
@@ -54,50 +54,50 @@ namespace RedChess.WebTests
         {
             try
             {
-                m_clivePlayer.Driver.Quit();
-                m_jamesPlayer.Driver.Quit();
-                m_iisStarter.Stop();
+                m_ClivePlayer.Driver.Quit();
+                m_JamesPlayer.Driver.Quit();
+                m_IisStarter.Stop();
             }
             catch (Exception)
             {
                 // Ignore errors if unable to close the browser
             }
 
-            Assert.AreEqual("", m_verificationErrors.ToString());
+            Assert.AreEqual("", m_VerificationErrors.ToString());
         }
         
         [Test]
         public void ScholarsMate()
         {
-            m_jamesPlayer.Login(m_baseUrl);
-            m_clivePlayer.Login(m_baseUrl);
+            m_JamesPlayer.Login(m_BaseUrl);
+            m_ClivePlayer.Login(m_BaseUrl);
 
-            m_jamesPlayer.Driver.FindElement(By.LinkText("New game")).Click();
-            m_jamesPlayer.Driver.FindElement(By.CssSelector("button[id=\"submitbutton\"]")).Click();
+            m_JamesPlayer.Driver.FindElement(By.LinkText("New game")).Click();
+            m_JamesPlayer.Driver.FindElement(By.CssSelector("button[id=\"submitbutton\"]")).Click();
 
-            m_jamesPlayer.WaitForTurn();
+            m_JamesPlayer.WaitForTurn();
 
-            var gameId = m_jamesPlayer.Driver.Url.Split(new[] { '/' }).Last();
+            var gameId = m_JamesPlayer.Driver.Url.Split(new[] { '/' }).Last();
 
-            var gameDetailsUri = new Uri(m_baseUrl + "/Board/Details/" + gameId);
-            m_clivePlayer.Driver.Navigate().GoToUrl(gameDetailsUri);
+            var gameDetailsUri = new Uri(m_BaseUrl + "/Board/Details/" + gameId);
+            m_ClivePlayer.Driver.Navigate().GoToUrl(gameDetailsUri);
 
-            m_jamesPlayer.PerformDragAndDrop(Location.E2, Location.E4); // e4
-            m_clivePlayer.PerformDragAndDrop(Location.E7, Location.E5); // e5
+            m_JamesPlayer.PerformDragAndDrop(Location.E2, Location.E4); // e4
+            m_ClivePlayer.PerformDragAndDrop(Location.E7, Location.E5); // e5
 
-            m_jamesPlayer.PerformDragAndDrop(Location.D1, Location.H5); // Qh5
-            m_clivePlayer.PerformDragAndDrop(Location.B8, Location.C6); // Nc6
+            m_JamesPlayer.PerformDragAndDrop(Location.D1, Location.H5); // Qh5
+            m_ClivePlayer.PerformDragAndDrop(Location.B8, Location.C6); // Nc6
 
-            m_jamesPlayer.PerformDragAndDrop(Location.F1, Location.C4); // Bc4
-            m_clivePlayer.PerformDragAndDrop(Location.G8, Location.F6); // Nf6
+            m_JamesPlayer.PerformDragAndDrop(Location.F1, Location.C4); // Bc4
+            m_ClivePlayer.PerformDragAndDrop(Location.G8, Location.F6); // Nf6
 
-            m_jamesPlayer.OfferDraw();
-            m_clivePlayer.RejectDraw();
+            m_JamesPlayer.OfferDraw();
+            m_ClivePlayer.RejectDraw();
 
-            m_jamesPlayer.PerformDragAndDrop(Location.H5, Location.F7); // Qxf7#
+            m_JamesPlayer.PerformDragAndDrop(Location.H5, Location.F7); // Qxf7#
 
-            m_jamesPlayer.AssertGameOver();
-            m_clivePlayer.AssertGameOver();
+            m_JamesPlayer.AssertGameOver();
+            m_ClivePlayer.AssertGameOver();
         }
 
         private static void WarmTheWebServer(string uri)

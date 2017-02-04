@@ -15,9 +15,9 @@ namespace Redchess.AnalysisEngineTests
     [TestFixture]
     public sealed class FakeEngineTests : IDisposable
     {
-        private UciEngineFarm m_engineWrapper;
-        private List<IUciEngine> m_fakeEngines;
-        private HashSet<int> m_engineCreationCount;
+        private UciEngineFarm m_EngineWrapper;
+        private List<IUciEngine> m_FakeEngines;
+        private HashSet<int> m_EngineCreationCount;
 
         private IUciEngine FakeEngineForGame(int gameId, BoardAnalysis expectedBoardAnalysis)
         {
@@ -45,8 +45,8 @@ namespace Redchess.AnalysisEngineTests
         [SetUp]
         public void SetupFakeEngine()
         {
-            m_engineCreationCount = new HashSet<int>();
-            m_fakeEngines = new List<IUciEngine>();
+            m_EngineCreationCount = new HashSet<int>();
+            m_FakeEngines = new List<IUciEngine>();
 
             var answer = new BoardAnalysis
             {
@@ -57,25 +57,25 @@ namespace Redchess.AnalysisEngineTests
 
             Func<int, IUciEngine> engineCreator = i =>
             {
-                if (m_engineCreationCount.Contains(i))
+                if (m_EngineCreationCount.Contains(i))
                 {
                     throw new InvalidOperationException("Should not create a new engine");
                 }
-                m_engineCreationCount.Add(i);
+                m_EngineCreationCount.Add(i);
 
                 var fake = FakeEngineForGame(i, answer);
-                m_fakeEngines.Add(fake);
+                m_FakeEngines.Add(fake);
                 return fake;
             };
 
-            m_engineWrapper = new UciEngineFarm(engineCreator);
+            m_EngineWrapper = new UciEngineFarm(engineCreator);
         }
 
         [Test]
         public void WorkerCreatedAndEvaluateCalled()
         {
-            var bestmove = m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
-            foreach (var fake in m_fakeEngines)
+            var bestmove = m_EngineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            foreach (var fake in m_FakeEngines)
             {
                 fake.VerifyAllExpectations();
             }
@@ -86,49 +86,49 @@ namespace Redchess.AnalysisEngineTests
         [Test]
         public void MultipleMovesInSameGameOnlyGeneratesOneWorker()
         {
-            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
-            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            m_EngineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            m_EngineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
             ExpectNoDispose(10);
-            foreach (var fake in m_fakeEngines)
+            foreach (var fake in m_FakeEngines)
             {
                 fake.VerifyAllExpectations();
             }
-            Assert.AreEqual(1, m_engineCreationCount.Count);
+            Assert.AreEqual(1, m_EngineCreationCount.Count);
         }
 
         [Test]
         public void MultipleMovesInNGamesGeneratesNWorkers()
         {
-            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            m_EngineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
             ExpectNoDispose(10);
-            m_engineWrapper.EvaluateMove(11, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            m_EngineWrapper.EvaluateMove(11, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
             ExpectNoDispose(11);
-            foreach (var fake in m_fakeEngines)
+            foreach (var fake in m_FakeEngines)
             {
                 fake.VerifyAllExpectations();
             }
 
-            Assert.AreEqual(2, m_engineCreationCount.Count);
+            Assert.AreEqual(2, m_EngineCreationCount.Count);
         }
 
         [Test]
         public void GameOverDisposesAndRecreatesWorker()
         {
             var signal = new object();
-            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            m_EngineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
             ExpectDispose(10, signal);
             lock (signal)
             {
-                m_engineWrapper.GameOver(10); // Expect this to call Dispose
+                m_EngineWrapper.GameOver(10); // Expect this to call Dispose
                 Monitor.Wait(signal);
             }
-            m_engineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
-            foreach (var fake in m_fakeEngines)
+            m_EngineWrapper.EvaluateMove(10, "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2", "d8h4");
+            foreach (var fake in m_FakeEngines)
             {
                 fake.VerifyAllExpectations();
             }
 
-            Assert.AreEqual(1, m_engineCreationCount.Count);
+            Assert.AreEqual(1, m_EngineCreationCount.Count);
         }
 
         private void ExpectDispose(int gameId, object signal)
@@ -143,13 +143,13 @@ namespace Redchess.AnalysisEngineTests
 
         private IMethodOptions<RhinoMocksExtensions.VoidType> DisposeReplacement(int gameId, object signal)
         {
-            return m_fakeEngines.
+            return m_FakeEngines.
                 First(engine => engine.GameId == gameId).
                 Expect(x => x.Dispose()).WhenCalled(mi =>
                 {
                     lock (signal)
                     {
-                        m_engineCreationCount.Remove(gameId);
+                        m_EngineCreationCount.Remove(gameId);
                         Monitor.Pulse(signal);
                     }
                 });
@@ -170,7 +170,7 @@ namespace Redchess.AnalysisEngineTests
                     tasks.Add(Task.Run(() =>
                     {
                         var guid = Guid.NewGuid().ToString(); // use in place of fen, and make sure we get it back
-                        var bestmove = m_engineWrapper.EvaluateMove(id, guid, "d8h4");
+                        var bestmove = m_EngineWrapper.EvaluateMove(id, guid, "d8h4");
                         StringAssert.EndsWith(":" + guid, bestmove.Analysis);
                     }));
                 }
@@ -178,7 +178,7 @@ namespace Redchess.AnalysisEngineTests
 
             Task.WaitAll(tasks.ToArray());
 
-            foreach (var fake in m_fakeEngines)
+            foreach (var fake in m_FakeEngines)
             {
                 fake.VerifyAllExpectations();
             }
@@ -191,7 +191,7 @@ namespace Redchess.AnalysisEngineTests
 
         private void Dispose(bool isDisposing)
         {
-            m_engineWrapper.Dispose();
+            m_EngineWrapper.Dispose();
         }
     }
 }

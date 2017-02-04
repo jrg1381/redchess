@@ -10,12 +10,12 @@ namespace RedChess.CombinedTests
     [TestFixture]
     public class ParserAndMoveGeneratorAgree
     {
-        private IBoard m_board;
+        private IBoard m_Board;
 
         [SetUp]
         public void SetUp()
         {
-            m_board = BoardFactory.CreateInstance();
+            m_Board = BoardFactory.CreateInstance();
         }
 
         [TestCaseSource(typeof(GameSource),"Games")]
@@ -43,17 +43,17 @@ namespace RedChess.CombinedTests
             {
                 if (x == null)
                 {
-                    m_board = BoardFactory.CreateInstance();
+                    m_Board = BoardFactory.CreateInstance();
                     return;
                 }
 
-                bool moveOk  = m_board.Move(x.Start, x.End);
-                Assert.IsTrue(moveOk, "Expected move to succeed " + m + " " + s + " " + m_board.ToFen());
+                bool moveOk  = m_Board.Move(x.Start, x.End);
+                Assert.IsTrue(moveOk, "Expected move to succeed " + m + " " + s + " " + m_Board.ToFen());
 
-                if (m_board.IsAwaitingPromotionDecision())
-                    m_board.PromotePiece(x.Promotion);
+                if (m_Board.IsAwaitingPromotionDecision())
+                    m_Board.PromotePiece(x.Promotion);
 
-                var lastMove = m_board.LastMove();
+                var lastMove = m_Board.LastMove();
                 var areEqual = MovesIdenticalWithoutDisambiguator(m, lastMove, x);
 
                 Assert.IsTrue(areEqual, String.Format("Expected parser and move generator to agree: {0} {1}", m, lastMove));
@@ -64,7 +64,7 @@ namespace RedChess.CombinedTests
             },
                 () =>
                 {
-                    m_board = BoardFactory.CreateInstance();
+                    m_Board = BoardFactory.CreateInstance();
                 },
             true);
         }
