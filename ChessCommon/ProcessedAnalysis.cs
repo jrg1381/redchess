@@ -33,7 +33,9 @@ namespace RedChess.ChessCommon
 
         public override string ToString()
         {
+            // ReSharper disable UseStringInterpolation
             return String.Format("{0}:{1}:{2}:{3}:{4}",
+                // ReSharper restore UseStringInterpolation
                 BoardEvaluation,
                 BoardEvaluationType,
                 String.Join(" ", Analysis.Select(x => x.Move)),

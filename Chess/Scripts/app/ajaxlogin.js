@@ -36,7 +36,7 @@
                 .always(function() {
                     getSpinController().stopLogoSpinner();
                 })
-                .fail(function (jqXHR, textStatus, errorThrown) {
+                .fail(function (jqXhr, textStatus, errorThrown) {
                     displayErrors($form, [textStatus]);
                 });
         }

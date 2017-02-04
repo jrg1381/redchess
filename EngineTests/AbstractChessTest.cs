@@ -1,28 +1,27 @@
 using System;
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
-using Redchess.Engine;
 
 namespace Redchess.EngineTests
 {
     internal abstract class AbstractChessTest : IDisposable
     {
-        protected InteractiveBoard m_normalBoard;
-        protected InteractiveBoard m_emptyBoard;
+        protected InteractiveBoard NormalBoard;
+        protected InteractiveBoard EmptyBoard;
 
         [SetUp]
         public void TestSetup()
         {
             // Reset all the pieces between tests
             //m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
-            m_normalBoard = new InteractiveBoard(PieceColor.White, false);
-            m_emptyBoard = new InteractiveBoard(PieceColor.White, true);
+            NormalBoard = new InteractiveBoard(PieceColor.White, false);
+            EmptyBoard = new InteractiveBoard(PieceColor.White, true);
         }
 
         public void Dispose()
         {
-            m_normalBoard.Dispose();
-            m_emptyBoard.Dispose();
+            NormalBoard.Dispose();
+            EmptyBoard.Dispose();
         }
     }
 }

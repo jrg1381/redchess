@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using RedChess.ChessCommon;
-using RedChess.ChessCommon.Enumerations;
 
 namespace Chess.Models
 {
@@ -16,7 +12,7 @@ namespace Chess.Models
     public class PgnModel
     {
         public List<string> ErrorText { get; private set; }
-        public List<FenWithMove> Moves { get; private set; } 
+        public List<FenWithMove> Moves { get; } 
         public Dictionary<string, string> Tags { get; private set; }
 
         public PgnModel()

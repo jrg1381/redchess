@@ -13,9 +13,9 @@ namespace Chess.Controllers
 {
     public class BoardController : Controller
     {
-        private readonly IGameManager m_gameManager;
-        private readonly ICurrentUser m_identityProvider;
-        private readonly IDateTimeProvider m_dateTimeProvider;
+        private readonly IGameManager m_GameManager;
+        private readonly ICurrentUser m_IdentityProvider;
+        private readonly IDateTimeProvider m_DateTimeProvider;
 
         public BoardController() : this(null, null, null)
         {
@@ -24,9 +24,9 @@ namespace Chess.Controllers
 
         public BoardController(IGameManager gameManager = null, ICurrentUser identityProvider = null, IDateTimeProvider dateTimeProvider = null)
         {
-            m_gameManager = gameManager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserProvider();
-            m_dateTimeProvider = dateTimeProvider ?? new DefaultDateTimeProvider();
+            m_GameManager = gameManager ?? new GameManager();
+            m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
+            m_DateTimeProvider = dateTimeProvider ?? new DefaultDateTimeProvider();
         }
 
         // GET: /Board/
@@ -42,7 +42,7 @@ namespace Chess.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            var board = m_gameManager.FetchGame(id);
+            var board = m_GameManager.FetchGame(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
@@ -55,14 +55,14 @@ namespace Chess.Controllers
 
         public ActionResult Create()
         {
-            return View(m_gameManager.AllUserProfiles().Where(x => x.UserId != m_identityProvider.CurrentUserId));
+            return View(m_GameManager.AllUserProfiles().Where(x => x.UserId != m_IdentityProvider.CurrentUserId));
         }
 
 
         private JsonResult NewAnalysisBoard()
         {
             var newBoard = BoardFactory.CreateInstance();
-            var newGameIdAnalysis = m_gameManager.Add(newBoard, m_identityProvider.CurrentUser);
+            var newGameIdAnalysis = m_GameManager.Add(newBoard, m_IdentityProvider.CurrentUser);
             RefreshIndexPage();
             return Json(new { success = true, redirect = "/Board/Details/" + newGameIdAnalysis });
         }
@@ -98,7 +98,7 @@ namespace Chess.Controllers
             int opponentId = Int32.Parse(opponent);
 
             var newBoard = BoardFactory.CreateInstance();
-            var newGameId = m_gameManager.Add(newBoard, opponentId, m_identityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber * 60 * 1000);
+            var newGameId = m_GameManager.Add(newBoard, opponentId, m_IdentityProvider.CurrentUser, playAsBlack, (int)timeLimitAsNumber * 60 * 1000);
 
             RefreshIndexPage();
             return Json(new { success = true, redirect = "/Board/Details/" + newGameId });
@@ -117,8 +117,8 @@ namespace Chess.Controllers
         [VerifyIsParticipant]
         public ActionResult OfferDraw(int id)
         {
-            var game = m_gameManager.FetchGame(id);
-            var offerFrom = game.CurrentPlayerColor(m_identityProvider.CurrentUser);
+            var game = m_GameManager.FetchGame(id);
+            var offerFrom = game.CurrentPlayerColor(m_IdentityProvider.CurrentUser);
 
             var jsonObject = Json(new { DrawOfferedBy = offerFrom });
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
@@ -129,7 +129,7 @@ namespace Chess.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            var board = m_gameManager.FetchGame(id);
+            var board = m_GameManager.FetchGame(id);
             if (board == null)
             {
                 return RedirectToAction("Index");
@@ -152,7 +152,7 @@ namespace Chess.Controllers
 
         private void DestroyBoard(int id)
         {
-            m_gameManager.Delete(id);
+            m_GameManager.Delete(id);
         }
 
         //
@@ -171,7 +171,7 @@ namespace Chess.Controllers
 
         private bool IsCurrentUsersTurn(IGameBinding game)
         {
-            return m_gameManager.IsUsersTurn(game, m_identityProvider.CurrentUser); 
+            return m_GameManager.IsUsersTurn(game, m_IdentityProvider.CurrentUser); 
         }
 
         [HttpPost]
@@ -179,9 +179,9 @@ namespace Chess.Controllers
         [VerifyIsParticipant]
         public ActionResult TimedOut(int id, string message, string timedoutcolor)
         {
-            var game = m_gameManager.FetchGame(id);
+            var game = m_GameManager.FetchGame(id);
 
-            m_gameManager.TimeGameOut(id, message, timedoutcolor);
+            m_GameManager.TimeGameOut(id, message, timedoutcolor);
             var jsonObject = new { fen = game.Fen, message = message, status = "TIME" };
 
             IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<UpdateServer>();
@@ -195,15 +195,15 @@ namespace Chess.Controllers
         [VerifyIsParticipant]
         public ActionResult Resign(int id)
         {
-            var game = m_gameManager.FetchGame(id);
-            var resignationMessage = String.Format("{0} resigned", m_identityProvider.CurrentUser);
+            var game = m_GameManager.FetchGame(id);
+            var resignationMessage = String.Format("{0} resigned", m_IdentityProvider.CurrentUser);
 
             // If current player is white, and is resigning, then black wins
-            var winner = game.UserProfileWhite.UserName == m_identityProvider.CurrentUser
+            var winner = game.UserProfileWhite.UserName == m_IdentityProvider.CurrentUser
                 ? game.UserProfileBlack.UserId
                 : game.UserProfileWhite.UserId;
 
-            m_gameManager.EndGameWithMessage(id, resignationMessage, winner);
+            m_GameManager.EndGameWithMessage(id, resignationMessage, winner);
 
             var jsonObject = new { fen = game.Fen, message = resignationMessage, status = "RESIGN" };
 
@@ -218,14 +218,14 @@ namespace Chess.Controllers
         [VerifyIsParticipant]
         public ActionResult AgreeDraw(int id, bool offerAccepted)
         {
-            var game = m_gameManager.FetchGame(id);
+            var game = m_GameManager.FetchGame(id);
             object jsonObject;
 
             if (offerAccepted)
             {
                 // TODO: A mechanism to prove that the offer was really made in the first place and to
                 // TODO: persist the offer in the case that the page is refreshed
-                m_gameManager.EndGameWithMessage(id, "Draw agreed");
+                m_GameManager.EndGameWithMessage(id, "Draw agreed");
 
                 jsonObject = new {fen = game.Fen, message = "Draw agreed", status = "DRAW"};
             }
@@ -244,14 +244,14 @@ namespace Chess.Controllers
         [VerifyIsParticipant]
         public ActionResult ClaimDraw(int id)
         {
-            var game = m_gameManager.FetchGame(id);
+            var game = m_GameManager.FetchGame(id);
 
             if (!game.MayClaimDraw)
             {
                 return Json(new {fen = game.Fen, message = "You may not claim a draw in this position", status = "FAIL"});
             }
 
-            m_gameManager.EndGameWithMessage(id, "Draw claimed");
+            m_GameManager.EndGameWithMessage(id, "Draw claimed");
 
             var jsonObject = new { fen = game.Fen, message = "Draw claimed", status = "DRAW" };
 
@@ -270,9 +270,9 @@ namespace Chess.Controllers
         public ActionResult PlayMove(int id, string start, string end, string promote)
         {
             // Be generous to the user and take the time as soon as possible, so they lose the least clock time
-            var now = m_dateTimeProvider.UtcNow;
+            var now = m_DateTimeProvider.UtcNow;
 
-            var game = m_gameManager.FetchGame(id);
+            var game = m_GameManager.FetchGame(id);
 
             if (game == null)
             {
@@ -299,7 +299,7 @@ namespace Chess.Controllers
             }
 
             GameDto newDto;
-            bool success = m_gameManager.Move(id, startLocation, endLocation, promote, now, out newDto);
+            bool success = m_GameManager.Move(id, startLocation, endLocation, promote, now, out newDto);
 
             if (!success)
             {
@@ -315,7 +315,7 @@ namespace Chess.Controllers
 
             if (newDto != null) // failure, so keep game the same
             {
-                game = new GameBinding(newDto, m_gameManager); // Don't fetch from the DB again
+                game = new GameBinding(newDto, m_GameManager); // Don't fetch from the DB again
             }
 
             string messageForUser = game.Status;

@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RedChess.ChessCommon;
-using RedChess.ChessCommon.Enumerations;
-using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.MessageQueue.Messages
 {

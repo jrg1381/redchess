@@ -7,11 +7,11 @@ namespace Chess.Controllers
 {
     class DefaultWebSecurityProvider : IWebSecurityProvider
     {
-        private readonly ICurrentUser m_identityProvider;
+        private readonly ICurrentUser m_IdentityProvider;
 
         public DefaultWebSecurityProvider(ICurrentUser identityProvider = null)
         {
-            m_identityProvider = identityProvider ?? new CurrentUserProvider();
+            m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         public bool Login(string userName, string password, bool persistCookie = false)
@@ -41,7 +41,7 @@ namespace Chess.Controllers
 
         public void ChangeEmailHash(string hashedEmail)
         {
-            (new GameManager()).SetEmailHashForUserId(m_identityProvider.CurrentUserId, hashedEmail);
+            (new GameManager()).SetEmailHashForUserId(m_IdentityProvider.CurrentUserId, hashedEmail);
         }
     }
 }

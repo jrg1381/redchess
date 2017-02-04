@@ -17,14 +17,14 @@ namespace Redchess.AnalysisWorker
 
     public sealed class UciEngineFarm : IDisposable
     {
-        private readonly object m_dictionaryLock = new object();
-        private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_queueForGame;
-        private readonly Func<int, IUciEngine> m_engineCreator;
+        private readonly object m_DictionaryLock = new object();
+        private readonly ConcurrentDictionary<int, BlockingCollection<WorkItem>> m_QueueForGame;
+        private readonly Func<int, IUciEngine> m_EngineCreator;
 
         public UciEngineFarm(Func<int, IUciEngine> engineCreator = null)
         {
-            m_engineCreator = engineCreator ?? (i => new UciEngine(i));
-            m_queueForGame = new ConcurrentDictionary<int, BlockingCollection<WorkItem>>();
+            m_EngineCreator = engineCreator ?? (i => new UciEngine(i));
+            m_QueueForGame = new ConcurrentDictionary<int, BlockingCollection<WorkItem>>();
         }
 
         private void ProcessQueue(BlockingCollection<WorkItem> workItemQueue, IUciEngine engine)
@@ -64,10 +64,10 @@ namespace Redchess.AnalysisWorker
             finally
             {
                 Trace.WriteLine("No more work for thread " + Thread.CurrentThread.ManagedThreadId);
-                lock (m_dictionaryLock)
+                lock (m_DictionaryLock)
                 {
                     BlockingCollection<WorkItem> self;
-                    m_queueForGame.TryRemove(engine.GameId, out self);
+                    m_QueueForGame.TryRemove(engine.GameId, out self);
                 }
                 engine.Dispose();
             }
@@ -75,14 +75,14 @@ namespace Redchess.AnalysisWorker
 
         public void GameOver(int gameId)
         {
-            lock (m_dictionaryLock)
+            lock (m_DictionaryLock)
             {
                 Trace.WriteLine("Telling queue for game " + gameId + " to CompleteAdding");
                 BlockingCollection<WorkItem> queue;
-                if (m_queueForGame.TryGetValue(gameId, out queue))
+                if (m_QueueForGame.TryGetValue(gameId, out queue))
                 {
                     queue.CompleteAdding();
-                    m_queueForGame.TryRemove(gameId, out queue);
+                    m_QueueForGame.TryRemove(gameId, out queue);
                 }
             }
         }
@@ -91,15 +91,15 @@ namespace Redchess.AnalysisWorker
         {
             Trace.WriteLine("Calculating best move for gameId " + gameId + " and fen " + fen);
 
-            lock (m_dictionaryLock)
+            lock (m_DictionaryLock)
             {
                 BlockingCollection<WorkItem> queue;
-                if (!m_queueForGame.TryGetValue(gameId, out queue))
+                if (!m_QueueForGame.TryGetValue(gameId, out queue))
                 {
                     Trace.WriteLine("Queue not found for this game id, creating worker");
                     queue = new BlockingCollection<WorkItem>();
-                    m_queueForGame[gameId] = queue;
-                    var engine = m_engineCreator(gameId);
+                    m_QueueForGame[gameId] = queue;
+                    var engine = m_EngineCreator(gameId);
                     Trace.WriteLine("Worker created successfully");
                     Task.Factory.StartNew(() => ProcessQueue(queue, engine));
                 }
@@ -109,7 +109,7 @@ namespace Redchess.AnalysisWorker
 
             lock (workItem)
             {
-                m_queueForGame[gameId].Add(workItem);
+                m_QueueForGame[gameId].Add(workItem);
                 Trace.WriteLine("Waiting for pulse from worker in thread " + Thread.CurrentThread.ManagedThreadId);
                 Monitor.Wait(workItem);
                 return workItem.Result;
@@ -124,7 +124,7 @@ namespace Redchess.AnalysisWorker
 
         private void Dispose(bool isDisposing)
         {
-            foreach (var worker in m_queueForGame.Values)
+            foreach (var worker in m_QueueForGame.Values)
             {
                 worker.CompleteAdding();
                 // Give a safety margin to clear the queue (likely it will only have 0 or 1 entries in it, but allow for more) 
@@ -135,12 +135,12 @@ namespace Redchess.AnalysisWorker
                 }
             }
 
-            foreach (var worker in m_queueForGame.Values)
+            foreach (var worker in m_QueueForGame.Values)
             {
                 worker.Dispose();
             }
 
-            m_queueForGame.Clear();
+            m_QueueForGame.Clear();
         }
     }
 }

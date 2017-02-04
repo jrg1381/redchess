@@ -60,7 +60,7 @@
         var displayTimeWhite, displayTimeBlack;
         var diff = (new Date()).getTime() - this.GetLastSyncTime();
 
-        if (this.theChess.currentTurn == "b") {
+        if (this.theChess.currentTurn === "b") {
             displayTimeWhite = new Date(this.lastServerWhiteTimeRemaining).toUTCString().substring(25, 17);
             displayTimeBlack = new Date(this.lastServerBlackTimeRemaining - diff).toUTCString().substring(25, 17);
             $("#whitetime").text(displayTimeWhite);
@@ -76,7 +76,7 @@
             }
         }
 
-        if (this.theChess.currentTurn == "w") {
+        if (this.theChess.currentTurn === "w") {
             displayTimeWhite = new Date(this.lastServerWhiteTimeRemaining - diff).toUTCString().substring(25, 17);
             displayTimeBlack = new Date(this.lastServerBlackTimeRemaining).toUTCString().substring(25, 17);
             $("#whitetime").text(displayTimeWhite);
@@ -95,17 +95,17 @@
 
     // Called when SignalR tells us that the other player is ready to play
     this.ReadyToPlay = function(data) {
-        if (data.who == "w") {
+        if (data.who === "w") {
             $("td#whiteready").removeClass("notready");
             $("td#whiteready").addClass("ready");
             $("td#whiteready").text("READY");
-        } else if (data.who == "b") {
+        } else if (data.who === "b") {
             $("td#blackready").removeClass("notready");
             $("td#blackready").addClass("ready");
             $("td#blackready").text("READY");
         }
 
-        if (data.status == "OK") {
+        if (data.status === "OK") {
             if (null == this.GetLastSyncTime()) {
                 this.SetLastSyncTime();
             }
@@ -124,17 +124,17 @@
 
         this.InitializeClockTimeLimits();
 
-        if (this.theChess.currentPlayerColor == "") {
+        if (this.theChess.currentPlayerColor === "") {
             $("td#ready").hide();
             return;
         }
 
-        if (this.theChess.currentPlayerColor == "w" && $("td#whiteready").text() == "READY") {
+        if (this.theChess.currentPlayerColor === "w" && $("td#whiteready").text() === "READY") {
             $("td#ready").hide();
             return;
         }
 
-        if (this.theChess.currentPlayerColor == "b" && $("td#blackready").text() == "READY") {
+        if (this.theChess.currentPlayerColor === "b" && $("td#blackready").text() === "READY") {
             $("td#ready").hide();
             return;
         }
@@ -142,11 +142,11 @@
         $("div#readybutton").click(function() {
             $.post("/Clock/PlayerReady", { id: gameId }).done(function(data) {
                 $("td#ready").hide();
-                if (that.theChess.currentPlayerColor == "w") {
+                if (that.theChess.currentPlayerColor === "w") {
                     $("td#whiteready").removeClass("notready");
                     $("td#whiteready").addClass("ready");
                     $("td#whiteready").text("READY");
-                } else if (that.theChess.currentPlayerColor == "b") {
+                } else if (that.theChess.currentPlayerColor === "b") {
                     $("td#blackready").removeClass("notready");
                     $("td#blackready").addClass("ready");
                     $("td#blackready").text("READY");

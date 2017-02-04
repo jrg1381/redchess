@@ -23,25 +23,25 @@ namespace Redchess.EngineTests
 				for (int i = 63; i >= 0; i--)
 				{
 					var loc = (Location)i;
-					var piece = m_normalBoard.GetContents(loc);
-                    if (piece == null || piece.Color != m_normalBoard.CurrentTurn)
+					var piece = NormalBoard.GetContents(loc);
+                    if (piece == null || piece.Color != NormalBoard.CurrentTurn)
 						continue;
-				    var validMoves = piece.ValidMoves(m_normalBoard);
+				    var validMoves = piece.ValidMoves(NormalBoard);
                     Assert.NotNull(validMoves, "Expected not null");
                     var validMovesArray = validMoves.ToArray();
                     if (validMovesArray.Any())
 					{
                         // Take a random valid move
-                        Location targetSquare = validMovesArray.Skip(random.Next(validMovesArray.Count() - 1)).First();
+                        Location targetSquare = validMovesArray.Skip(random.Next(validMovesArray.Length - 1)).First();
 						Console.WriteLine("[{0}] Moving {1} from {2} to {3}", i, piece, piece.Position.Location, targetSquare);
-                        m_normalBoard.Move(piece.Position.Location, targetSquare);
-                        if (m_normalBoard.IsAwaitingPromotionDecision())
+                        NormalBoard.Move(piece.Position.Location, targetSquare);
+                        if (NormalBoard.IsAwaitingPromotionDecision())
                         {
-                            var promoteTo = m_normalBoard.CurrentTurn == PieceColor.White ? "Queen" : "Rook";
-                            m_normalBoard.PromotePiece(promoteTo);
+                            var promoteTo = NormalBoard.CurrentTurn == PieceColor.White ? "Queen" : "Rook";
+                            NormalBoard.PromotePiece(promoteTo);
 						}
 
-                        if (m_normalBoard.StatusForBoard() == GameStatus.DrawInsufficientMaterial)
+                        if (NormalBoard.StatusForBoard() == GameStatus.DrawInsufficientMaterial)
                         {
                             Console.WriteLine("Draw!");
                             goto GAME_OVER;
@@ -50,7 +50,7 @@ namespace Redchess.EngineTests
 					else
 					{
 						Console.WriteLine("No moves for {0} on {1}", piece, piece.Position.Location);
-					    var status = m_normalBoard.StatusForBoard();
+					    var status = NormalBoard.StatusForBoard();
                         if (status == GameStatus.CheckmateBlackWins || status == GameStatus.CheckmateWhiteWins)
 						{
 							Console.WriteLine("Checkmate!");
@@ -66,9 +66,8 @@ namespace Redchess.EngineTests
 			}
 
 			GAME_OVER:
-			;
 
-            Console.WriteLine("Game took : {0}", DateTime.UtcNow - startTime);
+		    Console.WriteLine("Game took : {0}", DateTime.UtcNow - startTime);
 		}
 	}
 }

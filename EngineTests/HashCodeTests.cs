@@ -9,17 +9,17 @@ namespace Redchess.EngineTests
         [Test]
         public void StartPosition()
         {
-            int hashCode1 = m_normalBoard.GetHashCode();
-            int hashCode2 = m_normalBoard.GetHashCode();
+            int hashCode1 = NormalBoard.GetHashCode();
+            int hashCode2 = NormalBoard.GetHashCode();
             Assert.IsTrue(hashCode1 == hashCode2, "Expected hashcodes to be the same");
         }
 
         [Test]
         public void KingsPawnOpening()
         {
-            int hashCode1 = m_normalBoard.GetHashCode();
-            m_normalBoard.Move(Location.E2, Location.E4);
-            int hashCode2 = m_normalBoard.GetHashCode();
+            int hashCode1 = NormalBoard.GetHashCode();
+            NormalBoard.Move(Location.E2, Location.E4);
+            int hashCode2 = NormalBoard.GetHashCode();
             Assert.IsTrue(hashCode1 != hashCode2, "Expected hashcodes to differ");
         }
 

@@ -10,7 +10,7 @@ namespace Redchess.Engine.Pieces.Abstract
 {
     internal abstract class Piece : IPiece
     {
-        private static readonly int s_Parallelism = Environment.ProcessorCount;
+        private static readonly int Parallelism = Environment.ProcessorCount;
         private readonly PieceType m_PieceType;
         private readonly PieceColor m_Color;
 
@@ -42,7 +42,7 @@ namespace Redchess.Engine.Pieces.Abstract
         /// <returns></returns>
         public IEnumerable<Location> ValidMoves(IBoardExtended game)
         {
-            return ReachableSquares(game).AsParallel().WithDegreeOfParallelism(s_Parallelism).Where(s => game.ValidateMoveForCheck(this, s));
+            return ReachableSquares(game).AsParallel().WithDegreeOfParallelism(Parallelism).Where(s => game.ValidateMoveForCheck(this, s));
         }
 
         public virtual IEnumerable<Location> AttackedSquares(IBoardExtended game)

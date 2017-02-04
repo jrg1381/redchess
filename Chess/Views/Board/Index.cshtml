@@ -1,7 +1,4 @@
-﻿@using Chess.Models
-@using RedChess.WebEngine.Repositories
-@using RedChess.WebEngine.Repositories.Interfaces
-@model object
+﻿@model object
 
     @{
         ViewBag.Title = "Index of games";
@@ -13,7 +10,7 @@
 <script src="/signalr/hubs"></script>
     
 <script>
-    function gameListUpdate(data) {
+    function gameListUpdate() {
         updateGameLists();
     }
 </script>
@@ -62,8 +59,8 @@
 
                 $("#my-current-games-table").show();
             })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                viewModel.errors.push(jqXHR.statusText);
+            .fail(function(jqXhr, textStatus, errorThrown) {
+                viewModel.errors.push(jqXhr.statusText);
             });
 
         // My finished games less than a month old
@@ -80,8 +77,8 @@
                 $("table#my-finished-games-table time.timeago").timeago();
                 $("#my-finished-games-table").show();
             })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                viewModel.errors.push(jqXHR.statusText);
+            .fail(function(jqXhr, textStatus, errorThrown) {
+                viewModel.errors.push(jqXhr.statusText);
             });
 
         // Other live games
@@ -109,8 +106,8 @@
                 $("table#other-games-table time.timeago").timeago();
                 $("#other-games-table").show();
             })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                viewModel.errors.push(jqXHR.statusText);
+            .fail(function(jqXhr, textStatus, errorThrown) {
+                viewModel.errors.push(jqXhr.statusText);
             });
     }
 

@@ -10,22 +10,22 @@ namespace RedChess.CombinedTests
     [TestFixture]
     public class ParserAndMoveGeneratorAgree
     {
-        private IBoard m_board;
+        private IBoard m_Board;
 
         [SetUp]
         public void SetUp()
         {
-            m_board = BoardFactory.CreateInstance();
+            m_Board = BoardFactory.CreateInstance();
         }
 
-        [TestCaseSource(typeof(GameSource),"Games")]
+        [TestCaseSource(typeof(GameSource),nameof(GameSource.Games))]
         public void PlayMoves(string text)
         {
             text = "[Opening \"something\"]\r\n\r\n" + text;
             CheckIdentical(text);
         }
 
-        [TestCaseSource(typeof(FilenameSource), "PgnFile")]
+        [TestCaseSource(typeof(FilenameSource), nameof(FilenameSource.PgnFile))]
         public void RealTestData(string filename)
         {
             string inputData = File.ReadAllText(filename);
@@ -43,20 +43,20 @@ namespace RedChess.CombinedTests
             {
                 if (x == null)
                 {
-                    m_board = BoardFactory.CreateInstance();
+                    m_Board = BoardFactory.CreateInstance();
                     return;
                 }
 
-                bool moveOk  = m_board.Move(x.Start, x.End);
-                Assert.IsTrue(moveOk, "Expected move to succeed " + m + " " + s + " " + m_board.ToFen());
+                bool moveOk  = m_Board.Move(x.Start, x.End);
+                Assert.IsTrue(moveOk, "Expected move to succeed " + m + " " + s + " " + m_Board.ToFen());
 
-                if (m_board.IsAwaitingPromotionDecision())
-                    m_board.PromotePiece(x.Promotion);
+                if (m_Board.IsAwaitingPromotionDecision())
+                    m_Board.PromotePiece(x.Promotion);
 
-                var lastMove = m_board.LastMove();
+                var lastMove = m_Board.LastMove();
                 var areEqual = MovesIdenticalWithoutDisambiguator(m, lastMove, x);
 
-                Assert.IsTrue(areEqual, String.Format("Expected parser and move generator to agree: {0} {1}", m, lastMove));
+                Assert.IsTrue(areEqual, $"Expected parser and move generator to agree: {m} {lastMove}");
             }, s =>
             {
                 Console.WriteLine(s);
@@ -64,7 +64,7 @@ namespace RedChess.CombinedTests
             },
                 () =>
                 {
-                    m_board = BoardFactory.CreateInstance();
+                    m_Board = BoardFactory.CreateInstance();
                 },
             true);
         }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -17,6 +15,7 @@ using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
+// ReSharper disable PossibleNullReferenceException
 
 namespace RedChess.ControllerTests
 {
@@ -580,7 +579,7 @@ namespace RedChess.ControllerTests
             var controller = GetControllerForFakeEndedGameAsUser("clive", out fakeRepo);
             fakeRepo.Expect(x => x.AddOrUpdate(null)).Repeat.Never();
             var result = controller.PlayMove(GameBuilder.DefaultGameId, "E2", "E4", "");
-            dynamic res = ((System.Web.Mvc.JsonResult) (result)).Data;
+            dynamic res = ((JsonResult) (result)).Data;
             Assert.AreEqual("{ fen = rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0, message = , status = FAIL }", res.ToString(), "Result was not as expected");
             fakeRepo.VerifyAllExpectations();
         }

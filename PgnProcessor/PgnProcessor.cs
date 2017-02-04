@@ -12,67 +12,66 @@ namespace RedChess.PgnProcessor
 {
     class PgnProcessor : IPgnProcessor
     {
-        private readonly DateTime m_start;
-        private int m_moveCount;
-        private static readonly Dictionary<char, PieceType> s_lookup;
-        private IBoard m_board;
-        private readonly Action<string, string, ChessMove> m_onMoveAction;
-        private readonly Action m_onGameOverAction;
+        private readonly DateTime m_Start;
+        private int m_MoveCount;
+        private static readonly Dictionary<char, PieceType> Lookup;
+        private IBoard m_Board;
+        private readonly Action<string, string, ChessMove> m_OnMoveAction;
+        private readonly Action m_OnGameOverAction;
 
         static PgnProcessor()
         {
-            s_lookup = new Dictionary<char, PieceType>();
-            s_lookup['Q'] = PieceType.Queen;
-            s_lookup['K'] = PieceType.King;
-            s_lookup['N'] = PieceType.Knight;
-            s_lookup['R'] = PieceType.Rook;
-            s_lookup['B'] = PieceType.Bishop;
-            s_lookup['P'] = PieceType.Pawn;
+            Lookup = new Dictionary<char, PieceType>
+            {
+                ['Q'] = PieceType.Queen,
+                ['K'] = PieceType.King,
+                ['N'] = PieceType.Knight,
+                ['R'] = PieceType.Rook,
+                ['B'] = PieceType.Bishop,
+                ['P'] = PieceType.Pawn
+            };
         }
 
         internal PgnProcessor(Action<string, string, ChessMove> onMoveAction, Action onGameOverAction)
         {
-            m_onMoveAction = onMoveAction;
-            m_onGameOverAction = onGameOverAction;
-            m_board = BoardFactory.CreateInstance();
-            m_start = DateTime.UtcNow;
-            m_moveCount = 0;
-            if (m_onMoveAction == null)
-                return;
+            m_OnMoveAction = onMoveAction;
+            m_OnGameOverAction = onGameOverAction;
+            m_Board = BoardFactory.CreateInstance();
+            m_Start = DateTime.UtcNow;
+            m_MoveCount = 0;
 
-            m_onMoveAction(m_board.ToFen(), String.Empty, null);
+            m_OnMoveAction?.Invoke(m_Board.ToFen(), String.Empty, null);
         }
 
         public void DoFen(string fen)
         {
-            m_board.FromFen(fen);
+            m_Board.FromFen(fen);
         }
 
         internal string Stats()
         {
-            var timeTaken = DateTime.UtcNow - m_start;
-            return String.Format("{0} moves in {1} ({2} moves per second)", m_moveCount, timeTaken, m_moveCount / timeTaken.TotalSeconds);
+            var timeTaken = DateTime.UtcNow - m_Start;
+            return $"{m_MoveCount} moves in {timeTaken} ({m_MoveCount / timeTaken.TotalSeconds} moves per second)";
         }
 
         public void ResetGame()
         {
-            m_board = BoardFactory.CreateInstance();
-            if(m_onGameOverAction != null)
-                m_onGameOverAction();
+            m_Board = BoardFactory.CreateInstance();
+            m_OnGameOverAction?.Invoke();
         }
 
         private static void SymbolToBasicPieceType(char symbol, out PieceType answer)
         {
             // This mimics the PGN rules, if a piece isn't specified it's a pawn.
-            if (!s_lookup.TryGetValue(symbol, out answer))
+            if (!Lookup.TryGetValue(symbol, out answer))
                 answer = PieceType.Pawn;
         }
 
         private ChessMove MakePieceMove(PieceType pieceType, Location targetLocation, string disambiguation, string promotedPiece)
         {
-            m_moveCount++;
+            m_MoveCount++;
 
-            foreach (var location in m_board.FindPieces(pieceType))
+            foreach (var location in m_Board.FindPieces(pieceType))
             {
                 // Disambiguator can be a column, a row, or a whole square (which would require four pieces of the same type on the board...)
                 if (!String.IsNullOrEmpty(disambiguation))
@@ -97,7 +96,7 @@ namespace RedChess.PgnProcessor
                     }
                 }
 
-                if (m_board.Move(location, targetLocation))
+                if (m_Board.Move(location, targetLocation))
                     return new ChessMove(location, targetLocation, promotedPiece);
             }
 
@@ -110,7 +109,7 @@ namespace RedChess.PgnProcessor
 
             SymbolToBasicPieceType(symbol, out basicPieceType);
 
-            if (m_board.CurrentTurn == PieceColor.Black)
+            if (m_Board.CurrentTurn == PieceColor.Black)
                 basicPieceType |= PieceType.Black;
             else
                 basicPieceType |= PieceType.White;
@@ -158,7 +157,7 @@ namespace RedChess.PgnProcessor
                 }
                 case PgnParser.CASTLE_KINGSIDE:
                 {
-                    if (m_board.CurrentTurn == PieceColor.Black)
+                    if (m_Board.CurrentTurn == PieceColor.Black)
                     {
                         targetLocation = Location.G8;
                         movingPiece = PieceType.BlackKing;
@@ -172,7 +171,7 @@ namespace RedChess.PgnProcessor
                 }
                 case PgnParser.CASTLE_QUEENSIDE:
                 {
-                    if (m_board.CurrentTurn == PieceColor.Black)
+                    if (m_Board.CurrentTurn == PieceColor.Black)
                     {
                         targetLocation = Location.C8;
                         movingPiece = PieceType.BlackKing;
@@ -194,14 +193,14 @@ namespace RedChess.PgnProcessor
             {
                 var moveMade = MakePieceMove(movingPiece, targetLocation, disambiguationToken, promotedPiece);
 
-                if (m_board.IsAwaitingPromotionDecision())
+                if (m_Board.IsAwaitingPromotionDecision())
                 {
-                    m_board.PromotePiece(promotedPiece);
+                    m_Board.PromotePiece(promotedPiece);
                     tokenText += "=" + promotedPiece;
                 }
 
                 tokenText += checkOrMate;
-                m_onMoveAction?.Invoke(m_board.ToFen(), tokenText, moveMade);
+                m_OnMoveAction?.Invoke(m_Board.ToFen(), tokenText, moveMade);
             }
             catch (InvalidOperationException e)
             {

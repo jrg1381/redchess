@@ -15,8 +15,8 @@ namespace Chess.Controllers
 {
     public class ChessApiController : ApiController
     {
-        private readonly IGameManager m_gameManager;
-        private readonly ICurrentUser m_identityProvider;
+        private readonly IGameManager m_GameManager;
+        private readonly ICurrentUser m_IdentityProvider;
 
         class DateElo
         {
@@ -24,27 +24,28 @@ namespace Chess.Controllers
             public int Elo;
         }
 
+        // ReSharper disable once RedundantArgumentDefaultValue
         public ChessApiController() : this(null, null)
         {
         }
 
         public ChessApiController(IGameManager manager = null, ICurrentUser identityProvider = null)
         {
-            m_gameManager = manager ?? new GameManager();
-            m_identityProvider = identityProvider ?? new CurrentUserProvider();
+            m_GameManager = manager ?? new GameManager();
+            m_IdentityProvider = identityProvider ?? new CurrentUserProvider();
         }
 
         [HttpGet]
         public object Boards()
         {
             var queryString = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Request.QueryString.ToString());
-            return m_gameManager.FindWhere(queryString);
+            return m_GameManager.FindWhere(queryString);
         }
 
         [HttpGet]
         public object Avatar()
         {
-            var emailHash = m_gameManager.GetEmailHashForUsername(HttpContext.Current.User.Identity.Name);
+            var emailHash = m_GameManager.GetEmailHashForUsername(HttpContext.Current.User.Identity.Name);
             if (String.IsNullOrEmpty(emailHash))
                 return "";
             return Json($"https://www.gravatar.com/avatar/{emailHash}?s=32&d=mm");
@@ -53,7 +54,7 @@ namespace Chess.Controllers
         [HttpGet]
         public object Stats()
         {
-            return Json(m_gameManager.Stats());
+            return Json(m_GameManager.Stats());
         }
 
         [HttpGet]
@@ -62,14 +63,14 @@ namespace Chess.Controllers
             try
             {
                 dynamic data = new ExpandoObject();
-                var game = m_gameManager.FetchGame(id);
-                var allMoves = m_gameManager.FindAllMoves(id).ToList();
+                var game = m_GameManager.FetchGame(id);
+                var allMoves = m_GameManager.FindAllMoves(id).ToList();
 
                 data.Moves = allMoves.Select<HistoryEntry, object>(m => new {m.Fen, m.Move});
                 data.Description = game.Description;
-                data.IsParticipant = game.UserProfileBlack.UserId == m_identityProvider.CurrentUserId ||
-                                     game.UserProfileWhite.UserId == m_identityProvider.CurrentUserId;
-                data.Analysis = m_gameManager.AnalysisForGameMoves(id);
+                data.IsParticipant = game.UserProfileBlack.UserId == m_IdentityProvider.CurrentUserId ||
+                                     game.UserProfileWhite.UserId == m_IdentityProvider.CurrentUserId;
+                data.Analysis = m_GameManager.AnalysisForGameMoves(id);
                 data.GameOver = game.GameOver;
                 data.Status = game.Status;
                 data.Winner = "";
@@ -93,10 +94,10 @@ namespace Chess.Controllers
         [HttpGet]
         public object Elo()
         {
-            var profilesTask = Task.Factory.StartNew(() => m_gameManager.AllUserProfiles());
-            var eloTableTask = Task.Factory.StartNew(() => m_gameManager.EloTable());
-            var winlossTask = Task.Factory.StartNew(() => m_gameManager.Stats());
-            var lastUpdatedTask = Task.Factory.StartNew(() => m_gameManager.LastEloUpdate());
+            var profilesTask = Task.Factory.StartNew(() => m_GameManager.AllUserProfiles());
+            var eloTableTask = Task.Factory.StartNew(() => m_GameManager.EloTable());
+            var winlossTask = Task.Factory.StartNew(() => m_GameManager.Stats());
+            var lastUpdatedTask = Task.Factory.StartNew(() => m_GameManager.LastEloUpdate());
 
             Task.WaitAll(profilesTask, eloTableTask, winlossTask);
 

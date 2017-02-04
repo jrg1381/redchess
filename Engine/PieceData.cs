@@ -8,68 +8,68 @@ namespace Redchess.Engine
 {
     static class PieceData
     {
-        private static readonly Dictionary<PieceType, IEnumerable<Location>> s_InitialConfigurations;
-        private static readonly Dictionary<PieceType, string> s_SymbolLookup;
-        private static readonly Dictionary<string, PieceType> s_ReverseSymbolLookup;
+        private static readonly Dictionary<PieceType, IEnumerable<Location>> InitialConfigurations;
+        private static readonly Dictionary<PieceType, string> SymbolLookup;
+        private static readonly Dictionary<string, PieceType> ReverseSymbolLookup;
 
-        private static readonly PieceType[] s_WhitePieceTypesSource =
+        private static readonly PieceType[] WhitePieceTypesSource =
         {
             PieceType.WhiteBishop, PieceType.WhiteKing, PieceType.WhiteKnight, PieceType.WhitePawn, PieceType.WhiteQueen, PieceType.WhiteRook
         };
 
-        private static readonly PieceType[] s_BlackPieceTypesSource =
+        private static readonly PieceType[] BlackPieceTypesSource =
         {
             PieceType.BlackBishop, PieceType.BlackKing, PieceType.BlackKnight, PieceType.BlackPawn, PieceType.BlackQueen, PieceType.BlackRook
         };
 
         static PieceData()
         {
-            s_InitialConfigurations = new Dictionary<PieceType, IEnumerable<Location>>();
-            s_SymbolLookup = new Dictionary<PieceType, string>();
-            s_ReverseSymbolLookup = new Dictionary<string, PieceType>();
+            InitialConfigurations = new Dictionary<PieceType, IEnumerable<Location>>();
+            SymbolLookup = new Dictionary<PieceType, string>();
+            ReverseSymbolLookup = new Dictionary<string, PieceType>();
 
-            s_InitialConfigurations[PieceType.BlackPawn] = new[]
+            InitialConfigurations[PieceType.BlackPawn] = new[]
             {Location.A7, Location.B7, Location.C7, Location.D7, Location.E7, Location.F7, Location.G7, Location.H7};
-            s_SymbolLookup[PieceType.BlackPawn] = "p";
-            s_InitialConfigurations[PieceType.BlackBishop] = new[] { Location.C8, Location.F8 };
-            s_SymbolLookup[PieceType.BlackBishop] = "b";
-            s_InitialConfigurations[PieceType.BlackKnight] = new[] { Location.B8, Location.G8 };
-            s_SymbolLookup[PieceType.BlackKnight] = "n";
-            s_InitialConfigurations[PieceType.BlackRook] = new[] { Location.A8, Location.H8 };
-            s_SymbolLookup[PieceType.BlackRook] = "r";
-            s_InitialConfigurations[PieceType.BlackKing] = new[] { Location.E8 };
-            s_SymbolLookup[PieceType.BlackKing] = "k";
-            s_InitialConfigurations[PieceType.BlackQueen] = new[] { Location.D8 };
-            s_SymbolLookup[PieceType.BlackQueen] = "q";
+            SymbolLookup[PieceType.BlackPawn] = "p";
+            InitialConfigurations[PieceType.BlackBishop] = new[] { Location.C8, Location.F8 };
+            SymbolLookup[PieceType.BlackBishop] = "b";
+            InitialConfigurations[PieceType.BlackKnight] = new[] { Location.B8, Location.G8 };
+            SymbolLookup[PieceType.BlackKnight] = "n";
+            InitialConfigurations[PieceType.BlackRook] = new[] { Location.A8, Location.H8 };
+            SymbolLookup[PieceType.BlackRook] = "r";
+            InitialConfigurations[PieceType.BlackKing] = new[] { Location.E8 };
+            SymbolLookup[PieceType.BlackKing] = "k";
+            InitialConfigurations[PieceType.BlackQueen] = new[] { Location.D8 };
+            SymbolLookup[PieceType.BlackQueen] = "q";
 
-            s_InitialConfigurations[PieceType.WhitePawn] = new[]
+            InitialConfigurations[PieceType.WhitePawn] = new[]
             {Location.A2, Location.B2, Location.C2, Location.D2, Location.E2, Location.F2, Location.G2, Location.H2};
-            s_SymbolLookup[PieceType.WhitePawn] = "P";
-            s_InitialConfigurations[PieceType.WhiteKnight] = new[] { Location.B1, Location.G1 };
-            s_SymbolLookup[PieceType.WhiteKnight] = "N";
-            s_InitialConfigurations[PieceType.WhiteBishop] = new[] { Location.C1, Location.F1 };
-            s_SymbolLookup[PieceType.WhiteBishop] = "B";
-            s_InitialConfigurations[PieceType.WhiteRook] = new[] { Location.A1, Location.H1 };
-            s_SymbolLookup[PieceType.WhiteRook] = "R";
-            s_InitialConfigurations[PieceType.WhiteKing] = new[] { Location.E1 };
-            s_SymbolLookup[PieceType.WhiteKing] = "K";
-            s_InitialConfigurations[PieceType.WhiteQueen] = new[] { Location.D1 };
-            s_SymbolLookup[PieceType.WhiteQueen] = "Q";
+            SymbolLookup[PieceType.WhitePawn] = "P";
+            InitialConfigurations[PieceType.WhiteKnight] = new[] { Location.B1, Location.G1 };
+            SymbolLookup[PieceType.WhiteKnight] = "N";
+            InitialConfigurations[PieceType.WhiteBishop] = new[] { Location.C1, Location.F1 };
+            SymbolLookup[PieceType.WhiteBishop] = "B";
+            InitialConfigurations[PieceType.WhiteRook] = new[] { Location.A1, Location.H1 };
+            SymbolLookup[PieceType.WhiteRook] = "R";
+            InitialConfigurations[PieceType.WhiteKing] = new[] { Location.E1 };
+            SymbolLookup[PieceType.WhiteKing] = "K";
+            InitialConfigurations[PieceType.WhiteQueen] = new[] { Location.D1 };
+            SymbolLookup[PieceType.WhiteQueen] = "Q";
 
-            foreach (KeyValuePair<PieceType, string> kvp in s_SymbolLookup)
+            foreach (KeyValuePair<PieceType, string> kvp in SymbolLookup)
             {
-                s_ReverseSymbolLookup[kvp.Value] = kvp.Key;
+                ReverseSymbolLookup[kvp.Value] = kvp.Key;
             }
         }
 
-        internal static IEnumerable<PieceType> WhitePieceTypes => s_WhitePieceTypesSource.AsEnumerable();
+        internal static IEnumerable<PieceType> WhitePieceTypes => WhitePieceTypesSource.AsEnumerable();
 
-        internal static IEnumerable<PieceType> BlackPieceTypes => s_BlackPieceTypesSource.AsEnumerable();
+        internal static IEnumerable<PieceType> BlackPieceTypes => BlackPieceTypesSource.AsEnumerable();
 
         internal static IEnumerable<Location> InitialPieceConfiguration(PieceType t)
         {
             IEnumerable<Location> retval;
-            bool knownType = s_InitialConfigurations.TryGetValue(t, out retval);
+            bool knownType = InitialConfigurations.TryGetValue(t, out retval);
             Debug.Assert(knownType, "Not a known type of piece!");
             return retval;
         }
@@ -77,7 +77,7 @@ namespace Redchess.Engine
         internal static string Symbol(PieceType pieceType)
         {
             string symbol;
-            bool knownType = s_SymbolLookup.TryGetValue(pieceType, out symbol);
+            bool knownType = SymbolLookup.TryGetValue(pieceType, out symbol);
             Debug.Assert(knownType, "Not a known type of piece!");
             return symbol;
         }
@@ -90,7 +90,7 @@ namespace Redchess.Engine
         static PieceType TypeFromSymbol(string symbol)
         {
             PieceType typeOfSymbol;
-            bool knownSymbol = s_ReverseSymbolLookup.TryGetValue(symbol, out typeOfSymbol);
+            bool knownSymbol = ReverseSymbolLookup.TryGetValue(symbol, out typeOfSymbol);
             Debug.Assert(knownSymbol, "Not a known symbol");
             return typeOfSymbol;
         }

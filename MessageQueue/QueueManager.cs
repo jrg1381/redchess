@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Newtonsoft.Json;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue.Messages;
@@ -17,23 +9,23 @@ namespace RedChess.MessageQueue
 {
     internal class QueueManager : IQueueManager, IDisposable
     {
-        private readonly QueueClient m_queueClient;
-        private readonly NamespaceManager m_namespaceManager;
+        private readonly QueueClient m_QueueClient;
+        private readonly NamespaceManager m_NamespaceManager;
 
         internal QueueManager(string connectionString)
         {
-            m_queueClient = QueueClient.CreateFromConnectionString(connectionString, QueueManagerFactory.QueueName);
-            m_namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
+            m_QueueClient = QueueClient.CreateFromConnectionString(connectionString, QueueManagerFactory.QueueName);
+            m_NamespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
         }
 
         private void SendMessage(object message)
         {
-            m_queueClient.Send(new BrokeredMessage(message));
+            m_QueueClient.Send(new BrokeredMessage(message));
         }
 
         public long QueryQueueLength()
         {
-            return m_namespaceManager.GetQueue(QueueManagerFactory.QueueName).MessageCount;
+            return m_NamespaceManager.GetQueue(QueueManagerFactory.QueueName).MessageCount;
         }
 
         public void PostGameEndedMessage(int gameId)
@@ -62,7 +54,7 @@ namespace RedChess.MessageQueue
 
         public void Dispose()
         {
-            m_queueClient.Close();
+            m_QueueClient.Close();
         }
     }
 }

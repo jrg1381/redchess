@@ -12,22 +12,22 @@ namespace Redchess.AnalysisWorker
     /// </summary>
     internal class BidirectionalProcess : IDisposable
     {
-        private const int c_processReadyTimeoutInSeconds = 10;
+        private const int c_ProcessReadyTimeoutInSeconds = 10;
 
-        private readonly StringBuilder m_builder;
-        private readonly Process m_process;
-        private readonly AutoResetEvent m_waitForEvent;
-        private string m_triggerText;
-        private bool m_isReady;
-        private readonly object m_builderLock = new object();
-        private readonly TimeSpan m_processReadyTimeout;
-        private string m_capturedText;
+        private readonly StringBuilder m_Builder;
+        private readonly Process m_Process;
+        private readonly AutoResetEvent m_WaitForEvent;
+        private string m_TriggerText;
+        private bool m_IsReady;
+        private readonly object m_BuilderLock = new object();
+        private readonly TimeSpan m_ProcessReadyTimeout;
+        private string m_CapturedText;
 
         internal BidirectionalProcess(string exePath, string processReadyText,
-            int processReadyTimeoutSeconds = c_processReadyTimeoutInSeconds)
+            int processReadyTimeoutSeconds = c_ProcessReadyTimeoutInSeconds)
         {
-            m_processReadyTimeout = TimeSpan.FromSeconds(processReadyTimeoutSeconds);
-            m_triggerText = processReadyText; // initially wait for this
+            m_ProcessReadyTimeout = TimeSpan.FromSeconds(processReadyTimeoutSeconds);
+            m_TriggerText = processReadyText; // initially wait for this
 
             if (!File.Exists(exePath))
             {
@@ -44,20 +44,20 @@ namespace Redchess.AnalysisWorker
                 CreateNoWindow = true
             };
 
-            m_builder = new StringBuilder();
-            m_waitForEvent = new AutoResetEvent(false); // Blocking on startup
-            m_isReady = false;
+            m_Builder = new StringBuilder();
+            m_WaitForEvent = new AutoResetEvent(false); // Blocking on startup
+            m_IsReady = false;
 
-            m_process = new Process
+            m_Process = new Process
             {
                 StartInfo = processStartInfo,
                 EnableRaisingEvents = true
             };
 
-            m_process.Exited += ProcessOnExited;
-            m_process.Start();
+            m_Process.Exited += ProcessOnExited;
+            m_Process.Start();
 
-            Trace.WriteLine("Started external process " + m_process.Id);
+            Trace.WriteLine("Started external process " + m_Process.Id);
 
             Task.Run(() =>
             {
@@ -65,19 +65,19 @@ namespace Redchess.AnalysisWorker
                 var buffer = new char[1];
                 try
                 {
-                    while (m_process.StandardOutput.Read(buffer, 0, 1) > -1)
+                    while (m_Process.StandardOutput.Read(buffer, 0, 1) > -1)
                     {
-                        lock (m_builderLock)
+                        lock (m_BuilderLock)
                         {
-                            m_builder.Append(buffer, 0, 1);
-                            var searchString = m_builder.ToString();
+                            m_Builder.Append(buffer, 0, 1);
+                            var searchString = m_Builder.ToString();
                             if (MatchText(searchString))
                             {
                                 // Once we see what we're looking for, stash it in m_capturedText
-                                m_capturedText = searchString;
-                                m_builder.Clear();
+                                m_CapturedText = searchString;
+                                m_Builder.Clear();
                                 // And tell the thread which is waiting for us
-                                m_waitForEvent.Set();
+                                m_WaitForEvent.Set();
                             }
                         }
                     }
@@ -93,10 +93,10 @@ namespace Redchess.AnalysisWorker
         {
             // We consider it a match when we've seen a line containing m_triggerText and that line has been terminated with \r\n
 
-            if (m_triggerText == null)
+            if (m_TriggerText == null)
                 return true;
 
-            var indexOfSearchText = textToSearch.IndexOf(m_triggerText, StringComparison.Ordinal);
+            var indexOfSearchText = textToSearch.IndexOf(m_TriggerText, StringComparison.Ordinal);
 
             if (indexOfSearchText == -1)
                 return false;
@@ -108,7 +108,7 @@ namespace Redchess.AnalysisWorker
 
         private void ProcessOnExited(object sender, EventArgs eventArgs)
         {
-            m_isReady = false;
+            m_IsReady = false;
             Dispose();
         }
 
@@ -119,74 +119,68 @@ namespace Redchess.AnalysisWorker
         /// </summary>
         internal void WaitForReady()
         {
-            if (m_isReady) return;
+            if (m_IsReady) return;
 
-            m_isReady = m_waitForEvent.WaitOne(m_processReadyTimeout);
+            m_IsReady = m_WaitForEvent.WaitOne(m_ProcessReadyTimeout);
 
-            if (m_isReady)
+            if (m_IsReady)
             {
                 Trace.TraceError("Process was ready");
                 return;
             }
 
             Trace.TraceError("TimeoutException waiting for external process");
-            Trace.TraceInformation("Data captured so far = " + m_builder);
+            Trace.TraceInformation("Data captured so far = " + m_Builder);
             throw new TimeoutException("Process was not ready for communication");
         }
 
         internal string Write(string command, string completionTrigger = null)
         {
-            if (!m_isReady)
+            if (!m_IsReady)
             {
                 Trace.TraceError("Attempted to write to an unready process");
                 throw new InvalidOperationException("Process is not ready");
             }
 
-            m_triggerText = completionTrigger;
-            m_waitForEvent.Reset();
+            m_TriggerText = completionTrigger;
+            m_WaitForEvent.Reset();
 
-            lock (m_builderLock)
+            lock (m_BuilderLock)
             {
                 // Clear anything that came after the last interaction
-                m_builder.Clear();
+                m_Builder.Clear();
             }
 
             Trace.WriteLine("Writing "+ command + " to the process");
-            m_process.StandardInput.WriteLine(command);
-            m_process.StandardInput.Flush();
+            m_Process.StandardInput.WriteLine(command);
+            m_Process.StandardInput.Flush();
 
             if (completionTrigger != null)
             {
                 Trace.WriteLine("Waiting for " + completionTrigger);
-                var success = m_waitForEvent.WaitOne(TimeSpan.FromSeconds(30));
+                var success = m_WaitForEvent.WaitOne(TimeSpan.FromSeconds(30));
                 if (!success)
                 {
                     Trace.TraceError("Timed out waiting for response from engine");
-                    Trace.TraceInformation("Data captured so far = " + m_builder);
+                    Trace.TraceInformation("Data captured so far = " + m_Builder);
                     throw new TimeoutException("Timed out on external process");
                 }
             }
 
-            return m_capturedText;
+            return m_CapturedText;
         }
 
         internal void Close()
         {
-            m_isReady = false;
-            m_process.Kill();
+            m_IsReady = false;
+            m_Process.Kill();
             Dispose();
         }
 
         public void Dispose()
         {
-            if (m_process != null)
-            {
-                m_process.Dispose();
-            }
-            if (m_waitForEvent != null)
-            {
-                m_waitForEvent.Dispose();
-            }
+            m_Process?.Dispose();
+            m_WaitForEvent?.Dispose();
         }
     }
 }

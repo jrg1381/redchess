@@ -9,18 +9,19 @@ using NUnit.Framework;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.WebEngine.Repositories.Interfaces;
 using Rhino.Mocks;
+// ReSharper disable PossibleNullReferenceException
 
 namespace RedChess.ControllerTests
 {
     [TestFixture]
     class UserAccountTests
     {
-        const string c_username = "CaptainFoo";
-        const string c_password = "Some password";
+        const string c_Username = "CaptainFoo";
+        const string c_Password = "Some password";
 
         private ICurrentUser IdentityProvider()
         {
-            return IdentityProviders.StubIdentityProviderFor(c_username);
+            return IdentityProviders.StubIdentityProviderFor(c_Username);
         }
 
         [Test]
@@ -59,15 +60,15 @@ namespace RedChess.ControllerTests
         public void LoginSuccessfully()
         {
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
-            mockSecurity.Expect(x => x.Login(c_username, c_password)).Return(true);
-            mockSecurity.Expect(x => x.SetAuthCookie(c_username, false));
+            mockSecurity.Expect(x => x.Login(c_Username, c_Password)).Return(true);
+            mockSecurity.Expect(x => x.SetAuthCookie(c_Username, false));
 
             var controller = new AccountController(IdentityProvider(), mockSecurity);
 
             var loginModel = new LoginModel
             {
-                UserName = c_username,
-                Password = c_password
+                UserName = c_Username,
+                Password = c_Password
             };
 
             var result = controller.JsonLogin(loginModel, "http://localhost/") as JsonResult;
@@ -85,14 +86,14 @@ namespace RedChess.ControllerTests
         {
             const string newPassword = "newpassword";
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
-            mockSecurity.Expect(x => x.ChangePassword(c_username, c_password, newPassword)).Return(true);
+            mockSecurity.Expect(x => x.ChangePassword(c_Username, c_Password, newPassword)).Return(true);
             mockSecurity.Expect(x => x.ChangeEmailHash("5676f35f5c011dbed45ae63e79c86ed4"));
 
             var controller = new AccountController(IdentityProvider(), mockSecurity);
 
             var passwordModel = new LocalPasswordModel
             {
-                OldPassword = c_password,
+                OldPassword = c_Password,
                 NewPassword = newPassword,
                 ConfirmPassword = newPassword,
                 Email = "spam@example.com"
@@ -113,7 +114,7 @@ namespace RedChess.ControllerTests
 
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
             // Expect password change to fail
-            mockSecurity.Expect(x => x.ChangePassword(c_username, c_password, newPassword)).Return(false);
+            mockSecurity.Expect(x => x.ChangePassword(c_Username, c_Password, newPassword)).Return(false);
             mockSecurity.Expect(x => x.ChangeEmailHash(Arg<string>.Is.Anything)).Repeat.Never();
 
             FailToChangePassword(mockSecurity, newPassword, expectedErrorMessage);
@@ -127,7 +128,7 @@ namespace RedChess.ControllerTests
 
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
             // Expect password change to fail
-            mockSecurity.Expect(x => x.ChangePassword(c_username, c_password, newPassword)).Throw(new InvalidOperationException());
+            mockSecurity.Expect(x => x.ChangePassword(c_Username, c_Password, newPassword)).Throw(new InvalidOperationException());
             mockSecurity.Expect(x => x.ChangeEmailHash(Arg<string>.Is.Anything)).Repeat.Never();
 
             FailToChangePassword(mockSecurity, newPassword, expectedErrorMessage);
@@ -139,7 +140,7 @@ namespace RedChess.ControllerTests
             const string expectedErrorMessage = "Password update successful. Unable to update email address.";
             const string newPassword = "newpassword";
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
-            mockSecurity.Expect(x => x.ChangePassword(c_username, c_password, newPassword)).Return(true);
+            mockSecurity.Expect(x => x.ChangePassword(c_Username, c_Password, newPassword)).Return(true);
             mockSecurity.Expect(x => x.ChangeEmailHash(Arg<string>.Is.Anything)).Throw(new InvalidOperationException());
 
             FailToChangePassword(mockSecurity, newPassword, expectedErrorMessage);
@@ -151,7 +152,7 @@ namespace RedChess.ControllerTests
 
             var passwordModel = new LocalPasswordModel
             {
-                OldPassword = c_password,
+                OldPassword = c_Password,
                 NewPassword = newPassword,
                 ConfirmPassword = newPassword,
                 Email = "spam@example.com"
@@ -170,14 +171,14 @@ namespace RedChess.ControllerTests
         public void LoginFailure()
         {
             var mockSecurity = MockRepository.GenerateMock<IWebSecurityProvider>();
-            mockSecurity.Expect(x => x.Login(c_username, c_password)).Return(false);
+            mockSecurity.Expect(x => x.Login(c_Username, c_Password)).Return(false);
 
             var controller = new AccountController(IdentityProvider(), mockSecurity);
 
             var loginModel = new LoginModel
             {
-                UserName = c_username,
-                Password = c_password
+                UserName = c_Username,
+                Password = c_Password
             };
 
             var result = controller.JsonLogin(loginModel, "http://localhost/") as JsonResult;
@@ -189,8 +190,8 @@ namespace RedChess.ControllerTests
         private void SetupCreateUserMock(IWebSecurityProvider mockSecurity, Action<string> hashCapturer)
         {
             mockSecurity.Expect(x => x.CreateUserAndAccount(
-                Arg<string>.Is.Equal(c_username),
-                Arg<string>.Is.Equal(c_password),
+                Arg<string>.Is.Equal(c_Username),
+                Arg<string>.Is.Equal(c_Password),
                 Arg<object>.Is.Anything)).WhenCalled(
                     (invocation) =>
                     {
@@ -203,9 +204,9 @@ namespace RedChess.ControllerTests
         private void SetupFailingCreateUserMock(IWebSecurityProvider mockSecurity)
         {
             mockSecurity.Expect(x => x.CreateUserAndAccount(
-                Arg<string>.Is.Equal(c_username),
-                Arg<string>.Is.Equal(c_password),
-                Arg<object>.Is.Anything)).Throw(new System.Web.Security.MembershipCreateUserException("Something went wrong"));
+                Arg<string>.Is.Equal(c_Username),
+                Arg<string>.Is.Equal(c_Password),
+                Arg<object>.Is.Anything)).Throw(new MembershipCreateUserException("Something went wrong"));
         }
 
         [TestCase("", "")]
@@ -225,9 +226,9 @@ namespace RedChess.ControllerTests
 
             var registerModel = new RegisterModel()
             {
-                Password = c_password,
-                ConfirmPassword = c_password,
-                UserName = c_username,
+                Password = c_Password,
+                ConfirmPassword = c_Password,
+                UserName = c_Username,
             };
 
             if (email != null)
@@ -306,9 +307,9 @@ namespace RedChess.ControllerTests
 
             var registerModel = new RegisterModel()
             {
-                Password = c_password,
-                ConfirmPassword = c_password,
-                UserName = c_username,
+                Password = c_Password,
+                ConfirmPassword = c_Password,
+                UserName = c_Username,
             };
 
             var result = controller.JsonRegister(registerModel, "http://localhost/") as JsonResult;
