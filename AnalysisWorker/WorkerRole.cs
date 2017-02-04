@@ -131,7 +131,7 @@ namespace Redchess.AnalysisWorker
             m_Client = QueueClient.CreateFromConnectionString(connectionString, c_QueueName);
 
 #if !DEBUG
-            s_logTruncator = new LogTruncator();
+            s_LogTruncator = new LogTruncator();
 #endif
             return base.OnStart();
         }
