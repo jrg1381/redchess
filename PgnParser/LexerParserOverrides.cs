@@ -15,7 +15,7 @@ namespace Redchess.Pgn
         }
     }
 
-    partial class PgnLexer
+    sealed partial class PgnLexer
     {
         public PgnLexer(ICharStream stream, Action<string> onErrorAction)
             : base(stream)

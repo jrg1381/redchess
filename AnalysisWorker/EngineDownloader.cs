@@ -19,6 +19,10 @@ namespace Redchess.AnalysisWorker
             Trace.WriteLine("Testing whether engine needs to be downloaded");
             var targetFileName = new Uri(c_DownloadUrl).GetComponents(UriComponents.Path, UriFormat.Unescaped);
             var targetDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (targetDirectory == null)
+            {
+                throw new NullReferenceException(nameof(targetDirectory));
+            }
             string target = Path.Combine(targetDirectory, Path.GetFileName(targetFileName));
 
             // Only one thread is allowed to download the engine at a time

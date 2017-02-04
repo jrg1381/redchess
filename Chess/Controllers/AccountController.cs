@@ -72,7 +72,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult JsonRegister(RegisterModel model, string returnUrl)
         {
-            if (!m_GameManager.UserIdIsAdministrator(m_UserProvider.CurrentUserId))
+            if (!m_GameManager.UserIsAdministrator(m_UserProvider.CurrentUserId))
             {
                 ModelState.AddModelError("", "Only administrators can perform this operation");
                 return Json(new { errors = GetErrorsFromModelState() });

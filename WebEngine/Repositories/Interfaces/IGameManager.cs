@@ -31,6 +31,7 @@ namespace RedChess.WebEngine.Repositories.Interfaces
         void UpdateEloTable();
         bool ShouldLockUi(int gameId);
         bool IsUsersTurn(IGameBinding game, string currentUser);
-        bool UserIdIsAdministrator(int userId);
+        bool UserIsAdministrator(int userId);
+        bool UserIsAdministrator(string username);
     }
 }
