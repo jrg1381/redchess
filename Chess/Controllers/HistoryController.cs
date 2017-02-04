@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using Chess.Models;
-using RedChess.WebEngine.Models;
 using RedChess.WebEngine.Repositories;
 using RedChess.EngineFactory;
 using RedChess.WebEngine.Repositories.Interfaces;

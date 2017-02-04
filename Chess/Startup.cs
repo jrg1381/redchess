@@ -1,8 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using Chess;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(SignalRChat.Startup))]
-namespace SignalRChat
+[assembly: OwinStartup(typeof(Startup))]
+namespace Chess
 {
 
     public class Startup

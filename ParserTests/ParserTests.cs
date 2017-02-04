@@ -1,12 +1,9 @@
 using System;
 using System.IO;
-using Antlr4.Runtime;
 using NUnit.Framework;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.ParserFactory;
 using RedChess.ParserTests;
-using Redchess.Pgn;
-using RedChess.PgnProcessor;
 
 namespace Redchess.ParserTests
 {

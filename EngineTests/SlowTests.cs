@@ -66,9 +66,8 @@ namespace Redchess.EngineTests
 			}
 
 			GAME_OVER:
-			;
 
-            Console.WriteLine("Game took : {0}", DateTime.UtcNow - startTime);
+		    Console.WriteLine("Game took : {0}", DateTime.UtcNow - startTime);
 		}
 	}
 }

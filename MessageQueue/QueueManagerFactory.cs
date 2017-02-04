@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using Microsoft.Azure;
-using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
 
 namespace RedChess.MessageQueue

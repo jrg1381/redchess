@@ -39,26 +39,31 @@ namespace RedChess.ChessboardRenderer
             var resourceName = MapPieceToResourceName(pieceName);
             var baml = m_ResourceManager.GetObject(resourceName) as MemoryStream;
 
-            var reader = new Baml2006Reader(baml);
-            var writer = new XamlObjectWriter(reader.SchemaContext);
-            while (reader.Read())
+            if (baml == null)
             {
-                writer.WriteNode(reader);
+                throw new NullReferenceException("baml");
             }
 
-            var viewbox = writer.Result as Viewbox;
+            var reader = new Baml2006Reader(baml);
+                var writer = new XamlObjectWriter(reader.SchemaContext);
+                while (reader.Read())
+                {
+                    writer.WriteNode(reader);
+                }
 
-            if(viewbox == null)
-                throw new InvalidCastException("Piece XAML not castable to Viewbox");
+                var viewbox = writer.Result as Viewbox;
 
-            viewbox.Measure(new Size(256, 256));
-            viewbox.Arrange(new Rect(0, 0, 256, 256));
-            viewbox.UpdateLayout();
+                if(viewbox == null)
+                    throw new InvalidCastException("Piece XAML not castable to Viewbox");
 
-            var vb = new VisualBrush(viewbox) {Stretch = Stretch.Uniform};
-            m_Brushes.Add(pieceName, vb);
+                viewbox.Measure(new Size(256, 256));
+                viewbox.Arrange(new Rect(0, 0, 256, 256));
+                viewbox.UpdateLayout();
 
-            return vb;
+                var vb = new VisualBrush(viewbox) {Stretch = Stretch.Uniform};
+                m_Brushes.Add(pieceName, vb);
+
+                return vb;
         }
 
         /// <summary>

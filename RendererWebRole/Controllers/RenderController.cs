@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.EnterpriseServices.Internal;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;

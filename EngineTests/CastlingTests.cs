@@ -1,7 +1,5 @@
-using System;
 using NUnit.Framework;
 using RedChess.ChessCommon.Enumerations;
-using Redchess.Engine;
 using Redchess.Engine.Interfaces;
 
 namespace Redchess.EngineTests

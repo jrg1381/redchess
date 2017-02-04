@@ -18,7 +18,7 @@ namespace Redchess.AnalysisWorker
         private static readonly Regex MateInNMovesRegex;
         private static readonly Regex BestMoveRegex;
 
-        public int GameId { get; private set; }
+        public int GameId { get; }
 
         static UciEngine()
         {

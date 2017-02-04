@@ -17,18 +17,18 @@ namespace Chess.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly ICurrentUser m_userProvider;
-        private readonly IWebSecurityProvider m_webSecurityProvider;
-        private readonly IGameManager m_gameManager;
+        private readonly ICurrentUser m_UserProvider;
+        private readonly IWebSecurityProvider m_WebSecurityProvider;
+        private readonly IGameManager m_GameManager;
 
         public AccountController() : this(null, null)
         { }
 
         public AccountController(ICurrentUser userProvider = null, IWebSecurityProvider webSecurity = null, IGameManager gameManager = null)
         {
-            m_userProvider = userProvider ?? new CurrentUserProvider();
-            m_webSecurityProvider = webSecurity ?? new DefaultWebSecurityProvider(m_userProvider);
-            m_gameManager = gameManager ?? new GameManager();
+            m_UserProvider = userProvider ?? new CurrentUserProvider();
+            m_WebSecurityProvider = webSecurity ?? new DefaultWebSecurityProvider(m_UserProvider);
+            m_GameManager = gameManager ?? new GameManager();
         }
 
         //
@@ -39,9 +39,9 @@ namespace Chess.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (m_webSecurityProvider.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+                if (m_WebSecurityProvider.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
                 {
-                    m_webSecurityProvider.SetAuthCookie(model.UserName, model.RememberMe);
+                    m_WebSecurityProvider.SetAuthCookie(model.UserName, model.RememberMe);
                     return Json(new { success = true, redirect = returnUrl });
                 }
                 else
@@ -61,7 +61,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            m_webSecurityProvider.Logout();
+            m_WebSecurityProvider.Logout();
 
             return RedirectToAction("Index", "Home");
         }
@@ -72,7 +72,7 @@ namespace Chess.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult JsonRegister(RegisterModel model, string returnUrl)
         {
-            if (!m_gameManager.UserIdIsAdministrator(m_userProvider.CurrentUserId))
+            if (!m_GameManager.UserIdIsAdministrator(m_UserProvider.CurrentUserId))
             {
                 ModelState.AddModelError("", "Only administrators can perform this operation");
                 return Json(new { errors = GetErrorsFromModelState() });
@@ -83,7 +83,7 @@ namespace Chess.Controllers
                 // Attempt to register the user
                 try
                 {
-                    m_webSecurityProvider.CreateUserAndAccount(model.UserName, model.Password, new { EmailHash = EmailHashForAddress(model.Email) });
+                    m_WebSecurityProvider.CreateUserAndAccount(model.UserName, model.Password, new { EmailHash = EmailHashForAddress(model.Email) });
                     return Json(new { success = true, redirect = returnUrl });
                 }
                 catch (MembershipCreateUserException e)
@@ -192,7 +192,7 @@ namespace Chess.Controllers
                 bool changePasswordSucceeded;
                 try
                 {
-                    changePasswordSucceeded = m_webSecurityProvider.ChangePassword(m_userProvider.CurrentUser, model.OldPassword, model.NewPassword);
+                    changePasswordSucceeded = m_WebSecurityProvider.ChangePassword(m_UserProvider.CurrentUser, model.OldPassword, model.NewPassword);
                 }
                 catch (Exception)
                 {
@@ -205,7 +205,7 @@ namespace Chess.Controllers
                     {
                         if (!String.IsNullOrEmpty(model.Email))
                         {
-                            m_webSecurityProvider.ChangeEmailHash(EmailHashForAddress(model.Email));
+                            m_WebSecurityProvider.ChangeEmailHash(EmailHashForAddress(model.Email));
                         }
                         return Json(new { success = true, redirect = Url?.Action("Index", "Board") });
                     }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Chess.Filters;
 using RedChess.WebEngine.Repositories;
 using Microsoft.AspNet.SignalR;
-using RedChess.ChessCommon;
 using RedChess.WebEngine.Repositories.Interfaces;
 
 namespace Chess.Controllers

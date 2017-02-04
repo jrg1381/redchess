@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Newtonsoft.Json;
 using RedChess.ChessCommon;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.MessageQueue.Messages;

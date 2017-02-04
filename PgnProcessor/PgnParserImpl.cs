@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Mime;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Redchess.Pgn;
 using RedChess.ChessCommon.Interfaces;
 using RedChess.ChessCommon;
-using RedChess.ChessCommon.Enumerations;
 
 namespace RedChess.PgnProcessor
 {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using RedChess.ParserFactory;
-using Redchess.Pgn;
-using RedChess.PgnProcessor;
 
 namespace ParserPerfTest
 {

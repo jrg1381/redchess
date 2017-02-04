@@ -9,10 +9,10 @@ namespace RedChess.WebTests
 {
     class Player
     {
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public PieceColor Color { get; private set; }
-        public IWebDriver Driver { get; private set; }
+        public string Username { get; }
+        public string Password { get; }
+        public PieceColor Color { get; }
+        public IWebDriver Driver { get; }
 
         public Player(PieceColor color, string username, string password, IWebDriver driver)
         {
