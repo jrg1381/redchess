@@ -1665,9 +1665,9 @@ function addEvents() {
 
   // touch drag pieces
   if (isTouchDevice() === true) {
-    squares = document.getElementsByClassName('.' + CSS.square)
+    squares = document.getElementsByClassName(CSS.square);
     for (i = 0; i < squares.length; i++) {
-      squares[i].addEventListener('touchstart', touchstartSquare, { passive: false })
+      squares[i].addEventListener('touchstart', touchstartSquare, { passive: false });
     }
     // Remove code for spare pieces, I don't use it
 
