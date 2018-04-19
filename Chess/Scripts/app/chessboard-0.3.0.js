@@ -1671,8 +1671,8 @@ function addEvents() {
     }
     // Remove code for spare pieces, I don't use it
 
-    $(window).on('touchmove', touchmoveWindow);
-    $(window).on('touchend', touchendWindow);
+	window.addEventListener('touchmove', touchmoveWindow, { passive: false });
+	window.addEventListener('touchend', touchendWindow, { passive: false });
   }
 }
 
