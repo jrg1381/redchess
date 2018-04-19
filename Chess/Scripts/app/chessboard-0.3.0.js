@@ -1516,8 +1516,7 @@ function touchstartSquare(e) {
 
   e.preventDefault();
 
-  e = e.originalEvent;
-  beginDraggingPiece(square, CURRENT_POSITION[square],
+ beginDraggingPiece(square, CURRENT_POSITION[square],
     e.changedTouches[0].pageX, e.changedTouches[0].pageY);
 }
 
@@ -1557,8 +1556,8 @@ function touchmoveWindow(e) {
   // prevent screen from scrolling
   e.preventDefault();
 
-  updateDraggedPiece(e.originalEvent.changedTouches[0].pageX,
-    e.originalEvent.changedTouches[0].pageY);
+  updateDraggedPiece(e.changedTouches[0].pageX,
+    e.changedTouches[0].pageY);
 }
 
 function mouseupWindow(e) {
@@ -1576,8 +1575,8 @@ function touchendWindow(e) {
   if (DRAGGING_A_PIECE !== true) return;
 
   // get the location
-  var location = isXYOnSquare(e.originalEvent.changedTouches[0].pageX,
-    e.originalEvent.changedTouches[0].pageY);
+  var location = isXYOnSquare(e.changedTouches[0].pageX,
+    e.changedTouches[0].pageY);
 
   stopDraggedPiece(location);
 }
