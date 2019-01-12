@@ -19,14 +19,14 @@ namespace RedChess.WebTests
         private IisExpressStarter m_IisStarter;
         private Player m_ClivePlayer, m_JamesPlayer;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetup()
         {
             m_IisStarter = new IisExpressStarter(c_Port);
             m_IisStarter.Start(); 
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TestFixtureTearDown()
         {
             m_IisStarter.Stop();
@@ -37,8 +37,8 @@ namespace RedChess.WebTests
         {
             IWebDriver driverPlayerOne = new ChromeDriver();
             IWebDriver driverPlayerTwo = new ChromeDriver();
-            driverPlayerOne.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(8));
-            driverPlayerTwo.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(8));
+            driverPlayerOne.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(8);
+            driverPlayerTwo.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(8);
             m_BaseUrl = (new UriBuilder("http", "localhost", c_Port)).ToString();
 
             WarmTheWebServer(m_BaseUrl);
