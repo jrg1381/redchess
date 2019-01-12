@@ -197,20 +197,20 @@
                         <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
                     </td>
                     <td>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title" data-bind="text: TurnIndicatorText(fen)"></h3>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h3>
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
                                 <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
+                        <div class="card ">
+                            <div class="card-header">
+                                <h3 class="card-title">
                                     <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
                                 </h3>
                                 <span data-bind="text: status"></span><br/>
@@ -222,7 +222,7 @@
                                     <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
                                 </span>
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
                                 <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">Delete</a> |
                                 <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
@@ -281,19 +281,19 @@
                     <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
                 </td>
                 <td>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title" data-bind="text: TurnIndicatorText(fen)"></h3>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h3>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
                                 <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
                             </h3>
                             <span data-bind="text: status"></span><br/>
@@ -305,7 +305,7 @@
                                                           <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
                                                       </span>
                         </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
                             <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
                         </div>
