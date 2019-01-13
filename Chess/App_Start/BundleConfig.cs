@@ -8,6 +8,8 @@ namespace Chess
 		public static void RegisterBundles(BundleCollection bundles)
 		{
 			bundles.Add(new ScriptBundle("~/bundles/jquerykobs").Include(
+                        "~/Scripts/umd/popper.js",
+                        "~/Scripts/umd/popper-utils.js",
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/jquery.timeago.js",
