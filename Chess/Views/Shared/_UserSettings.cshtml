@@ -52,25 +52,25 @@
             @if (Request.IsAuthenticated)
             {
                 <li class="nav-item">
-                    @Html.ActionLink("New game", "Create", "Board", htmlAttributes: new { @class = "nav-link" })
+                    @Html.ActionLink("New game", "Create", "Board", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("My games", "Index", "Board", htmlAttributes: new { @class = "nav-link" })
+                    @Html.ActionLink("My games", "Index", "Board", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
                 </li>
             }
             else
             {
                 <li class="nav-item">
-                    @Html.ActionLink("Current games", "Index", "Board", htmlAttributes: new { @class = "nav-link" })
+                    @Html.ActionLink("Current games", "Index", "Board", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
                 </li>
             }
 
             <li class="nav-item">
-                @Html.ActionLink("PGN viewer", "", "Pgn", htmlAttributes: new { @class = "nav-link" })
+                @Html.ActionLink("PGN viewer", "", "Pgn", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
             </li>
 
             <li class="nav-item">
-                @Html.ActionLink("Stats", "Index", "Stats", htmlAttributes: new { @class = "nav-link" })
+                @Html.ActionLink("Stats", "Index", "Stats", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
             </li>
 
             @if (Request.IsAuthenticated)

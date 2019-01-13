@@ -199,7 +199,7 @@
                     <td>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h3>
+                                <h4 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h4>
                             </div>
                             <div class="card-body">
                                 <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
@@ -210,9 +210,9 @@
                     <td>
                         <div class="card ">
                             <div class="card-header">
-                                <h3 class="card-title">
+                                <h4 class="card-title">
                                     <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
-                                </h3>
+                                </h4>
                                 <span data-bind="text: status"></span><br/>
                                 <span class="tinier">
                                     Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>

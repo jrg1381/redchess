@@ -43,8 +43,7 @@ namespace Chess
                 "~/Content/glyphicons.css",
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap-grid.css",
-                "~/Content/bootstrap-reboot.css",
-                "~/Content/bootstrap-theme.css"));
+                "~/Content/bootstrap-reboot.css"));
 
 			bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
 						"~/Content/themes/base/jquery.ui.core.css",
