@@ -76,21 +76,21 @@
             @if (Request.IsAuthenticated)
             {
                 <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
-                        <div class="dropdown-menu">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <div class="dropdown-menu">
 
-                            @Html.ActionLink("My account", "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {@class = "dropdown-item", title = "Logged on as " + HttpContext.Current.User.Identity.Name})
+                        @Html.ActionLink("My account", "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {@class = "dropdown-item", title = "Logged on as " + HttpContext.Current.User.Identity.Name})
 
-                            @if (new GameManager().UserIsAdministrator(HttpContext.Current.User.Identity.Name))
-                            {
+                        @if (new GameManager().UserIsAdministrator(HttpContext.Current.User.Identity.Name))
+                        {
 
-                                @Html.ActionLink("Register new user", "Register", "Home", htmlAttributes: new {@class = "dropdown-item"})
+                            @Html.ActionLink("Register new user", "Register", "Home", routeValues: new { area = "" }, htmlAttributes: new {@class = "dropdown-item"})
 
-                            }
+                        }
 
-                            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
 
-                        </div>
+                    </div>
                 </li>
             }
         </ul>
