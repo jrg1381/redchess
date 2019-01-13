@@ -42,10 +42,10 @@ namespace Chess
 				"~/Scripts/app/chessboard-0.3.0.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
-                "~/Content/glyphicons.css",
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap-grid.css",
-                "~/Content/bootstrap-reboot.css"));
+                "~/Content/bootstrap-reboot.css",
+                "~/Content/glyphicons.css"));
 
 			bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
 						"~/Content/themes/base/jquery.ui.core.css",
