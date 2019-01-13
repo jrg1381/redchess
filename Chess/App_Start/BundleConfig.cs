@@ -8,6 +8,8 @@ namespace Chess
 		public static void RegisterBundles(BundleCollection bundles)
 		{
 			bundles.Add(new ScriptBundle("~/bundles/jquerykobs").Include(
+                        "~/Scripts/umd/popper.js",
+                        "~/Scripts/umd/popper-utils.js",
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/jquery.timeago.js",
@@ -40,8 +42,10 @@ namespace Chess
 				"~/Scripts/app/chessboard-0.3.0.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                "~/Content/glyphicons.css",
                 "~/Content/bootstrap.css",
-                "~/Content/bootstrap-theme.css"));
+                "~/Content/bootstrap-grid.css",
+                "~/Content/bootstrap-reboot.css"));
 
 			bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
 						"~/Content/themes/base/jquery.ui.core.css",

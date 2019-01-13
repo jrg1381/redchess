@@ -1,117 +1,101 @@
 ﻿@using RedChess.WebEngine.Repositories
 <script>
-     $(document).ready(function() {
-         getSpinController().stopLogoSpinner();
+    $(document).ready(function () {
+        getSpinController().stopLogoSpinner();
 
-         if ($('#avatar').length !== 0) { // Do we have an avatar div to populate?
-             if (typeof (Storage) !== "undefined") { // Do we have local storage capability?
-                 var avatarUrl = localStorage.getItem("AvatarUrl");
+        if ($('#avatar').length !== 0) { // Do we have an avatar div to populate?
+            if (typeof (Storage) !== "undefined") { // Do we have local storage capability?
+                var avatarUrl = localStorage.getItem("AvatarUrl");
 
-                 if (avatarUrl == null) { // Does the local storage have the data we want?
-                     $.getJSON("/api/Avatar").done(function(d) { // Boo, we have to get the date via a POST
-                         localStorage.setItem("AvatarUrl", d);
-                         setAvatar(d);
-                     });
-                 } else {
-                     setAvatar(avatarUrl); // Yay, we found the url in the local storage
-                 }
-             } else {
-                 $.getJSON("/api/Avatar").done(setAvatar); // No local storage => make the request and don't try to store it
-             }
-         } else {
-             localStorage.removeItem("AvatarUrl"); // No div to populate => user is logged out
-         }
-
-         function setAvatar(avatarUrl) {
-             $('#avatar').css({ "background-image": "url(" + avatarUrl + ")", "background-repeat": "no-repeat", "border-radius" : "0.2rem" });
-         }
-     });
- </script>
-
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                @if (Request.IsAuthenticated)
-                {
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                if (avatarUrl == null) { // Does the local storage have the data we want?
+                    $.getJSON("/api/Avatar").done(function (d) { // Boo, we have to get the date via a POST
+                        localStorage.setItem("AvatarUrl", d);
+                        setAvatar(d);
+                    });
+                } else {
+                    setAvatar(avatarUrl); // Yay, we found the url in the local storage
                 }
-            </button>
-            <a class="navbar-brand" style="padding-top: 9px;padding-bottom: 9px">
-                <ul class="nav navbar-nav navbar-left">
-                    <li class="hidden-sm hidden-xs">
-                        <div>
-                            <img alt="logo" src="~/Images/bN.png" height="28" width="28" style="max-width: 100px; margin-right: 14px; margin-top: 2px; margin-bottom: 2px"/>
-                            <div style="position: absolute; margin-left: 14px; margin-top: -16px;" id="redchess-logo"></div>
-                        </div>
-                    </li>
-                    @if (Request.IsAuthenticated)
-                    {
-                        <li>
-                            <div style="height: 32px; line-height: 32px;  margin-left: 5px">
-                                @HttpContext.Current.User.Identity.Name
-                            </div>
-                        </li>
-                        <li class="hidden-sm hidden-xs">
-                            <div id="avatar" style="width: 32px; height: 32px; margin-left: 8px;"></div>
-                        </li>
-                    }
-                </ul>
-            </a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                @if (Request.IsAuthenticated)
-                {
-                    <li>
-                        @Html.ActionLink("New game", "Create", "Board")
-                    </li>
-                    <li>
-                        @Html.ActionLink("My games", "Index", "Board")
-                    </li>
-                }
-                else
-                {
-                    <li>
-                        @Html.ActionLink("Current games", "Index", "Board")
-                    </li>
-                }
+            } else {
+                $.getJSON("/api/Avatar").done(setAvatar); // No local storage => make the request and don't try to store it
+            }
+        } else {
+            localStorage.removeItem("AvatarUrl"); // No div to populate => user is logged out
+        }
 
-                <li>
-                    @Html.ActionLink("PGN viewer", "", "Pgn")
+        function setAvatar(avatarUrl) {
+            $('#avatar').css({ "background-image": "url(" + avatarUrl + ")", "background-repeat": "no-repeat", "border-radius": "0.2rem" });
+        }
+    });
+</script>
+
+<nav class="navbar navbar-expand-md bg-primary navbar-dark py-2">
+    <a class="navbar-brand d-md-block d-none" style="padding-top: 9px; padding-bottom: 9px">
+        <span>
+            <img alt="logo" src="~/Images/bN.png" height="28" width="28" style="max-width: 100px; margin-right: 14px; margin-top: 2px; margin-bottom: 2px" />
+            <div style="position: absolute; margin-left: 14px; margin-top: -16px;" id="redchess-logo"></div>
+        </span>
+        @if (Request.IsAuthenticated)
+        {
+            <span class="navbar-text" style="height: 32px; line-height: 32px;  margin-left: 5px">
+                @HttpContext.Current.User.Identity.Name
+            </span>
+            <span id="avatar" style="display: inline-block; width: 32px; height: 32px; margin-left: 8px;">&nbsp;</span>
+        }
+    </a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+        <ul class="navbar-nav ml-auto">
+            @if (Request.IsAuthenticated)
+            {
+                <li class="nav-item">
+                    @Html.ActionLink("New game", "Create", "Board", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
                 </li>
-
-                <li>
-                    @Html.ActionLink("Stats", "Index", "Stats")
+                <li class="nav-item">
+                    @Html.ActionLink("My games", "Index", "Board", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
                 </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    @Html.ActionLink("Current games", "Index", "Board", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
+                </li>
+            }
 
-                @if (Request.IsAuthenticated)
-                {
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                @Html.ActionLink("My account", "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {title = "Logged on as " + HttpContext.Current.User.Identity.Name})
-                            </li>
+            <li class="nav-item">
+                @Html.ActionLink("PGN viewer", "", "Pgn", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
+            </li>
+
+            <li class="nav-item">
+                @Html.ActionLink("Stats", "Index", "Stats", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link" })
+            </li>
+
+            @if (Request.IsAuthenticated)
+            {
+                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                        <div class="dropdown-menu">
+
+                            @Html.ActionLink("My account", "Manage", "Account", routeValues: new {area = ""}, htmlAttributes: new {@class = "dropdown-item", title = "Logged on as " + HttpContext.Current.User.Identity.Name})
+
                             @if (new GameManager().UserIsAdministrator(HttpContext.Current.User.Identity.Name))
                             {
-                                <li>
-                                    @Html.ActionLink("Register new user", "Register", "Home")
-                                </li>
+
+                                @Html.ActionLink("Register new user", "Register", "Home", htmlAttributes: new {@class = "dropdown-item"})
+
                             }
-                            <li>
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                            </li>
-                        </ul>
-                    </li>
-                }
-            </ul>
-        </div>
+
+                            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+
+                        </div>
+                </li>
+            }
+        </ul>
     </div>
+
 
     @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
     {

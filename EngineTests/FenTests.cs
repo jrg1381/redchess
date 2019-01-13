@@ -7,7 +7,7 @@ namespace Redchess.EngineTests
 	[TestFixture]
 	internal class FenTests : AbstractChessTest
 	{
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void SetupGame()
 		{
 			NormalBoard = new InteractiveBoard(PieceColor.White, false);
