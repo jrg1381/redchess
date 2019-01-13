@@ -93,7 +93,6 @@
     <None Include="..\Chess.snk">
       <Link>Chess.snk</Link>
     </None>
-    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
