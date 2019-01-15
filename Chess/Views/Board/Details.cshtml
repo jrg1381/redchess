@@ -223,12 +223,18 @@
             }
             }
 
-            <div class="well">
-                <div id="lastmove"></div>
-                <div id="moveplayedat">
-                    <time class="timeago" datetime="@timestampText"></time>
+            <div class="card">
+                <div class="card-header">
+                    <div id="lastmove"></div>
+                    <div id="moveplayedat">
+                        <time class="timeago" datetime="@timestampText"></time>
+                    </div>
+                    <div id="turnindicator"></div>
                 </div>
-                <div id="turnindicator"></div>
+                <div class="card-body">
+                    <div id="blacktaken" style="font-size: 36pt;"></div>
+                    <div id="whitetaken" style="font-size: 36pt;"></div>
+                </div>
             </div>
 
             <div id="drawoffer" class="alert alert-warning">
@@ -241,13 +247,6 @@
 
             <div id="drawoffer-sent" class="alert alert-warning">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>Offer sent</strong> - awaiting response
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <div id="blacktaken" style="font-size: 36pt;"></div>
-                    <div id="whitetaken" style="font-size: 36pt;"></div>
-                </div>
             </div>
 
             <div class="btn-group" role="group" id="board-controls">

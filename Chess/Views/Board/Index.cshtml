@@ -1,14 +1,14 @@
 ﻿@model object
 
-    @{
-        ViewBag.Title = "Index of games";
-        var currentUserId = WebSecurity.CurrentUserId;
-        var timeLimitForOldGames = String.Format("{0:yyyy-MM-ddTHH:mm}", DateTime.UtcNow.AddMonths(-1));
-    }
+@{
+    ViewBag.Title = "Index of games";
+    var currentUserId = WebSecurity.CurrentUserId;
+    var timeLimitForOldGames = String.Format("{0:yyyy-MM-ddTHH:mm}", DateTime.UtcNow.AddMonths(-1));
+}
 
 <script src="/Scripts/jquery.signalR-2.4.0.min.js" type="text/javascript"></script>
 <script src="/signalr/hubs"></script>
-    
+
 <script>
     function gameListUpdate() {
         updateGameLists();
@@ -17,10 +17,10 @@
 
 @if (!Request.IsAuthenticated)
 {
-        <p>
-            You need to be logged in to create new games.<br />
-            <a href="/">Log in</a>
-        </p>
+    <p>
+        You need to be logged in to create new games.<br />
+        <a href="/">Log in</a>
+    </p>
 }
 
 <script>
@@ -189,47 +189,42 @@
 {
     <div class="row" data-bind="if: errors().length == 0">
         <h3>My current games <img src="/Images/spinny.gif" id="my-current-games-spinny" /></h3>
-        <div class="col-md-10">
+        <div class="col-md-10 col-sm-12">
             <table class="table" id="my-current-games-table">
                 <tbody data-bind="foreach: currentGames">
-                <tr>
-                    <td width="160px">
-                        <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
-                    </td>
-                    <td>
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h4>
+                    <tr>
+                        <td width="160px">
+                            <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
+                            <span data-bind="text: TurnIndicatorText(fen)"></span>
+                        </td>
+                        <td>
+                            <div class="card ">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
+                                    </h4>
+                                    <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
+                                    <p class="card-text">
+                                        <span data-bind="visible: lastmove, text: lastmove"></span>
+
+                                    <span data-bind="text: status"></span><br />
+                                    <span class="tinier">
+                                        Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
+                                    </span>
+                                    <span data-bind="if: clock && (clock.timeLimitMs > 0)" style="float: right">
+                                        <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
+                                        <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
+                                    </span>
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <a class="card-link" data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
+                                    <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">Delete</a> |
+                                    <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="btn btn-primary pulseme" data-bind="visible: !lastmove, click : function() { GoToGame(gameid); }">Start playing</div>
-                                <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="card ">
-                            <div class="card-header">
-                                <h4 class="card-title">
-                                    <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
-                                </h4>
-                                <span data-bind="text: status"></span><br/>
-                                <span class="tinier">
-                                    Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
-                                </span>
-                                <span data-bind="if: clock && (clock.timeLimitMs > 0)" style="float: right">
-                                    <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
-                                    <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
-                                </span>
-                            </div>
-                            <div class="card-body">
-                                <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
-                                <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">Delete</a> |
-                                <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -240,28 +235,28 @@
         <div class="col-md-10">
             <table class="table" id="my-finished-games-table">
                 <tbody data-bind="foreach: finishedGames">
-                <tr>
-                    <td style="vertical-align: middle">
-                        <a data-bind="html : description, attr : { href : '/History/Showmove/'+ gameid}"></a>
-                    </td>
-                    <td style="vertical-align: middle">
-                        <span data-bind="if: clock && (clock.timeLimitMs > 0)" style="float: right">
-                                    <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
-                                    <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
-                                </span>
-                    </td>
-                    <td>
-                        <span data-bind="text:status"></span><br/><time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
-                    </td>
-                    <td style="vertical-align: middle">
-                        <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">
-                            <span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span>
-                        </a>
-                    </td>
-                    <td style="vertical-align: middle">
-                        <input class="deleteCheckbox" type="checkbox" value="true" data-bind="attr: { name : gameid}"/>
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="vertical-align: middle">
+                            <a data-bind="html : description, attr : { href : '/History/Showmove/'+ gameid}"></a>
+                        </td>
+                        <td style="vertical-align: middle">
+                            <span data-bind="if: clock && (clock.timeLimitMs > 0)" style="float: right">
+                                <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
+                                <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
+                            </span>
+                        </td>
+                        <td>
+                            <span data-bind="text:status"></span><br /><time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
+                        </td>
+                        <td style="vertical-align: middle">
+                            <a data-bind="attr : { href : '/Board/Delete/'+ gameid}">
+                                <span class="glyphicon glyphicon-remove-circle" style="font-size: x-large"></span>
+                            </a>
+                        </td>
+                        <td style="vertical-align: middle">
+                            <input class="deleteCheckbox" type="checkbox" value="true" data-bind="attr: { name : gameid}" />
+                        </td>
+                    </tr>
                 </tbody>
                 <tfoot data-bind="if: finishedGames().length">
                     <tr><td colspan="4"></td><td><a id="delete-multiple-button" class="btn btn-warning" href="javascript:DeleteMultiple()" title="Delete selected">Delete selected games</a></td></tr>
@@ -276,42 +271,42 @@
     <div class="col-md-10">
         <table class="table" id="other-games-table">
             <tbody data-bind="foreach: otherGames">
-            <tr>
-                <td width="160px">
-                    <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
-                </td>
-                <td>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h3>
+                <tr>
+                    <td width="160px">
+                        <div class="miniboard" style="width: 160px" data-bind="text : fen, click : function() { GoToGame(gameid); }"></div>
+                    </td>
+                    <td>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" data-bind="text: TurnIndicatorText(fen)"></h3>
+                            </div>
+                            <div class="card-body">
+                                <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <span data-bind="if: lastmove"><span data-bind="text: lastmove"></span></span>
+                    </td>
+                    <td>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
+                                </h3>
+                                <span data-bind="text: status"></span><br />
+                                <span class="tinier">
+                                    Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
+                                </span>
+                                <span data-bind="if: clock && (clock.timeLimitMs > 0)" style="float: right">
+                                    <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
+                                    <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
+                                <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <a data-bind="text: description, click : function() { GoToGame(gameid); }"></a>
-                            </h3>
-                            <span data-bind="text: status"></span><br/>
-                            <span class="tinier">
-                                                          Started <time class="timeago" data-bind="text: creationdate + ' UTC', attr: { datetime: creationdate }"></time>
-                                                      </span>
-                            <span data-bind="if: clock && (clock.timeLimitMs > 0)" style="float: right">
-                                                          <span data-bind="if: clock" class="glyphicon glyphicon-time"></span>
-                                                          <span data-bind="text: (clock.timeLimitMs/60000) + 'm'"></span>
-                                                      </span>
-                        </div>
-                        <div class="card-body">
-                            <a data-bind="attr : { href : '/Board/Details/'+ gameid}">Go to game</a> |
-                            <a data-bind="attr : { href : '/History/Showmove/'+ gameid}">History</a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

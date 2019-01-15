@@ -10,27 +10,26 @@
                 @using (Html.BeginForm("JsonLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginForm" }))
                 {
                     @Html.AntiForgeryToken()
-                    <div class="well">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Username" id="loginName" name="userName"/>
-                        </div>
 
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Password" id="password" name="Password" type="password"/>
-                        </div>
-                        <div class="row">&nbsp;</div>
-                        <div class="row">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="true" id="RememberMe" name="RememberMe">
-                                    Remember&nbsp;me
-                                </label>
-                            </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" id="loginName" name="userName" />
+                    </div>
+
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Password" id="password" name="Password" type="password" />
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="true" id="RememberMe" name="RememberMe">
+                                Remember&nbsp;me
+                            </label>
                         </div>
                     </div>
 
-                    <div class="input-group" >
-                        <input type="submit" value="Log in" id="submitbutton" class="btn btn-default" />
+                    <div class="input-group">
+                        <input type="submit" value="Log in" id="submitbutton" class="btn btn-primary" />
                     </div>
 
                     <div data-valmsg-summary="true" class="validation-summary-valid">

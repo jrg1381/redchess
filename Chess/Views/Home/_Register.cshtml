@@ -8,29 +8,27 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                @using (Html.BeginForm("JsonRegister", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {id = "registerForm", @class = "form-horizontal"}))
+                @using (Html.BeginForm("JsonRegister", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "registerForm", @class = "form-horizontal" }))
                 {
                     @Html.AntiForgeryToken()
-                    <div class="well">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Username" id="registerName" name="userName"/>
-                        </div>
-
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Password" id="Password" name="Password" type="password"/>
-                        </div>
-
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Confirm password" id="ConfirmPassword" name="ConfirmPassword" type="password"/>
-                        </div>
-
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Email (for avatar)" id="email" name="email" />
-                        </div>
-                    </div>
-                    
                     <div class="input-group">
-                        <input type="submit" value="Register" id="submitbutton" class="btn btn-default"/>
+                        <input type="text" class="form-control" placeholder="Username" id="registerName" name="userName" />
+                    </div>
+
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Password" id="Password" name="Password" type="password" />
+                    </div>
+
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Confirm password" id="ConfirmPassword" name="ConfirmPassword" type="password" />
+                    </div>
+
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Email (for avatar)" id="email" name="email" />
+                    </div>
+
+                    <div class="input-group">
+                        <input type="submit" value="Register" id="submitbutton" class="btn btn-default" />
                     </div>
 
                     <div data-valmsg-summary="true" class="validation-summary-valid">
