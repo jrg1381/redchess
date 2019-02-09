@@ -138,7 +138,7 @@ function Chess(gameId, currentPlayerColor, clock, analysisBoard) {
 
     /* Unicode chess piece characters */
     this.pieceMapping = {
-        "K": "\u2654", "Q": "\u2655", "N": "\u2658", "R": "\u2656", "P": "\u2659", "B": "\u2657",
+        "K": "\u2654", "Q": "\u2655", "N": "\u2658", "R": "\u2656", "P": "\u2659\ufe0e", "B": "\u2657",
 		"k": "\u265a", "q": "\u265b", "n": "\u265e", "r": "\u265c", "p": "\u265f\ufe0e", "b": "\u265d"
     };
 
